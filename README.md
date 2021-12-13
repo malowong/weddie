@@ -6,6 +6,10 @@ sudo gem install cocoapods (M1: brew install cocoapods)
 
 yarn install
 
+cd ios
+
+pod install
+
 yarn react-native start
 
 (open a new terminal)

@@ -219,7 +219,7 @@ yarn knex seed:run --env test
 touch .env .env.example
 ```
 
-- [ ] configure  `.env`
+- [ ] configure `.env`
 
 ```Text
 DB_NAME={database-name}
@@ -258,7 +258,6 @@ dotenv.config();
 ```Text
 psql -U <user> -W -d <database_name>
 ```
-
 
 ```SQL
 

@@ -1,13 +1,13 @@
 ## What should you do after git pull this project
 
-brew install watchman (if you have not downloaded watchman)
+`brew install watchman` (if you have not downloaded watchman)
 
-sudo gem install cocoapods (M1: brew install cocoapods)
+`sudo gem install cocoapods` (M1: `brew install cocoapods`)
 
-yarn install
+`yarn install`
 
-yarn react-native start
+`cd ios && pod install && cd.. ` (run `arch -x86_64 pod install` instead of `pod install` if using m1 macbook)
 
-(open a new terminal)
+`yarn react-native start`
 
-yarn react-native run-ios
+(open another terminal) `yarn react-native run-ios`

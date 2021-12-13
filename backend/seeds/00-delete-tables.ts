@@ -1,13 +1,23 @@
 import { Knex } from "knex";
+import { tables } from "../utils/tables";
 
 export async function seed(knex: Knex): Promise<void> {
-    // Deletes ALL existing entries
-    await knex("table_name").del();
+  async function truncateTable(tableObj: Object) {
+    const keyArr = Object.values(tableObj);
 
-    // Inserts seed entries
-    await knex("table_name").insert([
-        { id: 1, colName: "rowValue1" },
-        { id: 2, colName: "rowValue2" },
-        { id: 3, colName: "rowValue3" }
-    ]);
-};
+    for (let i = 0; i < keyArr.length; i++) {
+      await trx.raw(/*sql*/ `TRUNCATE ${keyArr[i]} RESTART IDENTITY CASCADE`);
+    }
+  }
+
+  const trx = await knex.transaction();
+  try {
+    await truncateTable(tables);
+    await trx.commit();
+  } catch (err) {
+    console.error(err.message);
+    await trx.rollback();
+  } finally {
+    await trx.destroy();
+  }
+}

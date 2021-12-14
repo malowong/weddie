@@ -8,13 +8,13 @@
  * @format
  */
 
-import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   CardStyleInterpolators,
   createStackNavigator,
-} from '@react-navigation/stack'
+} from '@react-navigation/stack';
 import {
   Button,
   Modal,
@@ -26,7 +26,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   View,
-} from 'react-native'
+} from 'react-native';
 
 import {
   Colors,
@@ -49,10 +49,11 @@ import GuestScreen from './screens/GuestScreen';
 import RundownScreen from './screens/RundownScreen';
 import SeatScreen from './screens/SeatScreen';
 import SettingScreen from './screens/SettingScreen'
+import { Login } from './src/components/Login';
 
 
 
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator();
 
 function TabScreen() {
   return (
@@ -106,8 +107,8 @@ function TabScreen() {
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
-            e.preventDefault()
-            navigation.navigate('ModalScreen')
+            e.preventDefault();
+            navigation.navigate('ModalScreen');
           },
         })}
       />
@@ -182,9 +183,8 @@ function TabScreen() {
         }}
       />
     </Tab.Navigator>
-  )
+  );
 }
-
 
 const RootStack = createStackNavigator();
 
@@ -202,17 +202,24 @@ function RootStackScreen() {
         }}
       />
     </RootStack.Navigator>
-  )
+  );
 }
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const login = () => {
+    setIsLoggedIn(true);
+  };
+
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <RootStackScreen />
+        {!isLoggedIn && <Login onLoginClick={() => login()} />}
+        {isLoggedIn && <RootStackScreen />}
+        {/* <NativeBaseTesting /> */}
       </NavigationContainer>
     </SafeAreaProvider>
-  )
-}
+  );
+};
 
 export default App;

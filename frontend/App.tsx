@@ -38,17 +38,17 @@ import {
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import { styles } from './style';
-import HomeScreen from './screens/HomeScreen';
-import ModalScreen from './screens/ModalScreen';
-import NotificationsScreen from './screens/NotificationsScreen';
-import ParticipantsScreen from './screens/ParticipantsScreen';
-import BudgetScreen from './screens/BudgetScreen';
-import CheckListScreen from './screens/CheckListScreen';
-import MaterialScreen from './screens/MaterialScreen';
-import GuestScreen from './screens/GuestScreen';
-import RundownScreen from './screens/RundownScreen';
-import SeatScreen from './screens/SeatScreen';
-import SettingScreen from './screens/SettingScreen'
+import HomeScreen from './src/screens/HomeScreen';
+import ModalScreen from './src/screens/ModalScreen';
+import NotificationsScreen from './src/screens/NotificationsScreen';
+import ParticipantsScreen from './src/screens/ParticipantsScreen';
+import BudgetScreen from './src/screens/BudgetScreen';
+import CheckListScreen from './src/screens/CheckListScreen';
+import MaterialScreen from './src/screens/MaterialScreen';
+import GuestScreen from './src/screens/GuestScreen';
+import RundownScreen from './src/screens/RundownScreen';
+import SeatScreen from './src/screens/SeatScreen';
+import SettingScreen from './src/screens/SettingScreen'
 import { Login } from './src/components/Login';
 
 

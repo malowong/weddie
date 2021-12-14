@@ -214,9 +214,10 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        {!isLoggedIn && <Login onLoginClick={() => login()} />}
-        {isLoggedIn && <RootStackScreen />}
+        {/* {!isLoggedIn && <Login onLoginClick={() => login()} />} */}
+        {/* {isLoggedIn && <RootStackScreen />} */}
         {/* <NativeBaseTesting /> */}
+        <RootStackScreen />
       </NavigationContainer>
     </SafeAreaProvider>
   );

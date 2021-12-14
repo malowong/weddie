@@ -8,13 +8,13 @@
  * @format
  */
 
-import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import React, { useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   CardStyleInterpolators,
   createStackNavigator,
-} from '@react-navigation/stack'
+} from '@react-navigation/stack';
 import {
   Button,
   Modal,
@@ -26,7 +26,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   View,
-} from 'react-native'
+} from 'react-native';
 
 import {
   Colors,
@@ -34,9 +34,11 @@ import {
   Header,
   LearnMoreLinks,
   ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
+} from 'react-native/Libraries/NewAppScreen';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { Login } from './src/components/Login';
+import NativeBaseTesting from './src/components/NativeBaseTesting';
 
 function HomeScreen() {
   return (
@@ -44,7 +46,7 @@ function HomeScreen() {
       <Text style={styles.titleText}>主頁</Text>
       <Text style={styles.baseText}>主頁主頁主頁主頁主頁</Text>
     </View>
-  )
+  );
 }
 
 function ParticipantsScreen() {
@@ -53,11 +55,11 @@ function ParticipantsScreen() {
       <Text style={styles.titleText}>人員名單</Text>
       <Text style={styles.baseText}>人員名單人員名單人員名單</Text>
     </View>
-  )
+  );
 }
 
 function MainScreen() {
-  return <View style={styles.screen}></View>
+  return <View style={styles.screen}></View>;
 }
 
 function ModalScreen({ navigation }: { navigation: any }) {
@@ -104,7 +106,7 @@ function ModalScreen({ navigation }: { navigation: any }) {
         <Button onPress={() => navigation.goBack()} title="返回" />
       </View>
     </View>
-  )
+  );
 }
 
 function NotificationsScreen() {
@@ -113,7 +115,7 @@ function NotificationsScreen() {
       <Text style={styles.titleText}>訊息通知</Text>
       <Text style={styles.baseText}>訊息通知訊息通知訊息通知訊息通知</Text>
     </View>
-  )
+  );
 }
 
 function SettingsScreen() {
@@ -122,10 +124,10 @@ function SettingsScreen() {
       <Text style={styles.titleText}>用戶設定</Text>
       <Text style={styles.baseText}>設定設定設定設定設定設定</Text>
     </View>
-  )
+  );
 }
 
-const Tab = createBottomTabNavigator()
+const Tab = createBottomTabNavigator();
 
 function TabScreen() {
   return (
@@ -179,8 +181,8 @@ function TabScreen() {
         }}
         listeners={({ navigation }) => ({
           tabPress: (e) => {
-            e.preventDefault()
-            navigation.navigate('ModalScreen')
+            e.preventDefault();
+            navigation.navigate('ModalScreen');
           },
         })}
       />
@@ -213,10 +215,10 @@ function TabScreen() {
         }}
       />
     </Tab.Navigator>
-  )
+  );
 }
 
-const RootStack = createStackNavigator()
+const RootStack = createStackNavigator();
 
 function RootStackScreen() {
   return (
@@ -232,18 +234,25 @@ function RootStackScreen() {
         }}
       />
     </RootStack.Navigator>
-  )
+  );
 }
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const login = () => {
+    setIsLoggedIn(true);
+  };
+
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <RootStackScreen />
+        {!isLoggedIn && <Login onLoginClick={() => login()} />}
+        {isLoggedIn && <RootStackScreen />}
+        {/* <NativeBaseTesting /> */}
       </NavigationContainer>
     </SafeAreaProvider>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   baseText: {
@@ -270,6 +279,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingBottom: 30,
   },
-})
+});
 
-export default App
+export default App;

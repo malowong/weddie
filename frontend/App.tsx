@@ -37,81 +37,21 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
+import { styles } from './style';
+import HomeScreen from './screens/HomeScreen';
+import ModalScreen from './screens/ModalScreen';
+import NotificationsScreen from './screens/NotificationsScreen';
+import ParticipantsScreen from './screens/ParticipantsScreen';
+import BudgetScreen from './screens/BudgetScreen';
+import CheckListScreen from './screens/CheckListScreen';
+import MaterialScreen from './screens/MaterialScreen';
+import GuestScreen from './screens/GuestScreen';
+import RundownScreen from './screens/RundownScreen';
+import SeatScreen from './screens/SeatScreen';
 
-function HomeScreen() {
-  return (
-    <View style={styles.screen}>
-      <Text style={styles.titleText}>主頁</Text>
-      <Text style={styles.baseText}>主頁主頁主頁主頁主頁</Text>
-    </View>
-  );
-}
-
-function ParticipantsScreen() {
-  return (
-    <View style={styles.screen}>
-      <Text style={styles.titleText}>人員名單</Text>
-      <Text style={styles.baseText}>人員名單人員名單人員名單</Text>
-    </View>
-  );
-}
 
 function MainScreen() {
   return <View style={styles.screen}></View>;
-}
-
-function ModalScreen({navigation}: {navigation: any}) {
-  return (
-    <View
-      style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end'}}>
-      <View
-        style={{
-          height: '50%',
-          width: '100%',
-          backgroundColor: '#fff',
-          justifyContent: 'center',
-          borderTopStartRadius: 25,
-          borderTopEndRadius: 25,
-        }}>
-        <View style={styles.mainModalRow}>
-            <TouchableOpacity style={styles.mainModalButton}>
-              <Ionicons name={'ios-logo-usd'} size={50} />
-              <Text>婚禮預算</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.mainModalButton}>
-              <Ionicons name={'ios-checkbox'} size={50} />
-              <Text>待辦事項</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.mainModalButton}>
-              <Ionicons name={'ios-briefcase'} size={50} />
-              <Text>物資管理</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.mainModalButton}>
-              <Ionicons name={'ios-person-add'} size={50} />
-              <Text>來賓安排</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.mainModalButton}>
-              <Ionicons name={'ios-home'} size={50} />
-              <Text>當日流程</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.mainModalButton}>
-              <Ionicons name={'ios-home'} size={50} />
-              <Text>未知</Text>
-            </TouchableOpacity>
-        </View>
-        <Button onPress={() => navigation.goBack()} title="返回" />
-      </View>
-    </View>
-  );
-}
-
-function NotificationsScreen() {
-  return (
-    <View style={styles.screen}>
-      <Text style={styles.titleText}>訊息通知</Text>
-      <Text style={styles.baseText}>訊息通知訊息通知訊息通知訊息通知</Text>
-    </View>
-  );
 }
 
 function SettingsScreen() {
@@ -209,9 +149,52 @@ function TabScreen() {
           ),
         }}
       />
+      <Tab.Screen
+        name="BudgetScreen"
+        component={BudgetScreen}
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="CheckListScreen"
+        component={CheckListScreen}
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="MaterialScreen"
+        component={MaterialScreen}
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="GuestScreen"
+        component={GuestScreen}
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="RundownScreen"
+        component={RundownScreen}
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
+      <Tab.Screen
+        name="SeatScreen"
+        component={SeatScreen}
+        options={{
+          tabBarButton: () => null,
+        }}
+      />
     </Tab.Navigator>
   );
 }
+
 
 const RootStack = createStackNavigator();
 
@@ -241,32 +224,5 @@ const App = () => {
     </SafeAreaProvider>
   );
 };
-
-const styles = StyleSheet.create({
-  baseText: {
-    fontSize: 15,
-  },
-  titleText: {
-    fontSize: 30,
-    fontWeight: 'bold',
-    marginBottom: '5%',
-  },
-  screen: {
-    flex: 1,
-    paddingHorizontal: '5%',
-    paddingTop: '15%',
-  },
-  mainModalRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'space-around',
-    paddingBottom: 30,
-  },
-  mainModalButton: {
-    paddingHorizontal: 30,
-    alignItems: 'center',
-    paddingBottom: 30,
-  },
-});
 
 export default App;

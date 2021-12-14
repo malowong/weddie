@@ -8,13 +8,13 @@
  * @format
  */
 
-import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import {
   CardStyleInterpolators,
   createStackNavigator,
-} from '@react-navigation/stack';
+} from '@react-navigation/stack'
 import {
   Button,
   Modal,
@@ -26,7 +26,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   View,
-} from 'react-native';
+} from 'react-native'
 
 import {
   Colors,
@@ -48,22 +48,11 @@ import MaterialScreen from './screens/MaterialScreen';
 import GuestScreen from './screens/GuestScreen';
 import RundownScreen from './screens/RundownScreen';
 import SeatScreen from './screens/SeatScreen';
+import SettingScreen from './screens/SettingScreen'
 
 
-function MainScreen() {
-  return <View style={styles.screen}></View>;
-}
 
-function SettingsScreen() {
-  return (
-    <View style={styles.screen}>
-      <Text style={styles.titleText}>用戶設定</Text>
-      <Text style={styles.baseText}>設定設定設定設定設定設定</Text>
-    </View>
-  );
-}
-
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
 function TabScreen() {
   return (
@@ -72,13 +61,14 @@ function TabScreen() {
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
         headerShown: false,
-      }}>
+      }}
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
         options={{
           tabBarLabel: '主頁',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'ios-home' : 'ios-home-outline'}
               color={color}
@@ -92,7 +82,7 @@ function TabScreen() {
         component={ParticipantsScreen}
         options={{
           tabBarLabel: '人員名單',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'ios-people' : 'ios-people-outline'}
               color={color}
@@ -103,10 +93,10 @@ function TabScreen() {
       />
       <Tab.Screen
         name="Main"
-        component={MainScreen}
+        component={ModalScreen}
         options={{
           tabBarLabel: '加入',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'ios-add-circle' : 'ios-add-circle-outline'}
               color={color}
@@ -114,10 +104,10 @@ function TabScreen() {
             />
           ),
         }}
-        listeners={({navigation}) => ({
-          tabPress: e => {
-            e.preventDefault();
-            navigation.navigate('ModalScreen');
+        listeners={({ navigation }) => ({
+          tabPress: (e) => {
+            e.preventDefault()
+            navigation.navigate('ModalScreen')
           },
         })}
       />
@@ -126,7 +116,7 @@ function TabScreen() {
         component={NotificationsScreen}
         options={{
           tabBarLabel: '訊息通知',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'ios-notifications' : 'ios-notifications-outline'}
               color={color}
@@ -137,10 +127,10 @@ function TabScreen() {
       />
       <Tab.Screen
         name="Settings"
-        component={SettingsScreen}
+        component={SettingScreen}
         options={{
           tabBarLabel: '用戶設定',
-          tabBarIcon: ({focused, color, size}) => (
+          tabBarIcon: ({ focused, color, size }) => (
             <Ionicons
               name={focused ? 'ios-person-circle' : 'ios-person-circle-outline'}
               color={color}
@@ -192,7 +182,7 @@ function TabScreen() {
         }}
       />
     </Tab.Navigator>
-  );
+  )
 }
 
 
@@ -200,7 +190,7 @@ const RootStack = createStackNavigator();
 
 function RootStackScreen() {
   return (
-    <RootStack.Navigator screenOptions={{headerShown: false}}>
+    <RootStack.Navigator screenOptions={{ headerShown: false }}>
       <RootStack.Screen name="TabScreen" component={TabScreen} />
       <RootStack.Screen
         name="ModalScreen"
@@ -212,7 +202,7 @@ function RootStackScreen() {
         }}
       />
     </RootStack.Navigator>
-  );
+  )
 }
 
 const App = () => {
@@ -222,7 +212,7 @@ const App = () => {
         <RootStackScreen />
       </NavigationContainer>
     </SafeAreaProvider>
-  );
-};
+  )
+}
 
 export default App;

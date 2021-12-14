@@ -11,7 +11,10 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { createStackNavigator } from '@react-navigation/stack'
+import {
+  CardStyleInterpolators,
+  createStackNavigator,
+} from '@react-navigation/stack'
 import {
   Button,
   Modal,
@@ -20,6 +23,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TouchableOpacity,
   useColorScheme,
   View,
 } from 'react-native'
@@ -32,10 +36,11 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 function HomeScreen() {
   return (
-    <View style={{ flex: 1, padding: '5%' }}>
+    <View style={styles.screen}>
       <Text style={styles.titleText}>主頁</Text>
       <Text style={styles.baseText}>主頁主頁主頁主頁主頁</Text>
     </View>
@@ -44,7 +49,7 @@ function HomeScreen() {
 
 function ParticipantsScreen() {
   return (
-    <View style={{ flex: 1, padding: '5%' }}>
+    <View style={styles.screen}>
       <Text style={styles.titleText}>人員名單</Text>
       <Text style={styles.baseText}>人員名單人員名單人員名單</Text>
     </View>
@@ -52,12 +57,7 @@ function ParticipantsScreen() {
 }
 
 function MainScreen() {
-  return (
-    <View style={{ flex: 1, padding: '5%' }}>
-      {/* <Text style={styles.titleText}>加入</Text>
-       <Text style={styles.baseText}>加入加入加入加入加入加入加入</Text> */}
-    </View>
-  )
+  return <View style={styles.screen}></View>
 }
 
 function ModalScreen({ navigation }: { navigation: any }) {
@@ -75,8 +75,33 @@ function ModalScreen({ navigation }: { navigation: any }) {
           borderTopEndRadius: 25,
         }}
       >
-        <Text>this is modal</Text>
-        <Button onPress={() => navigation.goBack()} title="Dismiss" />
+        <View style={styles.mainModalRow}>
+          <TouchableOpacity style={styles.mainModalButton}>
+            <Ionicons name={'ios-logo-usd'} size={50} />
+            <Text>婚禮預算</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.mainModalButton}>
+            <Ionicons name={'ios-checkbox'} size={50} />
+            <Text>待辦事項</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.mainModalButton}>
+            <Ionicons name={'ios-briefcase'} size={50} />
+            <Text>物資管理</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.mainModalButton}>
+            <Ionicons name={'ios-person-add'} size={50} />
+            <Text>來賓安排</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.mainModalButton}>
+            <Ionicons name={'ios-home'} size={50} />
+            <Text>當日流程</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.mainModalButton}>
+            <Ionicons name={'ios-home'} size={50} />
+            <Text>未知</Text>
+          </TouchableOpacity>
+        </View>
+        <Button onPress={() => navigation.goBack()} title="返回" />
       </View>
     </View>
   )
@@ -84,7 +109,7 @@ function ModalScreen({ navigation }: { navigation: any }) {
 
 function NotificationsScreen() {
   return (
-    <View style={{ flex: 1, padding: '5%' }}>
+    <View style={styles.screen}>
       <Text style={styles.titleText}>訊息通知</Text>
       <Text style={styles.baseText}>訊息通知訊息通知訊息通知訊息通知</Text>
     </View>
@@ -93,7 +118,7 @@ function NotificationsScreen() {
 
 function SettingsScreen() {
   return (
-    <View style={{ flex: 1, padding: '5%' }}>
+    <View style={styles.screen}>
       <Text style={styles.titleText}>用戶設定</Text>
       <Text style={styles.baseText}>設定設定設定設定設定設定</Text>
     </View>
@@ -195,22 +220,16 @@ const RootStack = createStackNavigator()
 
 function RootStackScreen() {
   return (
-    <RootStack.Navigator
-      screenOptions={{
-        headerShown: false,
-        animationEnabled: false,
-        presentation: 'modal',
-        cardStyle: {
-          backgroundColor: 'transparent',
-          opacity: 0.99,
-        },
-      }}
-    >
+    <RootStack.Navigator screenOptions={{ headerShown: false }}>
       <RootStack.Screen name="TabScreen" component={TabScreen} />
       <RootStack.Screen
         name="ModalScreen"
         component={ModalScreen}
-        options={{ animationEnabled: true }}
+        options={{
+          presentation: 'transparentModal',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          cardOverlayEnabled: true,
+        }}
       />
     </RootStack.Navigator>
   )
@@ -218,21 +237,38 @@ function RootStackScreen() {
 
 const App = () => {
   return (
-    <NavigationContainer>
-      <SafeAreaView style={{ flex: 1, backgroundColor: '#F2F2F2' }}>
+    <SafeAreaProvider>
+      <NavigationContainer>
         <RootStackScreen />
-      </SafeAreaView>
-      <SafeAreaView style={{ flex: 0, backgroundColor: '#FFFFFF' }} />
-    </NavigationContainer>
+      </NavigationContainer>
+    </SafeAreaProvider>
   )
 }
 
 const styles = StyleSheet.create({
-  baseText: {},
+  baseText: {
+    fontSize: 15,
+  },
   titleText: {
-    fontSize: 40,
+    fontSize: 30,
     fontWeight: 'bold',
     marginBottom: '5%',
+  },
+  screen: {
+    flex: 1,
+    paddingHorizontal: '5%',
+    paddingTop: '15%',
+  },
+  mainModalRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    paddingBottom: 30,
+  },
+  mainModalButton: {
+    paddingHorizontal: 30,
+    alignItems: 'center',
+    paddingBottom: 30,
   },
 })
 

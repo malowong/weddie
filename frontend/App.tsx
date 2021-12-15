@@ -50,8 +50,10 @@ import RundownScreen from './src/screens/RundownScreen';
 import SeatScreen from './src/screens/SeatScreen';
 import SettingScreen from './src/screens/SettingScreen'
 import { Login } from './src/components/Login';
-
-
+import LoadingScreen from './src/screens/LoadingScreen';
+import LoginScreen from './src/screens/LoginScreen';
+import { Provider } from 'react-redux';
+// import { store } from "./src/redux/store"
 
 const Tab = createBottomTabNavigator();
 
@@ -93,7 +95,7 @@ function TabScreen() {
         }}
       />
       <Tab.Screen
-        name="Main"
+        name="Modal"
         component={ModalScreen}
         options={{
           tabBarLabel: '加入',
@@ -186,13 +188,13 @@ function TabScreen() {
   );
 }
 
-const RootStack = createStackNavigator();
+const MainStack = createStackNavigator();
 
-function RootStackScreen() {
+function MainStackScreen() {
   return (
-    <RootStack.Navigator screenOptions={{ headerShown: false }}>
-      <RootStack.Screen name="TabScreen" component={TabScreen} />
-      <RootStack.Screen
+    <MainStack.Navigator screenOptions={{ headerShown: false }}>
+      <MainStack.Screen name="TabScreen" component={TabScreen} />
+      <MainStack.Screen
         name="ModalScreen"
         component={ModalScreen}
         options={{
@@ -201,25 +203,36 @@ function RootStackScreen() {
           cardOverlayEnabled: true,
         }}
       />
-    </RootStack.Navigator>
+    </MainStack.Navigator>
   );
 }
 
-const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const login = () => {
-    setIsLoggedIn(true);
-  };
+const RootStack = createStackNavigator();
+
+function RootStackScreen() {
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
+    <RootStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="LoginScreen">
         {/* {!isLoggedIn && <Login onLoginClick={() => login()} />} */}
-        {/* {isLoggedIn && <RootStackScreen />} */}
+        {/* {isLoggedIn && <MainStackScreen />} */}
         {/* <NativeBaseTesting /> */}
-        <RootStackScreen />
-      </NavigationContainer>
-    </SafeAreaProvider>
+      <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
+      <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
+      <RootStack.Screen name="LoginScreen" component={LoginScreen} />
+    </RootStack.Navigator>
+  )
+}
+
+const App = () => {
+
+  return (
+    // <Provider store={store}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <RootStackScreen />
+        </NavigationContainer>
+      </SafeAreaProvider>
+    // </Provider>
   );
 };
 

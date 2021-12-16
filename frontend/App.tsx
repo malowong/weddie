@@ -36,7 +36,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from './style';
 import HomeScreen from './src/screens/HomeScreen';
 import ModalScreen from './src/screens/ModalScreen';
@@ -48,11 +48,12 @@ import MaterialScreen from './src/screens/MaterialScreen';
 import GuestScreen from './src/screens/GuestScreen';
 import RundownScreen from './src/screens/RundownScreen';
 import SeatScreen from './src/screens/SeatScreen';
-import SettingScreen from './src/screens/SettingScreen'
+import SettingScreen from './src/screens/SettingScreen';
 import { Login } from './src/components/Login';
 import LoadingScreen from './src/screens/LoadingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import { Provider } from 'react-redux';
+
 // import { store } from "./src/redux/store"
 
 const Tab = createBottomTabNavigator();
@@ -210,28 +211,31 @@ function MainStackScreen() {
 const RootStack = createStackNavigator();
 
 function RootStackScreen() {
-
   return (
-    <RootStack.Navigator screenOptions={{ headerShown: false }} initialRouteName="LoginScreen">
-        {/* {!isLoggedIn && <Login onLoginClick={() => login()} />} */}
-        {/* {isLoggedIn && <MainStackScreen />} */}
-        {/* <NativeBaseTesting /> */}
+    <RootStack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="LoginScreen"
+    >
+      {/* {!isLoggedIn && <Login onLoginClick={() => login()} />} */}
+      {/* {isLoggedIn && <MainStackScreen />} */}
+      {/* <NativeBaseTesting /> */}
       <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
       <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
       <RootStack.Screen name="LoginScreen" component={LoginScreen} />
     </RootStack.Navigator>
-  )
+  );
 }
 
 const App = () => {
-
   return (
     // <Provider store={store}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <RootStackScreen />
-        </NavigationContainer>
-      </SafeAreaProvider>
+
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <RootStackScreen />
+      </NavigationContainer>
+    </SafeAreaProvider>
+
     // </Provider>
   );
 };

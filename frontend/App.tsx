@@ -53,6 +53,7 @@ import { Login } from './src/components/Login';
 import LoadingScreen from './src/screens/LoadingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import { Provider } from 'react-redux';
+import { NativeBaseProvider } from 'native-base';
 
 // import { store } from "./src/redux/store"
 
@@ -232,7 +233,9 @@ const App = () => {
 
     <SafeAreaProvider>
       <NavigationContainer>
-        <RootStackScreen />
+        <NativeBaseProvider>
+          <RootStackScreen />
+        </NativeBaseProvider>
       </NavigationContainer>
     </SafeAreaProvider>
 

@@ -1,12 +1,14 @@
-import React from "react";
-import { Text, View } from "react-native";
-import { styles } from "../../style";
+import { Text } from 'native-base';
+import React from 'react';
+import { styles } from '../../style';
+import TopBar from '../components/TopBar';
 
 export default function MaterialScreen() {
-    return (
-      <View style={styles.screen}>
-        <Text style={styles.titleText}>物資管理</Text>
-        <Text style={styles.baseText}>物資管理物資管理物資管理物資管理物資管理</Text>
-      </View>
-    );
-  }
+  return (
+    <TopBar pageName="物資管理">
+      <Text style={styles.baseText}>
+        物資管理物資管理物資管理物資管理物資管理
+      </Text>
+    </TopBar>
+  );
+}

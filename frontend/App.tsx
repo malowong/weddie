@@ -15,26 +15,6 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
-import {
-  Button,
-  Modal,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from './style';
@@ -49,11 +29,11 @@ import GuestScreen from './src/screens/GuestScreen';
 import RundownScreen from './src/screens/RundownScreen';
 import SeatScreen from './src/screens/SeatScreen';
 import SettingScreen from './src/screens/SettingScreen';
-import { Login } from './src/components/Login';
 import LoadingScreen from './src/screens/LoadingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import { Provider } from 'react-redux';
 import { NativeBaseProvider } from 'native-base';
+import { View } from 'react-native';
 
 // import { store } from "./src/redux/store"
 
@@ -70,6 +50,7 @@ function TabScreen() {
     <Tab.Navigator
       initialRouteName="主頁"
       screenOptions={{
+        tabBarActiveTintColor: '#e91e63',
         headerShown: false,
       }}
     >
@@ -105,13 +86,22 @@ function TabScreen() {
         name="Modal"
         component={ModalScreen}
         options={{
-          tabBarLabel: '加入',
+          tabBarLabel: '',
           tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'ios-add-circle' : 'ios-add-circle-outline'}
-              color={color}
-              size={size}
-            />
+            <View style={{
+              position: 'absolute',
+              bottom: '-40%',
+              shadowColor: '#171717',
+              shadowOffset: {width: 0, height: 4},
+              shadowOpacity: 0.4,
+              shadowRadius: 6,
+            }}>
+              <Ionicons
+                name='ios-add-circle'
+                color='#e91e63'
+                size={80}
+              />
+            </View>
           ),
         }}
         listeners={({ navigation }) => ({
@@ -222,9 +212,6 @@ function RootStackScreen() {
       screenOptions={{ headerShown: false }}
       initialRouteName="LoginScreen"
     >
-      {/* {!isLoggedIn && <Login onLoginClick={() => login()} />} */}
-      {/* {isLoggedIn && <MainStackScreen />} */}
-      {/* <NativeBaseTesting /> */}
       <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
       <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
       <RootStack.Screen name="LoginScreen" component={LoginScreen} />

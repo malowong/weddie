@@ -1,12 +1,13 @@
-import React from "react";
-import { Text, View } from "react-native";
-import { styles } from "../../style";
+import { Text } from 'native-base';
+import React from 'react';
+import { View } from 'react-native';
+import { styles } from '../../style';
+import TopBar from '../components/TopBar';
 
 export default function GuestScreen() {
-    return (
-      <View style={styles.screen}>
-        <Text style={styles.titleText}>來賓名單</Text>
-        <Text style={styles.baseText}>來賓名單來賓名單來賓名單來賓名單</Text>
-      </View>
-    );
-  }
+  return (
+    <TopBar pageName="來賓名單">
+      <Text style={styles.baseText}>來賓名單來賓名單來賓名單來賓名單 </Text>
+    </TopBar>
+  );
+}

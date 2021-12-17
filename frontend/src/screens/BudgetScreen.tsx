@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Text, View } from 'react-native';
 import { styles } from '../../style';
+import TopBar from '../components/TopBar';
 
 const expenditures = [
   {
@@ -25,21 +26,20 @@ export default function BudgetScreen() {
   const [budget, setBudget] = useState(50000);
 
   return (
-    <View style={styles.screen}>
-      <Text style={styles.titleText}>婚禮預算</Text>
+    <TopBar pageName="婚禮預算">
       <View>
         <Text>預算: {budget}</Text>
       </View>
       <View>
         <Text>支出</Text>
-        {expenditures.map((expenditure) => {
+        {expenditures.map((expenditure, idx) => {
           return (
-            <Text>
+            <Text key={idx}>
               {expenditure.category}: {expenditure.amount}
             </Text>
           );
         })}
       </View>
-    </View>
+    </TopBar>
   );
 }

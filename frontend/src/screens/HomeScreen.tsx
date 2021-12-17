@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  NativeBaseProvider,
   Box,
   HStack,
   VStack,
@@ -12,7 +11,6 @@ import TopBar from '../components/TopBar';
 
 export default function HomeScreen() {
   return (
-    <NativeBaseProvider>
       <TopBar pageName="主頁">
           <Box
             bg="primary.600"
@@ -344,6 +342,5 @@ export default function HomeScreen() {
             </HStack>
           </Box>
         </TopBar>   
-         </NativeBaseProvider>
   );
 }

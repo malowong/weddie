@@ -30,11 +30,7 @@ export default function SettingScreen() {
           <Modal.Header>更改電話號碼</Modal.Header>
           <Modal.Body>
             <FormControl mt="1">
-              <Input
-                placeholder="電話號碼"
-                type="text"
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
+              <Input placeholder="電話號碼" type="text" />
             </FormControl>
           </Modal.Body>
           <Modal.Footer>

@@ -55,19 +55,24 @@ import LoginScreen from './src/screens/LoginScreen';
 import { Provider } from 'react-redux';
 // import { store } from "./src/redux/store"
 
+export type StackParamList = {
+  主頁: undefined;
+  Participants: undefined;
+};
+
 const Tab = createBottomTabNavigator();
 
 function TabScreen() {
+
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      initialRouteName="主頁"
       screenOptions={{
-        tabBarActiveTintColor: '#e91e63',
         headerShown: false,
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="主頁"
         component={HomeScreen}
         options={{
           tabBarLabel: '主頁',
@@ -115,7 +120,7 @@ function TabScreen() {
         })}
       />
       <Tab.Screen
-        name="Notifications"
+        name="訊息通知"
         component={NotificationsScreen}
         options={{
           tabBarLabel: '訊息通知',

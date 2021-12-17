@@ -1,12 +1,25 @@
+import { NativeBaseProvider, VStack, Center } from "native-base";
 import React from "react";
-import { Text, View } from "react-native";
-import { styles } from "../../style";
+import TopBar from "../components/TopBar";
 
 export default function SettingScreen() {
     return (
-      <View style={styles.screen}>
-        <Text style={styles.titleText}>用戶設定</Text>
-        <Text style={styles.baseText}>設定設定設定設定設定設定</Text>
-      </View>
+      <NativeBaseProvider>
+      <TopBar pageName="用戶設定">
+          <VStack space={4} alignItems="center">
+            <Center w="full" h="20" bg="secondary.500" rounded="md" shadow={3} />
+            <Center w="64" h="20" bg="primary.500" rounded="md" shadow={3} />
+            <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
+            <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
+            <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
+            <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
+            <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
+            <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
+            <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
+            <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
+            <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
+          </VStack>
+        </TopBar>
+    </NativeBaseProvider>
     )
   }

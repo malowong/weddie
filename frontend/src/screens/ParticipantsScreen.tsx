@@ -1,12 +1,9 @@
-import {
-  NativeBaseProvider,
-  Center,
-  VStack,
-} from 'native-base';
+import { NativeBaseProvider, Center, VStack, Button } from 'native-base';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { styles } from '../../style';
 import TopBar from '../components/TopBar';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const participants = [
   {
@@ -28,8 +25,8 @@ const participants = [
 
 export default function ParticipantsScreen() {
   return (
-      <TopBar pageName="人員名單">
-        <View>
+    <TopBar pageName="人員名單">
+      <View>
         <View style={partiStyles.tableRow}>
           <Text>名字</Text>
           <Text>電話號碼</Text>
@@ -39,14 +36,19 @@ export default function ParticipantsScreen() {
         {participants.map((participant, idx) => {
           return (
             <View key={idx} style={partiStyles.tableRow}>
-              <Text>{participant.name}</Text>
-              <Text>{participant.phoneNumber}</Text>
-              <Text>{participant.position}</Text>
+              <Text style={partiStyles.tableColumn}>{participant.name}</Text>
+              <Text style={partiStyles.tableColumn}>
+                {participant.phoneNumber}
+              </Text>
+              <Text style={partiStyles.tableColumn}>
+                {participant.position}
+              </Text>
+              <Button>Edit</Button>
             </View>
           );
         })}
       </View>
-      </TopBar>
+    </TopBar>
   );
 }
 
@@ -56,5 +58,9 @@ const partiStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
   },
+  tableColumn: {
+    flex: 1,
+    textAlign: 'center',
+    marginTop: 10,
+  },
 });
-

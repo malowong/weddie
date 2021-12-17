@@ -1,16 +1,24 @@
-import { NativeBaseProvider, VStack, Center, Modal, Button, FormControl, Input } from "native-base";
-import React, { useState } from "react";
+import {
+  NativeBaseProvider,
+  VStack,
+  Center,
+  Modal,
+  Button,
+  FormControl,
+  Input,
+} from 'native-base';
+import React, { useState } from 'react';
 import { Text, View } from 'react-native';
-import { styles } from "../../style";
-import TopBar from "../components/TopBar";
+import { styles } from '../../style';
+import TopBar from '../components/TopBar';
 
 export default function SettingScreen() {
-
   const [showModal, setShowModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(61210767);
   const [name, setName] = useState('朱天樂');
-    return (
-      <TopBar pageName="用戶設定">
+
+  return (
+    <TopBar pageName="用戶設定">
       <Text style={styles.baseText}>{name}</Text>
       <Text style={styles.baseText}>電話號碼 {phoneNumber}</Text>
 
@@ -23,11 +31,7 @@ export default function SettingScreen() {
           <Modal.Header>更改電話號碼</Modal.Header>
           <Modal.Body>
             <FormControl mt="1">
-              <Input
-                placeholder="電話號碼"
-                type="text"
-                onChange={(e) => setPhoneNumber(e.target.value)}
-              />
+              <Input placeholder="電話號碼" type="text" />
             </FormControl>
           </Modal.Body>
           <Modal.Footer>
@@ -53,6 +57,6 @@ export default function SettingScreen() {
           </Modal.Footer>
         </Modal.Content>
       </Modal>
-        </TopBar>
-    )
-  }
+    </TopBar>
+  );
+}

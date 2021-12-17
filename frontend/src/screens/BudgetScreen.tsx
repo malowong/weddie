@@ -32,9 +32,9 @@ export default function BudgetScreen() {
       </View>
       <View>
         <Text>支出</Text>
-        {expenditures.map((expenditure) => {
+        {expenditures.map((expenditure, idx) => {
           return (
-            <Text>
+            <Text key={idx}>
               {expenditure.category}: {expenditure.amount}
             </Text>
           );

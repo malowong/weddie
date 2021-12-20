@@ -34,6 +34,8 @@ import LoginScreen from './src/screens/LoginScreen';
 import { Provider } from 'react-redux';
 import { NativeBaseProvider } from 'native-base';
 import { View } from 'react-native';
+import SignupScreen from './src/screens/SignupScreen';
+import WelcomingScreen from './src/screens/WelcomingScreen';
 
 // import { store } from "./src/redux/store"
 
@@ -201,17 +203,44 @@ function MainStackScreen() {
   );
 }
 
+const AuthStack = createStackNavigator();
+
+function AuthStackScreen() {
+  return (
+    <AuthStack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="WelcomingScreen"
+    >
+      <AuthStack.Screen name="WelcomingScreen" component={WelcomingScreen} />
+      <AuthStack.Screen
+        name="LoginScreen"
+        component={LoginScreen}
+        // options={{
+        //   presentation: 'modal',
+        // }}
+      />
+      <AuthStack.Screen
+        name="SignupScreen"
+        component={SignupScreen}
+        // options={{
+        //   presentation: 'modal',
+        // }}
+      />
+    </AuthStack.Navigator>
+  );
+}
+
 const RootStack = createStackNavigator();
 
 function RootStackScreen() {
   return (
     <RootStack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="LoginScreen"
+      initialRouteName="AuthStackScreen"
     >
       <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
       <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
-      <RootStack.Screen name="LoginScreen" component={LoginScreen} />
+      <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
     </RootStack.Navigator>
   );
 }

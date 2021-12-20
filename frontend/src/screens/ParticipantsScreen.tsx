@@ -1,6 +1,6 @@
-import { Center, VStack, Button, Modal, FormControl, Input } from 'native-base';
+import { Button, Icon, Modal, FormControl, Input } from 'native-base';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../../style';
 import TopBar from '../components/TopBar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -52,6 +52,9 @@ export default function ParticipantsScreen() {
               >
                 編輯
               </Button>
+              <TouchableOpacity onPress={() => setShowModal(true)}>
+                <Icon as={Ionicons} name="create-outline" />
+              </TouchableOpacity>
               <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
                 <Modal.Content maxWidth="400px">
                   <Modal.CloseButton />

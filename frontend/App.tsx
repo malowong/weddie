@@ -45,7 +45,6 @@ export type StackParamList = {
 const Tab = createBottomTabNavigator();
 
 function TabScreen() {
-
   return (
     <Tab.Navigator
       initialRouteName="主頁"
@@ -88,19 +87,17 @@ function TabScreen() {
         options={{
           tabBarLabel: '',
           tabBarIcon: ({ focused, color, size }) => (
-            <View style={{
-              position: 'absolute',
-              bottom: '-40%',
-              shadowColor: '#171717',
-              shadowOffset: {width: 0, height: 4},
-              shadowOpacity: 0.4,
-              shadowRadius: 6,
-            }}>
-              <Ionicons
-                name='ios-add-circle'
-                color='#e91e63'
-                size={80}
-              />
+            <View
+              style={{
+                position: 'absolute',
+                bottom: '-40%',
+                shadowColor: '#171717',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.4,
+                shadowRadius: 6,
+              }}
+            >
+              <Ionicons name="ios-add-circle" color="#e91e63" size={80} />
             </View>
           ),
         }}

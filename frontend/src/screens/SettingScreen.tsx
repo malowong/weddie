@@ -5,9 +5,10 @@ import {
   Modal,
   FormControl,
   Input,
+  Button,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
+import { Text, View, TextInput, StyleSheet } from 'react-native';
 import { styles } from '../../style';
 import TopBar from '../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
@@ -48,7 +49,8 @@ export default function SettingScreen() {
       <Text style={styles.baseText}>{name}</Text>
       <Text style={styles.baseText}>電話號碼 {phoneNumber}</Text>
 
-      <Button title="更改電話號碼" onPress={() => setShowModal(true)} />
+      <Button onPress={() => setShowModal(true)}>更改電話號碼</Button>
+
       <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
         <Modal.Content maxWidth="400px">
           <Modal.CloseButton />
@@ -62,7 +64,7 @@ export default function SettingScreen() {
                   required: true,
                 }}
                 render={({ field: { onChange, onBlur, value } }) => (
-                  <TextInput
+                  <Input
                     style={settingStyles.input}
                     placeholder="電話號碼"
                     onBlur={onBlur}
@@ -78,15 +80,16 @@ export default function SettingScreen() {
           </Modal.Body>
           <Modal.Footer>
             <Button
-              title="取消"
               variant="ghost"
               colorScheme="blueGray"
               onPress={() => {
                 setShowModal(false);
               }}
-            />
+            >
+              取消
+            </Button>
 
-            <Button title="儲存" onPress={handleSubmit(onSubmit)} />
+            <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
           </Modal.Footer>
         </Modal.Content>
       </Modal>

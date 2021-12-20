@@ -1,9 +1,17 @@
-import { Center, VStack, Modal, FormControl, Input } from 'native-base';
+import { Center, VStack, Modal, FormControl, Input, Icon } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
+import {
+  Text,
+  View,
+  TextInput,
+  Button,
+  StyleSheet,
+  TouchableOpacity,
+} from 'react-native';
 import { styles } from '../../style';
 import TopBar from '../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const guests = [
   {
@@ -69,7 +77,12 @@ export default function ParticipantsScreen() {
               <Text style={guestStyles.tableColumn}>{guest.name}</Text>
               <Text style={guestStyles.tableColumn}>{guest.phoneNumber}</Text>
               <Text style={guestStyles.tableColumn}>{guest.relationship}</Text>
-              <Button title="編輯" onPress={() => setShowModal(true)} />
+              <TouchableOpacity
+                style={[guestStyles.tableColumn, guestStyles.icon]}
+                onPress={() => setShowModal(true)}
+              >
+                <Icon as={Ionicons} name="create-outline" size={6} />
+              </TouchableOpacity>
 
               <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
                 <Modal.Content maxWidth="400px">
@@ -156,11 +169,17 @@ const guestStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
   tableColumn: {
     flex: 1,
     textAlign: 'center',
     marginTop: 10,
+  },
+  icon: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   input: {
     borderWidth: 1,

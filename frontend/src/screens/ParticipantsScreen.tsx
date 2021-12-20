@@ -46,15 +46,14 @@ export default function ParticipantsScreen() {
               <Text style={partiStyles.tableColumn}>
                 {participant.position}
               </Text>
-              <Button
-                style={partiStyles.tableColumn}
+
+              <TouchableOpacity
+                style={[partiStyles.tableColumn, partiStyles.icon]}
                 onPress={() => setShowModal(true)}
               >
-                編輯
-              </Button>
-              <TouchableOpacity onPress={() => setShowModal(true)}>
-                <Icon as={Ionicons} name="create-outline" />
+                <Icon as={Ionicons} name="create-outline" size={6} />
               </TouchableOpacity>
+
               <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
                 <Modal.Content maxWidth="400px">
                   <Modal.CloseButton />
@@ -108,10 +107,16 @@ const partiStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
   tableColumn: {
     flex: 1,
     textAlign: 'center',
     marginTop: 10,
+  },
+  icon: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 });

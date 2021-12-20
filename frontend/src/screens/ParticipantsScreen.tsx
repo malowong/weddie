@@ -1,6 +1,15 @@
-import { NativeBaseProvider, Center, VStack, Button } from 'native-base';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+  NativeBaseProvider,
+  Center,
+  VStack,
+  Button,
+  Icon,
+  Modal,
+  FormControl,
+  Input,
+} from 'native-base';
+import React, { useState } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { styles } from '../../style';
 import TopBar from '../components/TopBar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -24,6 +33,8 @@ const participants = [
 ];
 
 export default function ParticipantsScreen() {
+  const [showModal, setShowModal] = useState(false);
+
   return (
     <TopBar pageName="人員名單">
       <View>
@@ -43,7 +54,45 @@ export default function ParticipantsScreen() {
               <Text style={partiStyles.tableColumn}>
                 {participant.position}
               </Text>
-              <Button>Edit</Button>
+              <TouchableOpacity onPress={() => setShowModal(true)}>
+                <Icon as={Ionicons} name="create-outline" />
+              </TouchableOpacity>
+              {/* <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+                <Modal.Content maxWidth="400px">
+                  <Modal.CloseButton />
+                  <Modal.Header>Contact Us</Modal.Header>
+                  <Modal.Body>
+                    <FormControl>
+                      <FormControl.Label>Name</FormControl.Label>
+                      <Input />
+                    </FormControl>
+                    <FormControl mt="3">
+                      <FormControl.Label>Email</FormControl.Label>
+                      <Input />
+                    </FormControl>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button.Group space={2}>
+                      <Button
+                        variant="ghost"
+                        colorScheme="blueGray"
+                        onPress={() => {
+                          setShowModal(false);
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        onPress={() => {
+                          setShowModal(false);
+                        }}
+                      >
+                        Save
+                      </Button>
+                    </Button.Group>
+                  </Modal.Footer>
+                </Modal.Content>
+              </Modal> */}
             </View>
           );
         })}

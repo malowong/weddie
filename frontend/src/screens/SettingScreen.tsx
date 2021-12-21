@@ -1,15 +1,6 @@
-import {
-  NativeBaseProvider,
-  VStack,
-  Center,
-  Modal,
-  FormControl,
-  Input,
-  Button,
-} from 'native-base';
+import { Modal, Input, Button, View, Text } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { Text, View, TextInput, StyleSheet } from 'react-native';
-import { styles } from '../../style';
+import { StyleSheet } from 'react-native';
 import TopBar from '../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
 
@@ -46,53 +37,69 @@ export default function SettingScreen() {
 
   return (
     <TopBar pageName="用戶設定">
-      <Text style={styles.baseText}>{name}</Text>
-      <Text style={styles.baseText}>電話號碼 {phoneNumber}</Text>
+      <View
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        minHeight="100%"
+      >
+        <Text fontSize={20}>{name}</Text>
+        <Text fontSize={20} marginTop="2">
+          電話號碼 {phoneNumber}
+        </Text>
 
-      <Button onPress={() => setShowModal(true)}>更改電話號碼</Button>
+        <Button
+          color="secondary.600"
+          marginTop="8"
+          onPress={() => setShowModal(true)}
+        >
+          更改電話號碼
+        </Button>
 
-      <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-        <Modal.Content maxWidth="400px">
-          <Modal.CloseButton />
-          <Modal.Header>更改電話號碼</Modal.Header>
-          <Modal.Body>
-            <View>
-              <Controller
-                control={control}
-                rules={{
-                  maxLength: 100,
-                  required: true,
+        <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+          <Modal.Content maxWidth="400px">
+            <Modal.CloseButton />
+            <Modal.Header>更改電話號碼</Modal.Header>
+            <Modal.Body>
+              <View>
+                <Controller
+                  control={control}
+                  rules={{
+                    maxLength: 100,
+                    required: true,
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <Input
+                      style={settingStyles.input}
+                      placeholder={String(phoneNumber)}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                      keyboardType="numeric"
+                    />
+                  )}
+                  name="phoneNumber"
+                />
+                {errors.phoneNumber && <Text>請輸入電話號碼</Text>}
+              </View>
+            </Modal.Body>
+            <Modal.Footer>
+              <Button
+                variant="ghost"
+                colorScheme="blueGray"
+                onPress={() => {
+                  setShowModal(false);
                 }}
-                render={({ field: { onChange, onBlur, value } }) => (
-                  <Input
-                    style={settingStyles.input}
-                    placeholder="電話號碼"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                    keyboardType="numeric"
-                  />
-                )}
-                name="phoneNumber"
-              />
-              {errors.phoneNumber && <Text>請輸入電話號碼</Text>}
-            </View>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button
-              variant="ghost"
-              colorScheme="blueGray"
-              onPress={() => {
-                setShowModal(false);
-              }}
-            >
-              取消
-            </Button>
+              >
+                取消
+              </Button>
 
-            <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
+              <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
+            </Modal.Footer>
+          </Modal.Content>
+        </Modal>
+      </View>
     </TopBar>
   );
 }

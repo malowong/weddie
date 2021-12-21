@@ -1,8 +1,8 @@
 import React from 'react';
-import { Text, View, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import TopBar from './TopBar';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button } from 'native-base';
+import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export function AddMaterialItem({ navigation }: { navigation: any }) {
@@ -43,6 +43,7 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
           control={control}
           rules={{
             maxLength: 100,
+            required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
@@ -60,10 +61,8 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
         <Button onPress={handleSubmit(onSubmit)}>提交</Button>
       </View>
 
-      <TouchableOpacity>
-        <Button colorScheme="secondary" onPress={() => navigation.goBack()}>
-          返回
-        </Button>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Button colorScheme="secondary">返回</Button>
       </TouchableOpacity>
     </TopBar>
   );

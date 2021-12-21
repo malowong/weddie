@@ -1,14 +1,6 @@
-import { Center, VStack, Modal, FormControl, Input, Icon } from 'native-base';
+import { Modal, Input, Icon, Button } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import {
-  Text,
-  View,
-  TextInput,
-  Button,
-  StyleSheet,
-  TouchableOpacity,
-} from 'react-native';
-import { styles } from '../../style';
+import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -48,6 +40,7 @@ export default function ParticipantsScreen() {
       relationship: '',
     },
   });
+
   const onSubmit = (data) => {
     if (data.phoneNumber.length !== 8) {
       return;
@@ -96,7 +89,7 @@ export default function ParticipantsScreen() {
                           maxLength: 100,
                         }}
                         render={({ field: { onChange, onBlur, value } }) => (
-                          <TextInput
+                          <Input
                             placeholder="名字"
                             style={guestStyles.input}
                             onBlur={onBlur}
@@ -113,7 +106,7 @@ export default function ParticipantsScreen() {
                           maxLength: 100,
                         }}
                         render={({ field: { onChange, onBlur, value } }) => (
-                          <TextInput
+                          <Input
                             placeholder="電話號碼"
                             style={guestStyles.input}
                             onBlur={onBlur}
@@ -130,7 +123,7 @@ export default function ParticipantsScreen() {
                           maxLength: 100,
                         }}
                         render={({ field: { onChange, onBlur, value } }) => (
-                          <TextInput
+                          <Input
                             placeholder="關係"
                             style={guestStyles.input}
                             onBlur={onBlur}
@@ -144,15 +137,16 @@ export default function ParticipantsScreen() {
                   </Modal.Body>
                   <Modal.Footer>
                     <Button
-                      title="取消"
                       variant="ghost"
                       colorScheme="blueGray"
                       onPress={() => {
                         setShowModal(false);
                       }}
-                    />
+                    >
+                      取消
+                    </Button>
 
-                    <Button title="儲存" onPress={handleSubmit(onSubmit)} />
+                    <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
                   </Modal.Footer>
                 </Modal.Content>
               </Modal>
@@ -182,7 +176,6 @@ const guestStyles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
-    borderWidth: 1,
-    marginTop: 3,
+    marginTop: 4,
   },
 });

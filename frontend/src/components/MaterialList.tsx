@@ -46,8 +46,8 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
       {materialList.map((material) => {
         return (
           <TouchableOpacity key={material.id} style={materialStyles.tableRow}>
-            <Text>{material.item}</Text>
-            <Text>${material.amount}</Text>
+            <Text fontSize={18}>{material.item}</Text>
+            <Text fontSize={18}>${material.amount}</Text>
           </TouchableOpacity>
         );
       })}

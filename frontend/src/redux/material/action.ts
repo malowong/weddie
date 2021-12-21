@@ -1,8 +1,8 @@
-import { MaterialState } from "./state";
+import { MaterialState } from './state';
 
 export function fetchDataSuccess(data: MaterialState[]) {
   return {
-    type: "@@Material/FETCH_SUCCESS" as const,
+    type: '@@Material/FETCH_SUCCESS' as const,
     data,
   };
 }

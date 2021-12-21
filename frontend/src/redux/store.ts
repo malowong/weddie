@@ -1,8 +1,8 @@
-import { combineReducers, createStore } from "redux";
-import { IAuthState } from "./auth/state";
-import { IMaterialAction } from "./material/action";
-import { materialReducers } from "./material/reducer";
-import { IMaterialState } from "./material/state";
+import { combineReducers, createStore } from 'redux';
+import { IAuthState } from './auth/state';
+import { IMaterialAction } from './material/action';
+import { materialReducers } from './material/reducer';
+import { IMaterialState } from './material/state';
 
 export interface IRootState {
   auth: IAuthState;

@@ -50,11 +50,20 @@ export default function SettingScreen() {
         </Text>
 
         <Button
-          color="secondary.600"
+          colorScheme="dark"
           marginTop="8"
           onPress={() => setShowModal(true)}
         >
           更改電話號碼
+        </Button>
+
+        <Button
+          variant="outline"
+          colorScheme="danger"
+          marginTop="8"
+          onPress={() => console.log('hello')}
+        >
+          登出
         </Button>
 
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>

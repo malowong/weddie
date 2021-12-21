@@ -1,37 +1,42 @@
+import { useNavigation } from '@react-navigation/native';
 import {
-  VStack,
+  Button,
+  Text,
+  NativeBaseProvider,
   Center,
   Box,
-  Button,
   FormControl,
   Heading,
   HStack,
   Input,
   Link,
-  Stack,
-  Text,
+  VStack,
+  TextArea,
   WarningOutlineIcon,
+  Stack,
   Icon,
   View,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TouchableOpacity } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import TopBar from '../components/TopBar';
+import { styles } from '../../style';
+import { Login } from '../components/Login';
 
-type SignupFormState = {
+type FormState = {
   phone: string;
   password: string;
 };
 
-export default function SignupScreen({ navigation }: { navigation: any }) {
+export default function JoinEventScreen({ navigation }: { navigation: any }) {
+
   const {
     control,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<SignupFormState>({
+  } = useForm<FormState>({
     defaultValues: {
       phone: '',
       password: '',
@@ -45,7 +50,7 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
     return () => sub.unsubscribe();
   }, [watch]);
 
-  function onSubmit(data: SignupFormState) {
+  function onSubmit(data: FormState) {
     console.log('submit form data:', data);
   }
 
@@ -67,7 +72,7 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
               color: 'warmGray.50',
             }}
           >
-            註冊
+            加入婚禮
           </Heading>
 
           <VStack space={3} mt="5">
@@ -83,7 +88,7 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
                 render={({ field: { value, onChange } }) => (
                   <Input
                     type="number"
-                    placeholder="請輸入你的電話號碼"
+                    placeholder="電話號碼"
                     fontSize="md"
                     value={value}
                     onChangeText={onChange}
@@ -107,7 +112,7 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
                 render={({ field: { value, onChange } }) => (
                   <Input
                     type="password"
-                    placeholder="請輸入密碼（至少包含八個字符）"
+                    placeholder="密碼"
                     fontSize="md"
                     mt="3"
                     value={value}
@@ -116,23 +121,19 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
                 )}
                 rules={{
                   required: true,
-                  minLength: 8,
                 }}
               />
-              {errors.password?.type === 'required' && (
+              {errors.password && (
                 <Text color="danger.500">請填寫你的密碼。</Text>
-              )}
-              {errors.password?.type === 'minLength' && (
-                <Text color="danger.500">你的密碼需要包含八個字符或以上。</Text>
               )}
               <Button
                 mt="4"
                 // colorScheme="indigo"
-                onPress={() => navigation.navigate('ChooseScreen')}
+                onPress={() => navigation.navigate('MainStackScreen')}
                 // onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
-                  註冊
+                  加入
                 </Text>
               </Button>
             </View>

@@ -33,9 +33,12 @@ import LoadingScreen from './src/screens/LoadingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import { Provider } from 'react-redux';
 import { NativeBaseProvider } from 'native-base';
-import { View } from 'react-native';
+import { Button, View } from 'react-native';
 import SignupScreen from './src/screens/SignupScreen';
 import WelcomingScreen from './src/screens/WelcomingScreen';
+import ChooseScreen from './src/screens/ChooseScreen';
+import CreateEventScreen from './src/screens/CreateEventScreen';
+import JoinEventScreen from './src/screens/JoinEventScreen';
 
 // import { store } from "./src/redux/store"
 
@@ -205,27 +208,18 @@ function MainStackScreen() {
 
 const AuthStack = createStackNavigator();
 
-function AuthStackScreen() {
+function AuthStackScreen({ navigation }: { navigation: any }) {
   return (
     <AuthStack.Navigator
       screenOptions={{ headerShown: false }}
       initialRouteName="WelcomingScreen"
     >
       <AuthStack.Screen name="WelcomingScreen" component={WelcomingScreen} />
-      <AuthStack.Screen
-        name="LoginScreen"
-        component={LoginScreen}
-        // options={{
-        //   presentation: 'modal',
-        // }}
-      />
-      <AuthStack.Screen
-        name="SignupScreen"
-        component={SignupScreen}
-        // options={{
-        //   presentation: 'modal',
-        // }}
-      />
+      <AuthStack.Screen name="LoginScreen" component={LoginScreen} />
+      <AuthStack.Screen name="SignupScreen" component={SignupScreen} />
+      <AuthStack.Screen name="ChooseScreen" component={ChooseScreen} />
+      <AuthStack.Screen name="CreateEventScreen" component={CreateEventScreen} />
+      <AuthStack.Screen name="JoinEventScreen" component={JoinEventScreen} />
     </AuthStack.Navigator>
   );
 }

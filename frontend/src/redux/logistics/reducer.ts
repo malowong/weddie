@@ -9,7 +9,7 @@ const initialState: ILogisticsState = {
       itemName: '攝影師',
       amount: 5000,
     },
-    { id: 2, itemName: '大冚姐', amount: 3000 },
+    { id: 2, itemName: '大襟姐', amount: 3000 },
   ],
 };
 

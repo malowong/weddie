@@ -1,6 +1,6 @@
-import { Modal, Input, Icon, Button } from 'native-base';
+import { Modal, Icon, Button, Checkbox, Text } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -41,7 +41,7 @@ export default function GuestsScreen() {
     },
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     if (data.phoneNumber.length !== 8) {
       return;
     }
@@ -60,97 +60,45 @@ export default function GuestsScreen() {
         <View style={guestStyles.tableRow}>
           <Text style={guestStyles.tableColumn}>名字</Text>
           <Text style={guestStyles.tableColumn}>電話號碼</Text>
-          <Text style={guestStyles.tableColumn}>關係</Text>
-          <Text style={guestStyles.tableColumn}> </Text>
+          <Text
+            style={[guestStyles.tableColumn, guestStyles.tableRelationShip]}
+          >
+            關係
+          </Text>
+          <Text style={guestStyles.tableColumn}>會否出席</Text>
         </View>
 
         {guests.map((guest) => {
           return (
-            <View key={guest.id} style={guestStyles.tableRow}>
-              <Text style={guestStyles.tableColumn}>{guest.name}</Text>
-              <Text style={guestStyles.tableColumn}>{guest.phoneNumber}</Text>
-              <Text style={guestStyles.tableColumn}>{guest.relationship}</Text>
-              <TouchableOpacity
-                style={[guestStyles.tableColumn, guestStyles.icon]}
-                onPress={() => setShowModal(true)}
+            <TouchableOpacity
+              key={guest.id}
+              style={guestStyles.tableRow}
+              onPress={() =>
+                navigation.navigate('EditStackScreen', {
+                  screen: 'EditGuest',
+                  params: {
+                    name: guest.name,
+                    phoneNumber: guest.phoneNumber,
+                    relationship: guest.relationship,
+                  },
+                })
+              }
+            >
+              <View style={guestStyles.tableColumn}>
+                <Text fontSize={15}>{guest.name}</Text>
+              </View>
+              <View style={guestStyles.tableColumn}>
+                <Text fontSize={15}>{guest.phoneNumber}</Text>
+              </View>
+              <View
+                style={[guestStyles.tableColumn, guestStyles.tableRelationShip]}
               >
-                <Icon as={Ionicons} name="create-outline" size={6} />
-              </TouchableOpacity>
-
-              <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-                <Modal.Content maxWidth="400px">
-                  <Modal.CloseButton />
-                  <Modal.Header>編輯資料</Modal.Header>
-                  <Modal.Body>
-                    <View>
-                      <Controller
-                        control={control}
-                        rules={{
-                          maxLength: 100,
-                        }}
-                        render={({ field: { onChange, onBlur, value } }) => (
-                          <Input
-                            placeholder="名字"
-                            style={guestStyles.input}
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                            keyboardType="ascii-capable"
-                          />
-                        )}
-                        name="name"
-                      />
-                      <Controller
-                        control={control}
-                        rules={{
-                          maxLength: 100,
-                        }}
-                        render={({ field: { onChange, onBlur, value } }) => (
-                          <Input
-                            placeholder="電話號碼"
-                            style={guestStyles.input}
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                            keyboardType="numeric"
-                          />
-                        )}
-                        name="phoneNumber"
-                      />
-                      <Controller
-                        control={control}
-                        rules={{
-                          maxLength: 100,
-                        }}
-                        render={({ field: { onChange, onBlur, value } }) => (
-                          <Input
-                            placeholder="關係"
-                            style={guestStyles.input}
-                            onBlur={onBlur}
-                            onChangeText={onChange}
-                            value={value}
-                          />
-                        )}
-                        name="relationship"
-                      />
-                    </View>
-                  </Modal.Body>
-                  <Modal.Footer>
-                    <Button
-                      variant="ghost"
-                      colorScheme="blueGray"
-                      onPress={() => {
-                        setShowModal(false);
-                      }}
-                    >
-                      取消
-                    </Button>
-
-                    <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
-                  </Modal.Footer>
-                </Modal.Content>
-              </Modal>
-            </View>
+                <Text fontSize={15}>{guest.relationship}</Text>
+              </View>
+              <View style={guestStyles.tableColumn}>
+                <Checkbox colorScheme="green" value={''} />
+              </View>
+            </TouchableOpacity>
           );
         })}
       </View>
@@ -164,18 +112,17 @@ const guestStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
+    marginTop: 15,
   },
   tableColumn: {
     flex: 1,
     textAlign: 'center',
-    marginTop: 10,
-  },
-  icon: {
     display: 'flex',
-    flexDirection: 'row',
     justifyContent: 'center',
+    flexDirection: 'row',
+    fontSize: 17,
   },
-  input: {
-    marginTop: 4,
+  tableRelationShip: {
+    flex: 1.5,
   },
 });

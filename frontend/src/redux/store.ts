@@ -1,4 +1,4 @@
-import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
+import { applyMiddleware, combineReducers, createStore, compose } from 'redux';
 import thunk from 'redux-thunk';
 import { IAuthAction } from './auth/actions';
 import { authReducers } from './auth/reducers';
@@ -21,13 +21,12 @@ const rootReducer = combineReducers<IRootState>({
   logistics: logisticReducers,
 });
 
-// why cannot find global? 
+// why cannot find global?
 
 // @ts-ignore
 const composeEnhancers = global.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
-export const store = createStore<IRootState, IRootAction, {}, {}>(rootReducer, 
-  composeEnhancers(
-      applyMiddleware(thunk)
-  )
+export const store = createStore<IRootState, IRootAction, {}, {}>(
+  rootReducer,
+  composeEnhancers(applyMiddleware(thunk))
 );

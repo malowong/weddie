@@ -39,10 +39,15 @@ import WelcomingScreen from './src/screens/WelcomingScreen';
 import ChooseScreen from './src/screens/ChooseScreen';
 import CreateEventScreen from './src/screens/CreateEventScreen';
 import JoinEventScreen from './src/screens/JoinEventScreen';
-
 import { IRootState, store } from './src/redux/store';
 import { AddMaterialItem } from './src/components/CreateStackScreen/AddMaterialItem';
 import { EditMaterialItem } from './src/components/EditStackScreen/EditMaterialItem';
+import { EditBudgetItem } from './src/components/EditStackScreen/EditBudgetItem';
+import { AddBudgetItem } from './src/components/CreateStackScreen/AddBudgetItem';
+import { AddParti } from './src/components/CreateStackScreen/AddParti';
+import { EditParti } from './src/components/EditStackScreen/EditParti';
+import { AddGuest } from './src/components/CreateStackScreen/AddGuest';
+import { EditGuest } from './src/components/EditStackScreen/EditGuest';
 
 export type StackParamList = {
   主頁: undefined;
@@ -197,6 +202,9 @@ function CreateStackScreen() {
   return (
     <CreateStack.Navigator screenOptions={{ headerShown: false }}>
       <CreateStack.Screen name="AddMaterialItem" component={AddMaterialItem} />
+      <CreateStack.Screen name="AddBudgetItem" component={AddBudgetItem} />
+      <CreateStack.Screen name="AddParti" component={AddParti} />
+      <CreateStack.Screen name="AddGuest" component={AddGuest} />
     </CreateStack.Navigator>
   );
 }
@@ -218,10 +226,12 @@ function EditStackScreen() {
         }}
       />
       <EditStack.Screen name="EditMaterialItem" component={EditMaterialItem} />
+      <EditStack.Screen name="EditBudgetItem" component={EditBudgetItem} />
+      <EditStack.Screen name="EditParti" component={EditParti} />
+      <EditStack.Screen name="EditGuest" component={EditGuest} />
     </EditStack.Navigator>
   );
 }
-
 
 const MainStack = createStackNavigator();
 
@@ -238,7 +248,10 @@ function MainStackScreen() {
           cardOverlayEnabled: true,
         }}
       />
-      <MainStack.Screen name="CreateStackScreen" component={CreateStackScreen} />
+      <MainStack.Screen
+        name="CreateStackScreen"
+        component={CreateStackScreen}
+      />
       <MainStack.Screen name="EditStackScreen" component={EditStackScreen} />
     </MainStack.Navigator>
   );
@@ -264,7 +277,6 @@ function AuthStackScreen({ navigation }: { navigation: any }) {
     </AuthStack.Navigator>
   );
 }
-
 
 const RootStack = createStackNavigator();
 

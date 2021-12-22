@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, Text } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../components/TopBar';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../redux/store';
 
 const materialList = [
   {
@@ -32,12 +34,21 @@ const materialList = [
 ];
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
+  const materialList = useSelector(
+    (state: IRootState) => state.logistics.materialList
+  );
+
+  console.log(materialList);
   return (
     <TopBar pageName="物資管理">
-      <TouchableOpacity style={materialStyles.touch}>
+      <TouchableOpacity style={materialStyles.addButton}>
         <Button
           colorScheme="secondary"
-          onPress={() => navigation.navigate('CreateStackScreen', {screen: 'AddMaterialItem'})}
+          onPress={() =>
+            navigation.navigate('CreateStackScreen', {
+              screen: 'AddMaterialItem',
+            })
+          }
         >
           新增
         </Button>
@@ -45,9 +56,22 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
 
       {materialList.map((material) => {
         return (
-          <TouchableOpacity key={material.id} style={materialStyles.tableRow}>
-            <Text fontSize={18}>{material.item}</Text>
-            <Text fontSize={18}>${material.amount}</Text>
+          <TouchableOpacity
+            key={material.id}
+            style={materialStyles.tableRow}
+            onPress={() =>
+              navigation.navigate('EditStackScreen', {
+                screen: 'EditMaterialItem',
+                params: {
+                  id: material.id,
+                  itemName: material.itemName,
+                  amount: material.amount,
+                },
+              })
+            }
+          >
+            <Text fontSize={19}>{material.itemName}</Text>
+            <Text fontSize={19}>${material.amount}</Text>
           </TouchableOpacity>
         );
       })}
@@ -64,7 +88,7 @@ const materialStyles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 3,
   },
-  touch: {
-    marginBottom: 8,
+  addButton: {
+    marginBottom: 10,
   },
 });

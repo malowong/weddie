@@ -6,13 +6,7 @@ import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
-export function EditMaterialItem({
-  route,
-  navigation,
-}: {
-  route: any;
-  navigation: any;
-}) {
+export function EditParti({ route, navigation }) {
   const dispatch = useDispatch();
   const {
     control,
@@ -21,8 +15,8 @@ export function EditMaterialItem({
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: JSON.stringify(route.params.itemName).replace(/\"/g, ''),
-      amount: JSON.stringify(route.params.amount),
+      itemName: JSON.stringify(route.params.name).replace(/\"/g, ''),
+      amount: JSON.stringify(route.params.phoneNumber),
     },
   });
 

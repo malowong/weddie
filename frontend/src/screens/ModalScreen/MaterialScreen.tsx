@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 import { Button, Text } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import TopBar from '../components/TopBar';
+import TopBar from '../../components/TopBar';
 import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '../redux/store';
-import { getAllMaterialItemsThunk } from '../redux/logistics/thunk';
+import { IRootState } from '../../redux/store';
+import { getAllMaterialItemsThunk } from '../../redux/logistics/thunk';
+
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();

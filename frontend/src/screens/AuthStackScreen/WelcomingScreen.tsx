@@ -1,6 +1,5 @@
 import { VStack, Center, Box, Button, FormControl, Heading, HStack, Input, Link, Stack, Text, WarningOutlineIcon } from 'native-base';
 import React, { useState } from 'react';
-import TopBar from '../components/TopBar';
 
 export default function NotificationsScreen({ navigation }: { navigation: any }) {
   return (

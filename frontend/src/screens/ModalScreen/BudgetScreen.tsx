@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import TopBar from '../components/TopBar';
+import TopBar from '../../components/TopBar';
 import { View, Text, Button } from 'native-base';
 
 const expenditures = [

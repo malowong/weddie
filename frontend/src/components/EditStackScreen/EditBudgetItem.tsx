@@ -5,8 +5,9 @@ import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
+import CreateandEditTopBar from '../CreateandEditTopBar';
 
-export function EditBudgetItem({ route, navigation }) {
+export function EditBudgetItem({ route, navigation }: any) {
   const dispatch = useDispatch();
   const {
     control,
@@ -33,7 +34,7 @@ export function EditBudgetItem({ route, navigation }) {
   };
 
   return (
-    <TopBar pageName="編輯預算">
+    <CreateandEditTopBar pageName="編輯預算">
       <View>
         <Controller
           control={control}
@@ -79,13 +80,7 @@ export function EditBudgetItem({ route, navigation }) {
           提交
         </Button>
       </View>
-
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Button marginTop={5} colorScheme="secondary">
-          返回
-        </Button>
-      </TouchableOpacity>
-    </TopBar>
+    </CreateandEditTopBar>
   );
 }
 

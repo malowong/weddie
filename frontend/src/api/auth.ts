@@ -1,4 +1,4 @@
-import {config} from '../../app.json';
+import {config, displayName} from '../../app.json';
 
 export const fetchLogin = async (phone: number, password: string) => {
     const resp = await fetch(`${config.BACKEND_URL}/users/login`, {

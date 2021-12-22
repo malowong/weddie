@@ -6,13 +6,7 @@ import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
-export function EditMaterialItem({
-  route,
-  navigation,
-}: {
-  route: any;
-  navigation: any;
-}) {
+export function EditMaterialItem({ route, navigation }: any) {
   const dispatch = useDispatch();
   const {
     control,

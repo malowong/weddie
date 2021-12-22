@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import TopBar from '../TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
+import CreateandEditTopBar from '../CreateandEditTopBar';
 
 export function AddGuest({ navigation }: { navigation: any }) {
   // const dispatch = useDispatch();
@@ -25,7 +25,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
   };
 
   return (
-    <TopBar pageName="新增賓客">
+    <CreateandEditTopBar pageName="新增物資">
       <View>
         <Controller
           control={control}
@@ -96,7 +96,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
           返回
         </Button>
       </TouchableOpacity>
-    </TopBar>
+    </CreateandEditTopBar>
   );
 }
 

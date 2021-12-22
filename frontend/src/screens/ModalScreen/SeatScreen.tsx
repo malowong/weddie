@@ -1,8 +1,8 @@
 import { Text } from 'native-base';
 import React from 'react';
 import { View } from 'react-native';
-import { styles } from '../../style';
-import TopBar from '../components/TopBar';
+import { styles } from '../../../style';
+import TopBar from '../../components/TopBar';
 
 export default function SeatScreen() {
   return (

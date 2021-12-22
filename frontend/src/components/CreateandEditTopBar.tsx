@@ -17,7 +17,7 @@ export default function CreateandEditTopBar(props: ICreateandEditTopBarProps) {
     <>
       <Box safeAreaTop backgroundColor="#f2f2f2" />
       <View>
-        <View style={{position: "absolute", top: "-10%", left: "2%", zIndex: 10}}>
+        <View style={{position: "absolute", top: "17%", left: "2%", zIndex: 10}}>
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon as={Ionicons} name="chevron-back" />
           </TouchableOpacity>
@@ -27,9 +27,9 @@ export default function CreateandEditTopBar(props: ICreateandEditTopBarProps) {
           pb="0.2"
           borderBottomWidth="1"
           borderColor="#d4d4d4"
-          height="30"
+          height="50"
         >
-          <Text fontSize="17" fontWeight="semibold">
+          <Text fontSize="17" fontWeight="semibold" mt="3">
             {props.pageName}
           </Text>
         </Box>

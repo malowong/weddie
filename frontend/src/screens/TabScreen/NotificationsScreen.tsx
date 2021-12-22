@@ -1,6 +1,6 @@
 import { VStack, Center } from 'native-base';
 import React, { useState } from 'react';
-import TopBar from '../components/TopBar';
+import TopBar from '../../components/TopBar';
 
 export default function NotificationsScreen() {
   return (

@@ -1,8 +1,8 @@
 import { Button, Icon, Modal, FormControl, Input } from 'native-base';
 import React, { useState } from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { styles } from '../../style';
-import TopBar from '../components/TopBar';
+import { styles } from '../../../style';
+import TopBar from '../../components/TopBar';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useForm, Controller } from 'react-hook-form';
 

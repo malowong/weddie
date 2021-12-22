@@ -6,7 +6,6 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CreateandEditTopBar from '../CreateandEditTopBar';
-import TopBar from '../TopBar';
 import { useNavigation } from '@react-navigation/native';
 
 

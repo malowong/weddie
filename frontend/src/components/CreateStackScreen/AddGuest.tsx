@@ -14,8 +14,9 @@ export function AddGuest({ navigation }: { navigation: any }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: '',
-      amount: '',
+      name: '',
+      phoneNumber: '',
+      relationship: '',
     },
   });
   const onSubmit = (data: any) => {
@@ -24,7 +25,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
   };
 
   return (
-    <TopBar pageName="新增物資">
+    <TopBar pageName="新增賓客">
       <View>
         <Controller
           control={control}
@@ -34,16 +35,16 @@ export function AddGuest({ navigation }: { navigation: any }) {
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               marginTop={5}
-              placeholder="物品"
+              placeholder="名稱"
               style={addMaterialStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
             />
           )}
-          name="itemName"
+          name="name"
         />
-        {errors.itemName && <Text>This is required.</Text>}
+        {errors.name && <Text>This is required.</Text>}
 
         <Controller
           control={control}
@@ -54,16 +55,36 @@ export function AddGuest({ navigation }: { navigation: any }) {
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               marginTop={5}
-              placeholder="金額"
+              placeholder="電話號碼"
               style={addMaterialStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
             />
           )}
-          name="amount"
+          name="phoneNumber"
         />
-        {errors.amount && <Text>This is required.</Text>}
+        {errors.phoneNumber && <Text>This is required.</Text>}
+
+        <Controller
+          control={control}
+          rules={{
+            maxLength: 100,
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              marginTop={5}
+              placeholder="關係"
+              style={addMaterialStyles.input}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+          name="relationship"
+        />
+        {errors.relationship && <Text>This is required.</Text>}
 
         <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
           提交

@@ -4,8 +4,10 @@ import TopBar from './TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useDispatch } from 'react-redux';
 
 export function AddMaterialItem({ navigation }: { navigation: any }) {
+  const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -16,7 +18,10 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
       amount: '',
     },
   });
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    data.amount = parseInt(data.amount);
+    console.log(data);
+  };
 
   return (
     <TopBar pageName="新增物資">
@@ -28,6 +33,7 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
+              marginTop={5}
               placeholder="物品"
               style={addMaterialStyles.input}
               onBlur={onBlur}
@@ -47,6 +53,7 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
+              marginTop={5}
               placeholder="金額"
               style={addMaterialStyles.input}
               onBlur={onBlur}
@@ -58,11 +65,15 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
         />
         {errors.amount && <Text>This is required.</Text>}
 
-        <Button onPress={handleSubmit(onSubmit)}>提交</Button>
+        <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
+          提交
+        </Button>
       </View>
 
       <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Button colorScheme="secondary">返回</Button>
+        <Button marginTop={5} colorScheme="secondary">
+          返回
+        </Button>
       </TouchableOpacity>
     </TopBar>
   );

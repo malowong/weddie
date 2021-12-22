@@ -3,7 +3,7 @@ import { Dispatch } from "redux";
 import { fetchLogin, fetchUser } from '../../api/auth';
 import { loginFailed, loginSuccess, logout } from './actions';
 
-export function loginThunk(phone: number, password: string) {
+export function loginThunk(phone: string, password: string) {
     return async (dispatch: Dispatch<any>) => {
         try {
             const resp = await fetchLogin(phone, password);

@@ -4,7 +4,7 @@ import { UserController } from "../controllers/UserController";
 import { UserService } from "../services/UserService";
 import { asyncWrapper } from "../utils/asyncWrapper";
 
-const userService = new UserService(knex);
+export const userService = new UserService(knex);
 const userController = new UserController(userService);
 
 export const userRoutes = express.Router();

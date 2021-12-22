@@ -51,7 +51,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 
   function onSubmit(data: LoginFormState) {
     console.log('submit form data:', data);
-    dispatch(loginThunk(parseInt(data.phone), data.password));
+    dispatch(loginThunk(data.phone, data.password));
   }
 
   useEffect(() => {

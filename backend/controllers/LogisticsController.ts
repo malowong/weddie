@@ -1,6 +1,5 @@
 import { LogisticsService } from "../services/LogisticsService";
 import { Request, Response } from "express";
-import { logger } from "../utils/logger";
 
 export class LogisticsController {
   constructor(private logisticsService: LogisticsService) {}

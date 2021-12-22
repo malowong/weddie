@@ -4,7 +4,7 @@ import { logger } from "./utils/logger";
 
 const app = express();
 
-const knexConfig = require("./knexfile");
+import knexConfig from "./knexfile";
 export const knex = Knex(knexConfig[process.env.NODE_ENV || "development"]);
 
 app.use((req, res, next) => {

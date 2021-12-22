@@ -1,8 +1,8 @@
 import produce from 'immer';
-import { IMaterialAction } from './action';
-import { IMaterialState } from './state';
+import { ILogisticsAction } from './action';
+import { ILogisticsState } from './state';
 
-const initialState: IMaterialState = {
+const initialState: ILogisticsState = {
   materialList: [
     {
       id: 1,
@@ -13,10 +13,10 @@ const initialState: IMaterialState = {
   ],
 };
 
-export const materialReducers = produce(
-  (state: IMaterialState, action: IMaterialAction) => {
+export const logisticReducers = produce(
+  (state: ILogisticsState, action: ILogisticsAction) => {
     switch (action.type) {
-      case '@@Material/FETCH_SUCCESS':
+      case '@@Logistics/FETCH_SUCCESS':
         state.materialList = action.data;
         return;
       case 'TODO2':

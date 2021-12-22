@@ -33,6 +33,7 @@ const materialList = [
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
   return (
+<<<<<<< HEAD
     <TopBar pageName="物資管理">
       <TouchableOpacity style={materialStyles.touch}>
         <Button
@@ -52,6 +53,16 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
         );
       })}
     </TopBar>
+=======
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="MaterialList" component={MaterialList} />
+      <Stack.Screen name="AddMaterialItem" component={AddMaterialItem} />
+    </Stack.Navigator>
+>>>>>>> 34756f1a3ec9faba72286cc07004c2f8e81a1321
   );
 }
 

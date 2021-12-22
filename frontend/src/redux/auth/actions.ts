@@ -23,7 +23,7 @@ export function logout() {
 }
 
 
-export type IAuthActions =
+export type IAuthAction =
     | ReturnType<typeof loginSuccess>
     | ReturnType<typeof loginFailed>
     | ReturnType<typeof logout>

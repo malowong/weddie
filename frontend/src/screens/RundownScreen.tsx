@@ -1,12 +1,13 @@
-import React from "react";
-import { Text, View } from "react-native";
-import { styles } from "../../style";
+import { Text } from 'native-base';
+import React from 'react';
+import { View } from 'react-native';
+import { styles } from '../../style';
+import TopBar from '../components/TopBar';
 
 export default function RundownScreen() {
-    return (
-      <View style={styles.screen}>
-        <Text style={styles.titleText}>當日流程</Text>
-        <Text style={styles.baseText}>當日流程當日流程當日流程當日流程</Text>
-      </View>
-    );
-  }
+  return (
+    <TopBar pageName="當日流程">
+      <Text style={styles.baseText}>當日流程當日流程當日流程當日流程</Text>
+    </TopBar>
+  );
+}

@@ -15,26 +15,6 @@ import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
-import {
-  Button,
-  Modal,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from './style';
@@ -49,26 +29,37 @@ import GuestScreen from './src/screens/GuestScreen';
 import RundownScreen from './src/screens/RundownScreen';
 import SeatScreen from './src/screens/SeatScreen';
 import SettingScreen from './src/screens/SettingScreen';
-import { Login } from './src/components/Login';
 import LoadingScreen from './src/screens/LoadingScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import { Provider } from 'react-redux';
+import { NativeBaseProvider } from 'native-base';
+import { Button, View } from 'react-native';
+import SignupScreen from './src/screens/SignupScreen';
+import WelcomingScreen from './src/screens/WelcomingScreen';
+import ChooseScreen from './src/screens/ChooseScreen';
+import CreateEventScreen from './src/screens/CreateEventScreen';
+import JoinEventScreen from './src/screens/JoinEventScreen';
 
 // import { store } from "./src/redux/store"
+
+export type StackParamList = {
+  主頁: undefined;
+  Participants: undefined;
+};
 
 const Tab = createBottomTabNavigator();
 
 function TabScreen() {
   return (
     <Tab.Navigator
-      initialRouteName="Feed"
+      initialRouteName="主頁"
       screenOptions={{
         tabBarActiveTintColor: '#e91e63',
         headerShown: false,
       }}
     >
       <Tab.Screen
-        name="Home"
+        name="主頁"
         component={HomeScreen}
         options={{
           tabBarLabel: '主頁',
@@ -99,13 +90,20 @@ function TabScreen() {
         name="Modal"
         component={ModalScreen}
         options={{
-          tabBarLabel: '加入',
+          tabBarLabel: '',
           tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'ios-add-circle' : 'ios-add-circle-outline'}
-              color={color}
-              size={size}
-            />
+            <View
+              style={{
+                position: 'absolute',
+                bottom: '-40%',
+                shadowColor: '#171717',
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.4,
+                shadowRadius: 6,
+              }}
+            >
+              <Ionicons name="ios-add-circle" color="#e91e63" size={80} />
+            </View>
           ),
         }}
         listeners={({ navigation }) => ({
@@ -116,7 +114,7 @@ function TabScreen() {
         })}
       />
       <Tab.Screen
-        name="Notifications"
+        name="訊息通知"
         component={NotificationsScreen}
         options={{
           tabBarLabel: '訊息通知',
@@ -208,20 +206,38 @@ function MainStackScreen() {
   );
 }
 
+const AuthStack = createStackNavigator();
+
+function AuthStackScreen({ navigation }: { navigation: any }) {
+  return (
+    <AuthStack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName="WelcomingScreen"
+    >
+      <AuthStack.Screen name="WelcomingScreen" component={WelcomingScreen} />
+      <AuthStack.Screen name="LoginScreen" component={LoginScreen} />
+      <AuthStack.Screen name="SignupScreen" component={SignupScreen} />
+      <AuthStack.Screen name="ChooseScreen" component={ChooseScreen} />
+      <AuthStack.Screen
+        name="CreateEventScreen"
+        component={CreateEventScreen}
+      />
+      <AuthStack.Screen name="JoinEventScreen" component={JoinEventScreen} />
+    </AuthStack.Navigator>
+  );
+}
+
 const RootStack = createStackNavigator();
 
 function RootStackScreen() {
   return (
     <RootStack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="LoginScreen"
+      initialRouteName="AuthStackScreen"
     >
-      {/* {!isLoggedIn && <Login onLoginClick={() => login()} />} */}
-      {/* {isLoggedIn && <MainStackScreen />} */}
-      {/* <NativeBaseTesting /> */}
       <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
       <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
-      <RootStack.Screen name="LoginScreen" component={LoginScreen} />
+      <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
     </RootStack.Navigator>
   );
 }
@@ -232,7 +248,9 @@ const App = () => {
 
     <SafeAreaProvider>
       <NavigationContainer>
-        <RootStackScreen />
+        <NativeBaseProvider>
+          <RootStackScreen />
+        </NativeBaseProvider>
       </NavigationContainer>
     </SafeAreaProvider>
 

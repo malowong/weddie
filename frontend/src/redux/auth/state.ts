@@ -1,4 +1,4 @@
 export interface IAuthState {
-    isAuthenticated: boolean | null;
-    msg: string;
-  }
+  isAuthenticated: boolean | null;
+  msg: string;
+}

@@ -1,51 +1,37 @@
-import { useNavigation } from '@react-navigation/native';
 import {
-  Button,
-  Text,
-  NativeBaseProvider,
+  VStack,
   Center,
   Box,
+  Button,
   FormControl,
   Heading,
   HStack,
   Input,
   Link,
-  VStack,
-  TextArea,
-  WarningOutlineIcon,
   Stack,
+  Text,
+  WarningOutlineIcon,
   Icon,
   View,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TextInput, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { styles } from '../../style';
-import { Login } from '../components/Login';
+import TopBar from '../components/TopBar';
 
-type LoginFormState = {
+type SignupFormState = {
   phone: string;
   password: string;
 };
 
-export default function LoginScreen({ navigation }: { navigation: any }) {
-  // const { control, handleSubmit, errors } = useForm();
-  // const onSubmit = (data) => {
-  //   console.log('submiting with ', data);
-  // };
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const login = () => {
-  //   const navigation = useNavigation();
-  //   setIsLoggedIn(true);
-  // };
-
+export default function SignupScreen({ navigation }: { navigation: any }) {
   const {
     control,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<LoginFormState>({
+  } = useForm<SignupFormState>({
     defaultValues: {
       phone: '',
       password: '',
@@ -59,7 +45,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
     return () => sub.unsubscribe();
   }, [watch]);
 
-  function onSubmit(data: LoginFormState) {
+  function onSubmit(data: SignupFormState) {
     console.log('submit form data:', data);
   }
 
@@ -81,7 +67,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
               color: 'warmGray.50',
             }}
           >
-            登入
+            註冊
           </Heading>
 
           <VStack space={3} mt="5">
@@ -97,7 +83,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
                 render={({ field: { value, onChange } }) => (
                   <Input
                     type="number"
-                    placeholder="電話號碼"
+                    placeholder="請輸入你的電話號碼"
                     fontSize="md"
                     value={value}
                     onChangeText={onChange}
@@ -121,7 +107,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
                 render={({ field: { value, onChange } }) => (
                   <Input
                     type="password"
-                    placeholder="密碼"
+                    placeholder="請輸入密碼（至少包含八個字符）"
                     fontSize="md"
                     mt="3"
                     value={value}
@@ -130,19 +116,23 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
                 )}
                 rules={{
                   required: true,
+                  minLength: 8,
                 }}
               />
-              {errors.password && (
+              {errors.password?.type === 'required' && (
                 <Text color="danger.500">請填寫你的密碼。</Text>
+              )}
+              {errors.password?.type === 'minLength' && (
+                <Text color="danger.500">你的密碼需要包含八個字符或以上。</Text>
               )}
               <Button
                 mt="4"
                 // colorScheme="indigo"
-                onPress={() => navigation.navigate('MainStackScreen')}
+                onPress={() => navigation.navigate('ChooseScreen')}
                 // onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
-                  登入
+                  註冊
                 </Text>
               </Button>
             </View>

@@ -24,28 +24,19 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styles } from '../../style';
 import { Login } from '../components/Login';
 
-type LoginFormState = {
+type FormState = {
   phone: string;
   password: string;
 };
 
-export default function LoginScreen({ navigation }: { navigation: any }) {
-  // const { control, handleSubmit, errors } = useForm();
-  // const onSubmit = (data) => {
-  //   console.log('submiting with ', data);
-  // };
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const login = () => {
-  //   const navigation = useNavigation();
-  //   setIsLoggedIn(true);
-  // };
+export default function JoinEventScreen({ navigation }: { navigation: any }) {
 
   const {
     control,
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<LoginFormState>({
+  } = useForm<FormState>({
     defaultValues: {
       phone: '',
       password: '',
@@ -59,7 +50,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
     return () => sub.unsubscribe();
   }, [watch]);
 
-  function onSubmit(data: LoginFormState) {
+  function onSubmit(data: FormState) {
     console.log('submit form data:', data);
   }
 
@@ -81,7 +72,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
               color: 'warmGray.50',
             }}
           >
-            登入
+            加入婚禮
           </Heading>
 
           <VStack space={3} mt="5">
@@ -142,7 +133,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
                 // onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
-                  登入
+                  加入
                 </Text>
               </Button>
             </View>

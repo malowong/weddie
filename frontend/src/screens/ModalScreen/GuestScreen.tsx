@@ -57,15 +57,36 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   return (
     <TopBar pageName="賓客名單">
       <View>
+        <Button
+          colorScheme="secondary"
+          onPress={() =>
+            navigation.navigate('CreateStackScreen', {
+              screen: 'AddGuest',
+            })
+          }
+        >
+          新增
+        </Button>
+
         <View style={guestStyles.tableRow}>
-          <Text style={guestStyles.tableColumn}>名字</Text>
-          <Text style={guestStyles.tableColumn}>電話號碼</Text>
+          <Text style={[guestStyles.tableColumn, guestStyles.tableHeader]}>
+            名稱
+          </Text>
+          <Text style={[guestStyles.tableColumn, guestStyles.tableHeader]}>
+            電話號碼
+          </Text>
           <Text
-            style={[guestStyles.tableColumn, guestStyles.tableRelationShip]}
+            style={[
+              guestStyles.tableColumn,
+              guestStyles.tableRelationShip,
+              guestStyles.tableHeader,
+            ]}
           >
             關係
           </Text>
-          <Text style={guestStyles.tableColumn}>會否出席</Text>
+          <Text style={[guestStyles.tableColumn, guestStyles.tableHeader]}>
+            會否出席
+          </Text>
         </View>
 
         {guests.map((guest) => {
@@ -124,5 +145,8 @@ const guestStyles = StyleSheet.create({
   },
   tableRelationShip: {
     flex: 1.5,
+  },
+  tableHeader: {
+    fontWeight: 'bold',
   },
 });

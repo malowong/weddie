@@ -1,0 +1,15 @@
+{
+  "cSpell.words": ["itin"],
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "final-project-data-warehouse.cit8sojr7959.ap-southeast-1.rds.amazonaws.com",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "datawarehouse",
+      "database": "wedding",
+      "username": "postgres",
+      "password": "postgres"
+    }
+  ]
+}

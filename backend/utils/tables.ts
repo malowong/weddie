@@ -1,3 +1,17 @@
 export const tables = Object.freeze({
-  USER: "users",
+  HK_DISTRICT: "hk_district",
+  USER_IN_OUT_TIME: "user_in_out_time",
+  ROLE: "role",
+  BANQUET_VENDOR_CAT: "banquet_vendor_cat",
+  CHURCH_LIST: "church_list",
+  BUDGET_CAT: "budgets_cat",
+  BANQUET_VENDOR_LIST: "banquet_vendor_list",
+  WEDDING_EVENT: "wedding_event",
+  USER_INFO: "user_info",
+  WEDDING_EVENT_USER: "wedding_event_user",
+  WEDDING_LOGISTICS: "wedding_logistics",
+  BUDGET_LIST: "budgets_list",
+  LOGISTICS_LIST_TEMPLATE: "logistics_list_template",
+  TO_DO_LIST_TEMPLATE: "to_do_list_template",
+  BIG_DAY_ITIN_TEMPLATE: "big_day_itin_template",
 });

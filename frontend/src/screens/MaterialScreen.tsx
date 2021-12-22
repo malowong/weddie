@@ -33,12 +33,15 @@ const materialList = [
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
   return (
-<<<<<<< HEAD
     <TopBar pageName="物資管理">
-      <TouchableOpacity style={materialStyles.touch}>
+      <TouchableOpacity style={materialStyles.addButton}>
         <Button
           colorScheme="secondary"
-          onPress={() => navigation.navigate('CreateStackScreen', {screen: 'AddMaterialItem'})}
+          onPress={() =>
+            navigation.navigate('CreateStackScreen', {
+              screen: 'AddMaterialItem',
+            })
+          }
         >
           新增
         </Button>
@@ -46,23 +49,25 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
 
       {materialList.map((material) => {
         return (
-          <TouchableOpacity key={material.id} style={materialStyles.tableRow}>
-            <Text fontSize={18}>{material.item}</Text>
-            <Text fontSize={18}>${material.amount}</Text>
+          <TouchableOpacity
+            key={material.id}
+            style={materialStyles.tableRow}
+            onPress={() =>
+              navigation.navigate('EditStackScreen', {
+                screen: 'EditMaterialItem',
+                params: {
+                  itemName: material.item,
+                  amount: material.amount,
+                },
+              })
+            }
+          >
+            <Text fontSize={19}>{material.item}</Text>
+            <Text fontSize={19}>${material.amount}</Text>
           </TouchableOpacity>
         );
       })}
     </TopBar>
-=======
-    <Stack.Navigator
-      screenOptions={{
-        headerShown: false,
-      }}
-    >
-      <Stack.Screen name="MaterialList" component={MaterialList} />
-      <Stack.Screen name="AddMaterialItem" component={AddMaterialItem} />
-    </Stack.Navigator>
->>>>>>> 34756f1a3ec9faba72286cc07004c2f8e81a1321
   );
 }
 
@@ -75,7 +80,7 @@ const materialStyles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 3,
   },
-  touch: {
-    marginBottom: 8,
+  addButton: {
+    marginBottom: 10,
   },
 });

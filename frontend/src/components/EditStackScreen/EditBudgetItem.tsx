@@ -6,7 +6,7 @@ import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
-export function EditMaterialItem({ route, navigation }) {
+export function EditBudgetItem({ route, navigation }) {
   const dispatch = useDispatch();
   const {
     control,
@@ -15,7 +15,7 @@ export function EditMaterialItem({ route, navigation }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: JSON.stringify(route.params.itemName).replace(/\"/g, ''),
+      itemName: JSON.stringify(route.params.category).replace(/\"/g, ''),
       amount: JSON.stringify(route.params.amount),
     },
   });
@@ -33,7 +33,7 @@ export function EditMaterialItem({ route, navigation }) {
   };
 
   return (
-    <TopBar pageName="編輯物資">
+    <TopBar pageName="編輯預算">
       <View>
         <Controller
           control={control}
@@ -44,7 +44,7 @@ export function EditMaterialItem({ route, navigation }) {
             <Input
               marginTop={5}
               placeholder="物品"
-              style={editMaterialStyles.input}
+              style={editBudgetStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -64,7 +64,7 @@ export function EditMaterialItem({ route, navigation }) {
             <Input
               marginTop={5}
               placeholder="金額"
-              style={editMaterialStyles.input}
+              style={editBudgetStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -89,7 +89,7 @@ export function EditMaterialItem({ route, navigation }) {
   );
 }
 
-const editMaterialStyles = StyleSheet.create({
+const editBudgetStyles = StyleSheet.create({
   input: {
     borderWidth: 2,
   },

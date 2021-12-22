@@ -39,10 +39,11 @@ import WelcomingScreen from './src/screens/WelcomingScreen';
 import ChooseScreen from './src/screens/ChooseScreen';
 import CreateEventScreen from './src/screens/CreateEventScreen';
 import JoinEventScreen from './src/screens/JoinEventScreen';
-
 import { IRootState, store } from './src/redux/store';
 import { AddMaterialItem } from './src/components/CreateStackScreen/AddMaterialItem';
 import { EditMaterialItem } from './src/components/EditStackScreen/EditMaterialItem';
+import { EditBudgetItem } from './src/components/EditStackScreen/EditBudgetItem';
+import { AddBudgetItem } from './src/components/CreateStackScreen/AddBudgetItem';
 
 export type StackParamList = {
   主頁: undefined;
@@ -206,6 +207,7 @@ function CreateStackScreen() {
         }}
       />
       <CreateStack.Screen name="AddMaterialItem" component={AddMaterialItem} />
+      <CreateStack.Screen name="AddBudgetItem" component={AddBudgetItem} />
     </CreateStack.Navigator>
   );
 }
@@ -227,10 +229,10 @@ function EditStackScreen() {
         }}
       />
       <EditStack.Screen name="EditMaterialItem" component={EditMaterialItem} />
+      <EditStack.Screen name="EditBudgetItem" component={EditBudgetItem} />
     </EditStack.Navigator>
   );
 }
-
 
 const MainStack = createStackNavigator();
 
@@ -247,7 +249,10 @@ function MainStackScreen() {
           cardOverlayEnabled: true,
         }}
       />
-      <MainStack.Screen name="CreateStackScreen" component={CreateStackScreen} />
+      <MainStack.Screen
+        name="CreateStackScreen"
+        component={CreateStackScreen}
+      />
       <MainStack.Screen name="EditStackScreen" component={EditStackScreen} />
     </MainStack.Navigator>
   );
@@ -273,7 +278,6 @@ function AuthStackScreen({ navigation }: { navigation: any }) {
     </AuthStack.Navigator>
   );
 }
-
 
 const RootStack = createStackNavigator();
 

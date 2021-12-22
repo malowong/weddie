@@ -1,4 +1,7 @@
 {
   "name": "AwesomeTSProject2",
-  "displayName": "AwesomeTSProject2"
+  "displayName": "AwesomeTSProject2",
+  "config": {
+    "REACT_APP_BACKEND_BASE_URL": "http://localhost:8080"
+  }
 }

@@ -44,6 +44,10 @@ import { AddMaterialItem } from './src/components/CreateStackScreen/AddMaterialI
 import { EditMaterialItem } from './src/components/EditStackScreen/EditMaterialItem';
 import { EditBudgetItem } from './src/components/EditStackScreen/EditBudgetItem';
 import { AddBudgetItem } from './src/components/CreateStackScreen/AddBudgetItem';
+import { AddParti } from './src/components/CreateStackScreen/AddParti';
+import { EditParti } from './src/components/EditStackScreen/EditParti';
+import { AddGuest } from './src/components/CreateStackScreen/AddGuest';
+import { EditGuest } from './src/components/EditStackScreen/EditGuest';
 
 export type StackParamList = {
   主頁: undefined;
@@ -208,6 +212,8 @@ function CreateStackScreen() {
       />
       <CreateStack.Screen name="AddMaterialItem" component={AddMaterialItem} />
       <CreateStack.Screen name="AddBudgetItem" component={AddBudgetItem} />
+      <CreateStack.Screen name="AddParti" component={AddParti} />
+      <CreateStack.Screen name="AddGuest" component={AddGuest} />
     </CreateStack.Navigator>
   );
 }
@@ -230,6 +236,8 @@ function EditStackScreen() {
       />
       <EditStack.Screen name="EditMaterialItem" component={EditMaterialItem} />
       <EditStack.Screen name="EditBudgetItem" component={EditBudgetItem} />
+      <EditStack.Screen name="EditParti" component={EditParti} />
+      <EditStack.Screen name="EditGuest" component={EditGuest} />
     </EditStack.Navigator>
   );
 }

@@ -2,6 +2,8 @@ import React from 'react';
 import { Button, Text } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../components/TopBar';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../redux/store';
 
 const materialList = [
   {
@@ -32,6 +34,11 @@ const materialList = [
 ];
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
+  const materialList = useSelector(
+    (state: IRootState) => state.logistics.materialList
+  );
+
+  console.log(materialList);
   return (
     <TopBar pageName="物資管理">
       <TouchableOpacity style={materialStyles.addButton}>
@@ -56,13 +63,14 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
               navigation.navigate('EditStackScreen', {
                 screen: 'EditMaterialItem',
                 params: {
-                  itemName: material.item,
+                  id: material.id,
+                  itemName: material.itemName,
                   amount: material.amount,
                 },
               })
             }
           >
-            <Text fontSize={19}>{material.item}</Text>
+            <Text fontSize={19}>{material.itemName}</Text>
             <Text fontSize={19}>${material.amount}</Text>
           </TouchableOpacity>
         );

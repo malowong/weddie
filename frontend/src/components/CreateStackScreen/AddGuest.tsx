@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import TopBar from '../TopBar';
 import { useForm, Controller } from 'react-hook-form';
@@ -6,40 +6,25 @@ import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
-export function EditMaterialItem({
-  route,
-  navigation,
-}: {
-  route: any;
-  navigation: any;
-}) {
-  const dispatch = useDispatch();
+export function AddGuest({ navigation }: { navigation: any }) {
+  // const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: JSON.stringify(route.params.itemName).replace(/\"/g, ''),
-      amount: JSON.stringify(route.params.amount),
+      itemName: '',
+      amount: '',
     },
   });
-
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
   const onSubmit = (data: any) => {
     data.amount = parseInt(data.amount);
     console.log(data);
   };
 
   return (
-    <TopBar pageName="編輯物資">
+    <TopBar pageName="新增物資">
       <View>
         <Controller
           control={control}
@@ -50,7 +35,7 @@ export function EditMaterialItem({
             <Input
               marginTop={5}
               placeholder="物品"
-              style={editMaterialStyles.input}
+              style={addMaterialStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -70,11 +55,10 @@ export function EditMaterialItem({
             <Input
               marginTop={5}
               placeholder="金額"
-              style={editMaterialStyles.input}
+              style={addMaterialStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              keyboardType="numeric"
             />
           )}
           name="amount"
@@ -95,7 +79,7 @@ export function EditMaterialItem({
   );
 }
 
-const editMaterialStyles = StyleSheet.create({
+const addMaterialStyles = StyleSheet.create({
   input: {
     borderWidth: 2,
   },

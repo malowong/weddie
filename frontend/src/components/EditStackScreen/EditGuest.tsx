@@ -6,7 +6,7 @@ import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
-export function EditMaterialItem({
+export function EditGuest({
   route,
   navigation,
 }: {
@@ -21,8 +21,12 @@ export function EditMaterialItem({
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: JSON.stringify(route.params.itemName).replace(/\"/g, ''),
-      amount: JSON.stringify(route.params.amount),
+      name: JSON.stringify(route.params.name).replace(/\"/g, ''),
+      phoneNumber: JSON.stringify(route.params.phoneNumber),
+      relationship: JSON.stringify(route.params.relationship).replace(
+        /\"/g,
+        ''
+      ),
     },
   });
 
@@ -39,7 +43,7 @@ export function EditMaterialItem({
   };
 
   return (
-    <TopBar pageName="編輯物資">
+    <TopBar pageName="編輯賓客名單">
       <View>
         <Controller
           control={control}
@@ -49,16 +53,15 @@ export function EditMaterialItem({
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               marginTop={5}
-              placeholder="物品"
+              placeholder="名字"
               style={editMaterialStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
             />
           )}
-          name="itemName"
+          name="name"
         />
-        {errors.itemName && <Text>This is required.</Text>}
 
         <Controller
           control={control}
@@ -69,7 +72,7 @@ export function EditMaterialItem({
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               marginTop={5}
-              placeholder="金額"
+              placeholder="電話號碼"
               style={editMaterialStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
@@ -77,9 +80,28 @@ export function EditMaterialItem({
               keyboardType="numeric"
             />
           )}
-          name="amount"
+          name="phoneNumber"
         />
-        {errors.amount && <Text>This is required.</Text>}
+
+        <Controller
+          control={control}
+          rules={{
+            maxLength: 100,
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              marginTop={5}
+              placeholder="關係"
+              style={editMaterialStyles.input}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+              keyboardType="numeric"
+            />
+          )}
+          name="relationship"
+        />
 
         <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
           提交

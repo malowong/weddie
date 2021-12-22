@@ -24,7 +24,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
   };
 
   return (
-    <TopBar pageName="新增物資">
+    <TopBar pageName="新增預算">
       <View>
         <Controller
           control={control}

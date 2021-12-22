@@ -22,7 +22,6 @@ import { TextInput, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from '../../style';
-import { Login } from '../components/Login';
 import { loginThunk } from '../redux/auth/thunk';
 import { IRootState } from '../redux/store';
 

@@ -41,6 +41,8 @@ import CreateEventScreen from './src/screens/CreateEventScreen';
 import JoinEventScreen from './src/screens/JoinEventScreen';
 
 import { IRootState, store } from './src/redux/store';
+import { AddMaterialItem } from './src/components/CreateStackScreen/AddMaterialItem';
+import { EditMaterialItem } from './src/components/EditStackScreen/EditMaterialItem';
 
 export type StackParamList = {
   主頁: undefined;
@@ -187,6 +189,49 @@ function TabScreen() {
   );
 }
 
+// this is for create items
+
+const CreateStack = createStackNavigator();
+
+function CreateStackScreen() {
+  return (
+    <CreateStack.Navigator screenOptions={{ headerShown: false }}>
+      <CreateStack.Screen
+        name="ModalScreen"
+        component={ModalScreen}
+        options={{
+          presentation: 'transparentModal',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          cardOverlayEnabled: true,
+        }}
+      />
+      <CreateStack.Screen name="AddMaterialItem" component={AddMaterialItem} />
+    </CreateStack.Navigator>
+  );
+}
+
+// this is for edit items
+
+const EditStack = createStackNavigator();
+
+function EditStackScreen() {
+  return (
+    <EditStack.Navigator screenOptions={{ headerShown: false }}>
+      <EditStack.Screen
+        name="ModalScreen"
+        component={ModalScreen}
+        options={{
+          presentation: 'transparentModal',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          cardOverlayEnabled: true,
+        }}
+      />
+      <EditStack.Screen name="EditMaterialItem" component={EditMaterialItem} />
+    </EditStack.Navigator>
+  );
+}
+
+
 const MainStack = createStackNavigator();
 
 function MainStackScreen() {
@@ -202,6 +247,8 @@ function MainStackScreen() {
           cardOverlayEnabled: true,
         }}
       />
+      <MainStack.Screen name="CreateStackScreen" component={CreateStackScreen} />
+      <MainStack.Screen name="EditStackScreen" component={EditStackScreen} />
     </MainStack.Navigator>
   );
 }

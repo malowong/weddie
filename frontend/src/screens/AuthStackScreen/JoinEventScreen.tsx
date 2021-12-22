@@ -1,3 +1,4 @@
+import { useNavigation } from '@react-navigation/native';
 import {
   Button,
   Text,
@@ -20,28 +21,25 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TextInput, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useDispatch, useSelector } from 'react-redux';
-import { styles } from '../../style';
-import { loginThunk } from '../redux/auth/thunk';
-import { IRootState } from '../redux/store';
 
-type LoginFormState = {
+type FormState = {
   phone: string;
   password: string;
 };
 
-export default function LoginScreen({ navigation }: { navigation: any }) {
+export default function JoinEventScreen({ navigation }: { navigation: any }) {
 
-  const {control, handleSubmit, watch, formState: { errors }} = useForm<LoginFormState>({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<FormState>({
     defaultValues: {
       phone: '',
       password: '',
     },
   });
-
-  const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
-
-  const dispatch = useDispatch()
 
   useEffect(() => {
     let sub = watch((data) => {
@@ -50,16 +48,9 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
     return () => sub.unsubscribe();
   }, [watch]);
 
-  function onSubmit(data: LoginFormState) {
+  function onSubmit(data: FormState) {
     console.log('submit form data:', data);
-    dispatch(loginThunk(parseInt(data.phone), data.password));
   }
-
-  useEffect(() => {
-    if (isAuthenticated) {
-        navigation.navigate('MainStackScreen')
-    } 
-}, [isAuthenticated, navigation])
 
   return (
     <>
@@ -79,7 +70,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
               color: 'warmGray.50',
             }}
           >
-            登入
+            加入婚禮
           </Heading>
 
           <VStack space={3} mt="5">
@@ -140,7 +131,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
                 // onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
-                  登入
+                  加入
                 </Text>
               </Button>
             </View>

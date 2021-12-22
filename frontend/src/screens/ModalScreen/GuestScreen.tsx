@@ -1,7 +1,7 @@
 import { Modal, Icon, Button, Checkbox, Text } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
-import TopBar from '../components/TopBar';
+import TopBar from '../../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
@@ -26,7 +26,7 @@ const guests = [
   },
 ];
 
-export default function GuestsScreen() {
+export default function GuestsScreen({ navigation }: { navigation: any }) {
   const [showModal, setShowModal] = useState(false);
   const {
     control,
@@ -96,7 +96,7 @@ export default function GuestsScreen() {
                 <Text fontSize={15}>{guest.relationship}</Text>
               </View>
               <View style={guestStyles.tableColumn}>
-                <Checkbox colorScheme="green" value={''} />
+                <Checkbox colorScheme="green" value={''} aria-label="Attend"/>
               </View>
             </TouchableOpacity>
           );

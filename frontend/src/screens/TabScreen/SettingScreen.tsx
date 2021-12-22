@@ -1,7 +1,7 @@
 import { Modal, Input, Button, View, Text } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
-import TopBar from '../components/TopBar';
+import TopBar from '../../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
 
 export default function SettingScreen() {

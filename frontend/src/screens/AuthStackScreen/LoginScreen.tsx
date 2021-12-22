@@ -1,42 +1,46 @@
 import {
-  VStack,
+  Button,
+  Text,
+  NativeBaseProvider,
   Center,
   Box,
-  Button,
   FormControl,
   Heading,
   HStack,
   Input,
   Link,
-  Stack,
-  Text,
+  VStack,
+  TextArea,
   WarningOutlineIcon,
+  Stack,
   Icon,
   View,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TouchableOpacity } from 'react-native';
+import { TextInput, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import TopBar from '../components/TopBar';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginThunk } from '../../redux/auth/thunk';
+import { IRootState } from '../../redux/store';
 
-type SignupFormState = {
+type LoginFormState = {
   phone: string;
   password: string;
 };
 
-export default function SignupScreen({ navigation }: { navigation: any }) {
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<SignupFormState>({
+export default function LoginScreen({ navigation }: { navigation: any }) {
+
+  const {control, handleSubmit, watch, formState: { errors }} = useForm<LoginFormState>({
     defaultValues: {
       phone: '',
       password: '',
     },
   });
+
+  const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     let sub = watch((data) => {
@@ -45,9 +49,16 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
     return () => sub.unsubscribe();
   }, [watch]);
 
-  function onSubmit(data: SignupFormState) {
+  function onSubmit(data: LoginFormState) {
     console.log('submit form data:', data);
+    dispatch(loginThunk(parseInt(data.phone), data.password));
   }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+        navigation.navigate('MainStackScreen')
+    } 
+}, [isAuthenticated, navigation])
 
   return (
     <>
@@ -67,7 +78,7 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
               color: 'warmGray.50',
             }}
           >
-            註冊
+            登入
           </Heading>
 
           <VStack space={3} mt="5">
@@ -83,7 +94,7 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
                 render={({ field: { value, onChange } }) => (
                   <Input
                     type="number"
-                    placeholder="請輸入你的電話號碼"
+                    placeholder="電話號碼"
                     fontSize="md"
                     value={value}
                     onChangeText={onChange}
@@ -107,7 +118,7 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
                 render={({ field: { value, onChange } }) => (
                   <Input
                     type="password"
-                    placeholder="請輸入密碼（至少包含八個字符）"
+                    placeholder="密碼"
                     fontSize="md"
                     mt="3"
                     value={value}
@@ -116,23 +127,19 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
                 )}
                 rules={{
                   required: true,
-                  minLength: 8,
                 }}
               />
-              {errors.password?.type === 'required' && (
+              {errors.password && (
                 <Text color="danger.500">請填寫你的密碼。</Text>
-              )}
-              {errors.password?.type === 'minLength' && (
-                <Text color="danger.500">你的密碼需要包含八個字符或以上。</Text>
               )}
               <Button
                 mt="4"
                 // colorScheme="indigo"
-                onPress={() => navigation.navigate('ChooseScreen')}
+                onPress={() => navigation.navigate('MainStackScreen')}
                 // onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
-                  註冊
+                  登入
                 </Text>
               </Button>
             </View>

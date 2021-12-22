@@ -7,7 +7,7 @@ import {
   Pressable,
   Image,
 } from 'native-base';
-import TopBar from '../components/TopBar';
+import TopBar from '../../components/TopBar';
 
 export default function HomeScreen() {
   return (

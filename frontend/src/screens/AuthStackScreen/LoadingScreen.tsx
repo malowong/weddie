@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { Text, View } from "react-native";
-import { styles } from "../../style";
 import { useDispatch, useSelector } from "react-redux"
-import { IRootState } from "../redux/store";
-import { restoreLoginThunk } from "../redux/auth/thunk";
+import { IRootState } from "../../redux/store";
+import { restoreLoginThunk } from "../../redux/auth/thunk";
 
 export default function LoadingScreen({ navigation }: { navigation: any }) {
 

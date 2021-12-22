@@ -1,9 +1,9 @@
 import React from 'react';
 import { Button, Text } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
-import TopBar from '../components/TopBar';
+import TopBar from '../../components/TopBar';
 import { useSelector } from 'react-redux';
-import { IRootState } from '../redux/store';
+import { IRootState } from '../../redux/store';
 
 const materialList = [
   {

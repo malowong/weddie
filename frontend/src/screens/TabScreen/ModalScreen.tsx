@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button, Text, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { styles } from '../../style';
+import { styles } from '../../../style';
 
 export default function ModalScreen({ navigation }: { navigation: any }) {
   return (

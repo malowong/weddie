@@ -10,6 +10,7 @@ const initialState: ILogisticsState = {
       amount: 5000,
     },
     { id: 2, itemName: '大襟姐', amount: 3000 },
+    { id: 3, itemName: '花球' },
   ],
 };
 
@@ -19,8 +20,7 @@ export const logisticReducers = produce(
       case '@@Logistics/FETCH_SUCCESS':
         state.materialList = action.data;
         return;
-      case 'TODO2':
-        return state;
+
       default:
         return state;
     }

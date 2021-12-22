@@ -26,7 +26,7 @@ const guests = [
   },
 ];
 
-export default function GuestsScreen() {
+export default function GuestsScreen({ navigation }: { navigation: any }) {
   const [showModal, setShowModal] = useState(false);
   const {
     control,

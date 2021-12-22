@@ -1,7 +1,7 @@
 export interface LogisticsState {
   id: number;
   itemName: string;
-  amount: number;
+  amount?: number;
 }
 
 export interface ILogisticsState {

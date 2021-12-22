@@ -31,7 +31,7 @@ import SeatScreen from './src/screens/SeatScreen';
 import SettingScreen from './src/screens/SettingScreen';
 import LoadingScreen from './src/screens/LoadingScreen';
 import LoginScreen from './src/screens/LoginScreen';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { NativeBaseProvider } from 'native-base';
 import { Button, View } from 'react-native';
 import SignupScreen from './src/screens/SignupScreen';
@@ -40,7 +40,7 @@ import ChooseScreen from './src/screens/ChooseScreen';
 import CreateEventScreen from './src/screens/CreateEventScreen';
 import JoinEventScreen from './src/screens/JoinEventScreen';
 
-// import { store } from "./src/redux/store"
+import { IRootState, store } from './src/redux/store';
 
 export type StackParamList = {
   主頁: undefined;
@@ -218,19 +218,23 @@ function AuthStackScreen({ navigation }: { navigation: any }) {
       <AuthStack.Screen name="LoginScreen" component={LoginScreen} />
       <AuthStack.Screen name="SignupScreen" component={SignupScreen} />
       <AuthStack.Screen name="ChooseScreen" component={ChooseScreen} />
-      <AuthStack.Screen name="CreateEventScreen" component={CreateEventScreen} />
+      <AuthStack.Screen
+        name="CreateEventScreen"
+        component={CreateEventScreen}
+      />
       <AuthStack.Screen name="JoinEventScreen" component={JoinEventScreen} />
     </AuthStack.Navigator>
   );
 }
+
 
 const RootStack = createStackNavigator();
 
 function RootStackScreen() {
   return (
     <RootStack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="AuthStackScreen"
+      screenOptions={{ headerShown: false, gestureEnabled: false }}
+      initialRouteName="LoadingScreen"
     >
       <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
       <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
@@ -241,17 +245,15 @@ function RootStackScreen() {
 
 const App = () => {
   return (
-    // <Provider store={store}>
-
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <NativeBaseProvider>
-          <RootStackScreen />
-        </NativeBaseProvider>
-      </NavigationContainer>
-    </SafeAreaProvider>
-
-    // </Provider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <NativeBaseProvider>
+            <RootStackScreen />
+          </NativeBaseProvider>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </Provider>
   );
 };
 

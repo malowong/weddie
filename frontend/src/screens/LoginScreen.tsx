@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/native';
 import {
   Button,
   Text,
@@ -21,8 +20,11 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TextInput, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux';
 import { styles } from '../../style';
 import { Login } from '../components/Login';
+import { loginThunk } from '../redux/auth/thunk';
+import { IRootState } from '../redux/store';
 
 type LoginFormState = {
   phone: string;
@@ -30,27 +32,17 @@ type LoginFormState = {
 };
 
 export default function LoginScreen({ navigation }: { navigation: any }) {
-  // const { control, handleSubmit, errors } = useForm();
-  // const onSubmit = (data) => {
-  //   console.log('submiting with ', data);
-  // };
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const login = () => {
-  //   const navigation = useNavigation();
-  //   setIsLoggedIn(true);
-  // };
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<LoginFormState>({
+  const {control, handleSubmit, watch, formState: { errors }} = useForm<LoginFormState>({
     defaultValues: {
       phone: '',
       password: '',
     },
   });
+
+  const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
+
+  const dispatch = useDispatch()
 
   useEffect(() => {
     let sub = watch((data) => {
@@ -61,7 +53,14 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 
   function onSubmit(data: LoginFormState) {
     console.log('submit form data:', data);
+    dispatch(loginThunk(parseInt(data.phone), data.password));
   }
+
+  useEffect(() => {
+    if (isAuthenticated) {
+        navigation.navigate('MainStackScreen')
+    } 
+}, [isAuthenticated, navigation])
 
   return (
     <>

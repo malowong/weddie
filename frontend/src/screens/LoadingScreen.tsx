@@ -3,28 +3,24 @@ import { Text, View } from "react-native";
 import { styles } from "../../style";
 import { useDispatch, useSelector } from "react-redux"
 import { IRootState } from "../redux/store";
-import { useNavigation } from "@react-navigation/native";
+import { restoreLoginThunk } from "../redux/auth/thunk";
 
-export default function LoadingScreen() {
+export default function LoadingScreen({ navigation }: { navigation: any }) {
 
-    // const dispatch = useDispatch()
-    // const navigation = useNavigation()
-    // const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated)
+    const dispatch = useDispatch()
+    const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated)
 
-    // useEffect(() => {
-    //     dispatch(restoreLoginThunk)
-    // }, [dispatch])
+    useEffect(() => {
+        dispatch(restoreLoginThunk())
+    }, [useDispatch])
 
-    // useEffect(() => {
-    //     if (isAuthenticated == null) {
-    //         return;
-    //     }
-    //     if (isAuthenticated) {
-    //         navigation.navigate('MainStackScreen')
-    //     } else {
-    //         navigation.navigate('LoginScreen')
-    //     }
-    // })
+    useEffect(() => {
+        if (isAuthenticated) {
+            navigation.navigate('MainStackScreen')
+        } else {
+            navigation.navigate('AuthStackScreen')
+        }
+    }, [isAuthenticated])
 
     return (
       <View style={{

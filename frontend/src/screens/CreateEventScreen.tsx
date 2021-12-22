@@ -19,19 +19,23 @@ import {
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TextInput, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styles } from '../../style';
-import { Login } from '../components/Login';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 type CreateEventFormState = {
   groomname: string;
   bridename: string;
-  bigday: string;
+  bigday: Date;
   budget: string;
 };
 
 export default function CreateEventScreen({ navigation }: { navigation: any }) {
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -41,6 +45,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
     defaultValues: {
       groomname: '',
       bridename: '',
+      bigday: date,
       budget: '',
     },
   });
@@ -49,8 +54,9 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
     let sub = watch((data) => {
       console.log('update form data:', data);
     });
+    console.log(date);
     return () => sub.unsubscribe();
-  }, [watch]);
+  }, [watch, date]);
 
   function onSubmit(data: CreateEventFormState) {
     console.log('submit form data:', data);
@@ -95,7 +101,6 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                       fontSize="md"
                       value={value}
                       onChangeText={onChange}
-                      mb="4"
                     />
                   </>
                 )}
@@ -114,7 +119,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                 }}
                 render={({ field: { value, onChange } }) => (
                   <>
-                    <Text fontSize="lg" mb="1">
+                    <Text fontSize="lg" mb="1" mt="4">
                       請問新娘的名字是...
                     </Text>
                     <Input
@@ -122,7 +127,6 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                       fontSize="md"
                       value={value}
                       onChangeText={onChange}
-                      mb="4"
                     />
                   </>
                 )}
@@ -141,22 +145,36 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                 }}
                 render={({ field: { value, onChange } }) => (
                   <>
-                    <Text fontSize="lg" mb="1">
+                    <Text fontSize="lg" mb="1" mt="4">
                       請問你們的結婚日子是...
                     </Text>
-                    <Input
+                    {/* <Input
+                      type="date"
                       placeholder={`簡單名字即可，如 "小美" 或 "Amy" 等`}
                       fontSize="md"
-                      value={value}
+                      value={date.toDateString()}
                       onChangeText={onChange}
                       mb="4"
-                    />
+                    /> */}
+                    <View alignItems="center" width="5%">
+                      <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode="date"
+                        style={{ width: 230 }}
+                        display="default"
+                        onChange={(event: any, selectedDate?: Date) => {
+                          const currentDate = selectedDate || date;
+                          setDate(currentDate);
+                        }}
+                      />
+                    </View>
                   </>
                 )}
               />
-              {errors.bridename?.type === 'required' && (
-                <Text color="danger.500">請填寫新娘的名字。</Text>
-              )}
+              {/* {date.getTime() < Date.now() && (
+                <Text color="danger.500">請選擇正確的日子。</Text>
+              )} */}
               <Controller
                 name="budget"
                 control={control}
@@ -165,7 +183,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                 }}
                 render={({ field: { value, onChange } }) => (
                   <>
-                    <Text fontSize="lg" mb="1">
+                    <Text fontSize="lg" mb="1" mt="4">
                       請問你們的結婚預算大概為...
                     </Text>
                     <Input
@@ -174,14 +192,13 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                       fontSize="md"
                       value={value}
                       onChangeText={onChange}
-                      mb="4"
                       keyboardType="numeric"
                     />
                   </>
                 )}
               />
               {errors.bridename?.type === 'required' && (
-                <Text color="danger.500">請填寫新娘的名字。</Text>
+                <Text color="danger.500">請填寫結婚預算。</Text>
               )}
               <Button
                 mt="4"

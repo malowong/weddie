@@ -9,7 +9,6 @@ const Stack = createNativeStackNavigator();
 export default function MaterialScreen() {
   return (
     <Stack.Navigator
-      initialRouteName="MaterialList"
       screenOptions={{
         headerShown: false,
       }}

@@ -218,7 +218,10 @@ function AuthStackScreen({ navigation }: { navigation: any }) {
       <AuthStack.Screen name="LoginScreen" component={LoginScreen} />
       <AuthStack.Screen name="SignupScreen" component={SignupScreen} />
       <AuthStack.Screen name="ChooseScreen" component={ChooseScreen} />
-      <AuthStack.Screen name="CreateEventScreen" component={CreateEventScreen} />
+      <AuthStack.Screen
+        name="CreateEventScreen"
+        component={CreateEventScreen}
+      />
       <AuthStack.Screen name="JoinEventScreen" component={JoinEventScreen} />
     </AuthStack.Navigator>
   );

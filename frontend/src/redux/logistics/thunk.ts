@@ -1,8 +1,8 @@
 import { Dispatch } from 'redux';
-import { IMaterialAction } from './action';
+import { ILogisticsAction } from './action';
 
 export function getAllMaterialItemsThunk() {
-  return async (dispatch: Dispatch<IMaterialAction>) => {
+  return async (dispatch: Dispatch<ILogisticsAction>) => {
     const resp = 'TODO';
 
     if (resp.status === 200) {

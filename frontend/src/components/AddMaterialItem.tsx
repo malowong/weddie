@@ -7,7 +7,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 
 export function AddMaterialItem({ navigation }: { navigation: any }) {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -18,7 +18,7 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
       amount: '',
     },
   });
-  const onSubmit = (data) => {
+  const onSubmit = (data: any) => {
     data.amount = parseInt(data.amount);
     console.log(data);
   };

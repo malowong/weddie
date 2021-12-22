@@ -1,19 +1,19 @@
 import { combineReducers, createStore } from 'redux';
 import { IAuthState } from './auth/state';
-import { IMaterialAction } from './material/action';
-import { materialReducers } from './material/reducer';
-import { IMaterialState } from './material/state';
+import { ILogisticsAction } from './logistics/action';
+import { logisticReducers } from './logistics/reducer';
+import { ILogisticsState } from './logistics/state';
 
 export interface IRootState {
   auth: IAuthState;
-  material: IMaterialState;
+  logistics: ILogisticsState;
 }
 
-type IRootAction = IMaterialAction;
+type IRootAction = ILogisticsAction;
 
 const rootReducer = combineReducers<IRootState>({
   auth: authReducers,
-  material: materialReducers,
+  logistics: logisticReducers,
 });
 
 export default createStore<IRootState, IRootAction, {}, {}>(rootReducer);

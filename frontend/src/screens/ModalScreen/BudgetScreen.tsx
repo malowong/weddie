@@ -55,7 +55,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
               })
             }
           >
-            新增
+            新增支出
           </Button>
         </View>
 
@@ -97,13 +97,13 @@ const budgetStyles = StyleSheet.create({
     marginBottom: 8,
   },
   button: {
-    width: 80,
+    width: 90,
     borderRadius: 10,
   },
   addRow: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     marginBottom: 8,
   },

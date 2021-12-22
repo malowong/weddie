@@ -1,44 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Text } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
+import { getAllMaterialItemsThunk } from '../../redux/logistics/thunk';
 
-const materialList = [
-  {
-    id: 1,
-    item: '攝影師',
-    amount: 4000,
-  },
-  {
-    id: 2,
-    item: '化妝師',
-    amount: 4000,
-  },
-  {
-    id: 3,
-    item: '大冚姐',
-    amount: 3000,
-  },
-  {
-    id: 4,
-    item: '司機',
-    amount: 900,
-  },
-  {
-    id: 5,
-    item: '佈置工人',
-    amount: 800,
-  },
-];
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
+  const dispatch = useDispatch();
   const materialList = useSelector(
     (state: IRootState) => state.logistics.materialList
   );
 
-  console.log(materialList);
+  useEffect(() => {
+    dispatch(getAllMaterialItemsThunk());
+  }, [dispatch]);
+
   return (
     <TopBar pageName="物資管理">
       <TouchableOpacity style={materialStyles.addButton}>
@@ -71,7 +49,11 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
             }
           >
             <Text fontSize={19}>{material.itemName}</Text>
-            <Text fontSize={19}>${material.amount}</Text>
+            {material.amount ? (
+              <Text fontSize={19}>${material.amount}</Text>
+            ) : (
+              <Text fontSize={19}>NA</Text>
+            )}
           </TouchableOpacity>
         );
       })}

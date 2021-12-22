@@ -1,9 +1,7 @@
-// shd be put in config.ts
-const BACKEND_BASE_URL = 'http://localhost:8080'
-
+import {config} from '../../app.json';
 
 export const fetchLogin = async (phone: number, password: string) => {
-    const resp = await fetch(`${BACKEND_BASE_URL}/users/login`, {
+    const resp = await fetch(`${config.BACKEND_URL}/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -15,7 +13,7 @@ export const fetchLogin = async (phone: number, password: string) => {
   };
 
 export const fetchUser = async (token: string) => {
-    const resp = await fetch(`${BACKEND_BASE_URL}/users/`, {
+    const resp = await fetch(`${config.BACKEND_URL}/users/`, {
         method: 'GET',
         headers: {
             Authrization: `Bearer ${token}`

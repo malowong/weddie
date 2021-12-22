@@ -1,4 +1,4 @@
-import { IAuthActions } from "./actions";
+import { IAuthAction } from "./actions";
 import { IAuthState } from "./state";
 
 const initialState: IAuthState = {
@@ -8,7 +8,7 @@ const initialState: IAuthState = {
     message: null,
 }
 
-export const authReducers = (state: IAuthState = initialState, action: IAuthActions): IAuthState => {
+export const authReducers = (state: IAuthState = initialState, action: IAuthAction): IAuthState => {
     switch (action.type) {
         case "@@auth/LOGIN_SUCCESS":
             return {

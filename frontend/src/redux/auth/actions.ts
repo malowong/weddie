@@ -18,7 +18,6 @@ export function loginFailed(message: string) {
 export function logout() {
     return {
         type: "@@auth/LOGOUT" as const,
-
     }
 }
 

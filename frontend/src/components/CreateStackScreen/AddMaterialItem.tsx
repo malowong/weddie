@@ -1,12 +1,17 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import TopBar from '../TopBar';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text } from 'native-base';
+import { Input, Button, Text, Icon } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import CreateandEditTopBar from '../CreateandEditTopBar';
+import TopBar from '../TopBar';
+import { useNavigation } from '@react-navigation/native';
 
-export function AddMaterialItem({ navigation }: { navigation: any }) {
+
+export function AddMaterialItem() {
+
   // const dispatch = useDispatch();
   const {
     control,
@@ -23,8 +28,10 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
     console.log(data);
   };
 
+  const navigation = useNavigation()
+
   return (
-    <TopBar pageName="新增物資">
+    <CreateandEditTopBar pageName="新增物資">
       <View>
         <Controller
           control={control}
@@ -69,13 +76,7 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
           提交
         </Button>
       </View>
-
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Button marginTop={5} colorScheme="secondary">
-          返回
-        </Button>
-      </TouchableOpacity>
-    </TopBar>
+    </CreateandEditTopBar>
   );
 }
 

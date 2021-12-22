@@ -196,15 +196,6 @@ const CreateStack = createStackNavigator();
 function CreateStackScreen() {
   return (
     <CreateStack.Navigator screenOptions={{ headerShown: false }}>
-      <CreateStack.Screen
-        name="ModalScreen"
-        component={ModalScreen}
-        options={{
-          presentation: 'transparentModal',
-          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
-          cardOverlayEnabled: true,
-        }}
-      />
       <CreateStack.Screen name="AddMaterialItem" component={AddMaterialItem} />
     </CreateStack.Navigator>
   );

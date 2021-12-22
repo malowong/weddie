@@ -48,7 +48,7 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.mainModalButton}
-            onPress={() => navigation.navigate('MaterialList')}
+            onPress={() => navigation.navigate('TabScreen', { screen: 'GuestScreen' })}
           >
             <Ionicons name={'ios-person-add-outline'} size={50} />
             <Text>來賓名單</Text>

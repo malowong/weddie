@@ -32,9 +32,7 @@ type CreateEventFormState = {
 };
 
 export default function CreateEventScreen({ navigation }: { navigation: any }) {
-  const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const [date, setDate] = useState<Date>(new Date());
 
   const {
     control,
@@ -54,13 +52,18 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
     let sub = watch((data) => {
       console.log('update form data:', data);
     });
-    console.log(date);
     return () => sub.unsubscribe();
   }, [watch, date]);
 
   function onSubmit(data: CreateEventFormState) {
+    data.bigday = date
     console.log('submit form data:', data);
   }
+
+  const onDateChange = (selectedDate: Date) => {
+    const currentDate = selectedDate
+    setDate(currentDate);
+  };
 
   return (
     <>
@@ -141,46 +144,38 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                 name="bigday"
                 control={control}
                 rules={{
-                  required: true,
+                  required: false,
                 }}
-                render={({ field: { value, onChange } }) => (
+                render={() => (
                   <>
                     <Text fontSize="lg" mb="1" mt="4">
                       請問你們的結婚日子是...
                     </Text>
-                    {/* <Input
-                      type="date"
-                      placeholder={`簡單名字即可，如 "小美" 或 "Amy" 等`}
-                      fontSize="md"
-                      value={date.toDateString()}
-                      onChangeText={onChange}
-                      mb="4"
-                    /> */}
-                    <View alignItems="center" width="5%">
-                      <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode="date"
-                        style={{ width: 230 }}
-                        display="default"
-                        onChange={(event: any, selectedDate?: Date) => {
-                          const currentDate = selectedDate || date;
-                          setDate(currentDate);
-                        }}
-                      />
-                    </View>
                   </>
                 )}
               />
-              {/* {date.getTime() < Date.now() && (
+              <View alignItems="center" width="5%">
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode="date"
+                  style={{ width: 230 }}
+                  display="default"
+                  onChange={(event: any, selectedDate?: Date) => {
+                    const currentDate = selectedDate || date;
+                    setDate(currentDate);
+                  }}
+                />
+              </View>
+              {date.getDate() < new Date().getDate() && (
                 <Text color="danger.500">請選擇正確的日子。</Text>
-              )} */}
+              )}
               <Controller
                 name="budget"
                 control={control}
-                rules={{
-                  required: true,
-                }}
+                // rules={{
+                //   required: true,
+                // }}
                 render={({ field: { value, onChange } }) => (
                   <>
                     <Text fontSize="lg" mb="1" mt="4">
@@ -188,7 +183,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                     </Text>
                     <Input
                       type="number"
-                      placeholder={`簡單名字即可，如 "小美" 或 "Amy" 等`}
+                      placeholder={`以港元計算，如 "50000" 或 "100000" 等`}
                       fontSize="md"
                       value={value}
                       onChangeText={onChange}
@@ -203,8 +198,8 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
               <Button
                 mt="4"
                 // colorScheme="indigo"
-                onPress={() => navigation.navigate('MainStackScreen')}
-                // onPress={handleSubmit(onSubmit)}
+                // onPress={() => navigation.navigate('MainStackScreen')}
+                onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
                   完成

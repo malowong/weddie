@@ -22,7 +22,6 @@ import { Controller, useForm } from 'react-hook-form';
 import { TextInput, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { styles } from '../../style';
-import { Login } from '../components/Login';
 
 export default function ChooseScreen({ navigation }: { navigation: any }) {
 

@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import TopBar from '../TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
+import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
 export function EditMaterialItem({ route, navigation }: any) {
   const dispatch = useDispatch();
@@ -33,7 +33,7 @@ export function EditMaterialItem({ route, navigation }: any) {
   };
 
   return (
-    <TopBar pageName="編輯物資">
+    <CreateAndEditTopBar pageName="編輯物資">
       <View>
         <Controller
           control={control}
@@ -79,13 +79,7 @@ export function EditMaterialItem({ route, navigation }: any) {
           提交
         </Button>
       </View>
-
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Button marginTop={5} colorScheme="secondary">
-          返回
-        </Button>
-      </TouchableOpacity>
-    </TopBar>
+    </CreateAndEditTopBar>
   );
 }
 

@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import TopBar from '../TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
-import CreateandEditTopBar from '../CreateandEditTopBar';
+import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
 export function EditBudgetItem({ route, navigation }: any) {
   const dispatch = useDispatch();
@@ -34,7 +33,7 @@ export function EditBudgetItem({ route, navigation }: any) {
   };
 
   return (
-    <CreateandEditTopBar pageName="編輯預算">
+    <CreateAndEditTopBar pageName="編輯支出">
       <View>
         <Controller
           control={control}
@@ -80,7 +79,7 @@ export function EditBudgetItem({ route, navigation }: any) {
           提交
         </Button>
       </View>
-    </CreateandEditTopBar>
+    </CreateAndEditTopBar>
   );
 }
 

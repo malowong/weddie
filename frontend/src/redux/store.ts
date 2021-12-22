@@ -3,6 +3,12 @@ import thunk from 'redux-thunk';
 import { IAuthAction } from './auth/actions';
 import { authReducers } from './auth/reducers';
 import { IAuthState } from './auth/state';
+import { IExpenditureAction } from './expenditure/action';
+import { expenditureReducers } from './expenditure/reducer';
+import { IExpenditureState } from './expenditure/state';
+import { IGuestAction } from './guest/action';
+import { guestReducers } from './guest/reducer';
+import { IGuestState } from './guest/state';
 import { ILogisticsAction } from './logistics/action';
 import { logisticReducers } from './logistics/reducer';
 import { ILogisticsState } from './logistics/state';
@@ -11,14 +17,22 @@ import { ILogisticsState } from './logistics/state';
 export interface IRootState {
   auth: IAuthState;
   logistics: ILogisticsState;
+  expenditure: IExpenditureState;
+  guest: IGuestState;
 }
 
-type IRootAction = IAuthAction | ILogisticsAction;
+type IRootAction =
+  | IAuthAction
+  | ILogisticsAction
+  | IExpenditureAction
+  | IGuestAction;
 
 // 3. Combining Reducers by the function combineReducer()
 const rootReducer = combineReducers<IRootState>({
   auth: authReducers,
   logistics: logisticReducers,
+  expenditure: expenditureReducers,
+  guest: guestReducers,
 });
 
 // why cannot find global?

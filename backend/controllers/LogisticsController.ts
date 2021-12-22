@@ -1,6 +1,5 @@
 import { LogisticsService } from "../services/LogisticsService";
 import { Request, Response } from "express";
-import { logger } from "../utils/logger";
 
 export class LogisticsController {
   constructor(private logisticsService: LogisticsService) {}
@@ -9,6 +8,7 @@ export class LogisticsController {
     const eventID = 1;
 
     const logisticsList = await this.logisticsService.getLogisticsList(eventID);
+
     res.json({ logisticsList });
   };
 }

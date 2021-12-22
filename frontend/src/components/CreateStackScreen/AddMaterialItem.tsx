@@ -5,12 +5,10 @@ import { Input, Button, Text, Icon } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import CreateandEditTopBar from '../CreateandEditTopBar';
+import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useNavigation } from '@react-navigation/native';
 
-
 export function AddMaterialItem() {
-
   // const dispatch = useDispatch();
   const {
     control,
@@ -27,10 +25,10 @@ export function AddMaterialItem() {
     console.log(data);
   };
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   return (
-    <CreateandEditTopBar pageName="新增物資">
+    <CreateAndEditTopBar pageName="新增物資">
       <View>
         <Controller
           control={control}
@@ -65,6 +63,7 @@ export function AddMaterialItem() {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              keyboardType="numeric"
             />
           )}
           name="amount"
@@ -75,7 +74,7 @@ export function AddMaterialItem() {
           提交
         </Button>
       </View>
-    </CreateandEditTopBar>
+    </CreateAndEditTopBar>
   );
 }
 

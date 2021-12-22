@@ -1,58 +1,19 @@
-import { Modal, Icon, Button, Checkbox, Text } from 'native-base';
+import { Button, Checkbox, Text } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
-const guests = [
-  {
-    id: 1,
-    name: 'Matthew',
-    phoneNumber: 12345678,
-    relationship: '弟弟同學',
-  },
-  {
-    id: 2,
-    name: 'Dennis',
-    phoneNumber: 23456781,
-    relationship: '家姐同學',
-  },
-  {
-    id: 3,
-    name: 'Billy',
-    phoneNumber: 23475899,
-    relationship: '新郎幼稚園同學',
-  },
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { getGuestListThunk } from '../../redux/guest/thunk';
+import { IRootState } from '../../redux/store';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
-  const [showModal, setShowModal] = useState(false);
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm({
-    defaultValues: {
-      name: '',
-      phoneNumber: '',
-      relationship: '',
-    },
-  });
-
-  const onSubmit = (data: any) => {
-    if (data.phoneNumber.length !== 8) {
-      return;
-    }
-  };
+  const dispatch = useDispatch();
+  const guestList = useSelector((state: IRootState) => state.guest.guestList);
 
   useEffect(() => {
-    let sub = watch((data) => {
-      console.log('update form data:', data);
-    });
-    return () => sub.unsubscribe();
-  }, [watch]);
+    dispatch(getGuestListThunk());
+  }, [dispatch]);
 
   return (
     <TopBar pageName="賓客名單">
@@ -89,7 +50,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
           </Text>
         </View>
 
-        {guests.map((guest) => {
+        {guestList.map((guest) => {
           return (
             <TouchableOpacity
               key={guest.id}
@@ -117,7 +78,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
                 <Text fontSize={15}>{guest.relationship}</Text>
               </View>
               <View style={guestStyles.tableColumn}>
-                <Checkbox colorScheme="green" value={''} aria-label="Attend"/>
+                <Checkbox colorScheme="green" value={''} aria-label="Attend" />
               </View>
             </TouchableOpacity>
           );

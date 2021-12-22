@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 import { getAllMaterialItemsThunk } from '../../redux/logistics/thunk';
 
-
 export default function MaterialScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
   const materialList = useSelector(

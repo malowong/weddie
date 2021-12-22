@@ -10,14 +10,15 @@ interface ICreateandEditTopBarProps {
   pageName: any;
 }
 
-export default function CreateandEditTopBar(props: ICreateandEditTopBarProps) {
-
-  const navigation = useNavigation()
+export default function CreateAndEditTopBar(props: ICreateandEditTopBarProps) {
+  const navigation = useNavigation();
   return (
     <>
       <Box safeAreaTop backgroundColor="#f2f2f2" />
       <View>
-        <View style={{position: "absolute", top: "17%", left: "2%", zIndex: 10}}>
+        <View
+          style={{ position: 'absolute', top: '17%', left: '2%', zIndex: 10 }}
+        >
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <Icon as={Ionicons} name="chevron-back" />
           </TouchableOpacity>

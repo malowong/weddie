@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
+import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
 export function EditGuest({ route, navigation }: any) {
   const dispatch = useDispatch();
@@ -37,7 +38,7 @@ export function EditGuest({ route, navigation }: any) {
   };
 
   return (
-    <TopBar pageName="編輯賓客名單">
+    <CreateAndEditTopBar pageName="編輯賓客資料">
       <View>
         <Controller
           control={control}
@@ -91,7 +92,6 @@ export function EditGuest({ route, navigation }: any) {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              keyboardType="numeric"
             />
           )}
           name="relationship"
@@ -101,13 +101,7 @@ export function EditGuest({ route, navigation }: any) {
           提交
         </Button>
       </View>
-
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Button marginTop={5} colorScheme="secondary">
-          返回
-        </Button>
-      </TouchableOpacity>
-    </TopBar>
+    </CreateAndEditTopBar>
   );
 }
 

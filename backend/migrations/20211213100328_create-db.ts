@@ -102,7 +102,8 @@ export async function up(knex: Knex): Promise<void> {
     table.increments();
     table.integer("event_id").unsigned();
     table.foreign("event_id").references(`${tables.LOGISTICS_LIST_TEMPLATE}.id`);
-    table.string("description").notNullable().unique();
+    table.string("item_name").notNullable().unique();
+    table.string("remarks");
   });
 
   await knex.schema.createTable(tables.BUDGET_LIST, (table) => {

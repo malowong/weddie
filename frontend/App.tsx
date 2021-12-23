@@ -10,180 +10,68 @@
 
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {
   CardStyleInterpolators,
   createStackNavigator,
 } from '@react-navigation/stack';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { styles } from './style';
-import HomeScreen from './src/screens/HomeScreen';
-import ModalScreen from './src/screens/ModalScreen';
-import NotificationsScreen from './src/screens/NotificationsScreen';
-import ParticipantsScreen from './src/screens/ParticipantsScreen';
-import BudgetScreen from './src/screens/BudgetScreen';
-import CheckListScreen from './src/screens/CheckListScreen';
-import MaterialScreen from './src/screens/MaterialScreen';
-import GuestScreen from './src/screens/GuestScreen';
-import RundownScreen from './src/screens/RundownScreen';
-import SeatScreen from './src/screens/SeatScreen';
-import SettingScreen from './src/screens/SettingScreen';
-import LoadingScreen from './src/screens/LoadingScreen';
-import LoginScreen from './src/screens/LoginScreen';
+import ModalScreen from './src/screens/TabScreen/ModalScreen';
+import LoadingScreen from './src/screens/AuthStackScreen/LoadingScreen';
 import { Provider } from 'react-redux';
 import { NativeBaseProvider } from 'native-base';
-import { Button, View } from 'react-native';
-import SignupScreen from './src/screens/SignupScreen';
-import WelcomingScreen from './src/screens/WelcomingScreen';
-import ChooseScreen from './src/screens/ChooseScreen';
-import CreateEventScreen from './src/screens/CreateEventScreen';
-import JoinEventScreen from './src/screens/JoinEventScreen';
+import { store } from './src/redux/store';
+import { AddMaterialItem } from './src/components/CreateStackScreen/AddMaterialItem';
+import { EditMaterialItem } from './src/components/EditStackScreen/EditMaterialItem';
+import { EditBudgetItem } from './src/components/EditStackScreen/EditBudgetItem';
+import { AddBudgetItem } from './src/components/CreateStackScreen/AddBudgetItem';
+import { AddParti } from './src/components/CreateStackScreen/AddParti';
+import { EditParti } from './src/components/EditStackScreen/EditParti';
+import { AddGuest } from './src/components/CreateStackScreen/AddGuest';
+import { EditGuest } from './src/components/EditStackScreen/EditGuest';
+import AuthStackScreen from './src/screens/AuthStackScreen';
+import TabScreen from './src/screens/TabScreen';
+import { AddTodoItem } from './src/components/CreateStackScreen/AddTodoItem';
+import { EditTodoItem } from './src/components/EditStackScreen/EditTodoItem';
 
-// import { store } from "./src/redux/store"
+// this is for create items
 
-export type StackParamList = {
-  主頁: undefined;
-  Participants: undefined;
-};
+const CreateStack = createStackNavigator();
 
-const Tab = createBottomTabNavigator();
-
-function TabScreen() {
+function CreateStackScreen() {
   return (
-    <Tab.Navigator
-      initialRouteName="主頁"
-      screenOptions={{
-        tabBarActiveTintColor: '#e91e63',
-        headerShown: false,
-      }}
-    >
-      <Tab.Screen
-        name="主頁"
-        component={HomeScreen}
-        options={{
-          tabBarLabel: '主頁',
-          tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'ios-home' : 'ios-home-outline'}
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Participants"
-        component={ParticipantsScreen}
-        options={{
-          tabBarLabel: '人員名單',
-          tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'ios-people' : 'ios-people-outline'}
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Modal"
+    <CreateStack.Navigator screenOptions={{ headerShown: false }}>
+      <CreateStack.Screen name="AddMaterialItem" component={AddMaterialItem} />
+      <CreateStack.Screen name="AddBudgetItem" component={AddBudgetItem} />
+      <CreateStack.Screen name="AddParti" component={AddParti} />
+      <CreateStack.Screen name="AddGuest" component={AddGuest} />
+      <CreateStack.Screen name="AddTodoItem" component={AddTodoItem} />
+    </CreateStack.Navigator>
+  );
+}
+
+// this is for edit items
+
+const EditStack = createStackNavigator();
+
+function EditStackScreen() {
+  return (
+    <EditStack.Navigator screenOptions={{ headerShown: false }}>
+      <EditStack.Screen
+        name="ModalScreen"
         component={ModalScreen}
         options={{
-          tabBarLabel: '',
-          tabBarIcon: ({ focused, color, size }) => (
-            <View
-              style={{
-                position: 'absolute',
-                bottom: '-40%',
-                shadowColor: '#171717',
-                shadowOffset: { width: 0, height: 4 },
-                shadowOpacity: 0.4,
-                shadowRadius: 6,
-              }}
-            >
-              <Ionicons name="ios-add-circle" color="#e91e63" size={80} />
-            </View>
-          ),
-        }}
-        listeners={({ navigation }) => ({
-          tabPress: (e) => {
-            e.preventDefault();
-            navigation.navigate('ModalScreen');
-          },
-        })}
-      />
-      <Tab.Screen
-        name="訊息通知"
-        component={NotificationsScreen}
-        options={{
-          tabBarLabel: '訊息通知',
-          tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'ios-notifications' : 'ios-notifications-outline'}
-              color={color}
-              size={size}
-            />
-          ),
+          presentation: 'transparentModal',
+          cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
+          cardOverlayEnabled: true,
         }}
       />
-      <Tab.Screen
-        name="Settings"
-        component={SettingScreen}
-        options={{
-          tabBarLabel: '用戶設定',
-          tabBarIcon: ({ focused, color, size }) => (
-            <Ionicons
-              name={focused ? 'ios-person-circle' : 'ios-person-circle-outline'}
-              color={color}
-              size={size}
-            />
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="BudgetScreen"
-        component={BudgetScreen}
-        options={{
-          tabBarButton: () => null,
-        }}
-      />
-      <Tab.Screen
-        name="CheckListScreen"
-        component={CheckListScreen}
-        options={{
-          tabBarButton: () => null,
-        }}
-      />
-      <Tab.Screen
-        name="MaterialScreen"
-        component={MaterialScreen}
-        options={{
-          tabBarButton: () => null,
-        }}
-      />
-      <Tab.Screen
-        name="GuestScreen"
-        component={GuestScreen}
-        options={{
-          tabBarButton: () => null,
-        }}
-      />
-      <Tab.Screen
-        name="RundownScreen"
-        component={RundownScreen}
-        options={{
-          tabBarButton: () => null,
-        }}
-      />
-      <Tab.Screen
-        name="SeatScreen"
-        component={SeatScreen}
-        options={{
-          tabBarButton: () => null,
-        }}
-      />
-    </Tab.Navigator>
+      <EditStack.Screen name="EditMaterialItem" component={EditMaterialItem} />
+      <EditStack.Screen name="EditBudgetItem" component={EditBudgetItem} />
+      <EditStack.Screen name="EditParti" component={EditParti} />
+      <EditStack.Screen name="EditGuest" component={EditGuest} />
+      <EditStack.Screen name="EditTodoItem" component={EditTodoItem} />
+    </EditStack.Navigator>
   );
 }
 
@@ -202,28 +90,12 @@ function MainStackScreen() {
           cardOverlayEnabled: true,
         }}
       />
-    </MainStack.Navigator>
-  );
-}
-
-const AuthStack = createStackNavigator();
-
-function AuthStackScreen({ navigation }: { navigation: any }) {
-  return (
-    <AuthStack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="WelcomingScreen"
-    >
-      <AuthStack.Screen name="WelcomingScreen" component={WelcomingScreen} />
-      <AuthStack.Screen name="LoginScreen" component={LoginScreen} />
-      <AuthStack.Screen name="SignupScreen" component={SignupScreen} />
-      <AuthStack.Screen name="ChooseScreen" component={ChooseScreen} />
-      <AuthStack.Screen
-        name="CreateEventScreen"
-        component={CreateEventScreen}
+      <MainStack.Screen
+        name="CreateStackScreen"
+        component={CreateStackScreen}
       />
-      <AuthStack.Screen name="JoinEventScreen" component={JoinEventScreen} />
-    </AuthStack.Navigator>
+      <MainStack.Screen name="EditStackScreen" component={EditStackScreen} />
+    </MainStack.Navigator>
   );
 }
 
@@ -232,8 +104,8 @@ const RootStack = createStackNavigator();
 function RootStackScreen() {
   return (
     <RootStack.Navigator
-      screenOptions={{ headerShown: false }}
-      initialRouteName="AuthStackScreen"
+      screenOptions={{ headerShown: false, gestureEnabled: false }}
+      initialRouteName="LoadingScreen"
     >
       <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
       <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
@@ -244,17 +116,15 @@ function RootStackScreen() {
 
 const App = () => {
   return (
-    // <Provider store={store}>
-
-    <SafeAreaProvider>
-      <NavigationContainer>
-        <NativeBaseProvider>
-          <RootStackScreen />
-        </NativeBaseProvider>
-      </NavigationContainer>
-    </SafeAreaProvider>
-
-    // </Provider>
+    <Provider store={store}>
+      <SafeAreaProvider>
+        <NavigationContainer>
+          <NativeBaseProvider>
+            <RootStackScreen />
+          </NativeBaseProvider>
+        </NavigationContainer>
+      </SafeAreaProvider>
+    </Provider>
   );
 };
 

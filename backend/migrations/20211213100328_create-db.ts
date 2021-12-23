@@ -2,7 +2,6 @@ import { Knex } from "knex";
 
 const tables = Object.freeze({
   HK_DISTRICT: "hk_district",
-  USER_IN_OUT_TIME: "user_in_out_time",
   ROLE: "role",
   BANQUET_VENDOR_CAT: "banquet_vendor_cat",
   CHURCH_LIST: "church_list",
@@ -12,7 +11,8 @@ const tables = Object.freeze({
   USER_INFO: "user_info",
   WEDDING_EVENT_USER: "wedding_event_user",
   WEDDING_LOGISTICS: "wedding_logistics",
-  BUDGET_LIST: "budgets_list",
+  WEDDING_ACTION_CHECKLIST: "wedding_action_checklist",
+  WEDDING_BUDGET_LIST: "wedding_budget_list",
   LOGISTICS_LIST_TEMPLATE: "logistics_list_template",
   TO_DO_LIST_TEMPLATE: "to_do_list_template",
   BIG_DAY_ITIN_TEMPLATE: "big_day_itin_template",
@@ -25,11 +25,13 @@ export async function up(knex: Knex): Promise<void> {
     table.timestamps;
   });
 
-  await knex.schema.createTable(tables.USER_IN_OUT_TIME, (table) => {
+  await knex.schema.createTable(tables.WEDDING_ACTION_CHECKLIST, (table) => {
     table.increments();
-    table.integer("user_id").unsigned();
-    table.timestamp("in_time", { useTz: false });
-    table.timestamp("out_time", { useTz: false });
+    table.integer("wedding_event_id").unsigned();
+    table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
+    table.string("action").notNullable();
+    table.date("exec_date").notNullable();
+    table.time("exec_time");
   });
 
   await knex.schema.createTable(tables.ROLE, (table) => {
@@ -54,8 +56,6 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable(tables.BANQUET_VENDOR_LIST, (table) => {
     table.increments();
-    table.integer("event_id").unsigned();
-    table.foreign("event_id").references(`${tables.LOGISTICS_LIST_TEMPLATE}.id`);
     table.string("vendor_name").notNullable().unique();
     table.string("vendor_location").notNullable();
     table.integer("banquet_cat_id").unsigned();
@@ -87,29 +87,26 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable(tables.WEDDING_EVENT_USER, (table) => {
     table.increments();
-    table.integer("event_id").unsigned();
-    table.foreign("event_id").references(`${tables.WEDDING_EVENT}.id`);
+    table.integer("wedding_event_id").unsigned();
+    table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.integer("user_id").unsigned();
     table.foreign("user_id").references(`${tables.USER_INFO}.id`);
     table.integer("role_id").unsigned();
     table.foreign("role_id").references(`${tables.ROLE}.id`);
-    table.string("to_do_item").notNullable();
-    table.date("exec_date").notNullable();
-    table.time("exec_time");
   });
 
   await knex.schema.createTable(tables.WEDDING_LOGISTICS, (table) => {
     table.increments();
-    table.integer("event_id").unsigned();
-    table.foreign("event_id").references(`${tables.LOGISTICS_LIST_TEMPLATE}.id`);
+    table.integer("wedding_event_id").unsigned();
+    table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.string("item_name").notNullable().unique();
     table.string("remarks");
   });
 
-  await knex.schema.createTable(tables.BUDGET_LIST, (table) => {
+  await knex.schema.createTable(tables.WEDDING_BUDGET_LIST, (table) => {
     table.increments();
-    table.integer("event_id").unsigned();
-    table.foreign("event_id").references(`${tables.LOGISTICS_LIST_TEMPLATE}.id`);
+    table.integer("wedding_event_id").unsigned();
+    table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.integer("budget_cat_id").unsigned();
     table.foreign("budget_cat_id").references(`${tables.BUDGET_CAT}.id`);
     table.string("description").notNullable().unique();

@@ -1,16 +1,16 @@
 import React from 'react';
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import BudgetScreen from "./ModalScreen/BudgetScreen";
-import CheckListScreen from "./ModalScreen/CheckListScreen";
-import GuestScreen from "./ModalScreen/GuestScreen";
-import MaterialScreen from "./ModalScreen/MaterialScreen";
-import RundownScreen from "./ModalScreen/RundownScreen";
-import SeatScreen from "./ModalScreen/SeatScreen";
-import HomeScreen from "./TabScreen/HomeScreen";
-import ModalScreen from "./TabScreen/ModalScreen";
-import NotificationsScreen from "./TabScreen/NotificationsScreen";
-import ParticipantsScreen from "./TabScreen/ParticipantsScreen";
-import SettingScreen from "./TabScreen/SettingScreen";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import BudgetScreen from './ModalScreen/BudgetScreen';
+import CheckListScreen from './ModalScreen/CheckListScreen';
+import GuestScreen from './ModalScreen/GuestScreen';
+import MaterialScreen from './ModalScreen/MaterialScreen';
+import RundownScreen from './ModalScreen/RundownScreen';
+import SeatScreen from './ModalScreen/SeatScreen';
+import HomeScreen from './TabScreen/HomeScreen';
+import ModalScreen from './TabScreen/ModalScreen';
+import NotificationsScreen from './TabScreen/NotificationsScreen';
+import ParticipantsScreen from './TabScreen/ParticipantsScreen';
+import SettingScreen from './TabScreen/SettingScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View } from 'react-native';
 

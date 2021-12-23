@@ -31,6 +31,8 @@ import { AddGuest } from './src/components/CreateStackScreen/AddGuest';
 import { EditGuest } from './src/components/EditStackScreen/EditGuest';
 import AuthStackScreen from './src/screens/AuthStackScreen';
 import TabScreen from './src/screens/TabScreen';
+import { AddTodoItem } from './src/components/CreateStackScreen/AddTodoItem';
+import { EditTodoItem } from './src/components/EditStackScreen/EditTodoItem';
 
 // this is for create items
 
@@ -43,6 +45,7 @@ function CreateStackScreen() {
       <CreateStack.Screen name="AddBudgetItem" component={AddBudgetItem} />
       <CreateStack.Screen name="AddParti" component={AddParti} />
       <CreateStack.Screen name="AddGuest" component={AddGuest} />
+      <CreateStack.Screen name="AddTodoItem" component={AddTodoItem} />
     </CreateStack.Navigator>
   );
 }
@@ -67,6 +70,7 @@ function EditStackScreen() {
       <EditStack.Screen name="EditBudgetItem" component={EditBudgetItem} />
       <EditStack.Screen name="EditParti" component={EditParti} />
       <EditStack.Screen name="EditGuest" component={EditGuest} />
+      <EditStack.Screen name="EditTodoItem" component={EditTodoItem} />
     </EditStack.Navigator>
   );
 }

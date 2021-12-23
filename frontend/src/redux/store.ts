@@ -12,6 +12,9 @@ import { IGuestState } from './guest/state';
 import { ILogisticsAction } from './logistics/action';
 import { logisticReducers } from './logistics/reducer';
 import { ILogisticsState } from './logistics/state';
+import { ITodoAction } from './todo/action';
+import { todoReducers } from './todo/reducer';
+import { ITodoState } from './todo/state';
 
 // 1. Combining State by Composition
 export interface IRootState {
@@ -19,13 +22,15 @@ export interface IRootState {
   logistics: ILogisticsState;
   expenditure: IExpenditureState;
   guest: IGuestState;
+  todo: ITodoState;
 }
 
 type IRootAction =
   | IAuthAction
   | ILogisticsAction
   | IExpenditureAction
-  | IGuestAction;
+  | IGuestAction
+  | ITodoAction;
 
 // 3. Combining Reducers by the function combineReducer()
 const rootReducer = combineReducers<IRootState>({
@@ -33,6 +38,7 @@ const rootReducer = combineReducers<IRootState>({
   logistics: logisticReducers,
   expenditure: expenditureReducers,
   guest: guestReducers,
+  todo: todoReducers,
 });
 
 // why cannot find global?

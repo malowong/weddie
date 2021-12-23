@@ -1,49 +1,37 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
 import { View, Text, Button } from 'native-base';
-
-const expenditures = [
-  {
-    id: 1,
-    category: '酒席',
-    amount: 50000,
-  },
-  {
-    id: 2,
-    category: '禮金',
-    amount: 5000,
-  },
-  {
-    id: 3,
-    category: '戒指',
-    amount: 2000,
-  },
-  {
-    id: 4,
-    category: '婚攝',
-    amount: 20000,
-  },
-];
-
-const totalExpenditure = expenditures.reduce((pre, cur) => {
-  return pre + cur.amount;
-}, 0);
+import { useDispatch, useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store';
+import { getExpenditureListThunk } from '../../redux/expenditure/thunk';
 
 export default function BudgetScreen({ navigation }: { navigation: any }) {
+  const dispatch = useDispatch();
   const [budget, setBudget] = useState(100000);
+  const expenditures = useSelector(
+    (state: IRootState) => state.expenditure.expenditureList
+  );
+
+  const totalExpenditure = expenditures.reduce((pre, cur) => {
+    return pre + cur.amount;
+  }, 0);
+
+  useEffect(() => {
+    dispatch(getExpenditureListThunk());
+  }, [dispatch]);
 
   return (
     <TopBar pageName="婚禮預算">
       <View mb={5} mt={3}>
-        <Text fontSize={20}>總預算: {budget}</Text>
-        <Text fontSize={20}>總支出: {totalExpenditure}</Text>
-        <Text fontSize={20}>剩餘預算: {budget - totalExpenditure}</Text>
+        <Text fontSize={22}>總預算: {budget}</Text>
+        <Text fontSize={22}>總支出: {totalExpenditure}</Text>
+        <Text fontSize={22}>剩餘預算: {budget - totalExpenditure}</Text>
       </View>
       <View borderBottomColor="black" borderBottomWidth={1} />
       <View marginTop={5}>
         <View style={budgetStyles.addRow}>
-          <Text fontSize={20} marginBottom={2}>
+          <Text fontSize={22} marginBottom={2} fontWeight="bold">
             支出
           </Text>
           <Button
@@ -74,8 +62,8 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
                 })
               }
             >
-              <Text fontSize={19}>{expenditure.category}</Text>
-              <Text fontSize={19}>${expenditure.amount}</Text>
+              <Text fontSize={20}>{expenditure.category}</Text>
+              <Text fontSize={20}>${expenditure.amount}</Text>
             </TouchableOpacity>
           );
         })}

@@ -1,14 +1,10 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import TopBar from '../TopBar';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text } from 'native-base';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { Input, Button, Text, TextArea } from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
-export function EditParti({ route, navigation }: any) {
-  const dispatch = useDispatch();
+export function AddTodoItem({ navigation }: { navigation: any }) {
   const {
     control,
     handleSubmit,
@@ -16,25 +12,24 @@ export function EditParti({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: JSON.stringify(route.params.name).replace(/\"/g, ''),
-      amount: JSON.stringify(route.params.phoneNumber),
+      itemName: '',
+      dueDate: '',
+      remarks: '',
+      status: '',
     },
   });
 
+  const onSubmit = (data: any) => {};
+
   useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
+    let sub = watch((data) => {
+      console.log('update form data:', data);
+    });
+    return () => sub.unsubscribe();
   }, [watch]);
 
-  const onSubmit = (data: any) => {
-    data.amount = parseInt(data.amount);
-    console.log(data);
-  };
-
   return (
-    <CreateAndEditTopBar pageName="編輯物資">
+    <CreateAndEditTopBar pageName="新增待辦事項">
       <View>
         <Controller
           control={control}
@@ -44,8 +39,8 @@ export function EditParti({ route, navigation }: any) {
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               marginTop={5}
-              placeholder="物品"
-              style={editMaterialStyles.input}
+              placeholder="事項"
+              style={addTodoItemStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
@@ -53,7 +48,6 @@ export function EditParti({ route, navigation }: any) {
           )}
           name="itemName"
         />
-        {errors.itemName && <Text>This is required.</Text>}
 
         <Controller
           control={control}
@@ -62,35 +56,48 @@ export function EditParti({ route, navigation }: any) {
             required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <Input
+            <>
+              <Input
+                marginTop={5}
+                placeholder="到期日"
+                style={addTodoItemStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            </>
+          )}
+          name="dueDate"
+        />
+
+        <Controller
+          control={control}
+          rules={{
+            maxLength: 100,
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextArea
               marginTop={5}
-              placeholder="金額"
-              style={editMaterialStyles.input}
+              placeholder="備註"
+              style={addTodoItemStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
-              keyboardType="numeric"
             />
           )}
-          name="amount"
+          name="remarks"
         />
-        {errors.amount && <Text>This is required.</Text>}
 
         <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
           提交
         </Button>
       </View>
-
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Button marginTop={5} colorScheme="secondary">
-          返回
-        </Button>
-      </TouchableOpacity>
     </CreateAndEditTopBar>
   );
 }
 
-const editMaterialStyles = StyleSheet.create({
+const addTodoItemStyles = StyleSheet.create({
   input: {
     borderWidth: 2,
   },

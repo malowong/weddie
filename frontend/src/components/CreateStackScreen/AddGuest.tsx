@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
-import CreateandEditTopBar from '../CreateandEditTopBar';
+import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
 export function AddGuest({ navigation }: { navigation: any }) {
   // const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -19,13 +20,22 @@ export function AddGuest({ navigation }: { navigation: any }) {
       relationship: '',
     },
   });
+
   const onSubmit = (data: any) => {
-    data.amount = parseInt(data.amount);
-    console.log(data);
+    if (data.phoneNumber.length !== 8) {
+      return;
+    }
   };
 
+  useEffect(() => {
+    let sub = watch((data) => {
+      console.log('update form data:', data);
+    });
+    return () => sub.unsubscribe();
+  }, [watch]);
+
   return (
-    <CreateandEditTopBar pageName="新增物資">
+    <CreateAndEditTopBar pageName="新增賓客">
       <View>
         <Controller
           control={control}
@@ -60,6 +70,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              keyboardType="numeric"
             />
           )}
           name="phoneNumber"
@@ -90,13 +101,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
           提交
         </Button>
       </View>
-
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Button marginTop={5} colorScheme="secondary">
-          返回
-        </Button>
-      </TouchableOpacity>
-    </CreateandEditTopBar>
+    </CreateAndEditTopBar>
   );
 }
 

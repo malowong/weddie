@@ -1,16 +1,14 @@
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, Icon } from 'native-base';
+import { Input, Button, Text, Icon, TextArea } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import CreateandEditTopBar from '../CreateandEditTopBar';
+import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useNavigation } from '@react-navigation/native';
 
-
 export function AddMaterialItem() {
-
   // const dispatch = useDispatch();
   const {
     control,
@@ -19,7 +17,7 @@ export function AddMaterialItem() {
   } = useForm({
     defaultValues: {
       itemName: '',
-      amount: '',
+      remarks: '',
     },
   });
   const onSubmit = (data: any) => {
@@ -27,10 +25,10 @@ export function AddMaterialItem() {
     console.log(data);
   };
 
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   return (
-    <CreateandEditTopBar pageName="新增物資">
+    <CreateAndEditTopBar pageName="新增物資">
       <View>
         <Controller
           control={control}
@@ -58,24 +56,24 @@ export function AddMaterialItem() {
             required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <Input
+            <TextArea
               marginTop={5}
-              placeholder="金額"
+              placeholder="備註"
               style={addMaterialStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              keyboardType="numeric"
             />
           )}
-          name="amount"
+          name="remarks"
         />
-        {errors.amount && <Text>This is required.</Text>}
 
         <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
           提交
         </Button>
       </View>
-    </CreateandEditTopBar>
+    </CreateAndEditTopBar>
   );
 }
 

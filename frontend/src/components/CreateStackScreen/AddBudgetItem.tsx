@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
-import CreateandEditTopBar from '../CreateandEditTopBar';
+import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
 export function AddBudgetItem({ navigation }: { navigation: any }) {
   // const dispatch = useDispatch();
@@ -25,7 +25,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
   };
 
   return (
-    <CreateandEditTopBar pageName="新增預算">
+    <CreateAndEditTopBar pageName="新增支出">
       <View>
         <Controller
           control={control}
@@ -60,6 +60,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
+              keyboardType="numeric"
             />
           )}
           name="amount"
@@ -70,7 +71,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
           提交
         </Button>
       </View>
-    </CreateandEditTopBar>
+    </CreateAndEditTopBar>
   );
 }
 

@@ -1,14 +1,10 @@
 import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
-import TopBar from '../TopBar';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text } from 'native-base';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { Input, Button, Text, TextArea } from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
-export function EditGuest({ route, navigation }: any) {
-  const dispatch = useDispatch();
+export function EditTodoItem({ route, navigation }: any) {
   const {
     control,
     handleSubmit,
@@ -16,29 +12,24 @@ export function EditGuest({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: JSON.stringify(route.params.name).replace(/\"/g, ''),
-      phoneNumber: JSON.stringify(route.params.phoneNumber),
-      relationship: JSON.stringify(route.params.relationship).replace(
-        /\"/g,
-        ''
-      ),
+      itemName: JSON.stringify(route.params.itemName).replace(/\"/g, ''),
+      dueDate: JSON.stringify(route.params.dueDate).replace(/\"/g, ''),
+      remarks: JSON.stringify(route.params.remarks).replace(/\"/g, ''),
+      status: JSON.stringify(route.params.status).replace(/\"/g, ''),
     },
   });
 
+  const onSubmit = (data: any) => {};
+
   useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
+    let sub = watch((data) => {
+      console.log('update form data:', data);
+    });
+    return () => sub.unsubscribe();
   }, [watch]);
 
-  const onSubmit = (data: any) => {
-    data.amount = parseInt(data.amount);
-    console.log(data);
-  };
-
   return (
-    <CreateAndEditTopBar pageName="編輯賓客資料">
+    <CreateAndEditTopBar pageName="編輯待辦事項">
       <View>
         <Controller
           control={control}
@@ -48,14 +39,14 @@ export function EditGuest({ route, navigation }: any) {
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               marginTop={5}
-              placeholder="名字"
-              style={editMaterialStyles.input}
+              placeholder="事項"
+              style={editTodoItemStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
             />
           )}
-          name="name"
+          name="itemName"
         />
 
         <Controller
@@ -67,15 +58,34 @@ export function EditGuest({ route, navigation }: any) {
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               marginTop={5}
-              placeholder="電話號碼"
-              style={editMaterialStyles.input}
+              placeholder="到期日"
+              style={editTodoItemStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
               keyboardType="numeric"
             />
           )}
-          name="phoneNumber"
+          name="dueDate"
+        />
+
+        <Controller
+          control={control}
+          rules={{
+            maxLength: 100,
+            required: true,
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <TextArea
+              marginTop={5}
+              placeholder="備註"
+              style={editTodoItemStyles.input}
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+          name="remarks"
         />
 
         <Controller
@@ -87,25 +97,25 @@ export function EditGuest({ route, navigation }: any) {
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               marginTop={5}
-              placeholder="關係"
-              style={editMaterialStyles.input}
+              placeholder="狀態"
+              style={editTodoItemStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
             />
           )}
-          name="relationship"
+          name="status"
         />
 
         <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-          提交
+          更改
         </Button>
       </View>
     </CreateAndEditTopBar>
   );
 }
 
-const editMaterialStyles = StyleSheet.create({
+const editTodoItemStyles = StyleSheet.create({
   input: {
     borderWidth: 2,
   },

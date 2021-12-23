@@ -8,6 +8,7 @@ export class LogisticsController {
     const eventID = 1;
 
     const logisticsList = await this.logisticsService.getLogisticsList(eventID);
+
     res.json({ logisticsList });
   };
 }

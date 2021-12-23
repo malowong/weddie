@@ -4,7 +4,7 @@ import jwtSimple from "jwt-simple";
 import jwt from "../utils/jwt";
 import { checkPassword, hashPassword } from "../utils/hash";
 export class UserController {
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService) {}
 
   login = async (req: Request, res: Response) => {
     try {
@@ -29,10 +29,9 @@ export class UserController {
       console.log(token);
 
       res.json({ token });
-
     } catch (e) {
-      console.log(e)
-      res.status(500).json({ msg: e.toString() })
+      console.log(e);
+      res.status(500).json({ msg: e.toString() });
     }
   };
 

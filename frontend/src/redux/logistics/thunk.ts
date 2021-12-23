@@ -8,7 +8,7 @@ export function getAllMaterialItemsThunk() {
 
     if (resp.status === 200) {
       const data = await resp.json();
-      dispatch(fetchDataSuccess(data.items));
+      dispatch(fetchDataSuccess(data.logisticsList));
     }
   };
 }

@@ -16,19 +16,14 @@ import {
   Stack,
   Icon,
   View,
+  Radio,
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
-
-type CreateEventFormState = {
-  groomname: string;
-  bridename: string;
-  bigday: Date;
-  budget: string;
-};
+import { ICreateEvent } from '../../redux/event/state';
 
 export default function CreateEventScreen({ navigation }: { navigation: any }) {
   const [date, setDate] = useState<Date>(new Date());
@@ -38,7 +33,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<CreateEventFormState>({
+  } = useForm<ICreateEvent>({
     defaultValues: {
       groomname: '',
       bridename: '',
@@ -54,13 +49,13 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
     return () => sub.unsubscribe();
   }, [watch, date]);
 
-  function onSubmit(data: CreateEventFormState) {
-    data.bigday = date
+  function onSubmit(data: ICreateEvent) {
+    data.bigday = date;
     console.log('submit form data:', data);
   }
 
   const onDateChange = (selectedDate: Date) => {
-    const currentDate = selectedDate
+    const currentDate = selectedDate;
     setDate(currentDate);
   };
 
@@ -91,15 +86,15 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                 control={control}
                 rules={{
                   required: true,
-                  maxLength: 8,
+                  maxLength: 20,
                 }}
                 render={({ field: { value, onChange } }) => (
                   <>
                     <Text fontSize="lg" mb="1">
-                      請問新郎的名字是...
+                      請為你們的婚禮定一個名稱！
                     </Text>
                     <Input
-                      placeholder={`簡單名字即可，如 "大文" 或 "Ben" 等`}
+                      placeholder={`簡單名稱即可，如 "Ben & Amy 的婚禮" 等`}
                       fontSize="md"
                       value={value}
                       onChangeText={onChange}
@@ -108,10 +103,10 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                 )}
               />
               {errors.groomname?.type === 'required' && (
-                <Text color="danger.500">請填寫新郎的名字。</Text>
+                <Text color="danger.500">請填寫婚禮名稱。</Text>
               )}
               {errors.groomname?.type === 'maxLength' && (
-                <Text color="danger.500">新郎的名字不可多於八個字符。</Text>
+                <Text color="danger.500">婚禮名稱不可多於二十個字符。</Text>
               )}
               <Controller
                 name="bridename"
@@ -121,15 +116,23 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                 }}
                 render={({ field: { value, onChange } }) => (
                   <>
-                    <Text fontSize="lg" mb="1" mt="4">
-                      請問新娘的名字是...
+                    <Text fontSize="lg" mb="1" mt="3">
+                      請問你是...
                     </Text>
-                    <Input
-                      placeholder={`簡單名字即可，如 "小美" 或 "Amy" 等`}
-                      fontSize="md"
+                    <Radio.Group
+                      name="myRadioGroup"
+                      accessibilityLabel="favorite number"
                       value={value}
-                      onChangeText={onChange}
-                    />
+                      onChange={onChange}
+                      flexDirection="row"
+                      justifyContent="flex-start"
+                    >
+                      <Radio value="新郎" mr={5}>
+                        新郎
+                      </Radio>
+                      <Radio value="新娘">新娘
+                      </Radio>
+                    </Radio.Group>
                   </>
                 )}
               />
@@ -201,7 +204,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                 onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
-                  完成
+                  完成！
                 </Text>
               </Button>
             </View>

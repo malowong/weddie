@@ -7,16 +7,16 @@ export default function NotificationsScreen() {
     <TopBar pageName="訊息通知">
       <VStack space={4} alignItems="center">
         <Center w="full" h="20" bg="secondary.500" rounded="md" shadow={3} />
-        <Center w="64" h="20" bg="primary.500" rounded="md" shadow={3} />
-        <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
-        <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
-        <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
-        <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
-        <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
-        <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
-        <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
-        <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
-        <Center w="64" h="20" bg="emerald.500" rounded="md" shadow={3} />
+        <Center w="full" h="20" bg="primary.500" rounded="md" shadow={3} />
+        <Center w="full" h="20" bg="emerald.500" rounded="md" shadow={3} />
+        <Center w="full" h="20" bg="emerald.500" rounded="md" shadow={3} />
+        <Center w="full" h="20" bg="emerald.500" rounded="md" shadow={3} />
+        <Center w="full" h="20" bg="emerald.500" rounded="md" shadow={3} />
+        <Center w="full" h="20" bg="emerald.500" rounded="md" shadow={3} />
+        <Center w="full" h="20" bg="emerald.500" rounded="md" shadow={3} />
+        <Center w="full" h="20" bg="emerald.500" rounded="md" shadow={3} />
+        <Center w="full" h="20" bg="emerald.500" rounded="md" shadow={3} />
+        <Center w="full" h="20" bg="emerald.500" rounded="md" shadow={3} />
       </VStack>
     </TopBar>
   );

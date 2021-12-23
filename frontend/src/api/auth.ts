@@ -1,7 +1,9 @@
 import {config, displayName} from '../../app.json';
+import { ISignupUser } from '../redux/auth/state';
 
 export const fetchLogin = async (phone: string, password: string) => {
-    const resp = await fetch(`${config.BACKEND_URL}/users/login`, {
+    console.log(phone)
+    const resp = await fetch(`${config.BACKEND_URL}/api/users/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -21,3 +23,16 @@ export const fetchUser = async (token: string) => {
     })
     return resp;
 }
+
+export const fetchRegister = async (signupUser: ISignupUser) => {
+  console.log(signupUser)
+  const resp = await fetch(`${config.BACKEND_URL}/api/users`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(signupUser),
+  });
+
+  return resp;
+};

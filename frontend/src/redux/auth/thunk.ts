@@ -1,12 +1,13 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dispatch } from "redux";
-import { fetchLogin, fetchUser } from '../../api/auth';
-import { loginFailed, loginSuccess, logout } from './actions';
+import { fetchLogin, fetchRegister, fetchUser } from '../../api/auth';
+import { loginFailed, loginSuccess, logout, registerFailed, registerSuccess } from './actions';
+import { ISignupUser } from './state';
 
-export function loginThunk(phone: string, password: string) {
+export function loginThunk(email: string, password: string) {
     return async (dispatch: Dispatch<any>) => {
         try {
-            const resp = await fetchLogin(phone, password);
+            const resp = await fetchLogin(email, password);
             const result = await resp.json();
 
             if (resp.status !== 200) {
@@ -56,5 +57,30 @@ export function logoutThunk() {
     return async (dispatch: Dispatch<any>) => {
         await AsyncStorage.removeItem('token')
         dispatch(logout())
+    }
+}
+
+export function signupThunk(signupUser: ISignupUser) {
+    return async (dispatch: Dispatch<any>) => {
+        try {
+            const resp = await fetchRegister(signupUser);
+            const result = await resp.json();
+
+            if (resp.status !== 200) {
+                return dispatch(registerFailed(result.error))
+            }
+
+            if (!result.token) {
+                return dispatch(registerFailed('No Token'))
+            }
+
+            await AsyncStorage.setItem('token', result.token);
+            dispatch(registerSuccess(result.token, result.user));
+
+        } catch (e) {
+            console.error(e)
+            dispatch(registerFailed('Unknown Error'))
+        }
+
     }
 }

@@ -7,15 +7,15 @@ export const tables = Object.freeze({
   BANQUET_VENDOR_CAT: "banquet_vendor_cat",
   CHURCH_LIST: "church_list",
   BUDGET_CAT: "budgets_cat",
+  LOGISTICS_LIST_TEMPLATE: "logistics_list_template",
+  TO_DO_LIST_TEMPLATE: "to_do_list_template",
+  BIG_DAY_ITIN_TEMPLATE: "big_day_itin_template",
   BANQUET_VENDOR_LIST: "banquet_vendor_list",
   WEDDING_EVENT: "wedding_event",
   USER_INFO: "user_info",
   WEDDING_EVENT_USER: "wedding_event_user",
   WEDDING_LOGISTICS: "wedding_logistics",
   BUDGET_LIST: "budgets_list",
-  LOGISTICS_LIST_TEMPLATE: "logistics_list_template",
-  TO_DO_LIST_TEMPLATE: "to_do_list_template",
-  BIG_DAY_ITIN_TEMPLATE: "big_day_itin_template",
 });
 
 export async function up(knex: Knex): Promise<void> {
@@ -44,7 +44,7 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable(tables.CHURCH_LIST, (table) => {
     table.increments();
-    table.string("church_name").notNullable().unique();
+    table.string("name").notNullable().unique();
   });
 
   await knex.schema.createTable(tables.BUDGET_CAT, (table) => {
@@ -52,10 +52,23 @@ export async function up(knex: Knex): Promise<void> {
     table.string("budget_cat").notNullable().unique();
   });
 
+  await knex.schema.createTable(tables.LOGISTICS_LIST_TEMPLATE, (table) => {
+    table.increments();
+    table.string("logistics_example");
+  });
+
+  await knex.schema.createTable(tables.TO_DO_LIST_TEMPLATE, (table) => {
+    table.increments();
+    table.string("to_do_example");
+  });
+
+  await knex.schema.createTable(tables.BIG_DAY_ITIN_TEMPLATE, (table) => {
+    table.increments();
+    table.string("itin_example");
+  });
+
   await knex.schema.createTable(tables.BANQUET_VENDOR_LIST, (table) => {
     table.increments();
-    table.integer("event_id").unsigned();
-    table.foreign("event_id").references(`${tables.LOGISTICS_LIST_TEMPLATE}.id`);
     table.string("vendor_name").notNullable().unique();
     table.string("vendor_location").notNullable();
     table.integer("banquet_cat_id").unsigned();
@@ -80,7 +93,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string("email").notNullable().unique();
     table.string("password").notNullable();
     table.string("phone", 8).notNullable().unique();
-    table.integer("district_id").unsigned();
+    table.integer("district_id").notNullable().unsigned();
     table.foreign("district_id").references(`${tables.HK_DISTRICT}.id`);
     table.string("gender", 1).notNullable();
   });
@@ -117,20 +130,6 @@ export async function up(knex: Knex): Promise<void> {
     table.date("payment_date").notNullable();
   });
 
-  await knex.schema.createTable(tables.LOGISTICS_LIST_TEMPLATE, (table) => {
-    table.increments();
-    table.string("logistics_example");
-  });
-
-  await knex.schema.createTable(tables.TO_DO_LIST_TEMPLATE, (table) => {
-    table.increments();
-    table.string("to_do_example");
-  });
-
-  await knex.schema.createTable(tables.BIG_DAY_ITIN_TEMPLATE, (table) => {
-    table.increments();
-    table.string("itin_example");
-  });
 }
 
 export async function down(knex: Knex): Promise<void> {
@@ -138,7 +137,7 @@ export async function down(knex: Knex): Promise<void> {
     const reversedTableArr = Object.values(tableObj).reverse();
 
     for (let i = 0; i < reversedTableArr.length; i++) {
-      await knex.schema.dropTable(`TRUNCATE ${reversedTableArr[i]} RESTART IDENTITY CASCADE`);
+      await knex.raw(`TRUNCATE ${reversedTableArr[i]} RESTART IDENTITY CASCADE`);
     }
   }
 

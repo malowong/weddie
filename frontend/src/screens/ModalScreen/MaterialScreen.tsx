@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Text } from 'native-base';
+import { Button, Checkbox, Text } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -42,17 +42,13 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
                 params: {
                   id: material.id,
                   itemName: material.itemName,
-                  amount: material.amount,
+                  remarks: material.remarks,
                 },
               })
             }
           >
-            <Text fontSize={19}>{material.itemName}</Text>
-            {material.amount ? (
-              <Text fontSize={19}>${material.amount}</Text>
-            ) : (
-              <Text fontSize={19}>NA</Text>
-            )}
+            <Text fontSize={20}>{material.itemName}</Text>
+            <Checkbox colorScheme="green" value={''} aria-label="Attend" />
           </TouchableOpacity>
         );
       })}
@@ -67,7 +63,7 @@ const materialStyles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     marginHorizontal: 20,
-    marginTop: 3,
+    marginTop: 5,
   },
   addButton: {
     marginBottom: 10,

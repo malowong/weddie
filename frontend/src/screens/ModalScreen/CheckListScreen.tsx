@@ -45,8 +45,8 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
             }
           >
             <View style={todoStyles.tableRow}>
-              <Text fontSize={18}>{todoItem.itemName}</Text>
-              <Text fontSize={18}>
+              <Text fontSize={17}>{todoItem.itemName}</Text>
+              <Text fontSize={17}>
                 {todoItem.dueDate.toDateString().slice(4)}
               </Text>
             </View>
@@ -63,7 +63,11 @@ const todoStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginTop: 15,
-    marginHorizontal: 15,
+    marginTop: 16,
+    marginHorizontal: 10,
+    borderWidth: 1,
+    borderRadius: 15,
+    paddingVertical: 10,
+    paddingHorizontal: 15,
   },
 });

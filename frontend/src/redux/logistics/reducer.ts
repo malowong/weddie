@@ -6,11 +6,11 @@ const initialState: ILogisticsState = {
   materialList: [
     {
       id: 1,
-      itemName: '攝影師',
-      amount: 5000,
+      itemName: '花球',
+      remarks: '電話 61728374',
     },
-    { id: 2, itemName: '大襟姐', amount: 3000 },
-    { id: 3, itemName: '花球' },
+    { id: 2, itemName: '大襟姐', remarks: 'ling姐' },
+    { id: 3, itemName: '婚攝' },
   ],
 };
 

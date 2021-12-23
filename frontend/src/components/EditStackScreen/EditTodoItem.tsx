@@ -108,7 +108,7 @@ export function EditTodoItem({ route, navigation }: any) {
         />
 
         <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-          提交
+          更改
         </Button>
       </View>
     </CreateAndEditTopBar>

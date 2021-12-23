@@ -4,7 +4,7 @@ import { club } from "./dataset/club_info";
 import { hotel } from "./dataset/hotel_info";
 import { restaurant } from "./dataset/restaurant_info";
 import { others } from "./dataset/others_info";
-import * as dataset from "./dataset/reamain_tables_seeds";
+import * as dataset from "./dataset/miscellaneous_seeds";
 import { tables } from "../utils/tables";
 
 export async function seed(knex: Knex): Promise<void> {

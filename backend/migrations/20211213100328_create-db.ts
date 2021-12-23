@@ -1,6 +1,6 @@
 import { Knex } from "knex";
 
-export const tables = Object.freeze({
+const tables = Object.freeze({
   HK_DISTRICT: "hk_district",
   USER_IN_OUT_TIME: "user_in_out_time",
   ROLE: "role",

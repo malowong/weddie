@@ -1,8 +1,7 @@
-import { Button, Checkbox, Text } from 'native-base';
+import { Button, Text } from 'native-base';
 import React, { useEffect } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { styles } from '../../../style';
 import TopBar from '../../components/TopBar';
 import { IRootState } from '../../redux/store';
 import { getTodoListThunk } from '../../redux/todo/thunk';
@@ -36,6 +35,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
               navigation.navigate('EditStackScreen', {
                 screen: 'EditTodoItem',
                 params: {
+                  id: todoItem.id,
                   itemName: todoItem.itemName,
                   dueDate: todoItem.dueDate.toDateString().slice(4),
                   remarks: todoItem.remarks,

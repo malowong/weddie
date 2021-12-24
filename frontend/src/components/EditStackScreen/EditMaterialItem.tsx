@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, TextArea } from 'native-base';
+import { Input, Button, Text, TextArea, Modal, FormControl } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
@@ -15,6 +15,7 @@ export function EditMaterialItem({ route, navigation }: any) {
   }
 
   const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
   const {
     control,
     handleSubmit,
@@ -37,6 +38,13 @@ export function EditMaterialItem({ route, navigation }: any) {
   const onSubmit = (data: any) => {
     data.amount = parseInt(data.amount);
     console.log(data);
+  };
+
+  const deleteMaterialItem = () => {
+    const itemId = JSON.stringify(route.params.id);
+    console.log(itemId);
+    console.log('hello');
+    navigation.goBack();
   };
 
   return (
@@ -81,9 +89,46 @@ export function EditMaterialItem({ route, navigation }: any) {
           name="remarks"
         />
 
-        <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-          提交
-        </Button>
+        <View style={editMaterialStyles.buttonRow}>
+          <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
+            提交
+          </Button>
+          <Button
+            colorScheme="danger"
+            marginTop={20}
+            onPress={() => setShowModal(true)}
+          >
+            移除物資
+          </Button>
+
+          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+            <Modal.Content maxWidth="400px">
+              <Modal.Header>確定移除物資？</Modal.Header>
+              <Modal.Footer>
+                <Button.Group space={2}>
+                  <Button
+                    variant="ghost"
+                    colorScheme="blueGray"
+                    onPress={() => {
+                      setShowModal(false);
+                    }}
+                  >
+                    取消
+                  </Button>
+                  <Button
+                    colorScheme="danger"
+                    onPress={() => {
+                      deleteMaterialItem();
+                      setShowModal(false);
+                    }}
+                  >
+                    確定
+                  </Button>
+                </Button.Group>
+              </Modal.Footer>
+            </Modal.Content>
+          </Modal>
+        </View>
       </View>
     </CreateAndEditTopBar>
   );
@@ -92,5 +137,10 @@ export function EditMaterialItem({ route, navigation }: any) {
 const editMaterialStyles = StyleSheet.create({
   input: {
     borderWidth: 2,
+  },
+  buttonRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
 });

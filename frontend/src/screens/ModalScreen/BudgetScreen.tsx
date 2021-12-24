@@ -56,6 +56,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
                 navigation.navigate('EditStackScreen', {
                   screen: 'EditBudgetItem',
                   params: {
+                    id: expenditure.id,
                     category: expenditure.category,
                     amount: expenditure.amount,
                   },

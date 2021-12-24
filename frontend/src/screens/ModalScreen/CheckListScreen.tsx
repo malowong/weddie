@@ -37,7 +37,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
                 params: {
                   id: todoItem.id,
                   itemName: todoItem.itemName,
-                  dueDate: todoItem.dueDate.toDateString().slice(4),
+                  dueDate: todoItem.dueDate.toDateString(),
                   remarks: todoItem.remarks,
                   status: todoItem.status,
                 },
@@ -45,7 +45,9 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
             }
           >
             <View style={todoStyles.tableRow}>
-              <Text fontSize={17}>{todoItem.itemName}</Text>
+              <Text fontSize={17}>
+                {todoItem.itemName}: {todoItem.status.toString()}
+              </Text>
               <Text fontSize={17}>
                 {todoItem.dueDate.toDateString().slice(4)}
               </Text>

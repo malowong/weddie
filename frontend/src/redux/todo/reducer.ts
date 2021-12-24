@@ -1,6 +1,6 @@
 import produce from 'immer';
 import { ITodoAction } from './action';
-import { ITodoState, Status } from './state';
+import { ITodoState } from './state';
 
 const initialState: ITodoState = {
   todoList: [
@@ -9,21 +9,21 @@ const initialState: ITodoState = {
       itemName: '訂花',
       dueDate: new Date(2022, 2, 20),
       remarks: '帶$500',
-      status: Status.Pending,
+      status: false,
     },
     {
       id: 2,
       itemName: '試西裝',
       dueDate: new Date(2022, 3, 12),
       remarks: '32吋腰',
-      status: Status.Pending,
+      status: false,
     },
     {
       id: 3,
       itemName: '買戒指',
       dueDate: new Date(2022, 4, 5),
       remarks: '20克',
-      status: Status.Pending,
+      status: true,
     },
   ],
 };

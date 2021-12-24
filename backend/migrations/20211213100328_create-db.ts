@@ -30,6 +30,7 @@ export async function up(knex: Knex): Promise<void> {
     table.integer("wedding_event_id").unsigned();
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.string("action").notNullable();
+    table.string("remarks");
     table.date("exec_date").notNullable();
     table.time("exec_time");
   });

@@ -1,6 +1,6 @@
 export interface ICreateEvent {
-  groomname: string,
-  bridename: string,
+  eventName: string,
+  role: string,
   bigday: Date,
   budget: string,
 };

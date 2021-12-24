@@ -17,7 +17,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
   }, [dispatch]);
 
   return (
-    <TopBar pageName="物資管理">
+    <TopBar pageName="物資管理" show='true' navigate="AddMaterialItem">
       <TouchableOpacity style={materialStyles.addButton}>
         <Button
           colorScheme="secondary"

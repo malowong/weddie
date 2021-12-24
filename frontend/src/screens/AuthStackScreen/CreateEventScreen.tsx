@@ -24,9 +24,21 @@ import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { ICreateEvent } from '../../redux/event/state';
+import { createEventThunk } from '../../redux/event/thunk';
+import { useDispatch } from 'react-redux';
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
+import { fetchCreateEvent } from '../../api/event';
 
 export default function CreateEventScreen({ navigation }: { navigation: any }) {
   const [date, setDate] = useState<Date>(new Date());
+
+  const mutation = useMutation(fetchCreateEvent)
 
   const {
     control,
@@ -35,8 +47,8 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
     formState: { errors },
   } = useForm<ICreateEvent>({
     defaultValues: {
-      groomname: '',
-      bridename: '',
+      eventName: '',
+      role: '',
       bigday: date,
       budget: '',
     },
@@ -52,12 +64,8 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
   function onSubmit(data: ICreateEvent) {
     data.bigday = date;
     console.log('submit form data:', data);
+    mutation.mutate(data)
   }
-
-  const onDateChange = (selectedDate: Date) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
-  };
 
   return (
     <>
@@ -82,7 +90,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
           <VStack space={3} mt="5">
             <View>
               <Controller
-                name="groomname"
+                name="eventName"
                 control={control}
                 rules={{
                   required: true,
@@ -102,14 +110,14 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                   </>
                 )}
               />
-              {errors.groomname?.type === 'required' && (
+              {errors.eventName?.type === 'required' && (
                 <Text color="danger.500">請填寫婚禮名稱。</Text>
               )}
-              {errors.groomname?.type === 'maxLength' && (
+              {errors.eventName?.type === 'maxLength' && (
                 <Text color="danger.500">婚禮名稱不可多於二十個字符。</Text>
               )}
               <Controller
-                name="bridename"
+                name="role"
                 control={control}
                 rules={{
                   required: true,
@@ -136,10 +144,10 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                   </>
                 )}
               />
-              {errors.bridename?.type === 'required' && (
+              {errors.role?.type === 'required' && (
                 <Text color="danger.500">請填寫新娘的名字。</Text>
               )}
-              {errors.bridename?.type === 'maxLength' && (
+              {errors.role?.type === 'maxLength' && (
                 <Text color="danger.500">新娘的名字不可多於八個字符。</Text>
               )}
               <Controller
@@ -194,7 +202,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                   </>
                 )}
               />
-              {errors.bridename?.type === 'required' && (
+              {errors.budget?.type === 'required' && (
                 <Text color="danger.500">請填寫結婚預算。</Text>
               )}
               <Button

@@ -11,7 +11,7 @@ interface ITopBarProps {
   show: any;
 }
 
-export default function TopBar(props: ITopBarProps) {
+export default function HomeScreenTopBar(props: ITopBarProps) {
 
   const navigation: any = useNavigation();
   
@@ -83,9 +83,6 @@ export default function TopBar(props: ITopBarProps) {
         }}
       >
         <Box safeAreaX={3} safeAreaY={1}>
-          <Heading size="xl" textAlign="left" mb="3">
-            {props.pageName}
-          </Heading>
           {props.children}
         </Box>
       </Animated.ScrollView>

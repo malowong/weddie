@@ -36,7 +36,7 @@ export default function SettingScreen() {
   }, [watch]);
 
   return (
-    <TopBar pageName="用戶設定">
+    <TopBar pageName="用戶設定" show="false" navigate="">
       <View
         display="flex"
         flexDirection="column"

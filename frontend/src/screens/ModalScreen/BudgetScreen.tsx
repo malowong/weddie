@@ -22,7 +22,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
   }, [dispatch]);
 
   return (
-    <TopBar pageName="婚禮預算">
+    <TopBar pageName="婚禮預算" show="true" navigate="AddBudgetItem">
       <View mb={5} mt={3}>
         <Text fontSize={22}>總預算: {budget}</Text>
         <Text fontSize={22}>總支出: {totalExpenditure}</Text>

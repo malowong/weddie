@@ -6,6 +6,9 @@ export class GuestService {
   getGuestList = async () => {
     const guestList = "TODO";
 
+    this.knex.raw('SELECT * FROM user_info')
+
+
     return guestList;
   };
 }

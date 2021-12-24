@@ -16,7 +16,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   }, [dispatch]);
 
   return (
-    <TopBar pageName="賓客名單">
+    <TopBar pageName="賓客名單" show="true" navigate="AddGuest">
       <View>
         <Button
           colorScheme="secondary"

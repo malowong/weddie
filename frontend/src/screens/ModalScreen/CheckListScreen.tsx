@@ -16,7 +16,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
   }, [dispatch]);
 
   return (
-    <TopBar pageName="待辦事項">
+    <TopBar pageName="待辦事項" show="true" navigate="AddTodoItem">
       <Button
         colorScheme="secondary"
         onPress={() =>

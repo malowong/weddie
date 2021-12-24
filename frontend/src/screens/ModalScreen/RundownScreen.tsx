@@ -6,7 +6,7 @@ import TopBar from '../../components/TopBar';
 
 export default function RundownScreen() {
   return (
-    <TopBar pageName="當日流程">
+    <TopBar pageName="當日流程" show="true" navigate="AddTodoItem">
       <Text style={styles.baseText}>當日流程當日流程當日流程當日流程</Text>
     </TopBar>
   );

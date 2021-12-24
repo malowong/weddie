@@ -2,9 +2,7 @@ import React from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text, Icon, TextArea } from 'native-base';
-import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch } from 'react-redux';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useNavigation } from '@react-navigation/native';
 

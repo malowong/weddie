@@ -15,9 +15,6 @@ const tables = Object.freeze({
   WEDDING_USER: "wedding_user",
   WEDDING_TO_DO_LIST: "wedding_to_do_list",
   WEDDING_LOGISTICS: "wedding_logistics",
-<<<<<<< HEAD
-  BUDGET_LIST: "budgets_list",
-=======
   WEDDING_BUDGET_LIST: "wedding_budget_list",
   ITINERARY_LIST: "itinerary_list",
   WEDDING_USER_ITINERARY: "wedding_user_itinerary",
@@ -25,7 +22,6 @@ const tables = Object.freeze({
   TO_DO_LIST_TEMPLATE: "to_do_list_template",
   ITIN_TEMPLATE: "itin_template",
   BUDGET_TEMPLATE: "budget_template",
->>>>>>> 611e0e32ceffabd0150b40d96b4d171c8066d2cd
 });
 
 export async function up(knex: Knex): Promise<void> {
@@ -96,11 +92,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string("email").notNullable().unique();
     table.string("password").notNullable();
     table.string("phone", 8).notNullable().unique();
-<<<<<<< HEAD
-    table.integer("district_id").notNullable().unsigned();
-=======
     table.integer("district_id").unsigned().notNullable();
->>>>>>> 611e0e32ceffabd0150b40d96b4d171c8066d2cd
     table.foreign("district_id").references(`${tables.HK_DISTRICT}.id`);
     table.string("gender", 1).notNullable();
   });
@@ -142,8 +134,6 @@ export async function up(knex: Knex): Promise<void> {
     table.date("payment_date").notNullable();
   });
 
-<<<<<<< HEAD
-=======
   await knex.schema.createTable(tables.ITINERARY_LIST, (table) => {
     table.increments();
     table.string("itinerary").notNullable();
@@ -183,7 +173,6 @@ export async function up(knex: Knex): Promise<void> {
     table.string("budget_cat_id_temp");
     table.string("budget_description_temp");
   });
->>>>>>> 611e0e32ceffabd0150b40d96b4d171c8066d2cd
 }
 
 export async function down(knex: Knex): Promise<void> {

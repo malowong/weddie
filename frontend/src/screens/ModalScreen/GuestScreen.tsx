@@ -59,6 +59,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
                 navigation.navigate('EditStackScreen', {
                   screen: 'EditGuest',
                   params: {
+                    id: guest.id,
                     name: guest.name,
                     phoneNumber: guest.phoneNumber,
                     relationship: guest.relationship,

@@ -1,19 +1,11 @@
-import { useNavigation } from '@react-navigation/native';
 import {
   Button,
   Text,
-  NativeBaseProvider,
   Center,
   Box,
-  FormControl,
   Heading,
-  HStack,
   Input,
-  Link,
   VStack,
-  TextArea,
-  WarningOutlineIcon,
-  Stack,
   Icon,
   View,
   Radio,
@@ -61,12 +53,24 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
     return () => sub.unsubscribe();
   }, [watch, date]);
 
+<<<<<<< HEAD
   function onSubmit(data: ICreateEvent) {
+=======
+  function onSubmit(data: CreateEventFormState) {
+>>>>>>> 611e0e32ceffabd0150b40d96b4d171c8066d2cd
     data.bigday = date;
     console.log('submit form data:', data);
     mutation.mutate(data)
   }
 
+<<<<<<< HEAD
+=======
+  const onDateChange = (selectedDate: Date) => {
+    const currentDate = selectedDate;
+    setDate(currentDate);
+  };
+
+>>>>>>> 611e0e32ceffabd0150b40d96b4d171c8066d2cd
   return (
     <>
       <Box safeAreaTop backgroundColor="#f2f2f2" />
@@ -177,7 +181,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                   }}
                 />
               </View>
-              {date.getDate() < new Date().getDate() && (
+              {date.toISOString() < new Date().toISOString() && (
                 <Text color="danger.500">請選擇正確的日子。</Text>
               )}
               <Controller

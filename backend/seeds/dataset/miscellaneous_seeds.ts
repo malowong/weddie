@@ -20,14 +20,15 @@ export const hk_district = [
 ];
 
 export const role = [
-  { role: "新郎" },
-  { role: "新娘" },
-  { role: "兄弟" },
-  { role: "姊妹" },
-  { role: "攝影師" },
-  { role: "司儀" },
-  { role: "表演者" },
-  { role: "大妗姐" },
+  { id: 1, role: "新郎" },
+  { id: 2, role: "新娘" },
+  { id: 3, role: "兄弟" },
+  { id: 4, role: "姊妹" },
+  { id: 5, role: "攝影師" },
+  { id: 6, role: "司儀" },
+  { id: 7, role: "表演者" },
+  { id: 8, role: "大妗姐" },
+  { id: 9, role: "化妝師" },
 ];
 
 export const banquet_cat = [
@@ -38,15 +39,54 @@ export const banquet_cat = [
 ];
 
 export const budget_cat = [
-  { budget_cat: "習俗" },
-  { budget_cat: "禮服及首飾" },
-  { budget_cat: "婚宴" },
-  { budget_cat: "行禮" },
-  { budget_cat: "美容" },
-  { budget_cat: "攝影" },
-  { budget_cat: "新居" },
-  { budget_cat: "蜜月" },
-  { budget_cat: "其他" },
+  {
+    id: "1",
+    budget_cat: "攝影",
+  },
+  {
+    id: "2",
+    budget_cat: "婚前中式禮儀",
+  },
+  {
+    id: "3",
+    budget_cat: "派帖",
+  },
+  {
+    id: "4",
+    budget_cat: "美容",
+  },
+  {
+    id: "5",
+    budget_cat: "早上敬茶、出門入門",
+  },
+  {
+    id: "6",
+    budget_cat: "証婚",
+  },
+  {
+    id: "7",
+    budget_cat: "晚上婚宴",
+  },
+  {
+    id: "8",
+    budget_cat: "婚禮服飾",
+  },
+  {
+    id: "9",
+    budget_cat: "婚禮當日化妝",
+  },
+  {
+    id: "10",
+    budget_cat: "交通",
+  },
+  {
+    id: "11",
+    budget_cat: "回門",
+  },
+  {
+    id: "12",
+    budget_cat: "其他",
+  },
 ];
 
 export const user1 = [

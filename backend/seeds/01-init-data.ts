@@ -20,7 +20,7 @@ export async function seed(knex: Knex): Promise<void> {
     await knex(tables.BANQUET_VENDOR_LIST).insert(restaurant);
     await knex(tables.BANQUET_VENDOR_LIST).insert(others);
     await knex(tables.CHURCH_LIST).insert(church);
-    await knex(tables.BUDGET_CAT).insert(dataset.banquet_cat);
+    await knex(tables.BUDGET_CAT).insert(dataset.budget_cat);
     await knex(tables.HK_DISTRICT).insert(dataset.hk_district);
     await knex(tables.ROLE).insert(dataset.role);
     await knex(tables.USER_INFO).insert(dataset.user1);

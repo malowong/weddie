@@ -6,9 +6,6 @@ const tables = Object.freeze({
   BANQUET_VENDOR_CAT: "banquet_vendor_cat",
   CHURCH_LIST: "church_list",
   BUDGET_CAT: "budgets_cat",
-  LOGISTICS_LIST_TEMPLATE: "logistics_list_template",
-  TO_DO_LIST_TEMPLATE: "to_do_list_template",
-  BIG_DAY_ITIN_TEMPLATE: "big_day_itin_template",
   BANQUET_VENDOR_LIST: "banquet_vendor_list",
   WEDDING_EVENT: "wedding_event",
   USER_INFO: "user_info",
@@ -48,21 +45,6 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable(tables.BUDGET_CAT, (table) => {
     table.increments();
     table.string("budget_cat").notNullable().unique();
-  });
-
-  await knex.schema.createTable(tables.LOGISTICS_LIST_TEMPLATE, (table) => {
-    table.increments();
-    table.string("logistics_example");
-  });
-
-  await knex.schema.createTable(tables.TO_DO_LIST_TEMPLATE, (table) => {
-    table.increments();
-    table.string("to_do_example");
-  });
-
-  await knex.schema.createTable(tables.BIG_DAY_ITIN_TEMPLATE, (table) => {
-    table.increments();
-    table.string("itin_example");
   });
 
   await knex.schema.createTable(tables.BANQUET_VENDOR_LIST, (table) => {
@@ -156,7 +138,7 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable(tables.TO_DO_LIST_TEMPLATE, (table) => {
     table.increments();
-    table.string("days_prior_wedding_temp");
+    table.string("days_prior_wedding");
     table.string("to_do_temp");
   });
 
@@ -178,9 +160,12 @@ export async function up(knex: Knex): Promise<void> {
 export async function down(knex: Knex): Promise<void> {
   async function dropTable(tableObj: Object) {
     const reversedTableArr = Object.values(tableObj).reverse();
+    console.log(reversedTableArr)
 
     for (let i = 0; i < reversedTableArr.length; i++) {
-      await knex.raw(`TRUNCATE ${reversedTableArr[i]} RESTART IDENTITY CASCADE`);
+      await knex.schema.dropTable(reversedTableArr[i])
+      // truncate is only for deleting data, not drop table
+      // await knex.raw(`TRUNCATE ${reversedTableArr[i]} RESTART IDENTITY CASCADE`);
     }
   }
 

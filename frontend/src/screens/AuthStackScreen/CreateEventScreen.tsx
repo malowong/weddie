@@ -32,11 +32,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
 
   const mutation = useMutation(fetchCreateEvent)
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
+  const {control, handleSubmit, watch, formState: { errors },
   } = useForm<ICreateEvent>({
     defaultValues: {
       eventName: '',
@@ -53,24 +49,12 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
     return () => sub.unsubscribe();
   }, [watch, date]);
 
-<<<<<<< HEAD
   function onSubmit(data: ICreateEvent) {
-=======
-  function onSubmit(data: CreateEventFormState) {
->>>>>>> 611e0e32ceffabd0150b40d96b4d171c8066d2cd
     data.bigday = date;
     console.log('submit form data:', data);
     mutation.mutate(data)
   }
 
-<<<<<<< HEAD
-=======
-  const onDateChange = (selectedDate: Date) => {
-    const currentDate = selectedDate;
-    setDate(currentDate);
-  };
-
->>>>>>> 611e0e32ceffabd0150b40d96b4d171c8066d2cd
   return (
     <>
       <Box safeAreaTop backgroundColor="#f2f2f2" />

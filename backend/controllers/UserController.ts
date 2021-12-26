@@ -9,7 +9,7 @@ export class UserController {
   login = async (req: Request, res: Response) => {
     try {
       console.log(req.body)
-      if (!req.body.phone || !req.body.password) {
+      if (!req.body.email || !req.body.password) {
         res.status(401).json({ msg: "Email/Password are null" });
         return;
       }

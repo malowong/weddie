@@ -29,11 +29,12 @@ const userData = {
   phone: '12341234',
 };
 
-const todoData = [
+const rundownData = [
   {
     id: 1,
-    item: '試衫',
-    detail: '去搵amy試下size，順便問下幾多錢',
+    time: '2022-12-24T08:00:00.230Z',
+    item: '到場',
+    detail: '買早餐上新郎屋企',
     date_to_wedding: '30',
   },
 ];

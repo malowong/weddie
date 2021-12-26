@@ -91,13 +91,15 @@ export const budget_cat = [
   },
 ];
 
-export const user1 = [
-  {
-    nickname: "Den",
-    email: "dendenden@gamil.com",
-    password: hashPassword("12345678"),
-    phone: "12345678",
-    district_id: "12",
-    gender: "M",
-  }
-];
+// cannot use await hash function due to unknown reason, seed user info by insomnia
+
+// export const user1 = [
+//   {
+//     nickname: "Den",
+//     email: "dendenden@gamil.com",
+//     password: await hashPassword("12345678"),
+//     phone: "12345678",
+//     district_id: "12",
+//     gender: "M",
+//   }
+// ];

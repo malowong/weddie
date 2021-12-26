@@ -21,19 +21,18 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useMutation, useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { fetchRegister } from '../../api/auth';
 import { ISignupUser } from '../../redux/auth/state';
 import { signupThunk } from '../../redux/auth/thunk';
 import { IRootState } from '../../redux/store';
+import { config } from '../../../app.json';
 
+const axios = require('axios').default;
 
 export default function SignupScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector(
-    (state: IRootState) => state.auth.isAuthenticated
-  );
-
-  let [service, setService] = React.useState('');
 
   const {
     control,
@@ -52,21 +51,18 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
   });
 
   useEffect(() => {
-    if (isAuthenticated) {
-      navigation.navigate('ChooseScreen');
-    }
-  }, [isAuthenticated, navigation]);
-
-  useEffect(() => {
     let sub = watch((data) => {
       console.log('update form data:', data);
     });
     return () => sub.unsubscribe();
   }, [watch]);
 
+  const mutation: any = useMutation(fetchRegister)
+
   function onSubmit(data: ISignupUser) {
     console.log('submit form data:', data);
-    dispatch(signupThunk(data));
+    mutation.mutate(data);
+    // dispatch(signupThunk(data));
   }
 
   return (
@@ -89,6 +85,13 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
           >
             註冊
           </Heading>
+          <View>
+            {mutation.isError ? (
+              <Text>An error occurred: {mutation.error.message}</Text>
+            ) : null}
+  
+            {mutation.isSuccess ? <Text>Todo added!</Text> : null}
+          </View>
 
           <VStack space={3} mt="5">
             <View>
@@ -253,23 +256,24 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
                       fontSize="md"
                       onValueChange={onChange}
                     >
-                      <Select.Item label="黃大仙區" value="1" />
-                      <Select.Item label="油尖旺區" value="2" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
-                      <Select.Item label="中西區" value="3" />
+                      <Select.Item label="中西區" value="1" />
+                      <Select.Item label="東區" value="2" />
+                      <Select.Item label="南區" value="3" />
+                      <Select.Item label="灣仔區" value="4" />
+                      <Select.Item label="九龍城區" value="5" />
+                      <Select.Item label="觀塘區" value="6" />
+                      <Select.Item label="深水埗區" value="7" />
+                      <Select.Item label="黃大仙區" value="8" />
+                      <Select.Item label="油尖旺區" value="9" />
+                      <Select.Item label="離島區" value="10" />
+                      <Select.Item label="葵青區" value="11" />
+                      <Select.Item label="北區" value="12" />
+                      <Select.Item label="西貢區" value="13" />
+                      <Select.Item label="沙田區" value="14" />
+                      <Select.Item label="大埔區" value="15" />
+                      <Select.Item label="荃灣區" value="16" />
+                      <Select.Item label="屯門區" value="17" />
+                      <Select.Item label="元朗區" value="18" />
                     </Select>
                   </>
                 )}
@@ -281,8 +285,8 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
               <Button
                 mt="4"
                 // colorScheme="indigo"
-                onPress={() => navigation.navigate('ChooseScreen')}
-                // onPress={handleSubmit(onSubmit)}
+                // onPress={() => navigation.navigate('ChooseScreen')}
+                onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
                   註冊

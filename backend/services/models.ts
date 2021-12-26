@@ -9,8 +9,8 @@ export interface SignupUser {
     password: string,
     nickname: string,
     phone: string,
-    gender: 'M' | 'F' | '',
-    district_id: number | null,
+    gender: 'M' | 'F',
+    district_id: string,
 }
 
 declare global {

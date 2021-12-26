@@ -38,6 +38,7 @@ export class UserController {
   signup = async (req: Request, res: Response) => {
     try {
       console.log(req.body);
+      console.log("hi")
 
       if (!req.body) {
         res.status(401).json({ msg: "Request are null" });
@@ -54,6 +55,8 @@ export class UserController {
         gender,
         district_id: districtId,
       }
+
+      console.log(user)
 
       if (password.length < 8) {
         res.status(400).json({ message: "Password must contain at least 8 characters" });

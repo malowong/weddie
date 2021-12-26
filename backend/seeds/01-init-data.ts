@@ -10,6 +10,7 @@ import { itin_template } from "./dataset/template/itin_template";
 import { to_do_list_template } from "./dataset/template/to_do_list_template";
 import { logistics_list_template } from "./dataset/template/logistics_list_template";
 import { budget_template } from "./dataset/template/budget_template";
+import { hashPassword } from "../utils/hash";
 
 export async function seed(knex: Knex): Promise<void> {
   const trx = await knex.transaction();
@@ -23,7 +24,16 @@ export async function seed(knex: Knex): Promise<void> {
     await knex(tables.BUDGET_CAT).insert(dataset.budget_cat);
     await knex(tables.HK_DISTRICT).insert(dataset.hk_district);
     await knex(tables.ROLE).insert(dataset.role);
-    await knex(tables.USER_INFO).insert(dataset.user1);
+    await knex(tables.USER_INFO).insert([
+      {
+        nickname: "Den",
+        email: "dendenden@gamil.com",
+        password: await hashPassword("12345678"),
+        phone: "12345678",
+        district_id: "12",
+        gender: "M",
+      }
+    ]);
     await knex(tables.ITIN_TEMPLATE).insert(itin_template);
     await knex(tables.TO_DO_LIST_TEMPLATE).insert(to_do_list_template);
     await knex(tables.LOGISTICS_LIST_TEMPLATE).insert(logistics_list_template);

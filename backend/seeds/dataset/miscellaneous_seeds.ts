@@ -1,5 +1,3 @@
-import { hashPassword } from "../../utils/hash";
-
 export const hk_district = [
   { id: 1, residence_district: "中西區" },
   { id: 2, residence_district: "東區" },
@@ -90,16 +88,3 @@ export const budget_cat = [
     budget_cat: "其他",
   },
 ];
-
-// cannot use await hash function due to unknown reason, seed user info by insomnia
-
-// export const user1 = [
-//   {
-//     nickname: "Den",
-//     email: "dendenden@gamil.com",
-//     password: await hashPassword("12345678"),
-//     phone: "12345678",
-//     district_id: "12",
-//     gender: "M",
-//   }
-// ];

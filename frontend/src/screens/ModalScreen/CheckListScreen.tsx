@@ -16,17 +16,6 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
 
   return (
     <TopBar pageName="待辦事項" show="true" navigate="AddTodoItem">
-      <Button
-        colorScheme="secondary"
-        onPress={() =>
-          navigation.navigate('CreateStackScreen', {
-            screen: 'AddTodoItem',
-          })
-        }
-      >
-        新增
-      </Button>
-
       {todoList.map((todoItem) => {
         return (
           <TouchableOpacity

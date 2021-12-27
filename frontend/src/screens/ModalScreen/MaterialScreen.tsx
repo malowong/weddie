@@ -17,20 +17,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
   }, [dispatch]);
 
   return (
-    <TopBar pageName="物資管理" show='true' navigate="AddMaterialItem">
-      <TouchableOpacity style={materialStyles.addButton}>
-        <Button
-          colorScheme="secondary"
-          onPress={() =>
-            navigation.navigate('CreateStackScreen', {
-              screen: 'AddMaterialItem',
-            })
-          }
-        >
-          新增
-        </Button>
-      </TouchableOpacity>
-
+    <TopBar pageName="物資管理" show="true" navigate="AddMaterialItem">
       {materialList.map((material) => {
         return (
           <TouchableOpacity
@@ -64,8 +51,5 @@ const materialStyles = StyleSheet.create({
     alignItems: 'center',
     marginHorizontal: 20,
     marginTop: 5,
-  },
-  addButton: {
-    marginBottom: 10,
   },
 });

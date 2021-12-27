@@ -28,14 +28,14 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
                   itemName: todoItem.itemName,
                   dueDate: todoItem.dueDate.toDateString(),
                   remarks: todoItem.remarks,
-                  status: todoItem.status,
+                  isCompleted: todoItem.isCompleted,
                 },
               })
             }
           >
             <View style={todoStyles.tableRow}>
               <Text fontSize={17}>
-                {todoItem.itemName}: {todoItem.status.toString()}
+                {todoItem.itemName}: {todoItem.isCompleted.toString()}
               </Text>
               <Text fontSize={17}>
                 {todoItem.dueDate.toDateString().slice(4)}

@@ -16,19 +16,8 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   }, [dispatch]);
 
   return (
-    <TopBar pageName="賓客名單">
+    <TopBar pageName="賓客名單" show="true" navigate="AddGuest">
       <View>
-        <Button
-          colorScheme="secondary"
-          onPress={() =>
-            navigation.navigate('CreateStackScreen', {
-              screen: 'AddGuest',
-            })
-          }
-        >
-          新增
-        </Button>
-
         <View style={guestStyles.tableRow}>
           <Text style={[guestStyles.tableColumn, guestStyles.tableHeader]}>
             名稱

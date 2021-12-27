@@ -1,11 +1,16 @@
-import express from "express";
 import Knex from "knex";
-import { logger } from "./utils/logger";
-
-const app = express();
+import dotenv from 'dotenv';
+dotenv.config();
 
 import knexConfig from "./knexfile";
 export const knex = Knex(knexConfig[process.env.NODE_ENV || "development"]);
+
+import express from "express";
+import { logger } from "./utils/logger";
+
+const app = express();
+app.use(express.json());
+
 
 app.use((req, res, next) => {
   const cur = new Date().toISOString();

@@ -1,7 +1,32 @@
-import { VStack, Center, Box, Button, FormControl, Heading, HStack, Input, Link, Stack, Text, WarningOutlineIcon } from 'native-base';
-import React, { useState } from 'react';
+import {
+  VStack,
+  Center,
+  Box,
+  Button,
+  FormControl,
+  Heading,
+  HStack,
+  Input,
+  Link,
+  Stack,
+  Text,
+  WarningOutlineIcon,
+} from 'native-base';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store';
 
-export default function NotificationsScreen({ navigation }: { navigation: any }) {
+export default function NotificationsScreen({navigation,}: {navigation: any;}) {
+
+  const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigation.navigate('MainStackScreen');
+    }
+  }, [isAuthenticated, navigation]);
+
+  
   return (
     <Center flex={1} px="3">
       <Box safeArea w="90%">
@@ -22,8 +47,8 @@ export default function NotificationsScreen({ navigation }: { navigation: any })
             // colorScheme="indigo"
             onPress={() => navigation.navigate('LoginScreen')}
           >
-            <Text fontSize='lg' fontWeight='bold' color='white'>
-            登入
+            <Text fontSize="lg" fontWeight="bold" color="white">
+              登入
             </Text>
           </Button>
           <Button
@@ -31,11 +56,10 @@ export default function NotificationsScreen({ navigation }: { navigation: any })
             // colorScheme="indigo"
             onPress={() => navigation.navigate('SignupScreen')}
           >
-            <Text fontSize='lg' fontWeight='bold' color='white'>
-            註冊
+            <Text fontSize="lg" fontWeight="bold" color="white">
+              註冊
             </Text>
           </Button>
-          
         </VStack>
       </Box>
     </Center>

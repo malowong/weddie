@@ -39,7 +39,7 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable(tables.CHURCH_LIST, (table) => {
     table.increments();
-    table.string("church_name").notNullable().unique();
+    table.string("name").notNullable().unique();
   });
 
   await knex.schema.createTable(tables.BUDGET_CAT, (table) => {
@@ -138,7 +138,7 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable(tables.TO_DO_LIST_TEMPLATE, (table) => {
     table.increments();
-    table.string("days_prior_wedding_temp");
+    table.string("days_prior_wedding");
     table.string("to_do_temp");
   });
 
@@ -160,9 +160,12 @@ export async function up(knex: Knex): Promise<void> {
 export async function down(knex: Knex): Promise<void> {
   async function dropTable(tableObj: Object) {
     const reversedTableArr = Object.values(tableObj).reverse();
+    console.log(reversedTableArr)
 
     for (let i = 0; i < reversedTableArr.length; i++) {
-      await knex.schema.dropTable(`TRUNCATE ${reversedTableArr[i]} RESTART IDENTITY CASCADE`);
+      await knex.schema.dropTable(reversedTableArr[i])
+      // truncate is only for deleting data, not drop table
+      // await knex.raw(`TRUNCATE ${reversedTableArr[i]} RESTART IDENTITY CASCADE`);
     }
   }
 

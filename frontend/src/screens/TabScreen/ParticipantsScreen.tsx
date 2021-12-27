@@ -29,7 +29,7 @@ const participants = [
 
 export default function ParticipantsScreen() {
   return (
-    <TopBar pageName="人員名單">
+    <TopBar pageName="人員名單" show="true" navigate="editMaterialItem">
       <View>
         <View style={partiStyles.tableRow}>
           <Text style={partiStyles.tableColumn}>名字</Text>

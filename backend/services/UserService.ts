@@ -1,12 +1,14 @@
 import { Knex } from "knex";
 import { tables } from "../utils/tables";
-import { User } from "./models";
+import { SignupUser, User } from "./models";
+// import { tables } from "../utils/tables";
+
 
 export class UserService {
   constructor(private knex: Knex) {}
 
-  async getUserByPhone(phone: string) {
-    const user = await this.knex<User>(tables.USER_INFO).where({ phone: phone }).first();
+  async getUserByEmail(email: string) {
+    const user = await this.knex<User>(tables.USER_INFO).where({ email: email }).first()
     return user;
   }
 
@@ -14,4 +16,11 @@ export class UserService {
     const user = await this.knex<User>(tables.USER_INFO).where({ id }).first();
     return user;
   }
+
+  insertNewUser = async (newUser: SignupUser) => {
+    console.log(newUser)
+    const newUserID = await this.knex(tables.USER_INFO).insert(newUser).returning("id");
+    return newUserID;
+  };
+
 }

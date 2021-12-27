@@ -9,4 +9,5 @@ const userController = new UserController(userService);
 
 export const userRoutes = express.Router();
 
+userRoutes.post("/", asyncWrapper(userController.signup));
 userRoutes.post("/login", asyncWrapper(userController.login));

@@ -24,6 +24,7 @@ export default function TabScreen() {
         tabBarActiveTintColor: '#e91e63',
         headerShown: false,
       }}
+      
     >
       <Tab.Screen
         name="主頁"

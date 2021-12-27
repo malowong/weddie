@@ -22,29 +22,29 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
   }, [dispatch]);
 
   return (
-    <TopBar pageName="婚禮預算">
+    <TopBar pageName="婚禮預算" show="true" navigate="AddBudgetItem">
       <View mb={5} mt={3}>
-        <Text fontSize={22}>總預算: {budget}</Text>
-        <Text fontSize={22}>總支出: {totalExpenditure}</Text>
-        <Text fontSize={22}>剩餘預算: {budget - totalExpenditure}</Text>
+        <Text fontSize={22} marginLeft={15}>
+          總預算: {budget}
+        </Text>
+        <Text fontSize={22} marginLeft={15}>
+          總支出: {totalExpenditure}
+        </Text>
+        <Text fontSize={22} marginLeft={15}>
+          剩餘預算: {budget - totalExpenditure}
+        </Text>
       </View>
       <View borderBottomColor="black" borderBottomWidth={1} />
       <View marginTop={5}>
         <View style={budgetStyles.addRow}>
-          <Text fontSize={22} marginBottom={2} fontWeight="bold">
+          <Text
+            fontSize={22}
+            marginBottom={2}
+            fontWeight="bold"
+            marginLeft={15}
+          >
             支出
           </Text>
-          <Button
-            style={budgetStyles.button}
-            colorScheme="secondary"
-            onPress={() =>
-              navigation.navigate('CreateStackScreen', {
-                screen: 'AddBudgetItem',
-              })
-            }
-          >
-            新增支出
-          </Button>
         </View>
 
         {expenditures.map((expenditure, idx) => {
@@ -92,7 +92,7 @@ const budgetStyles = StyleSheet.create({
   addRow: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'space-around',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     marginBottom: 8,
   },

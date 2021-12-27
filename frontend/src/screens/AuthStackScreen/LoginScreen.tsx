@@ -25,7 +25,7 @@ import { loginThunk } from '../../redux/auth/thunk';
 import { IRootState } from '../../redux/store';
 
 type LoginFormState = {
-  phone: string;
+  email: string;
   password: string;
 };
 
@@ -33,12 +33,10 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 
   const {control, handleSubmit, watch, formState: { errors }} = useForm<LoginFormState>({
     defaultValues: {
-      phone: '',
+      email: '',
       password: '',
     },
   });
-
-  const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
 
   const dispatch = useDispatch()
 
@@ -51,14 +49,8 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 
   function onSubmit(data: LoginFormState) {
     console.log('submit form data:', data);
-    dispatch(loginThunk(data.phone, data.password));
+    dispatch(loginThunk(data.email, data.password));
   }
-
-  useEffect(() => {
-    if (isAuthenticated) {
-        navigation.navigate('MainStackScreen')
-    } 
-}, [isAuthenticated, navigation])
 
   return (
     <>
@@ -83,33 +75,28 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 
           <VStack space={3} mt="5">
             <View>
-              <Controller
-                name="phone"
+            <Controller
+                name="email"
                 control={control}
                 rules={{
                   required: true,
-                  maxLength: 8,
-                  minLength: 8,
+                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                 }}
                 render={({ field: { value, onChange } }) => (
                   <Input
-                    type="number"
-                    placeholder="電話號碼"
+                    type="text"
+                    placeholder="請輸入你的電郵地址"
                     fontSize="md"
                     value={value}
                     onChangeText={onChange}
-                    keyboardType="numeric"
                   />
                 )}
               />
-              {errors.phone?.type === 'required' && (
+              {errors.email?.type === 'required' && (
                 <Text color="danger.500">請填寫你的電話號碼。</Text>
               )}
-              {errors.phone?.type === 'maxLength' && (
-                <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-              )}
-              {errors.phone?.type === 'minLength' && (
-                <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+              {errors.email?.type === 'pattern' && (
+                <Text color="danger.500">請填寫正確的電郵地址。</Text>
               )}
 
               <Controller

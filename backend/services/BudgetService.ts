@@ -6,6 +6,8 @@ export class BudgetService {
   getExpenditureList = async () => {
     const expenditureList = "TODO";
 
+    this.knex.raw('SELECT * FROM user_info')
+
     return expenditureList;
   };
 }

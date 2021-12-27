@@ -33,6 +33,10 @@ import AuthStackScreen from './src/screens/AuthStackScreen';
 import TabScreen from './src/screens/TabScreen';
 import { AddTodoItem } from './src/components/CreateStackScreen/AddTodoItem';
 import { EditTodoItem } from './src/components/EditStackScreen/EditTodoItem';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query'
 
 // this is for create items
 
@@ -114,16 +118,20 @@ function RootStackScreen() {
   );
 }
 
+const queryClient = new QueryClient()
+
 const App = () => {
   return (
     <Provider store={store}>
-      <SafeAreaProvider>
-        <NavigationContainer>
-          <NativeBaseProvider>
-            <RootStackScreen />
-          </NativeBaseProvider>
-        </NavigationContainer>
-      </SafeAreaProvider>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <NativeBaseProvider>
+              <RootStackScreen />
+            </NativeBaseProvider>
+          </NavigationContainer>
+        </SafeAreaProvider>
+      </QueryClientProvider>
     </Provider>
   );
 };

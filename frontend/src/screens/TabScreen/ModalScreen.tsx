@@ -8,6 +8,7 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
     <View
       style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}
     >
+      <TouchableOpacity onPress={() => navigation.goBack()} style={{ flex: 1 }}/>
       <View
         style={{
           height: '50%',
@@ -48,7 +49,9 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.mainModalButton}
-            onPress={() => navigation.navigate('TabScreen', { screen: 'GuestScreen' })}
+            onPress={() =>
+              navigation.navigate('TabScreen', { screen: 'GuestScreen' })
+            }
           >
             <Ionicons name={'ios-person-add-outline'} size={50} />
             <Text>來賓名單</Text>

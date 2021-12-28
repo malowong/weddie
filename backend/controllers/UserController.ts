@@ -8,7 +8,7 @@ export class UserController {
 
   login = async (req: Request, res: Response) => {
     try {
-      console.log(req.body)
+      console.log(req.body);
       if (!req.body.email || !req.body.password) {
         res.status(401).json({ msg: "Email/Password are null" });
         return;
@@ -38,7 +38,7 @@ export class UserController {
   signup = async (req: Request, res: Response) => {
     try {
       console.log(req.body);
-      console.log("hi")
+      console.log("hi");
 
       if (!req.body) {
         res.status(401).json({ msg: "Request are null" });
@@ -54,16 +54,16 @@ export class UserController {
         phone,
         gender,
         district_id: districtId,
-      }
+      };
 
-      console.log(user)
+      console.log(user);
 
       if (password.length < 8) {
         res.status(400).json({ message: "Password must contain at least 8 characters" });
         return;
       }
 
-      const existUser = await this.userService.getUserByEmail(email)
+      const existUser = await this.userService.getUserByEmail(email);
 
       if (existUser) {
         res.status(400).json({ message: "This email has been used" });
@@ -76,10 +76,15 @@ export class UserController {
       const token = jwtSimple.encode(payload, jwt.jwtSecret);
 
       res.json({ token });
-
     } catch (e) {
-      console.log(e)
-      res.status(500).json({ msg: e.toString() })
+      console.log(e);
+      res.status(500).json({ msg: e.toString() });
     }
-  }
+  };
+
+  getUserById = async (req: Request, res: Response) => {
+    const userInfo = await this.userService.getUserById(1);
+
+    res.json({ userInfo });
+  };
 }

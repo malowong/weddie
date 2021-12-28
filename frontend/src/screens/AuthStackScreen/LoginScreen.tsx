@@ -1,18 +1,13 @@
 import {
   Button,
   Text,
-  NativeBaseProvider,
   Center,
   Box,
-  FormControl,
   Heading,
   HStack,
   Input,
   Link,
   VStack,
-  TextArea,
-  WarningOutlineIcon,
-  Stack,
   Icon,
   View,
 } from 'native-base';
@@ -30,15 +25,19 @@ type LoginFormState = {
 };
 
 export default function LoginScreen({ navigation }: { navigation: any }) {
-
-  const {control, handleSubmit, watch, formState: { errors }} = useForm<LoginFormState>({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<LoginFormState>({
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let sub = watch((data) => {
@@ -75,7 +74,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 
           <VStack space={3} mt="5">
             <View>
-            <Controller
+              <Controller
                 name="email"
                 control={control}
                 rules={{

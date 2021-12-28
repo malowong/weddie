@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { View, Text, Button } from 'native-base';
+import { View, Text } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 import { getExpenditureListThunk } from '../../redux/expenditure/thunk';

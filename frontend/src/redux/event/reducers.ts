@@ -1,51 +1,42 @@
-import { IAuthAction } from "./actions";
-import { IAuthState } from "./state";
+import { IEventAction } from "./actions";
+import { IEventState } from "./state";
 
-const initialState: IAuthState = {
-    isAuthenticated: null,
-    token: null,
-    user: null,
+const initialState: IEventState = {
+    isCreated: null,
+    event: null,
     message: null,
 }
 
-export const authReducers = (state: IAuthState = initialState, action: IAuthAction): IAuthState => {
+export const eventReducers = (state: IEventState = initialState, action: IEventAction): IEventState => {
     switch (action.type) {
-        case "@@auth/LOGIN_SUCCESS":
+        case "@@event/CREATE_EVENT_SUCCESS":
+            console.log("successsss")
             return {
-                isAuthenticated: true,
-                token: action.token,
-                user: action.user,
+                isCreated: true,
+                event: action.event,
                 message: null,
             }
-        // both cases are going to return the following
-        case "@@auth/LOGIN_FAILED":
+        case "@@event/CREATE_EVENT_FAILED":
+            console.log("faillllled")
             return {
-                isAuthenticated: false,
-                token: null,
-                user: null,
-                message: action.message,
-            }
-        case "@@auth/LOGOUT":
-            return {
-                isAuthenticated: false,
-                token: null,
-                user: null,
+                isCreated: false,
+                event: null,
                 message: null,
             }
-        case "@@auth/REGISTER_FAILED":
+        case "@@event/GET_EVENT_SUCCESS":
+            console.log("successsss")
             return {
-                isAuthenticated: false,
-                token: null,
-                user: null,
+                isCreated: true,
+                event: action.event,
                 message: null,
             }
-        case "@@auth/REGISTER_SUCCESS":
-        return {
-            isAuthenticated: false,
-            token: null,
-            user: null,
-            message: null,
-        }
+        case "@@event/GET_EVENT_FAILED":
+            console.log("faillllled")
+            return {
+                isCreated: false,
+                event: null,
+                message: null,
+            }
         default:
             return state
     }

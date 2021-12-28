@@ -7,17 +7,20 @@ import LoginScreen from "./AuthStackScreen/LoginScreen";
 import SignupScreen from "./AuthStackScreen/SignupScreen";
 import WelcomingScreen from "./AuthStackScreen/WelcomingScreen";
 
-const AuthStack = createStackNavigator();
+const CreateEventStack = createStackNavigator();
 
-export default function AuthStackScreen({ navigation }: { navigation: any }) {
+export default function CreateEventStackScreen({ navigation }: { navigation: any }) {
   return (
-    <AuthStack.Navigator
+    <CreateEventStack.Navigator
       screenOptions={{ headerShown: false }}
-      initialRouteName="WelcomingScreen"
+      initialRouteName="ChooseScreen"
     >
-      <AuthStack.Screen name="WelcomingScreen" component={WelcomingScreen} />
-      <AuthStack.Screen name="LoginScreen" component={LoginScreen} />
-      <AuthStack.Screen name="SignupScreen" component={SignupScreen} />
-    </AuthStack.Navigator>
+      <CreateEventStack.Screen name="ChooseScreen" component={ChooseScreen} />
+      <CreateEventStack.Screen
+        name="CreateEventScreen"
+        component={CreateEventScreen}
+      />
+      <CreateEventStack.Screen name="JoinEventScreen" component={JoinEventScreen} />
+    </CreateEventStack.Navigator>
   );
 }

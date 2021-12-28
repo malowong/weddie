@@ -4,11 +4,54 @@ import { EventService } from "../services/EventService";
 export class EventController {
   constructor(private eventService: EventService) {}
 
-  getEventListByUserId = async (req: Request, res: Response) => {
-    const userId = req.user!.id;
+  createEvent = async (req: Request, res: Response) => {
+    try {
+      console.log(req.body);
 
-    const eventList = await this.eventService.getEventListByUserId(userId);
+      if (!req.body) {
+        res.status(401).json({ msg: "Request are null" });
+        return;
+      }
 
-    res.json({ eventList });
+      const { eventName, role, bigday, budget, pax, user_id } = req.body;
+
+      // where shd i put the budget?
+
+      const event = {
+        wedding_name: eventName,
+        wedding_date: bigday,
+        budget,
+        pax,
+        user_id: user_id,
+        role_id: parseInt(role),
+      };
+
+      const eventId = await this.eventService.createEvent(event);
+
+      res.json({ eventId });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ msg: e.toString() });
+    }
+  };
+
+  getEvent = async (req: Request, res: Response) => {
+    try {
+      console.log(req.body);
+
+      const userId = req.body.userId;
+
+      if (!req.body) {
+        res.status(401).json({ msg: "Request are null" });
+        return;
+      }
+
+      const eventData = await this.eventService.getEvent(userId);
+
+      res.json({ eventData });
+    } catch (e) {
+      console.error(e);
+      res.status(500).json({ msg: e.toString() });
+    }
   };
 }

@@ -2,26 +2,25 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { config, displayName } from '../../app.json';
 import { ISignupUser } from '../redux/auth/state';
 
-export const fetchLogin = async (phone: string, password: string) => {
-  console.log(phone);
+export const fetchLogin = async (email: string, password: string) => {
+  console.log(email)
   const resp = await fetch(`${config.BACKEND_URL}/api/users/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ phone, password }),
+    body: JSON.stringify({ email, password }),
   });
 
   return resp;
 };
 
 export const fetchUser = async (token: string) => {
-  const resp = await fetch(`${config.BACKEND_URL}/users/`, {
-    method: 'GET',
+  const resp = await fetch(`${config.BACKEND_URL}/api/users`, {
     headers: {
-      Authrization: `Bearer ${token}`,
-    },
-  });
+      Authorization: `Bearer ${token}`
+    }
+  })
   return resp;
 };
 
@@ -40,12 +39,13 @@ export const fetchRegister = async (signupUser: ISignupUser) => {
     const result = await resp.json();
 
     if (resp.status !== 200) {
-      console.log('failed');
-      return result.message;
+      console.log("failed")
+      throw new Error(result.message)
     }
 
     await AsyncStorage.setItem('token', result.token);
   } catch (e) {
-    console.error(e);
+    // console.error(e);
+    throw e
   }
 };

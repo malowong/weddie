@@ -16,7 +16,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
   const userID = useSelector((state: IRootState) => state.auth);
   console.log(userID);
   const [showModal, setShowModal] = useState(false);
-
   const {
     control,
     handleSubmit,
@@ -48,12 +47,17 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     setShowModal(false);
   };
 
-  // useEffect(() => {
-  //   let sub = watch((data) => {
-  //     console.log('update form data:', data);
-  //   });
-  //   return () => sub.unsubscribe();
-  // }, [watch]);
+  function onPress() {
+    console.log('submit form data:');
+    dispatch(logoutThunk());
+  }
+
+  useEffect(() => {
+    let sub = watch((data) => {
+      console.log('update form data:', data);
+    });
+    return () => sub.unsubscribe();
+  }, [watch]);
 
   return (
     <TopBar pageName="用戶設定" show="false" navigate="">

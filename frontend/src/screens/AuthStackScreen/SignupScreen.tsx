@@ -3,26 +3,36 @@ import {
   Center,
   Box,
   Button,
+  FormControl,
   Heading,
+  HStack,
   Input,
+  Link,
+  Stack,
   Text,
+  WarningOutlineIcon,
   Icon,
   View,
   Radio,
   Select,
   CheckIcon,
 } from 'native-base';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchRegister } from '../../api/auth';
 import { ISignupUser } from '../../redux/auth/state';
-
-const axios = require('axios').default;
+// import { signupThunk } from '../../redux/auth/thunk';
+import { IRootState } from '../../redux/store';
+import { config } from '../../../app.json';
+import { loginThunk, restoreLoginThunk } from '../../redux/auth/thunk';
 
 export default function SignupScreen({ navigation }: { navigation: any }) {
+  const dispatch = useDispatch();
+
   const {
     control,
     handleSubmit,
@@ -46,12 +56,17 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
     return () => sub.unsubscribe();
   }, [watch]);
 
-  const mutation: any = useMutation(fetchRegister);
+  const mutation: any = useMutation(fetchRegister)
 
   function onSubmit(data: ISignupUser) {
     console.log('submit form data:', data);
     mutation.mutate(data);
     // dispatch(signupThunk(data));
+  }
+
+  if (mutation.status === 'success'){
+    dispatch(restoreLoginThunk())
+    navigation.navigate('ChooseScreen')
   }
 
   return (
@@ -76,10 +91,10 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
           </Heading>
           <View>
             {mutation.isError ? (
-              <Text>An error occurred: {mutation.error.message}</Text>
+              <Text color="danger.500">錯誤：{mutation.error.message}</Text>
             ) : null}
-
-            {mutation.isSuccess ? <Text>Todo added!</Text> : null}
+  
+            {mutation.isSuccess ? navigation.navigate('ChooseScreen') : null}
           </View>
 
           <VStack space={3} mt="5">

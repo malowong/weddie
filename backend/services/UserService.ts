@@ -12,6 +12,11 @@ export class UserService {
     return user;
   }
 
+  async getUserByPhone(phone: string) {
+    const user = await this.knex<User>(tables.USER_INFO).where({ phone: phone }).first()
+    return user;
+  }
+
   async getUserById(id: number) {
     const user = await this.knex<User>(tables.USER_INFO).where({ id }).first();
     return user;

@@ -3,6 +3,9 @@ import thunk from 'redux-thunk';
 import { IAuthAction } from './auth/actions';
 import { authReducers } from './auth/reducers';
 import { IAuthState } from './auth/state';
+import { IEventAction } from './event/actions';
+import { eventReducers } from './event/reducers';
+import { IEventState } from './event/state';
 import { IExpenditureAction } from './expenditure/action';
 import { expenditureReducers } from './expenditure/reducer';
 import { IExpenditureState } from './expenditure/state';
@@ -19,6 +22,7 @@ import { ITodoState } from './todo/state';
 // 1. Combining State by Composition
 export interface IRootState {
   auth: IAuthState;
+  event: IEventState;
   logistics: ILogisticsState;
   expenditure: IExpenditureState;
   guest: IGuestState;
@@ -27,6 +31,7 @@ export interface IRootState {
 
 type IRootAction =
   | IAuthAction
+  | IEventAction
   | ILogisticsAction
   | IExpenditureAction
   | IGuestAction
@@ -35,6 +40,7 @@ type IRootAction =
 // 3. Combining Reducers by the function combineReducer()
 const rootReducer = combineReducers<IRootState>({
   auth: authReducers,
+  event: eventReducers,
   logistics: logisticReducers,
   expenditure: expenditureReducers,
   guest: guestReducers,

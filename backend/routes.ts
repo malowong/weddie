@@ -9,6 +9,7 @@ import { userRoutes } from "./routers/userRoutes";
 export const routes = express.Router();
 
 routes.use("/users", userRoutes);
+routes.use("/events", eventRoutes);
 routes.use("/logistics", logisticsRoutes);
 routes.use("/guest", guestRoutes);
 routes.use("/budget", budgetRoutes);

@@ -10,6 +10,18 @@ export class BudgetController {
     res.json({ expenditureList });
   };
 
+  updateExpenditureList = async (req: Request, res: Response) => {
+    const updatedExpenditureList = await this.budgetService.updateExpenditureList(
+      req.body.budgetListId,
+      req.body.description,
+      req.body.expenditure,
+      req.body.paymentDate,
+      req.body.amendDate
+    );
+
+    res.json(updatedExpenditureList);
+  };
+
   addBudgetItem = async (req: Request, res: Response) => {
     const budgetItem = {
       wedding_event_id: req.body.eventId,

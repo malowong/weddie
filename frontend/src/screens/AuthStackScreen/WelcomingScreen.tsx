@@ -16,16 +16,7 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 
-export default function NotificationsScreen({navigation,}: {navigation: any;}) {
-
-  const isAuthenticated = useSelector((state: IRootState) => state.auth.isAuthenticated);
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigation.navigate('MainStackScreen');
-    }
-  }, [isAuthenticated, navigation]);
-
+export default function WelcomingScreen({navigation,}: {navigation: any;}) {
   
   return (
     <Center flex={1} px="3">

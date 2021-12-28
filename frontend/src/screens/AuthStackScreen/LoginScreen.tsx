@@ -121,8 +121,8 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
               <Button
                 mt="4"
                 // colorScheme="indigo"
-                onPress={() => navigation.navigate('MainStackScreen')}
-                // onPress={handleSubmit(onSubmit)}
+                // onPress={() => navigation.navigate('MainStackScreen')}
+                onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
                   登入

@@ -82,17 +82,37 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
           更改電話號碼
         </Button>
 
-        <Button
-          variant="outline"
-          colorScheme="red"
-          marginTop="8"
-          onPress={() => {
-            dispatch(logoutThunk());
-            navigation.navigate('LoginScreen');
-          }}
+        <View
+          display="flex"
+          justifyContent="space-around"
+          flexDirection="row"
+          width={250}
         >
-          登出
-        </Button>
+          <Button
+            variant="outline"
+            colorScheme="red"
+            marginTop="8"
+            onPress={() => {
+              navigation.navigate('EditStackScreen', {
+                screen: 'SelectEvent',
+              });
+            }}
+          >
+            切換婚禮
+          </Button>
+
+          <Button
+            variant="outline"
+            colorScheme="warning.400"
+            marginTop="8"
+            onPress={() => {
+              dispatch(logoutThunk());
+              navigation.navigate('LoginScreen');
+            }}
+          >
+            登出
+          </Button>
+        </View>
 
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
           <Modal.Content maxWidth="400px">

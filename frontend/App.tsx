@@ -33,10 +33,8 @@ import AuthStackScreen from './src/screens/AuthStackScreen';
 import TabScreen from './src/screens/TabScreen';
 import { AddTodoItem } from './src/components/CreateStackScreen/AddTodoItem';
 import { EditTodoItem } from './src/components/EditStackScreen/EditTodoItem';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { SelectEvent } from './src/components/EditStackScreen/SelectEvent';
 
 // this is for create items
 
@@ -75,6 +73,7 @@ function EditStackScreen() {
       <EditStack.Screen name="EditParti" component={EditParti} />
       <EditStack.Screen name="EditGuest" component={EditGuest} />
       <EditStack.Screen name="EditTodoItem" component={EditTodoItem} />
+      <EditStack.Screen name="SelectEvent" component={SelectEvent} />
     </EditStack.Navigator>
   );
 }
@@ -118,7 +117,7 @@ function RootStackScreen() {
   );
 }
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 const App = () => {
   return (

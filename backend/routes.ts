@@ -1,5 +1,6 @@
 import express from "express";
 import { budgetRoutes } from "./routers/budgetRoutes";
+import { eventRoutes } from "./routers/eventRoutes";
 import { guestRoutes } from "./routers/guestRoutes";
 import { logisticsRoutes } from "./routers/logisticsRoutes";
 import { todoRoutes } from "./routers/todoRoutes";
@@ -12,3 +13,4 @@ routes.use("/logistics", logisticsRoutes);
 routes.use("/guest", guestRoutes);
 routes.use("/budget", budgetRoutes);
 routes.use("/todo", todoRoutes);
+routes.use("/event", eventRoutes);

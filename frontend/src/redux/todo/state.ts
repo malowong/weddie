@@ -3,7 +3,7 @@ export interface TodoState {
   itemName: string;
   dueDate: Date;
   remarks: string;
-  status: boolean;
+  isCompleted: boolean;
 }
 
 export interface ITodoState {

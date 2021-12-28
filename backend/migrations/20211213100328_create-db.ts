@@ -19,6 +19,7 @@ const tables = Object.freeze({
   TO_DO_LIST_TEMPLATE: "to_do_list_template",
   ITIN_TEMPLATE: "itin_template",
   BUDGET_TEMPLATE: "budget_template",
+  WEDDING_GUEST_LIST: "wedding_guest_list",
 });
 
 export async function up(knex: Knex): Promise<void> {
@@ -95,6 +96,16 @@ export async function up(knex: Knex): Promise<void> {
     table.date("to_do_date").notNullable();
     table.string("to_do_item").notNullable();
     table.string("to_do_remarks");
+    table.string("isFinished").defaultTo(false);
+  });
+
+  await knex.schema.createTable(tables.WEDDING_GUEST_LIST, (table) => {
+    table.increments();
+    table.integer("wedding_event_id").unsigned();
+    table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
+    table.string("name", 30).notNullable();
+    table.string("phone", 8).notNullable();
+    table.string("relationship").notNullable();
   });
 
   await knex.schema.createTable(tables.WEDDING_LOGISTICS, (table) => {
@@ -103,6 +114,7 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.string("logistics_item").notNullable().unique();
     table.string("logistics_remarks");
+    table.boolean("isReady").defaultTo(false);
   });
 
   await knex.schema.createTable(tables.WEDDING_BUDGET_LIST, (table) => {
@@ -113,7 +125,6 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign("budget_cat_id").references(`${tables.BUDGET_CAT}.id`);
     table.string("description").notNullable().unique();
     table.float("expenditure").notNullable().unsigned();
-    table.date("payment_date").notNullable();
   });
 
   await knex.schema.createTable(tables.ITINERARY_LIST, (table) => {
@@ -160,10 +171,10 @@ export async function up(knex: Knex): Promise<void> {
 export async function down(knex: Knex): Promise<void> {
   async function dropTable(tableObj: Object) {
     const reversedTableArr = Object.values(tableObj).reverse();
-    console.log(reversedTableArr)
+    console.log(reversedTableArr);
 
     for (let i = 0; i < reversedTableArr.length; i++) {
-      await knex.schema.dropTable(reversedTableArr[i])
+      await knex.schema.dropTable(reversedTableArr[i]);
       // truncate is only for deleting data, not drop table
       // await knex.raw(`TRUNCATE ${reversedTableArr[i]} RESTART IDENTITY CASCADE`);
     }

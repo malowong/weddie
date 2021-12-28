@@ -1,30 +1,19 @@
-import { useNavigation } from '@react-navigation/native';
 import {
   Button,
   Text,
-  NativeBaseProvider,
   Center,
   Box,
-  FormControl,
   Heading,
-  HStack,
-  Input,
-  Link,
   VStack,
-  TextArea,
-  WarningOutlineIcon,
-  Stack,
   Icon,
   View,
 } from 'native-base';
-import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { TextInput, TouchableOpacity } from 'react-native';
+import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch } from 'react-redux';
 
 export default function ChooseScreen({ navigation }: { navigation: any }) {
-
   return (
     <>
       <Box safeAreaTop backgroundColor="#f2f2f2" />
@@ -42,7 +31,9 @@ export default function ChooseScreen({ navigation }: { navigation: any }) {
           >
             感謝你的加入！
           </Heading>
-          <Text fontSize="lg" mt="3">請選擇項目：</Text>
+          <Text fontSize="lg" mt="3">
+            請選擇項目：
+          </Text>
           <VStack space={3} mt="5">
             <View>
               <Button

@@ -8,10 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 export function EditTodoItem({ route, navigation }: any) {
   const [date, setDate] = useState<Date>(new Date(route.params.dueDate));
   const [showModal, setShowModal] = useState(false);
-  const [status, setStatus] = useState(
-    Boolean(JSON.stringify(route.params.status))
-  );
-
+  const [isCompleted, setIsCompleted] = useState(route.params.isCompleted);
   const {
     control,
     handleSubmit,
@@ -22,13 +19,13 @@ export function EditTodoItem({ route, navigation }: any) {
       itemName: JSON.stringify(route.params.itemName).replace(/\"/g, ''),
       dueDate: date,
       remarks: JSON.stringify(route.params.remarks).replace(/\"/g, ''),
-      status: Boolean(JSON.stringify(route.params.status)),
+      isCompleted: route.params.isCompleted,
     },
   });
 
   const onSubmit = (data: any) => {
     data.dueDate = date;
-    data.status = status;
+    data.isCompleted = isCompleted;
     console.log('submit form data:', data);
     navigation.goBack();
   };
@@ -112,11 +109,10 @@ export function EditTodoItem({ route, navigation }: any) {
         />
 
         <Select
-          selectedValue={status ? '已完成' : '未完成'}
+          defaultValue={isCompleted ? 'completed' : 'pending'}
           minWidth="200"
           marginTop={5}
           accessibilityLabel="狀態"
-          placeholder={status ? '已完成' : '未完成'}
           placeholderTextColor="gray.700"
           _selectedItem={{
             bg: 'teal.600',
@@ -124,9 +120,9 @@ export function EditTodoItem({ route, navigation }: any) {
           mt={1}
           onValueChange={(itemValue) => {
             if (itemValue === 'pending') {
-              setStatus(false);
+              setIsCompleted(false);
             } else {
-              setStatus(true);
+              setIsCompleted(true);
             }
           }}
         >

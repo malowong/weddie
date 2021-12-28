@@ -18,17 +18,6 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   return (
     <TopBar pageName="賓客名單" show="true" navigate="AddGuest">
       <View>
-        <Button
-          colorScheme="secondary"
-          onPress={() =>
-            navigation.navigate('CreateStackScreen', {
-              screen: 'AddGuest',
-            })
-          }
-        >
-          新增
-        </Button>
-
         <View style={guestStyles.tableRow}>
           <Text style={[guestStyles.tableColumn, guestStyles.tableHeader]}>
             名稱
@@ -44,9 +33,6 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
             ]}
           >
             關係
-          </Text>
-          <Text style={[guestStyles.tableColumn, guestStyles.tableHeader]}>
-            會否出席
           </Text>
         </View>
 
@@ -77,9 +63,6 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
                 style={[guestStyles.tableColumn, guestStyles.tableRelationShip]}
               >
                 <Text fontSize={15}>{guest.relationship}</Text>
-              </View>
-              <View style={guestStyles.tableColumn}>
-                <Checkbox colorScheme="green" value={''} aria-label="Attend" />
               </View>
             </TouchableOpacity>
           );

@@ -83,6 +83,7 @@ export class UserController {
   };
 
   getUserById = async (req: Request, res: Response) => {
+    // const userId = req.user?.id;
     const userInfo = await this.userService.getUserById(1);
 
     res.json({ userInfo });

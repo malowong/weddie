@@ -5,9 +5,9 @@ export class LogisticsService {
 
   getLogisticsList = async (eventID: number) => {
     const logisticsList = await this.knex
-      .select("item_name", "amount")
+      .select("logistics_item", "logistics_remarks")
       .from("wedding_logistics")
-      .where("event_id", eventID);
+      .where("wedding_event_id", eventID);
 
     return logisticsList;
   };

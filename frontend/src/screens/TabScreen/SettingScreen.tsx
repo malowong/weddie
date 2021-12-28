@@ -8,6 +8,8 @@ import { logoutThunk } from '../../redux/auth/thunk';
 import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { IRootState } from '../../redux/store';
+import { LoadingMsg } from '../../components/LoadingsMsg';
+import { ErrorMsg } from '../../components/ErrorMsg';
 
 export default function SettingScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
@@ -28,25 +30,15 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
   });
 
   const { isLoading, error, data } = useQuery('userData', async () => {
-    const postData = (
-      await fetch(`${config.BACKEND_URL}/api/users/info`)
-    ).json();
+    const postData = (await fetch(`${config.BACKEND_URL}/api/users/fg`)).json();
 
     return postData;
   });
 
-  if (isLoading)
-    return (
-      <Text marginTop={400} marginLeft={160}>
-        Loading...
-      </Text>
-    );
-  if (error)
-    return (
-      <Text marginTop={400} marginLeft={120}>
-        An error has occurred
-      </Text>
-    );
+  if (isLoading) return <LoadingMsg />;
+
+  if (error) return <ErrorMsg />;
+
   const { userInfo } = data;
 
   const onSubmit = (data: any) => {

@@ -1,6 +1,6 @@
 import { Knex } from "knex";
 import { tables } from "../utils/tables";
-import { collections } from "./mongoService";
+// import { collections } from "./mongoService";
 import { EventStore, EventType } from "./models";
 
 interface budgetItem {
@@ -48,7 +48,7 @@ export class BudgetService {
     event_store_new.amendDate = amendDate;
     event_store_new.data = new_data;
 
-    collections.event_store?.insertMany([event_store_old, event_store_new]);
+    // collections.event_store?.insertMany([event_store_old, event_store_new]);
   };
 
   addBudgetItem = async (budgetItem: budgetItem) => {

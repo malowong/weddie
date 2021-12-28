@@ -13,8 +13,7 @@ import { ErrorMsg } from '../../components/ErrorMsg';
 
 export default function SettingScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
-  const userID = useSelector((state: IRootState) => state.auth);
-  console.log(userID);
+  const user = useSelector((state: IRootState) => state.auth.user)!;
   const [showModal, setShowModal] = useState(false);
   const {
     control,
@@ -27,19 +26,15 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     },
   });
 
-  const { isLoading, error, data } = useQuery('userData', async () => {
-    const postData = (
-      await fetch(`${config.BACKEND_URL}/api/users/info`)
-    ).json();
+  // const { isLoading, error, data } = useQuery('userData', async () => {
+  //   const postData = (await fetch(`${config.BACKEND_URL}/api/users`)).json();
 
-    return postData;
-  });
+  //   return postData;
+  // });
 
-  if (isLoading) return <LoadingMsg />;
+  // if (isLoading) return <LoadingMsg />;
 
-  if (error) return <ErrorMsg />;
-
-  const { userInfo } = data;
+  // if (error) return <ErrorMsg />;
 
   const onSubmit = (data: any) => {
     const phoneNumber = parseInt(data.phoneNumber);
@@ -47,17 +42,12 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     setShowModal(false);
   };
 
-  function onPress() {
-    console.log('submit form data:');
-    dispatch(logoutThunk());
-  }
-
-  useEffect(() => {
-    let sub = watch((data) => {
-      console.log('update form data:', data);
-    });
-    return () => sub.unsubscribe();
-  }, [watch]);
+  // useEffect(() => {
+  //   let sub = watch((data) => {
+  //     console.log('update form data:', data);
+  //   });
+  //   return () => sub.unsubscribe();
+  // }, [watch]);
 
   return (
     <TopBar pageName="用戶設定" show="false" navigate="">
@@ -68,14 +58,14 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
         alignItems="center"
         minHeight="100%"
       >
-        <Text fontSize={20}>{userInfo.nickname}</Text>
+        <Text fontSize={20}>{user.nickname}</Text>
 
         <Text fontSize={20} marginTop="2">
-          {userInfo.email}
+          {user.email}
         </Text>
 
         <Text fontSize={20} marginTop="2">
-          電話號碼 {userInfo.phone}
+          電話號碼 {user.phone}
         </Text>
 
         <Button

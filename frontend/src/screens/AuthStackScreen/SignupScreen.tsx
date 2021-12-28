@@ -3,33 +3,36 @@ import {
   Center,
   Box,
   Button,
+  FormControl,
   Heading,
+  HStack,
   Input,
+  Link,
+  Stack,
   Text,
+  WarningOutlineIcon,
   Icon,
   View,
   Radio,
   Select,
   CheckIcon,
 } from 'native-base';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
 import { fetchRegister } from '../../api/auth';
 import { ISignupUser } from '../../redux/auth/state';
-<<<<<<< HEAD
 // import { signupThunk } from '../../redux/auth/thunk';
 import { IRootState } from '../../redux/store';
 import { config } from '../../../app.json';
 import { loginThunk, restoreLoginThunk } from '../../redux/auth/thunk';
-=======
-
-const axios = require('axios').default;
->>>>>>> e168daf099a9836a025ebd4bff4c902e4c0b4a16
 
 export default function SignupScreen({ navigation }: { navigation: any }) {
+  const dispatch = useDispatch();
+
   const {
     control,
     handleSubmit,
@@ -53,7 +56,7 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
     return () => sub.unsubscribe();
   }, [watch]);
 
-  const mutation: any = useMutation(fetchRegister);
+  const mutation: any = useMutation(fetchRegister)
 
   function onSubmit(data: ISignupUser) {
     console.log('submit form data:', data);
@@ -90,13 +93,8 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
             {mutation.isError ? (
               <Text color="danger.500">錯誤：{mutation.error.message}</Text>
             ) : null}
-<<<<<<< HEAD
   
             {mutation.isSuccess ? navigation.navigate('ChooseScreen') : null}
-=======
-
-            {mutation.isSuccess ? <Text>Todo added!</Text> : null}
->>>>>>> e168daf099a9836a025ebd4bff4c902e4c0b4a16
           </View>
 
           <VStack space={3} mt="5">

@@ -12,8 +12,5 @@ export const userRoutes = express.Router();
 
 userRoutes.post("/signup", asyncWrapper(userController.signup));
 userRoutes.post("/login", asyncWrapper(userController.login));
-<<<<<<< HEAD
 userRoutes.get("/", isLoggedIn, asyncWrapper(userController.getUser));
-=======
-userRoutes.get("/info", asyncWrapper(userController.getUserById));
->>>>>>> e168daf099a9836a025ebd4bff4c902e4c0b4a16
+// userRoutes.get("/info", asyncWrapper(userController.getUserById));

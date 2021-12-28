@@ -3,10 +3,6 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import TopBar from '../../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
-<<<<<<< HEAD
-import { useDispatch } from 'react-redux';
-import { logoutThunk } from '../../redux/auth/thunk';
-=======
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutThunk } from '../../redux/auth/thunk';
 import { useQuery } from 'react-query';
@@ -14,20 +10,12 @@ import { config } from '../../../app.json';
 import { IRootState } from '../../redux/store';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { ErrorMsg } from '../../components/ErrorMsg';
->>>>>>> e168daf099a9836a025ebd4bff4c902e4c0b4a16
 
 export default function SettingScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
   const userID = useSelector((state: IRootState) => state.auth);
   console.log(userID);
   const [showModal, setShowModal] = useState(false);
-<<<<<<< HEAD
-  const [phoneNumber, setPhoneNumber] = useState(61210767);
-  const [name, setName] = useState('朱天樂');
-  const dispatch = useDispatch()
-=======
-
->>>>>>> e168daf099a9836a025ebd4bff4c902e4c0b4a16
   const {
     control,
     handleSubmit,
@@ -59,7 +47,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     setShowModal(false);
   };
 
-<<<<<<< HEAD
   function onPress() {
     console.log('submit form data:');
     dispatch(logoutThunk());
@@ -71,14 +58,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     });
     return () => sub.unsubscribe();
   }, [watch]);
-=======
-  // useEffect(() => {
-  //   let sub = watch((data) => {
-  //     console.log('update form data:', data);
-  //   });
-  //   return () => sub.unsubscribe();
-  // }, [watch]);
->>>>>>> e168daf099a9836a025ebd4bff4c902e4c0b4a16
 
   return (
     <TopBar pageName="用戶設定" show="false" navigate="">
@@ -111,14 +90,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
           variant="outline"
           colorScheme="red"
           marginTop="8"
-<<<<<<< HEAD
           onPress={onPress}
-=======
-          onPress={() => {
-            dispatch(logoutThunk());
-            navigation.navigate('LoginScreen');
-          }}
->>>>>>> e168daf099a9836a025ebd4bff4c902e4c0b4a16
         >
           登出
         </Button>

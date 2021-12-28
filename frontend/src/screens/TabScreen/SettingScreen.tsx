@@ -30,7 +30,9 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
   });
 
   const { isLoading, error, data } = useQuery('userData', async () => {
-    const postData = (await fetch(`${config.BACKEND_URL}/api/users/fg`)).json();
+    const postData = (
+      await fetch(`${config.BACKEND_URL}/api/users/info`)
+    ).json();
 
     return postData;
   });

@@ -17,4 +17,5 @@ export const tables = Object.freeze({
   TO_DO_LIST_TEMPLATE: "to_do_list_template",
   ITIN_TEMPLATE: "itin_template",
   BUDGET_TEMPLATE: "budget_template",
+  WEDDING_GUEST_LIST: "wedding_guest_list",
 });

@@ -19,6 +19,7 @@ const tables = Object.freeze({
   TO_DO_LIST_TEMPLATE: "to_do_list_template",
   ITIN_TEMPLATE: "itin_template",
   BUDGET_TEMPLATE: "budget_template",
+  WEDDING_GUEST_LIST: "wedding_guest_list",
 });
 
 export async function up(knex: Knex): Promise<void> {
@@ -97,6 +98,15 @@ export async function up(knex: Knex): Promise<void> {
     table.string("to_do_remarks");
   });
 
+  await knex.schema.createTable(tables.WEDDING_GUEST_LIST, (table) => {
+    table.increments();
+    table.integer("wedding_event_id").unsigned();
+    table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
+    table.string("name", 30).notNullable();
+    table.string("phone", 8).notNullable();
+    table.string("relationship").notNullable();
+  });
+
   await knex.schema.createTable(tables.WEDDING_LOGISTICS, (table) => {
     table.increments();
     table.integer("wedding_event_id").unsigned();
@@ -113,7 +123,6 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign("budget_cat_id").references(`${tables.BUDGET_CAT}.id`);
     table.string("description").notNullable().unique();
     table.float("expenditure").notNullable().unsigned();
-    table.date("payment_date");
   });
 
   await knex.schema.createTable(tables.ITINERARY_LIST, (table) => {

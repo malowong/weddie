@@ -59,6 +59,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
                     id: expenditure.id,
                     category: expenditure.category,
                     amount: expenditure.amount,
+                    description: expenditure.description,
                   },
                 })
               }

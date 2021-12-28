@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, Modal } from 'native-base';
+import { Input, Button, Text, Modal, Select, TextArea } from 'native-base';
 import { useDispatch } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
 export function EditBudgetItem({ route, navigation }: any) {
   const dispatch = useDispatch();
+  const [category, setCategory] = useState('');
   const [showModal, setShowModal] = useState(false);
   const {
     control,
@@ -17,6 +18,7 @@ export function EditBudgetItem({ route, navigation }: any) {
     defaultValues: {
       itemName: JSON.stringify(route.params.category).replace(/\"/g, ''),
       amount: JSON.stringify(route.params.amount),
+      description: JSON.stringify(route.params.description).replace(/\"/g, ''),
     },
   });
 
@@ -42,24 +44,53 @@ export function EditBudgetItem({ route, navigation }: any) {
   return (
     <CreateAndEditTopBar pageName="編輯支出">
       <View>
+        <Select
+          selectedValue={category}
+          placeholder="請選擇種類"
+          minWidth="200"
+          marginTop={5}
+          accessibilityLabel="請選擇種類"
+          placeholderTextColor="gray.700"
+          _selectedItem={{
+            bg: 'teal.600',
+          }}
+          mt={1}
+          onValueChange={(itemValue) => {
+            setCategory(itemValue);
+          }}
+        >
+          <Select.Item label="攝影" value="攝影" />
+          <Select.Item label="婚前中式禮儀" value="婚前中式禮儀" />
+          <Select.Item label="派帖" value="派帖" />
+          <Select.Item label="美容" value="美容" />
+          <Select.Item label="早上敬茶、出門入門" value="早上敬茶、出門入門" />
+          <Select.Item label="証婚" value="証婚" />
+          <Select.Item label="晚上婚宴" value="晚上婚宴" />
+          <Select.Item label="婚禮服飾" value="婚禮服飾" />
+          <Select.Item label="婚禮當日化妝" value="婚禮當日化妝" />
+          <Select.Item label="交通" value="交通" />
+          <Select.Item label="回門" value="回門" />
+          <Select.Item label="其他" value="其他" />
+        </Select>
+
         <Controller
           control={control}
           rules={{
+            maxLength: 100,
             required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <Input
+            <TextArea
               marginTop={5}
-              placeholder="物品"
+              placeholder="事項"
               style={editBudgetStyles.input}
               onBlur={onBlur}
               onChangeText={onChange}
               value={value}
             />
           )}
-          name="itemName"
+          name="description"
         />
-        {errors.itemName && <Text>This is required.</Text>}
 
         <Controller
           control={control}

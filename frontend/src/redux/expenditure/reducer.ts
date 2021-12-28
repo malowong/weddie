@@ -8,16 +8,19 @@ const initialState: IExpenditureState = {
       id: 1,
       category: '其他',
       amount: 2000,
+      description: 'hello',
     },
     {
       id: 2,
       category: '美容',
       amount: 3000,
+      description: 'hello',
     },
     {
       id: 3,
       category: '攝影',
       amount: 5000,
+      description: 'hello',
     },
   ],
 };

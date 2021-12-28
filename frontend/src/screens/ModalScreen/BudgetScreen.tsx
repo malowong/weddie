@@ -38,7 +38,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
       <View marginTop={5}>
         <View style={budgetStyles.addRow}>
           <Text
-            fontSize={22}
+            fontSize={24}
             marginBottom={2}
             fontWeight="bold"
             marginLeft={15}

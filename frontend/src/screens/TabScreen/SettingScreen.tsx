@@ -16,7 +16,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
   const userID = useSelector((state: IRootState) => state.auth);
   console.log(userID);
   const [showModal, setShowModal] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState(61210767);
 
   const {
     control,
@@ -44,12 +43,8 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
   const { userInfo } = data;
 
   const onSubmit = (data: any) => {
-    if (data.phoneNumber.length !== 8) {
-      return;
-    }
-
     const phoneNumber = parseInt(data.phoneNumber);
-    setPhoneNumber(phoneNumber);
+
     setShowModal(false);
   };
 
@@ -114,7 +109,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
                   render={({ field: { onChange, onBlur, value } }) => (
                     <Input
                       style={settingStyles.input}
-                      placeholder={String(phoneNumber)}
+                      placeholder="請輸入新電話號碼"
                       onBlur={onBlur}
                       onChangeText={onChange}
                       value={value}
@@ -123,7 +118,11 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
                   )}
                   name="phoneNumber"
                 />
-                {errors.phoneNumber && <Text>請輸入電話號碼</Text>}
+                {errors.phoneNumber && (
+                  <Text color="red.500" marginLeft={1} marginTop={2}>
+                    請輸入電話號碼
+                  </Text>
+                )}
               </View>
             </Modal.Body>
             <Modal.Footer>

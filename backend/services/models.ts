@@ -1,22 +1,33 @@
 export interface User {
-    id: number;
-    email: string;
-    password: string;
+  id: number;
+  email: string;
+  password: string;
 }
 
 export interface SignupUser {
-    email: string,
-    password: string,
-    nickname: string,
-    phone: string,
-    gender: 'M' | 'F',
-    district_id: string,
+  email: string;
+  password: string;
+  nickname: string;
+  phone: string;
+  gender: "M" | "F";
+  district_id: string;
 }
 
 declare global {
-    namespace Express {
-        interface Request {
-            user?: { id: number; phone: string };
-        }
+  namespace Express {
+    interface Request {
+      user?: { id: number; phone: string };
     }
+  }
+}
+
+export enum EventType {
+  Delete = "DELETE",
+  Add = "ADD",
+}
+
+export interface EventStore {
+  data: Object;
+  eventType: EventType;
+  amendDate: Date;
 }

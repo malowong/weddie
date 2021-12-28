@@ -112,7 +112,7 @@ export async function up(knex: Knex): Promise<void> {
     table.integer("budget_cat_id").unsigned();
     table.foreign("budget_cat_id").references(`${tables.BUDGET_CAT}.id`);
     table.string("description").notNullable().unique();
-    table.float("expenditure").notNullable().unsigned();
+    table.integer("expenditure").notNullable().unsigned();
     table.date("payment_date").notNullable();
   });
 
@@ -160,10 +160,10 @@ export async function up(knex: Knex): Promise<void> {
 export async function down(knex: Knex): Promise<void> {
   async function dropTable(tableObj: Object) {
     const reversedTableArr = Object.values(tableObj).reverse();
-    console.log(reversedTableArr)
+    console.log(reversedTableArr);
 
     for (let i = 0; i < reversedTableArr.length; i++) {
-      await knex.schema.dropTable(reversedTableArr[i])
+      await knex.schema.dropTable(reversedTableArr[i]);
       // truncate is only for deleting data, not drop table
       // await knex.raw(`TRUNCATE ${reversedTableArr[i]} RESTART IDENTITY CASCADE`);
     }

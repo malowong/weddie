@@ -4,37 +4,68 @@ import {
   HStack,
   VStack,
   Text,
-  Pressable,
   Image,
   Heading,
   View,
 } from 'native-base';
-import TopBar from '../../components/TopBar';
-import HomeScreenTopBar from '../../components/HomeScreenTopBar';
 import { Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
 import Carousel from 'react-native-snap-carousel';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store';
+// @ts-ignore
+// import Template1 from '../../images/template_1.jpeg';
+
 
 const eventData = {
   id: 1,
   wedding_name: 'Ben & Amy 的婚禮',
   wedding_date: '2022-12-24T08:12:33.230Z',
-};
-
-const userData = {
-  id: 1,
-  nickname: 'Den',
-  email: 'den@gmail.com',
-  phone: '12341234',
+  wedding_role: '新郎',
 };
 
 const rundownData = [
   {
     id: 1,
-    time: '2022-12-24T08:00:00.230Z',
+    time: '2022-12-24T03:02:00.230Z',
     item: '到場',
     detail: '買早餐上新郎屋企',
+    date_to_wedding: '30',
+  },
+  {
+    id: 2,
+    time: '2022-12-24T05:02:00.230Z',
+    item: '新郎化妝',
+    detail: '化妝師協助',
+    date_to_wedding: '30',
+  },
+  {
+    id: 3,
+    time: '2022-12-24T05:02:00.230Z',
+    item: '新郎化妝',
+    detail: '化妝師協助',
+    date_to_wedding: '30',
+  },
+  {
+    id: 4,
+    time: '2022-12-24T05:02:00.230Z',
+    item: '新郎化妝',
+    detail: '化妝師協助',
+    date_to_wedding: '30',
+  },
+  {
+    id: 5,
+    time: '2022-12-24T05:02:00.230Z',
+    item: '新郎化妝',
+    detail: '化妝師協助',
+    date_to_wedding: '30',
+  },
+  {
+    id: 6,
+    time: '2022-12-24T05:02:00.230Z',
+    item: '新郎化妝',
+    detail: '化妝師協助',
     date_to_wedding: '30',
   },
 ];
@@ -51,12 +82,21 @@ function getNumberOfDays(
   return diffInDays;
 }
 
+function getTime(time: string | number | Date){
+  const dateTime = new Date(time)
+  const hours = dateTime.getHours().toString().padStart(2, "0")
+  const minutes = dateTime.getMinutes().toString().padStart(2, "0")
+  return `${hours}:${minutes}`
+}
+
 const carouselData_couple = [
   {
     title: eventData.wedding_name,
     text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
-    image:
-      'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+    image: 'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+
+
+    // image: require('../../images/template_1.jpeg'),
   },
   {
     title: '邀請你的朋友幫忙',
@@ -128,7 +168,12 @@ export default function HomeScreen() {
 
   const [fadeAnim] = useState(new Animated.Value(0));
 
-  const [role, setRole] = useState('helper'); // couple / parti / helper
+  const userData = useSelector((state: IRootState) => state.auth.user)
+  console.log(userData);
+  // const eventData: any = useSelector((state: IRootState) => state.event.detail)
+
+  // const DEFAULT_IMAGE = Image.resolveAssetSource(Template1).uri;
+
 
   const fadeIn = () => {
     Animated.timing(fadeAnim, {
@@ -194,15 +239,15 @@ export default function HomeScreen() {
       >
         <Box safeAreaX={3} safeAreaY={1}>
           <Heading size="xl" textAlign="left" mb="3">
-            {userData.nickname} 你好!
+            {userData ? userData.nickname : ""} 你好!
           </Heading>
           <Carousel
             data={
               getNumberOfDays(Date.now(), eventData.wedding_date) === 0
                 ? carouselData_today
-                : role === 'couple'
+                : eventData.wedding_role === '新郎' || eventData.wedding_role === '新娘'
                 ? carouselData_couple
-                : role === 'parti'
+                : eventData.wedding_role === '兄弟' || eventData.wedding_role === '姊妹'
                 ? carouselData_parti
                 : carouselData_helper
             }
@@ -243,11 +288,13 @@ export default function HomeScreen() {
             itemWidth={367}
             layout={'default'}
           />
+          
           <Heading size="lg" textAlign="left" mb="3">
             你的時間表
           </Heading>
-
-          <Box
+          {rundownData.map((item, index) => (
+            <Box
+            key={index}
             bg="primary.600"
             py="4"
             px="3"
@@ -259,44 +306,22 @@ export default function HomeScreen() {
             shadow={3}
           >
             <HStack>
-              <Heading size="lg" color="white" textAlign="left" mr="3">
-                08:00
-              </Heading>
+              <View width="20">
+                <Heading size="lg" color="white" textAlign="left" mr="3">
+                  {getTime(item.time)}
+                </Heading>
+              </View>
               <VStack>
                 <Heading size="lg" color="white" textAlign="left">
-                  到場
+                  {item.item}
                 </Heading>
                 <Text fontSize="md" color="white" textAlign="left">
-                  買早餐上新郎屋企
+                  {item.detail}
                 </Text>
               </VStack>
             </HStack>
           </Box>
-          <Box
-            bg="primary.600"
-            py="4"
-            px="3"
-            mb="4"
-            rounded="lg"
-            alignSelf="center"
-            width={375}
-            maxWidth="100%"
-            shadow={3}
-          >
-            <HStack>
-              <Heading size="lg" color="white" textAlign="left" mr="3">
-                08:00
-              </Heading>
-              <VStack>
-                <Heading size="lg" color="white" textAlign="left">
-                  到場
-                </Heading>
-                <Text fontSize="md" color="white" textAlign="left">
-                  買早餐上新郎屋企
-                </Text>
-              </VStack>
-            </HStack>
-          </Box>
+          ))}
         </Box>
       </Animated.ScrollView>
     </>

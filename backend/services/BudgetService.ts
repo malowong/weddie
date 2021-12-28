@@ -3,6 +3,15 @@ import { tables } from "../utils/tables";
 import { collections } from "./mongoService";
 import { EventStore, EventType } from "./models";
 
+interface budgetItem {
+  id?: number;
+  wedding_event_id: number;
+  budget_cat_id: number;
+  description?: string;
+  expenditure: number;
+  payment_date?: Date;
+}
+
 export class BudgetService {
   constructor(private knex: Knex) {}
 
@@ -10,6 +19,13 @@ export class BudgetService {
     const expenditureList = "TODO";
 
     await this.knex.raw("SELECT * FROM user_info");
+  };
+
+  getExpenditureList = async (eventId: number) => {
+    const expenditureList = await this.knex
+      .select("*")
+      .from(tables.WEDDING_BUDGET_LIST)
+      .where("wedding_event_id", eventId);
 
     return expenditureList;
   };
@@ -39,5 +55,10 @@ export class BudgetService {
     event_store_new.data = new_data;
 
     collections.event_store?.insertMany([event_store_old, event_store_new]);
+    addBudgetItem = async (budgetItem: budgetItem) => {
+      await this.knex(tables.WEDDING_BUDGET_LIST).insert(budgetItem);
+
+      return;
+    };
   };
 }

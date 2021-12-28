@@ -19,3 +19,4 @@ connectToMongo()
     console.error("Database connection failed", error);
     process.exit();
   });
+budgetRoutes.post("/item", asyncWrapper(budgetController.addBudgetItem));

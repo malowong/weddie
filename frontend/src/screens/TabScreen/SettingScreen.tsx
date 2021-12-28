@@ -3,11 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import TopBar from '../../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { logoutThunk } from '../../redux/auth/thunk';
+import { useQuery } from 'react-query';
+import { config } from '../../../app.json';
+import { IRootState } from '../../redux/store';
+import { LoadingMsg } from '../../components/LoadingsMsg';
+import { ErrorMsg } from '../../components/ErrorMsg';
 
-export default function SettingScreen() {
+export default function SettingScreen({ navigation }: { navigation: any }) {
+  const dispatch = useDispatch();
+  const userID = useSelector((state: IRootState) => state.auth);
+  console.log(userID);
   const [showModal, setShowModal] = useState(false);
-  const [phoneNumber, setPhoneNumber] = useState(61210767);
-  const [name, setName] = useState('朱天樂');
   const {
     control,
     handleSubmit,
@@ -18,15 +26,31 @@ export default function SettingScreen() {
       phoneNumber: '',
     },
   });
-  const onSubmit = (data) => {
-    if (data.phoneNumber.length !== 8) {
-      return;
-    }
 
+  const { isLoading, error, data } = useQuery('userData', async () => {
+    const postData = (
+      await fetch(`${config.BACKEND_URL}/api/users/info`)
+    ).json();
+
+    return postData;
+  });
+
+  if (isLoading) return <LoadingMsg />;
+
+  if (error) return <ErrorMsg />;
+
+  const { userInfo } = data;
+
+  const onSubmit = (data: any) => {
     const phoneNumber = parseInt(data.phoneNumber);
-    setPhoneNumber(phoneNumber);
+
     setShowModal(false);
   };
+
+  function onPress() {
+    console.log('submit form data:');
+    dispatch(logoutThunk());
+  }
 
   useEffect(() => {
     let sub = watch((data) => {
@@ -44,9 +68,14 @@ export default function SettingScreen() {
         alignItems="center"
         minHeight="100%"
       >
-        <Text fontSize={20}>{name}</Text>
+        <Text fontSize={20}>{userInfo.nickname}</Text>
+
         <Text fontSize={20} marginTop="2">
-          電話號碼 {phoneNumber}
+          {userInfo.email}
+        </Text>
+
+        <Text fontSize={20} marginTop="2">
+          電話號碼 {userInfo.phone}
         </Text>
 
         <Button
@@ -59,9 +88,9 @@ export default function SettingScreen() {
 
         <Button
           variant="outline"
-          colorScheme="danger"
+          colorScheme="red"
           marginTop="8"
-          onPress={() => console.log('hello')}
+          onPress={onPress}
         >
           登出
         </Button>
@@ -81,7 +110,7 @@ export default function SettingScreen() {
                   render={({ field: { onChange, onBlur, value } }) => (
                     <Input
                       style={settingStyles.input}
-                      placeholder={String(phoneNumber)}
+                      placeholder="請輸入新電話號碼"
                       onBlur={onBlur}
                       onChangeText={onChange}
                       value={value}
@@ -90,7 +119,11 @@ export default function SettingScreen() {
                   )}
                   name="phoneNumber"
                 />
-                {errors.phoneNumber && <Text>請輸入電話號碼</Text>}
+                {errors.phoneNumber && (
+                  <Text color="red.500" marginLeft={1} marginTop={2}>
+                    請輸入電話號碼
+                  </Text>
+                )}
               </View>
             </Modal.Body>
             <Modal.Footer>

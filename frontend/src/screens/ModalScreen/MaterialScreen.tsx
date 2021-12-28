@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Checkbox, Text } from 'native-base';
+import { Checkbox, Text } from 'native-base';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
 import { useDispatch, useSelector } from 'react-redux';

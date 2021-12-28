@@ -37,6 +37,7 @@ import {
   QueryClient,
   QueryClientProvider,
 } from 'react-query'
+import CreateEventStackScreen from './src/screens/CreateEventStackScreen';
 
 // this is for create items
 
@@ -106,6 +107,7 @@ function MainStackScreen() {
 const RootStack = createStackNavigator();
 
 function RootStackScreen() {
+  
   return (
     <RootStack.Navigator
       screenOptions={{ headerShown: false, gestureEnabled: false }}
@@ -114,6 +116,7 @@ function RootStackScreen() {
       <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
       <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
       <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
+      <RootStack.Screen name="CreateEventStackScreen" component={CreateEventStackScreen} />
     </RootStack.Navigator>
   );
 }

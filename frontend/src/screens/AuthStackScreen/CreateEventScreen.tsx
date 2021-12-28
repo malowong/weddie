@@ -17,28 +17,37 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { ICreateEvent } from '../../redux/event/state';
 import { createEventThunk } from '../../redux/event/thunk';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   useQuery,
   useMutation,
   useQueryClient,
   QueryClient,
   QueryClientProvider,
-} from 'react-query'
+} from 'react-query';
 import { fetchCreateEvent } from '../../api/event';
+import { IRootState } from '../../redux/store';
 
 export default function CreateEventScreen({ navigation }: { navigation: any }) {
   const [date, setDate] = useState<Date>(new Date());
 
-  const mutation = useMutation(fetchCreateEvent)
+  const dispatch = useDispatch();
 
-  const {control, handleSubmit, watch, formState: { errors },
+  const userId = useSelector((state: IRootState) => state.auth.user?.id);
+
+  const {
+    control,
+    handleSubmit,
+    watch,
+    formState: { errors },
   } = useForm<ICreateEvent>({
     defaultValues: {
       eventName: '',
       role: '',
       bigday: date,
       budget: '',
+      user_id: userId,
     },
   });
 
@@ -52,7 +61,7 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
   function onSubmit(data: ICreateEvent) {
     data.bigday = date;
     console.log('submit form data:', data);
-    mutation.mutate(data)
+    dispatch(createEventThunk(data));
   }
 
   return (
@@ -123,17 +132,16 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                       flexDirection="row"
                       justifyContent="flex-start"
                     >
-                      <Radio value="新郎" mr={5}>
+                      <Radio value="1" mr={5}>
                         新郎
                       </Radio>
-                      <Radio value="新娘">新娘
-                      </Radio>
+                      <Radio value="2">新娘</Radio>
                     </Radio.Group>
                   </>
                 )}
               />
               {errors.role?.type === 'required' && (
-                <Text color="danger.500">請填寫新娘的名字。</Text>
+                <Text color="danger.500">請選擇新郎或新娘。</Text>
               )}
               {errors.role?.type === 'maxLength' && (
                 <Text color="danger.500">新娘的名字不可多於八個字符。</Text>
@@ -162,18 +170,19 @@ export default function CreateEventScreen({ navigation }: { navigation: any }) {
                   onChange={(event: any, selectedDate?: Date) => {
                     const currentDate = selectedDate || date;
                     setDate(currentDate);
+                    console.log(currentDate);
                   }}
                 />
               </View>
-              {date.toISOString() < new Date().toISOString() && (
+              {date < new Date() && (
                 <Text color="danger.500">請選擇正確的日子。</Text>
               )}
               <Controller
                 name="budget"
                 control={control}
-                // rules={{
-                //   required: true,
-                // }}
+                rules={{
+                  required: true,
+                }}
                 render={({ field: { value, onChange } }) => (
                   <>
                     <Text fontSize="lg" mb="1" mt="4">

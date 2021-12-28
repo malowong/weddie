@@ -25,11 +25,10 @@ import { useMutation, useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchRegister } from '../../api/auth';
 import { ISignupUser } from '../../redux/auth/state';
-import { signupThunk } from '../../redux/auth/thunk';
+// import { signupThunk } from '../../redux/auth/thunk';
 import { IRootState } from '../../redux/store';
 import { config } from '../../../app.json';
-
-const axios = require('axios').default;
+import { loginThunk, restoreLoginThunk } from '../../redux/auth/thunk';
 
 export default function SignupScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
@@ -65,6 +64,11 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
     // dispatch(signupThunk(data));
   }
 
+  if (mutation.status === 'success'){
+    dispatch(restoreLoginThunk())
+    navigation.navigate('ChooseScreen')
+  }
+
   return (
     <>
       <Box safeAreaTop backgroundColor="#f2f2f2" />
@@ -87,10 +91,10 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
           </Heading>
           <View>
             {mutation.isError ? (
-              <Text>An error occurred: {mutation.error.message}</Text>
+              <Text color="danger.500">錯誤：{mutation.error.message}</Text>
             ) : null}
   
-            {mutation.isSuccess ? <Text>Todo added!</Text> : null}
+            {mutation.isSuccess ? navigation.navigate('ChooseScreen') : null}
           </View>
 
           <VStack space={3} mt="5">

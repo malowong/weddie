@@ -3,11 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet } from 'react-native';
 import TopBar from '../../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
+import { logoutThunk } from '../../redux/auth/thunk';
 
 export default function SettingScreen() {
   const [showModal, setShowModal] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState(61210767);
   const [name, setName] = useState('朱天樂');
+  const dispatch = useDispatch()
   const {
     control,
     handleSubmit,
@@ -27,6 +30,11 @@ export default function SettingScreen() {
     setPhoneNumber(phoneNumber);
     setShowModal(false);
   };
+
+  function onPress() {
+    console.log('submit form data:');
+    dispatch(logoutThunk());
+  }
 
   useEffect(() => {
     let sub = watch((data) => {
@@ -61,7 +69,7 @@ export default function SettingScreen() {
           variant="outline"
           colorScheme="danger"
           marginTop="8"
-          onPress={() => console.log('hello')}
+          onPress={onPress}
         >
           登出
         </Button>

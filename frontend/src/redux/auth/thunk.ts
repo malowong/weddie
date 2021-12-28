@@ -1,14 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dispatch } from "redux";
 import { fetchLogin, fetchRegister, fetchUser } from '../../api/auth';
-import { loginFailed, loginSuccess, logout, registerFailed, registerSuccess } from './actions';
+import { loginFailed, loginSuccess, logout } from './actions';
 import { ISignupUser } from './state';
 
 export function loginThunk(email: string, password: string) {
     return async (dispatch: Dispatch<any>) => {
         try {
+            console.log("hi")
             const resp = await fetchLogin(email, password);
             const result = await resp.json();
+
+            console.log("result", result)
 
             if (resp.status !== 200) {
                 return dispatch(loginFailed(result.error))
@@ -19,7 +22,7 @@ export function loginThunk(email: string, password: string) {
             }
 
             await AsyncStorage.setItem('token', result.token);
-            dispatch(loginSuccess(result.token, result.user));
+            dispatch(loginSuccess(result.token, result.userData));
 
         } catch (e) {
             console.error(e)
@@ -40,11 +43,17 @@ export function restoreLoginThunk() {
             const resp = await fetchUser(token)
             const result = await resp.json()
 
-            if (!result.id) {
+            console.log(result)
+
+            if (!result.userData) {
                 return dispatch(logout())
             }
 
-            dispatch(loginSuccess(token, result))
+            if (!result.userData.id) {
+                return dispatch(logout())
+            }
+
+            dispatch(loginSuccess(token, result.userData))
 
         } catch (e) {
             console.error(e)
@@ -60,27 +69,27 @@ export function logoutThunk() {
     }
 }
 
-export function signupThunk(signupUser: ISignupUser) {
-    return async (dispatch: Dispatch<any>) => {
-        try {
-            const resp = await fetchRegister(signupUser);
-            const result = await resp.json();
+// export function signupThunk(signupUser: ISignupUser) {
+//     return async (dispatch: Dispatch<any>) => {
+//         try {
+//             const resp = await fetchRegister(signupUser);
+//             const result = await resp.json();
 
-            if (resp.status !== 200) {
-                return dispatch(registerFailed(result.error))
-            }
+//             if (resp.status !== 200) {
+//                 return dispatch(registerFailed(result.error))
+//             }
 
-            if (!result.token) {
-                return dispatch(registerFailed('No Token'))
-            }
+//             if (!result.token) {
+//                 return dispatch(registerFailed('No Token'))
+//             }
 
-            await AsyncStorage.setItem('token', result.token);
-            dispatch(registerSuccess(result.token, result.user));
+//             await AsyncStorage.setItem('token', result.token);
+//             dispatch(registerSuccess(result.token, result.user));
 
-        } catch (e) {
-            console.error(e)
-            dispatch(registerFailed('Unknown Error'))
-        }
+//         } catch (e) {
+//             console.error(e)
+//             dispatch(registerFailed('Unknown Error'))
+//         }
 
-    }
-}
+//     }
+// }

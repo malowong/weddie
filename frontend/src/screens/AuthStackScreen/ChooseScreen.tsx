@@ -21,6 +21,7 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TextInput, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useDispatch } from 'react-redux';
 
 export default function ChooseScreen({ navigation }: { navigation: any }) {
 
@@ -28,9 +29,6 @@ export default function ChooseScreen({ navigation }: { navigation: any }) {
     <>
       <Box safeAreaTop backgroundColor="#f2f2f2" />
       <Box safeAreaX={3} safeAreaY={1}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Icon as={Ionicons} name="chevron-back" />
-        </TouchableOpacity>
       </Box>
       <Center flex={0.9} px="3">
         <Box safeArea w="90%">

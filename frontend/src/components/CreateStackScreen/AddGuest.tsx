@@ -2,13 +2,15 @@ import React, { useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text } from 'native-base';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useMutation } from 'react-query';
 import { fetchAddGuest } from '../../api/guest';
-import { ErrorMsg } from '../ErrorMsg';
+import { IRootState } from '../../redux/store';
 
 export function AddGuest({ navigation }: { navigation: any }) {
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  console.log(eventId);
   const {
     control,
     handleSubmit,
@@ -33,7 +35,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
 
   const onSubmit = (data: any) => {
     console.log('submit form data:', data);
-    data['wedding_event_id'] = 1;
+    data['wedding_event_id'] = eventId;
     String(data['phone']);
     mutation.mutate(data);
   };

@@ -93,7 +93,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
 
           <Button
             variant="outline"
-            colorScheme="warning.400"
+            colorScheme="#ffff1a"
             marginTop="8"
             onPress={() => {
               dispatch(logoutThunk());

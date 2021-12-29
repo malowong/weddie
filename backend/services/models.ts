@@ -42,3 +42,10 @@ export interface EventStore {
   eventType: EventType;
   amendDate: Date;
 }
+
+export interface GuestList {
+  wedding_event_id: number;
+  name: string;
+  phone: string;
+  relationship: string;
+}

@@ -5,11 +5,7 @@ import TopBar from '../../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutThunk } from '../../redux/auth/thunk';
-import { useQuery } from 'react-query';
-import { config } from '../../../app.json';
 import { IRootState } from '../../redux/store';
-import { LoadingMsg } from '../../components/LoadingsMsg';
-import { ErrorMsg } from '../../components/ErrorMsg';
 
 export default function SettingScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();

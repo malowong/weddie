@@ -1,19 +1,38 @@
-import { Button, Checkbox, Text } from 'native-base';
+import { Text } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { useForm, Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { getGuestListThunk } from '../../redux/guest/thunk';
 import { IRootState } from '../../redux/store';
+import { useQuery } from 'react-query';
+import { config } from '../../../app.json';
+import { LoadingMsg } from '../../components/LoadingsMsg';
+import { ErrorMsg } from '../../components/ErrorMsg';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
-  const dispatch = useDispatch();
-  const guestList = useSelector((state: IRootState) => state.guest.guestList);
+  // const dispatch = useDispatch();
+  // const guestList = useSelector((state: IRootState) => state.guest.guestList);
 
-  useEffect(() => {
-    dispatch(getGuestListThunk());
-  }, [dispatch]);
+  const { isLoading, error, data } = useQuery('userData', async () => {
+    const postData = (
+      await fetch(`${config.BACKEND_URL}/api/guest/list`)
+    ).json();
+
+    return postData;
+  });
+
+  if (isLoading) return <LoadingMsg />;
+
+  if (error) return <ErrorMsg />;
+
+  console.log(data);
+
+  const guestList = data.guestList;
+
+  // useEffect(() => {
+  //   dispatch(getGuestListThunk());
+  // }, [dispatch]);
 
   return (
     <TopBar pageName="賓客名單" show="true" navigate="AddGuest">
@@ -36,7 +55,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
           </Text>
         </View>
 
-        {guestList.map((guest) => {
+        {guestList.map((guest: any) => {
           return (
             <TouchableOpacity
               key={guest.id}
@@ -47,7 +66,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
                   params: {
                     id: guest.id,
                     name: guest.name,
-                    phoneNumber: guest.phoneNumber,
+                    phoneNumber: guest.phone,
                     relationship: guest.relationship,
                   },
                 })
@@ -57,7 +76,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
                 <Text fontSize={15}>{guest.name}</Text>
               </View>
               <View style={guestStyles.tableColumn}>
-                <Text fontSize={15}>{guest.phoneNumber}</Text>
+                <Text fontSize={15}>{guest.phone}</Text>
               </View>
               <View
                 style={[guestStyles.tableColumn, guestStyles.tableRelationShip]}

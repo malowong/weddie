@@ -4,9 +4,11 @@ import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text } from 'native-base';
 import { useDispatch } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
+import { useMutation } from 'react-query';
+import { fetchAddGuest } from '../../api/guest';
+import { ErrorMsg } from '../ErrorMsg';
 
 export function AddGuest({ navigation }: { navigation: any }) {
-  // const dispatch = useDispatch();
   const {
     control,
     handleSubmit,
@@ -15,16 +17,10 @@ export function AddGuest({ navigation }: { navigation: any }) {
   } = useForm({
     defaultValues: {
       name: '',
-      phoneNumber: '',
+      phone: '',
       relationship: '',
     },
   });
-
-  const onSubmit = (data: any) => {
-    if (data.phoneNumber.length !== 8) {
-      return;
-    }
-  };
 
   useEffect(() => {
     let sub = watch((data) => {
@@ -32,6 +28,15 @@ export function AddGuest({ navigation }: { navigation: any }) {
     });
     return () => sub.unsubscribe();
   }, [watch]);
+
+  const mutation: any = useMutation(fetchAddGuest);
+
+  const onSubmit = (data: any) => {
+    console.log('submit form data:', data);
+    data['wedding_event_id'] = 1;
+    String(data['phone']);
+    mutation.mutate(data);
+  };
 
   return (
     <CreateAndEditTopBar pageName="新增賓客">
@@ -53,12 +58,13 @@ export function AddGuest({ navigation }: { navigation: any }) {
           )}
           name="name"
         />
-        {errors.name && <Text>This is required.</Text>}
+        {errors.name && <Text color="danger.500">請填寫名稱。</Text>}
 
         <Controller
           control={control}
           rules={{
-            maxLength: 100,
+            maxLength: 8,
+            minLength: 8,
             required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -72,9 +78,17 @@ export function AddGuest({ navigation }: { navigation: any }) {
               keyboardType="numeric"
             />
           )}
-          name="phoneNumber"
+          name="phone"
         />
-        {errors.phoneNumber && <Text>This is required.</Text>}
+        {errors.phone?.type === 'required' && (
+          <Text color="danger.500">請填寫你的電話號碼。</Text>
+        )}
+        {errors.phone?.type === 'maxLength' && (
+          <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+        )}
+        {errors.phone?.type === 'minLength' && (
+          <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+        )}
 
         <Controller
           control={control}
@@ -94,11 +108,19 @@ export function AddGuest({ navigation }: { navigation: any }) {
           )}
           name="relationship"
         />
-        {errors.relationship && <Text>This is required.</Text>}
+        {errors.relationship && <Text color="danger.500">請填寫關係。</Text>}
 
         <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
           提交
         </Button>
+
+        <View>
+          {mutation.isError ? (
+            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
+          ) : null}
+
+          {mutation.isSuccess ? navigation.goBack() : null}
+        </View>
       </View>
     </CreateAndEditTopBar>
   );

@@ -18,7 +18,7 @@ export function EditGuest({ route, navigation }: any) {
   } = useForm({
     defaultValues: {
       name: JSON.stringify(route.params.name).replace(/\"/g, ''),
-      phoneNumber: JSON.stringify(route.params.phoneNumber),
+      phone: JSON.stringify(route.params.phone),
       relationship: JSON.stringify(route.params.relationship).replace(
         /\"/g,
         ''
@@ -83,7 +83,7 @@ export function EditGuest({ route, navigation }: any) {
               keyboardType="numeric"
             />
           )}
-          name="phoneNumber"
+          name="phone"
         />
 
         <Controller

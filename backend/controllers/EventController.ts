@@ -42,6 +42,11 @@ export class EventController {
         }
 
         const eventData = await this.eventService.getEvent(userId)
+        // const eventData = {
+        //     id: event.wedding_event_id,
+
+        // }
+
 
         res.json( eventData );
     };

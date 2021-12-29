@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dispatch } from 'redux';
 import { fetchLogin, fetchRegister, fetchUser } from '../../api/auth';
+import { getEventFailed } from '../event/actions';
 import { restoreEventThunk } from '../event/thunk';
 import { loginFailed, loginSuccess, logout } from './actions';
 import { ISignupUser } from './state';
@@ -24,6 +25,9 @@ export function loginThunk(email: string, password: string) {
 
             await AsyncStorage.setItem('token', result.token);
             dispatch(loginSuccess(result.token, result.userData));
+
+            dispatch(restoreEventThunk());
+
 
         } catch (e) {
             console.error(e)

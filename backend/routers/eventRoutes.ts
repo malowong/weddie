@@ -11,3 +11,7 @@ export const eventRoutes = express.Router();
 
 eventRoutes.post("/", asyncWrapper(eventController.createEvent));
 eventRoutes.post("/id", asyncWrapper(eventController.getEventById));
+<<<<<<< HEAD
+
+=======
+>>>>>>> b94ddcb042abcc1bbdcec074cdc64bb3fc4aba83

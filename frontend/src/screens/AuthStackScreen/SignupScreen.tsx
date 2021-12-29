@@ -94,9 +94,7 @@ export default function SignupScreen() {
             {mutation.isError ? (
               <Text color="danger.500">錯誤：{mutation.error.message}</Text>
             ) : null}
-  
-            {/* {mutation.isSuccess ? navigation.navigate('ChooseScreen') : null} */}
-          </View>
+            </View>
 
           <VStack space={3} mt="5">
             <View>

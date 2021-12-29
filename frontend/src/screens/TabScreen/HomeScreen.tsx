@@ -98,9 +98,10 @@ export default function HomeScreen() {
 
   const userData = useSelector((state: IRootState) => state.auth.user)
   console.log(userData);
-  const event: any = useSelector((state: IRootState) => state.event.event)
-  const eventData = event.eventData
-  console.log("hi", event.eventData.wedding_name);
+  const eventData: any = useSelector((state: IRootState) => state.event.event)
+  console.log(eventData.wedding_name);
+  console.log(eventData.id);
+
 
   // const DEFAULT_IMAGE = Image.resolveAssetSource(Template1).uri;
 

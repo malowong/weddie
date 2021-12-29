@@ -46,7 +46,7 @@ export function restoreEventThunk() {
                 return dispatch(getEventFailed(result.error))
             }
 
-            if (!result.eventData) {
+            if (!result.id) {
                 return dispatch(getEventFailed('No event'))
             }
 

@@ -43,8 +43,6 @@ export class EventController {
 
         const eventData = await this.eventService.getEvent(userId)
 
-        console.log(eventData)
-
-        res.json({ eventData });
+        res.json( eventData );
     };
 }

@@ -20,6 +20,7 @@ export class EventService {
       .from(tables.WEDDING_USER)
       .where({ user_id: userId })
       .innerJoin("wedding_event", "wedding_event_id", "wedding_event.id")
+      .innerJoin("role", "role_id", "role.id")
       .first();
 
     return eventData;

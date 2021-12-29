@@ -10,22 +10,13 @@ import {
 } from 'native-base';
 import { Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Carousel from 'react-native-snap-carousel';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
-// @ts-ignore
-// import Template1 from '../../images/template_1.jpeg';
 
 
-// const eventData = {
-//   id: 1,
-//   wedding_name: 'Ben & Amy 的婚禮',
-//   wedding_date: '2022-12-24T08:12:33.230Z',
-//   wedding_role: '新郎',
-// };
-
-const rundownData = [
+const rundownData = [ 
   {
     id: 1,
     time: '2022-12-24T03:02:00.230Z',
@@ -99,9 +90,9 @@ export default function HomeScreen() {
   const userData = useSelector((state: IRootState) => state.auth.user)
   console.log(userData);
   const eventData: any = useSelector((state: IRootState) => state.event.event)
-  console.log(eventData.wedding_name);
+  const isCreated: any = useSelector((state: IRootState) => state.event.isCreated)
+  console.log(eventData);
   console.log(eventData.id);
-
 
   // const DEFAULT_IMAGE = Image.resolveAssetSource(Template1).uri;
 
@@ -109,22 +100,17 @@ export default function HomeScreen() {
     {
       title: eventData.wedding_name,
       text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
-      image: 'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
-  
-  
-      // image: require('../../images/template_1.jpeg'),
+      image: require('../../images/template_1.jpeg'),
     },
     {
       title: '邀請你的朋友幫忙',
       text: '於人員名單加入你的兄弟姊妹',
-      image:
-        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+      image: require('../../images/template_2.jpeg'),
     },
     {
       title: '記下你的所有事項',
       text: '於待辦事項新增事件',
-      image:
-        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+      image: require('../../images/template_3.jpeg'),
     },
   ];
   
@@ -132,20 +118,17 @@ export default function HomeScreen() {
     {
       title: eventData.wedding_name,
       text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
-      image:
-        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+      image: require('../../images/template_1.jpeg'),
     },
     {
       title: '看看有什麼需要幫忙',
       text: '你可於待辦事項查看',
-      image:
-        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+      image: require('../../images/template_2.jpeg'),
     },
     {
       title: '熟習當日流程',
       text: '於當日流程查看最新時間表',
-      image:
-        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+      image: require('../../images/template_2.jpeg'),
     },
   ];
   
@@ -169,10 +152,12 @@ export default function HomeScreen() {
         'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
     },
   ];
+
+  
   
   const carouselData_today = [
     {
-      title: eventData.eventName,
+      title: eventData.wedding_name,
       text: `就是今天！`,
       image:
         'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
@@ -260,9 +245,7 @@ export default function HomeScreen() {
               return (
                 <Box shadow={3}>
                   <Image
-                    source={{
-                      uri: item.image,
-                    }}
+                    source={item.image}
                     alt="Aang flying and surrounded by clouds"
                     height="250"
                     width={367}

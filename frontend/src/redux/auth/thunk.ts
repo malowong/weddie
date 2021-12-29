@@ -73,6 +73,7 @@ export function logoutThunk() {
   return async (dispatch: Dispatch<any>) => {
     await AsyncStorage.removeItem('token');
     dispatch(logout());
+    // dispatch(logoutEvent());
   };
 }
 

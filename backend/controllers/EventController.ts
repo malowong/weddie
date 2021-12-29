@@ -25,9 +25,11 @@ export class EventController {
             role_id: parseInt(role),
         }
 
-        const eventId = await this.eventService.createEvent(event);
+        await this.eventService.createEvent(event);
 
-        res.json({ eventId });
+        const eventData = await this.eventService.getEventById(user_id)
+
+        res.json(eventData);
 
     };
 
@@ -41,12 +43,16 @@ export class EventController {
             return;
         }
 
-        const eventData = await this.eventService.getEvent(userId)
+        const eventData = await this.eventService.getEventById(userId)
         // const eventData = {
         //     id: event.wedding_event_id,
 
         // }
 
+        if (!eventData) {
+            res.status(401).json({ msg: "Request are null" })
+            return
+        }
 
         res.json( eventData );
     };

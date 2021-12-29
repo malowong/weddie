@@ -15,7 +15,7 @@ export class EventService {
     return eventId;
   }
 
-  async getEvent(userId: number) {
+  async getEventById(userId: number) {
     const eventData = await this.knex
       .from(tables.WEDDING_USER)
       .where({ user_id: userId })

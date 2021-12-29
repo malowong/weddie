@@ -36,7 +36,6 @@ import { EditTodoItem } from './src/components/EditStackScreen/EditTodoItem';
 import { SelectEvent } from './src/components/EditStackScreen/SelectEvent';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import CreateEventStackScreen from './src/screens/CreateEventStackScreen';
-import GuestScreen from './src/screens/ModalScreen/GuestScreen';
 
 // this is for create items
 
@@ -112,7 +111,6 @@ function RootStackScreen() {
       screenOptions={{ headerShown: false, gestureEnabled: false }}
       initialRouteName="LoadingScreen"
     >
-      <RootStack.Screen name="GuestScreen" component={GuestScreen} />
       <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
       <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
       <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />

@@ -11,9 +11,6 @@ import { LoadingMsg } from '../../components/LoadingsMsg';
 import { ErrorMsg } from '../../components/ErrorMsg';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
-  // const dispatch = useDispatch();
-  // const guestList = useSelector((state: IRootState) => state.guest.guestList);
-
   const { isLoading, error, data } = useQuery('userData', async () => {
     const postData = (
       await fetch(`${config.BACKEND_URL}/api/guest/list`)
@@ -26,13 +23,15 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
 
   if (error) return <ErrorMsg />;
 
-  console.log(data);
+  console.log('data: ', data.guestList);
 
   const guestList = data.guestList;
 
   // useEffect(() => {
-  //   dispatch(getGuestListThunk());
-  // }, [dispatch]);
+  //   (async () => {
+  //     await fetch(`${config.BACKEND_URL}/api/guest/list`);
+  //   })();
+  // }, []);
 
   return (
     <TopBar pageName="賓客名單" show="true" navigate="AddGuest">
@@ -54,7 +53,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
             關係
           </Text>
         </View>
-
+        {/* <Text>{data.guestList.length}</Text> */}
         {guestList.map((guest: any) => {
           return (
             <TouchableOpacity
@@ -66,7 +65,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
                   params: {
                     id: guest.id,
                     name: guest.name,
-                    phoneNumber: guest.phone,
+                    phone: guest.phone,
                     relationship: guest.relationship,
                   },
                 })

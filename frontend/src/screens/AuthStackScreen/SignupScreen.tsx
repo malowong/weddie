@@ -21,13 +21,10 @@ import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useMutation, useQueryClient } from 'react-query';
-import { useDispatch, useSelector } from 'react-redux';
+import { useMutation } from 'react-query';
+import { useDispatch } from 'react-redux';
 import { fetchRegister } from '../../api/auth';
 import { ISignupUser } from '../../redux/auth/state';
-// import { signupThunk } from '../../redux/auth/thunk';
-import { IRootState } from '../../redux/store';
-import { config } from '../../../app.json';
 import { loginThunk, restoreLoginThunk } from '../../redux/auth/thunk';
 import { useNavigation } from '@react-navigation/native';
 
@@ -59,15 +56,15 @@ export default function SignupScreen() {
     return () => sub.unsubscribe();
   }, [watch]);
 
-  const mutation: any = useMutation(fetchRegister)
+  const mutation: any = useMutation(fetchRegister);
 
   function onSubmit(data: ISignupUser) {
     console.log('submit form data:', data);
     mutation.mutate(data);
   }
 
-  if (mutation.status === 'success'){
-    dispatch(restoreLoginThunk())
+  if (mutation.status === 'success') {
+    dispatch(restoreLoginThunk());
   }
 
   return (
@@ -94,7 +91,7 @@ export default function SignupScreen() {
             {mutation.isError ? (
               <Text color="danger.500">錯誤：{mutation.error.message}</Text>
             ) : null}
-            </View>
+          </View>
 
           <VStack space={3} mt="5">
             <View>

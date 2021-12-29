@@ -7,6 +7,7 @@ import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useMutation } from 'react-query';
 import { fetchAddGuest } from '../../api/guest';
 import { IRootState } from '../../redux/store';
+import { useNavigation } from '@react-navigation/native';
 
 export function AddGuest({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
@@ -121,7 +122,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
             <Text color="danger.500">錯誤：{mutation.error.message}</Text>
           ) : null}
 
-          {mutation.isSuccess ? navigation.goBack() : null}
+          {mutation.isSuccess ? navigation.push('GuestScreen') : null}
         </View>
       </View>
     </CreateAndEditTopBar>

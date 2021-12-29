@@ -169,7 +169,9 @@ export function EditGuest({ route, navigation }: any) {
             <Text color="danger.500">錯誤：{mutation.error.message}</Text>
           ) : null}
 
-          {mutation.isSuccess ? navigation.push('GuestScreen') : null}
+          {mutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'GuestScreen' })
+            : null}
         </View>
       </View>
     </CreateAndEditTopBar>

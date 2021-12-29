@@ -112,7 +112,7 @@ function RootStackScreen() {
       screenOptions={{ headerShown: false, gestureEnabled: false }}
       initialRouteName="LoadingScreen"
     >
-      <RootStack.Screen name="GuestScreen" component={GuestScreen} />
+      {/* <RootStack.Screen name="GuestScreen" component={GuestScreen} /> */}
       <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
       <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
       <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />

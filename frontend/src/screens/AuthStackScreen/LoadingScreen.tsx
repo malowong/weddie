@@ -14,7 +14,6 @@ export default function LoadingScreen({ navigation }: { navigation: any }) {
 
   useEffect(() => {
     dispatch(restoreLoginThunk());
-    // dispatch(restoreEventThunk());
   }, [dispatch]);
 
   useEffect(() => {
@@ -22,15 +21,18 @@ export default function LoadingScreen({ navigation }: { navigation: any }) {
       return;
     }
     if (isAuthenticated) {
-      // if (isCreated) {
-      //   navigation.navigate('MainStackScreen');
-      // }
-      // navigation.navigate('CreateEventStackScreen');
-      navigation.navigate('MainStackScreen');
+      if (isCreated == null) {
+        return 
+      }
+      if (isCreated){
+        navigation.navigate('MainStackScreen', {screen: 'HomeScreen' });
+      } else if (isCreated == false) {
+        navigation.navigate('CreateEventStackScreen', {screen: 'ChooseScreen' });
+      }
     } else {
       navigation.navigate('AuthStackScreen');
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, isCreated]);
 
   return (
     <View

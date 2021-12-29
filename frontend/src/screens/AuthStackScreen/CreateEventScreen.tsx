@@ -28,8 +28,11 @@ import {
 } from 'react-query';
 import { fetchCreateEvent } from '../../api/event';
 import { IRootState } from '../../redux/store';
+import { useNavigation } from '@react-navigation/native';
 
-export default function CreateEventScreen({ navigation }: { navigation: any }) {
+export default function CreateEventScreen() {
+  const navigation = useNavigation();
+
   const [date, setDate] = useState<Date>(new Date());
 
   const dispatch = useDispatch();

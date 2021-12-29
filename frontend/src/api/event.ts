@@ -16,7 +16,8 @@ export const fetchCreateEvent = async (event: ICreateEvent) => {
 };
 
 export const fetchEvent = async (userId: number) => {
-  const resp = await fetch(`${config.BACKEND_URL}/api/events`, {
+  const resp = await fetch(`${config.BACKEND_URL}/api/events/id`, {
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },

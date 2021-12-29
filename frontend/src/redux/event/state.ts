@@ -5,6 +5,7 @@ export interface ICreateEvent {
   pax: string,
   user_id: number,
   role: string,
+  id: number,
 };
 
 export interface IEventState {

@@ -29,8 +29,11 @@ import { ISignupUser } from '../../redux/auth/state';
 import { IRootState } from '../../redux/store';
 import { config } from '../../../app.json';
 import { loginThunk, restoreLoginThunk } from '../../redux/auth/thunk';
+import { useNavigation } from '@react-navigation/native';
 
-export default function SignupScreen({ navigation }: { navigation: any }) {
+export default function SignupScreen() {
+  const navigation = useNavigation();
+
   const dispatch = useDispatch();
 
   const {
@@ -61,12 +64,10 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
   function onSubmit(data: ISignupUser) {
     console.log('submit form data:', data);
     mutation.mutate(data);
-    // dispatch(signupThunk(data));
   }
 
   if (mutation.status === 'success'){
     dispatch(restoreLoginThunk())
-    navigation.navigate('ChooseScreen')
   }
 
   return (
@@ -94,7 +95,7 @@ export default function SignupScreen({ navigation }: { navigation: any }) {
               <Text color="danger.500">錯誤：{mutation.error.message}</Text>
             ) : null}
   
-            {mutation.isSuccess ? navigation.navigate('ChooseScreen') : null}
+            {/* {mutation.isSuccess ? navigation.navigate('ChooseScreen') : null} */}
           </View>
 
           <VStack space={3} mt="5">

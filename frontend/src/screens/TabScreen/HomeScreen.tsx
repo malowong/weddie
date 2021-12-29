@@ -18,12 +18,12 @@ import { IRootState } from '../../redux/store';
 // import Template1 from '../../images/template_1.jpeg';
 
 
-const eventData = {
-  id: 1,
-  wedding_name: 'Ben & Amy 的婚禮',
-  wedding_date: '2022-12-24T08:12:33.230Z',
-  wedding_role: '新郎',
-};
+// const eventData = {
+//   id: 1,
+//   wedding_name: 'Ben & Amy 的婚禮',
+//   wedding_date: '2022-12-24T08:12:33.230Z',
+//   wedding_role: '新郎',
+// };
 
 const rundownData = [
   {
@@ -89,79 +89,7 @@ function getTime(time: string | number | Date){
   return `${hours}:${minutes}`
 }
 
-const carouselData_couple = [
-  {
-    title: eventData.wedding_name,
-    text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
-    image: 'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
 
-
-    // image: require('../../images/template_1.jpeg'),
-  },
-  {
-    title: '邀請你的朋友幫忙',
-    text: '於人員名單加入你的兄弟姊妹',
-    image:
-      'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
-  },
-  {
-    title: '記下你的所有事項',
-    text: '於待辦事項新增事件',
-    image:
-      'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
-  },
-];
-
-const carouselData_parti = [
-  {
-    title: eventData.wedding_name,
-    text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
-    image:
-      'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
-  },
-  {
-    title: '看看有什麼需要幫忙',
-    text: '你可於待辦事項查看',
-    image:
-      'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
-  },
-  {
-    title: '熟習當日流程',
-    text: '於當日流程查看最新時間表',
-    image:
-      'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
-  },
-];
-
-const carouselData_helper = [
-  {
-    title: eventData.wedding_name,
-    text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
-    image:
-      'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
-  },
-  {
-    title: '聯絡查詢最新安排',
-    text: '你可於人員名單查詢各人聯絡方式',
-    image:
-      'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
-  },
-  {
-    title: '預早了解當日行程',
-    text: '查閱「你的時間表」了解更多',
-    image:
-      'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
-  },
-];
-
-const carouselData_today = [
-  {
-    title: eventData.wedding_name,
-    text: `就是今天！`,
-    image:
-      'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
-  },
-];
 
 export default function HomeScreen() {
   const navigation: any = useNavigation();
@@ -170,9 +98,85 @@ export default function HomeScreen() {
 
   const userData = useSelector((state: IRootState) => state.auth.user)
   console.log(userData);
-  // const eventData: any = useSelector((state: IRootState) => state.event.detail)
+  const event: any = useSelector((state: IRootState) => state.event.event)
+  const eventData = event.eventData
+  console.log("hi", event.eventData.wedding_name);
 
   // const DEFAULT_IMAGE = Image.resolveAssetSource(Template1).uri;
+
+  const carouselData_couple = [
+    {
+      title: eventData.wedding_name,
+      text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
+      image: 'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+  
+  
+      // image: require('../../images/template_1.jpeg'),
+    },
+    {
+      title: '邀請你的朋友幫忙',
+      text: '於人員名單加入你的兄弟姊妹',
+      image:
+        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+    },
+    {
+      title: '記下你的所有事項',
+      text: '於待辦事項新增事件',
+      image:
+        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+    },
+  ];
+  
+  const carouselData_parti = [
+    {
+      title: eventData.wedding_name,
+      text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
+      image:
+        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+    },
+    {
+      title: '看看有什麼需要幫忙',
+      text: '你可於待辦事項查看',
+      image:
+        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+    },
+    {
+      title: '熟習當日流程',
+      text: '於當日流程查看最新時間表',
+      image:
+        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+    },
+  ];
+  
+  const carouselData_helper = [
+    {
+      title: eventData.wedding_name,
+      text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
+      image:
+        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+    },
+    {
+      title: '聯絡查詢最新安排',
+      text: '你可於人員名單查詢各人聯絡方式',
+      image:
+        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+    },
+    {
+      title: '預早了解當日行程',
+      text: '查閱「你的時間表」了解更多',
+      image:
+        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+    },
+  ];
+  
+  const carouselData_today = [
+    {
+      title: eventData.eventName,
+      text: `就是今天！`,
+      image:
+        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+    },
+  ];
 
 
   const fadeIn = () => {
@@ -224,7 +228,7 @@ export default function HomeScreen() {
             bottom="11%"
             pb={1}
           >
-            {eventData.wedding_name}
+            {eventData.eventName}
           </Text>
         </Box>
       </Animated.View>
@@ -245,9 +249,9 @@ export default function HomeScreen() {
             data={
               getNumberOfDays(Date.now(), eventData.wedding_date) === 0
                 ? carouselData_today
-                : eventData.wedding_role === '新郎' || eventData.wedding_role === '新娘'
+                : eventData.role === '新郎' || eventData.role === '新娘'
                 ? carouselData_couple
-                : eventData.wedding_role === '兄弟' || eventData.wedding_role === '姊妹'
+                : eventData.role === '兄弟' || eventData.role === '姊妹'
                 ? carouselData_parti
                 : carouselData_helper
             }

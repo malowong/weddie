@@ -5,55 +5,46 @@ export class EventController {
     constructor(private eventService: EventService) { }
 
     createEvent = async (req: Request, res: Response) => {
-        try {
-            console.log(req.body)
+        console.log(req.body)
 
-            if (!req.body) {
-                res.status(401).json({ msg: "Request are null" });
-                return;
-            }
-
-            const { eventName, role, bigday, budget, pax, user_id } = req.body;
-
-            // where shd i put the budget?
-
-            const event = {
-                wedding_name: eventName,
-                wedding_date: bigday,
-                budget,
-                pax,
-                user_id: user_id,
-                role_id: parseInt(role),
-            }
-
-            const eventId = await this.eventService.createEvent(event);
-
-            res.json({ eventId });
-
-        } catch (e) {
-            console.error(e)
-            res.status(500).json({ msg: e.toString() });
+        if (!req.body) {
+            res.status(401).json({ msg: "Request are null" });
+            return;
         }
+
+        const { eventName, role, bigday, budget, pax, user_id } = req.body;
+
+        // where shd i put the budget?
+
+        const event = {
+            wedding_name: eventName,
+            wedding_date: bigday,
+            budget,
+            pax,
+            user_id: user_id,
+            role_id: parseInt(role),
+        }
+
+        const eventId = await this.eventService.createEvent(event);
+
+        res.json({ eventId });
+
     };
 
-    getEvent = async (req: Request, res: Response) => {
-        try {
-            console.log(req.body)
+    getEventById = async (req: Request, res: Response) => {
+        console.log(req.body)
 
-            const userId = req.body.userId
+        const userId = req.body.userId
 
-            if (!req.body) {
-                res.status(401).json({ msg: "Request are null" });
-                return;
-            }
-
-            const eventData = await this.eventService.getEvent(userId)
-
-            res.json({ eventData });
-
-        } catch (e) {
-            console.error(e)
-            res.status(500).json({ msg: e.toString() });
+        if (!req.body) {
+            res.status(401).json({ msg: "Request are null" });
+            return;
         }
+
+        const eventData = await this.eventService.getEvent(userId)
+
+        console.log(eventData)
+
+        res.json({ eventData });
     };
 }

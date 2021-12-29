@@ -10,5 +10,5 @@ const eventController = new EventController(eventService);
 export const eventRoutes = express.Router();
 
 eventRoutes.post("/", asyncWrapper(eventController.createEvent));
-eventRoutes.get("/", asyncWrapper(eventController.getEvent));
+eventRoutes.post("/id", asyncWrapper(eventController.getEventById));
 

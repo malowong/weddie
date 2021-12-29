@@ -229,7 +229,7 @@ export default function HomeScreen() {
             bottom="11%"
             pb={1}
           >
-            {eventData.eventName}
+            {eventData.wedding_name}
           </Text>
         </Box>
       </Animated.View>

@@ -6,6 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutThunk } from '../../redux/auth/thunk';
 import { IRootState } from '../../redux/store';
+import { CommonActions } from '@react-navigation/native';
 
 export default function SettingScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
@@ -38,6 +39,10 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     setShowModal(false);
   };
 
+  const onPress = () => {
+    dispatch(logoutThunk());
+  };
+
   // useEffect(() => {
   //   let sub = watch((data) => {
   //     console.log('update form data:', data);
@@ -54,14 +59,14 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
         alignItems="center"
         minHeight="100%"
       >
-        <Text fontSize={20}>{user.nickname}</Text>
+        <Text fontSize={20}>{user ? user.nickname : null}</Text>
 
         <Text fontSize={20} marginTop="2">
-          {user.email}
+          {user ? user.email : null}
         </Text>
 
         <Text fontSize={20} marginTop="2">
-          電話號碼 {user.phone}
+          電話號碼 {user ? user.phone : null}
         </Text>
 
         <Button
@@ -95,10 +100,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
             variant="outline"
             colorScheme="#ffff1a"
             marginTop="8"
-            onPress={() => {
-              dispatch(logoutThunk());
-              navigation.navigate('LoginScreen');
-            }}
+            onPress={onPress}
           >
             登出
           </Button>

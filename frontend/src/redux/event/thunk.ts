@@ -33,6 +33,8 @@ export function restoreEventThunk() {
 
             const userId = getState().auth.user?.id
 
+            console.log(userId)
+
             if (!userId) {
                 return dispatch(getEventFailed('No event'))
             }

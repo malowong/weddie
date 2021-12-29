@@ -3,8 +3,11 @@ import { View, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text, TextArea, Modal, FormControl } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
+import { IRootState } from '../../redux/store';
+import { useMutation } from 'react-query';
+import { fetchUpdateLogisticsItem } from '../../api/logistics';
 
 export function EditMaterialItem({ route, navigation }: any) {
   let remarks = '';
@@ -14,6 +17,7 @@ export function EditMaterialItem({ route, navigation }: any) {
     remarks = JSON.stringify(route.params.remarks).replace(/\"/g, '');
   }
 
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const {
@@ -28,16 +32,19 @@ export function EditMaterialItem({ route, navigation }: any) {
     },
   });
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  // useEffect(() => {
+  //   const subscription = watch((value, { name, type }) =>
+  //     console.log(value, name, type)
+  //   );
+  //   return () => subscription.unsubscribe();
+  // }, [watch]);
+
+  const mutation: any = useMutation(fetchUpdateLogisticsItem);
 
   const onSubmit = (data: any) => {
-    data.amount = parseInt(data.amount);
+    data['materialItemId'] = route.params.id;
     console.log(data);
+    mutation.mutate(data);
   };
 
   const deleteMaterialItem = () => {
@@ -128,6 +135,16 @@ export function EditMaterialItem({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
+        </View>
+
+        <View>
+          {mutation.isError ? (
+            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
+          ) : null}
+
+          {mutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'MaterialScreen' })
+            : null}
         </View>
       </View>
     </CreateAndEditTopBar>

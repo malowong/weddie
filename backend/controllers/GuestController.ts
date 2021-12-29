@@ -5,7 +5,8 @@ export class GuestController {
   constructor(private guestService: GuestService) {}
 
   getGuestList = async (req: Request, res: Response) => {
-    const guestList = await this.guestService.getGuestList(1);
+    const eventId = parseInt(req.params.id);
+    const guestList = await this.guestService.getGuestList(eventId);
 
     res.json({ guestList });
   };

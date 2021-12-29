@@ -6,23 +6,31 @@ import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { ErrorMsg } from '../../components/ErrorMsg';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
-  const { isLoading, error, data } = useQuery('userData', async () => {
-    const postData = (
-      await fetch(`${config.BACKEND_URL}/api/guest/list`)
-    ).json();
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  // const { isLoading, error, data } = useQuery('userData', async () => {
+  //   const postData = (
+  //     await fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
+  //   ).json();
 
-    return postData;
-  });
+  //   return postData;
+  // });
+
+  const [guestList, setGuestList] = useState([]);
+  const { isLoading, error, data } = useQuery('userData', () =>
+    fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setGuestList(data.guestList))
+  );
 
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
 
-  console.log('data: ', data.guestList);
-
-  const guestList = data.guestList;
+  // const guestList = data.guestList;
 
   // useEffect(() => {
   //   (async () => {
@@ -52,40 +60,41 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
         </View>
 
         <View marginBottom={10}>
-          {guestList.map((guest: any) => {
-            return (
-              <TouchableOpacity
-                key={guest.id}
-                style={guestStyles.tableRow}
-                onPress={() =>
-                  navigation.navigate('EditStackScreen', {
-                    screen: 'EditGuest',
-                    params: {
-                      id: guest.id,
-                      name: guest.name,
-                      phone: guest.phone,
-                      relationship: guest.relationship,
-                    },
-                  })
-                }
-              >
-                <View style={guestStyles.tableColumn}>
-                  <Text fontSize={15}>{guest.name}</Text>
-                </View>
-                <View style={guestStyles.tableColumn}>
-                  <Text fontSize={15}>{guest.phone}</Text>
-                </View>
-                <View
-                  style={[
-                    guestStyles.tableColumn,
-                    guestStyles.tableRelationShip,
-                  ]}
+          {guestList &&
+            guestList.map((guest: any) => {
+              return (
+                <TouchableOpacity
+                  key={guest.id}
+                  style={guestStyles.tableRow}
+                  onPress={() =>
+                    navigation.navigate('EditStackScreen', {
+                      screen: 'EditGuest',
+                      params: {
+                        id: guest.id,
+                        name: guest.name,
+                        phone: guest.phone,
+                        relationship: guest.relationship,
+                      },
+                    })
+                  }
                 >
-                  <Text fontSize={15}>{guest.relationship}</Text>
-                </View>
-              </TouchableOpacity>
-            );
-          })}
+                  <View style={guestStyles.tableColumn}>
+                    <Text fontSize={15}>{guest.name}</Text>
+                  </View>
+                  <View style={guestStyles.tableColumn}>
+                    <Text fontSize={15}>{guest.phone}</Text>
+                  </View>
+                  <View
+                    style={[
+                      guestStyles.tableColumn,
+                      guestStyles.tableRelationShip,
+                    ]}
+                  >
+                    <Text fontSize={15}>{guest.relationship}</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
         </View>
       </View>
     </TopBar>

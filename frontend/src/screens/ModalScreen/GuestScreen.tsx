@@ -1,10 +1,7 @@
-import { Text } from 'native-base';
+import { Text, View } from 'native-base';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { useDispatch, useSelector } from 'react-redux';
-import { getGuestListThunk } from '../../redux/guest/thunk';
-import { IRootState } from '../../redux/store';
 import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { LoadingMsg } from '../../components/LoadingsMsg';
@@ -53,38 +50,43 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
             關係
           </Text>
         </View>
-        {/* <Text>{data.guestList.length}</Text> */}
-        {guestList.map((guest: any) => {
-          return (
-            <TouchableOpacity
-              key={guest.id}
-              style={guestStyles.tableRow}
-              onPress={() =>
-                navigation.navigate('EditStackScreen', {
-                  screen: 'EditGuest',
-                  params: {
-                    id: guest.id,
-                    name: guest.name,
-                    phone: guest.phone,
-                    relationship: guest.relationship,
-                  },
-                })
-              }
-            >
-              <View style={guestStyles.tableColumn}>
-                <Text fontSize={15}>{guest.name}</Text>
-              </View>
-              <View style={guestStyles.tableColumn}>
-                <Text fontSize={15}>{guest.phone}</Text>
-              </View>
-              <View
-                style={[guestStyles.tableColumn, guestStyles.tableRelationShip]}
+
+        <View marginBottom={10}>
+          {guestList.map((guest: any) => {
+            return (
+              <TouchableOpacity
+                key={guest.id}
+                style={guestStyles.tableRow}
+                onPress={() =>
+                  navigation.navigate('EditStackScreen', {
+                    screen: 'EditGuest',
+                    params: {
+                      id: guest.id,
+                      name: guest.name,
+                      phone: guest.phone,
+                      relationship: guest.relationship,
+                    },
+                  })
+                }
               >
-                <Text fontSize={15}>{guest.relationship}</Text>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
+                <View style={guestStyles.tableColumn}>
+                  <Text fontSize={15}>{guest.name}</Text>
+                </View>
+                <View style={guestStyles.tableColumn}>
+                  <Text fontSize={15}>{guest.phone}</Text>
+                </View>
+                <View
+                  style={[
+                    guestStyles.tableColumn,
+                    guestStyles.tableRelationShip,
+                  ]}
+                >
+                  <Text fontSize={15}>{guest.relationship}</Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
       </View>
     </TopBar>
   );

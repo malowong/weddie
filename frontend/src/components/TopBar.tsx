@@ -48,7 +48,7 @@ export default function TopBar(props: ITopBarProps) {
         {props.show === 'true' && (
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('CreateStackScreen', {
+              navigation.push('CreateStackScreen', {
                 screen: `${props.navigate}`,
               })
             }

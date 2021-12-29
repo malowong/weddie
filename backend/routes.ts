@@ -14,3 +14,4 @@ routes.use("/logistics", logisticsRoutes);
 routes.use("/guest", guestRoutes);
 routes.use("/budget", budgetRoutes);
 routes.use("/todo", todoRoutes);
+routes.use("/event", eventRoutes);

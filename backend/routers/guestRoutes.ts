@@ -10,3 +10,4 @@ const guestController = new GuestController(guestService);
 export const guestRoutes = express.Router();
 
 guestRoutes.get("/list", asyncWrapper(guestController.getGuestList));
+guestRoutes.post("/", asyncWrapper(guestController.addGuest));

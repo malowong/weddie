@@ -9,4 +9,12 @@ export class GuestController {
 
     res.json({ guestList });
   };
+
+  addGuest = async (req: Request, res: Response) => {
+    const guestData = req.body;
+
+    await this.guestService.addGuest(guestData);
+
+    res.json({ message: "add success" });
+  };
 }

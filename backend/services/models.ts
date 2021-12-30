@@ -38,9 +38,12 @@ export enum EventType {
 }
 
 export interface EventStore {
+  amendDate: number;
   data: Object;
   eventType: EventType;
-  amendDate: Date;
+  recordCreatedAtDate: number;
+  weddingCreatedAtDate: number;
+  weddingDate: number;
 }
 
 export interface GuestList {

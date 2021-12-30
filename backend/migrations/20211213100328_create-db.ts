@@ -96,7 +96,7 @@ export async function up(knex: Knex): Promise<void> {
     table.increments();
     table.integer("wedding_event_id").unsigned();
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
-    table.date("to_do_date").notNullable();
+    table.timestamp("to_do_date", { useTz: true }).notNullable();
     table.string("to_do_item").notNullable();
     table.string("to_do_remarks");
     table.boolean("is_finished").defaultTo(false);

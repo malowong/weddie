@@ -1,9 +1,7 @@
 import { Box, Heading, HStack, Text, VStack } from 'native-base';
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { useDispatch } from 'react-redux';
-import { getGuestListThunk } from '../../redux/guest/thunk';
 import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { LoadingMsg } from '../../components/LoadingsMsg';
@@ -43,7 +41,8 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
             <TouchableOpacity
               key={guest.id}
               onPress={() =>
-                navigation.navigate('EditStackScreen', {screen: 'EditGuest',
+                navigation.navigate('EditStackScreen', {
+                  screen: 'EditGuest',
                   params: {
                     id: guest.id,
                     name: guest.name,

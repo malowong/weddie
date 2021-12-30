@@ -4,14 +4,17 @@ import React from 'react';
 
 interface ITodoItemProp {
   itemName: string;
-  dueDate: Date;
+  dueDate: string;
 }
 
 export function TodoItem(props: ITodoItemProp) {
+  console.log('taken out from db:', props.dueDate);
+  const dueDate = new Date(props.dueDate).toString();
+  console.log('after toString: ', dueDate);
   return (
     <View style={todoStyles.tableRow}>
       <Text fontSize={17}>{props.itemName}</Text>
-      <Text fontSize={17}>{props.dueDate.toDateString().slice(4)}</Text>
+      <Text fontSize={17}>{dueDate.slice(4, 15)}</Text>
     </View>
   );
 }

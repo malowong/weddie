@@ -1,14 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text, TextArea, Modal, Select } from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useMutation } from 'react-query';
+import { fetchDeleteTodoItem, fetchUpdateTodoItem } from '../../api/todo';
 
 export function EditTodoItem({ route, navigation }: any) {
+  console.log('params date: ', route.params.dueDate);
   const [date, setDate] = useState<Date>(new Date(route.params.dueDate));
+  console.log('edit form:', date);
+
   const [showModal, setShowModal] = useState(false);
   const [isCompleted, setIsCompleted] = useState(route.params.isCompleted);
+  const [itemId] = useState(route.params.id);
+  const [itemName] = useState(
+    JSON.stringify(route.params.itemName).replace(/\"/g, '')
+  );
+  const [remarks] = useState(
+    JSON.stringify(route.params.remarks).replace(/\"/g, '')
+  );
+
   const {
     control,
     handleSubmit,
@@ -16,33 +29,27 @@ export function EditTodoItem({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: JSON.stringify(route.params.itemName).replace(/\"/g, ''),
+      itemName: itemName,
       dueDate: date,
-      remarks: JSON.stringify(route.params.remarks).replace(/\"/g, ''),
+      remarks: remarks,
       isCompleted: route.params.isCompleted,
     },
   });
 
+  const updateTodoItemMutation: any = useMutation(fetchUpdateTodoItem);
+  const deleteTodoItemMutation: any = useMutation(fetchDeleteTodoItem);
+
   const onSubmit = (data: any) => {
-    data.dueDate = date;
+    data['dueDate'] = date;
     data.isCompleted = isCompleted;
+    data['itemId'] = itemId;
     console.log('submit form data:', data);
-    navigation.goBack();
+    updateTodoItemMutation.mutate(data);
   };
 
   const deleteTodoItem = () => {
-    const itemId = JSON.stringify(route.params.id);
-    console.log(itemId);
-    console.log('hello');
-    navigation.goBack();
+    deleteTodoItemMutation.mutate(itemId);
   };
-
-  useEffect(() => {
-    let sub = watch((data) => {
-      console.log('update form data:', data);
-    });
-    return () => sub.unsubscribe();
-  }, [watch]);
 
   return (
     <CreateAndEditTopBar pageName="編輯待辦事項">
@@ -64,6 +71,11 @@ export function EditTodoItem({ route, navigation }: any) {
           )}
           name="itemName"
         />
+        {errors.itemName && (
+          <Text color="danger.500" marginTop={2} marginLeft={1}>
+            請填寫待辦事項。
+          </Text>
+        )}
 
         <Text marginLeft={1} marginTop={5} fontSize={18}>
           到期日
@@ -78,6 +90,8 @@ export function EditTodoItem({ route, navigation }: any) {
             display="default"
             onChange={(event: any, selectedDate?: Date) => {
               const currentDate = selectedDate || date;
+              console.log('cur: ', currentDate);
+              console.log('date: ', date);
               setDate(currentDate);
             }}
           />
@@ -93,7 +107,6 @@ export function EditTodoItem({ route, navigation }: any) {
           control={control}
           rules={{
             maxLength: 100,
-            required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextArea
@@ -170,6 +183,30 @@ export function EditTodoItem({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
+        </View>
+
+        <View>
+          {updateTodoItemMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{updateTodoItemMutation.error.message}
+            </Text>
+          ) : null}
+
+          {updateTodoItemMutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'CheckListScreen' })
+            : null}
+        </View>
+
+        <View>
+          {deleteTodoItemMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{deleteTodoItemMutation.error.message}
+            </Text>
+          ) : null}
+
+          {deleteTodoItemMutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'CheckListScreen' })
+            : null}
         </View>
       </View>
     </CreateAndEditTopBar>

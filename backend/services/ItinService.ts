@@ -6,9 +6,7 @@ export class ItinService {
 
   getItinList = async (eventID: number) => {
 
-    
-
-    const itinList = this.knex(tables.ITINERARY_LIST).where("wedding_event_id", eventID);
+    const itinList = this.knex(tables.ITINERARY_LIST).where("wedding_event_id", eventID).innerJoin(tables.ITINERARY_ROLE, 'wedding_event_id', `${tables.ITINERARY_ROLE}.itinerary_id`)
     return itinList;
   };
   

@@ -346,13 +346,13 @@ export const itin_template = [
   {
     itin_time_temp: "17:00",
     itin_temp: "接待處開始運作",
-    job_duty_temp: "接待賓客(安排簽名及提供枱號、代收人情 )\n",
+    job_duty_temp: "接待賓客(安排簽名及提供枱號、代收人情 )",
     wedding_user_id_temp: "3",
   },
   {
     itin_time_temp: "17:00",
     itin_temp: "接待處開始運作",
-    job_duty_temp: "接待賓客(安排簽名及提供枱號、代收人情 )\n",
+    job_duty_temp: "接待賓客(安排簽名及提供枱號、代收人情 )",
     wedding_user_id_temp: "4",
   },
   {

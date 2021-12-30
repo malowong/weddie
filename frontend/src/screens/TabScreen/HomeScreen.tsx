@@ -248,7 +248,7 @@ export default function HomeScreen() {
                     source={item.image}
                     alt="Aang flying and surrounded by clouds"
                     height="250"
-                    width={367}
+                    width="100%"
                     maxWidth="100%"
                     roundedTop="lg"
                   />
@@ -259,7 +259,7 @@ export default function HomeScreen() {
                     px="3"
                     mb="4"
                     roundedBottom="lg"
-                    width={367}
+                    width="100%"
                     maxWidth="100%"
                   >
                     <Heading size="xl" color="white" textAlign="left">
@@ -289,12 +289,12 @@ export default function HomeScreen() {
             mb="4"
             rounded="lg"
             alignSelf="center"
-            width={375}
+            width="100%"
             maxWidth="100%"
             shadow={3}
           >
             <HStack>
-              <View width="20">
+              <View width="23%">
                 <Heading size="lg" color="white" textAlign="left" mr="3">
                   {getTime(item.time)}
                 </Heading>

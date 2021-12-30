@@ -14,6 +14,7 @@ const tables = Object.freeze({
   WEDDING_LOGISTICS: "wedding_logistics",
   WEDDING_BUDGET_LIST: "wedding_budget_list",
   ITINERARY_LIST: "itinerary_list",
+  ITINERARY_ROLE: "itinerary_role",
   WEDDING_USER_ITINERARY: "wedding_user_itinerary",
   LOGISTICS_LIST_TEMPLATE: "logistics_list_template",
   TO_DO_LIST_TEMPLATE: "to_do_list_template",
@@ -61,6 +62,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string("wedding_name");
     table.date("wedding_date");
     table.integer("pax").unsigned();
+    table.integer("budget").unsigned();
     table.integer("banquet_vendor_id").unsigned();
     table.foreign("banquet_vendor_id").references(`${tables.BANQUET_VENDOR_LIST}.id`);
     table.integer("church_id").unsigned();
@@ -93,10 +95,11 @@ export async function up(knex: Knex): Promise<void> {
   await knex.schema.createTable(tables.WEDDING_TO_DO_LIST, (table) => {
     table.increments();
     table.integer("wedding_event_id").unsigned();
+    table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.date("to_do_date").notNullable();
     table.string("to_do_item").notNullable();
     table.string("to_do_remarks");
-    table.string("is_finished").defaultTo(false);
+    table.boolean("is_finished").defaultTo(false);
   });
 
   await knex.schema.createTable(tables.WEDDING_GUEST_LIST, (table) => {
@@ -123,29 +126,37 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.integer("budget_cat_id").unsigned();
     table.foreign("budget_cat_id").references(`${tables.BUDGET_CAT}.id`);
-    table.string("description").notNullable().unique();
-    table.integer("expenditure").notNullable().unsigned();
-    table.date("payment_date").notNullable();
+    table.string("description").notNullable();
+    table.integer("expenditure").unsigned();
+    table.date("payment_date");
   });
 
   await knex.schema.createTable(tables.ITINERARY_LIST, (table) => {
     table.increments();
+    table.integer("wedding_event_id").unsigned();
+    table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.string("itinerary").notNullable();
     table.string("job_duty").notNullable();
     table.time("itinerary_time");
+  });
+
+  await knex.schema.createTable(tables.ITINERARY_ROLE, (table) => {
+    table.increments();
+    table.integer("itinerary_id").notNullable().unsigned();
+    table.foreign("itinerary_id").references(`${tables.ITINERARY_LIST}.id`);
+    table.integer("role_id").unsigned();
+    table.foreign("role_id").references(`${tables.ROLE}.id`);
   });
 
   await knex.schema.createTable(tables.WEDDING_USER_ITINERARY, (table) => {
     table.increments();
     table.integer("wedding_event_user_id").notNullable().unsigned();
     table.foreign("wedding_event_user_id").references(`${tables.WEDDING_USER}.id`);
-    table.integer("itinerary_id").notNullable().unsigned();
-    table.foreign("itinerary_id").references(`${tables.ITINERARY_LIST}.id`);
   });
 
   await knex.schema.createTable(tables.LOGISTICS_LIST_TEMPLATE, (table) => {
     table.increments();
-    table.string("logistics_item_temp");
+    table.string("logistics_item");
   });
 
   await knex.schema.createTable(tables.TO_DO_LIST_TEMPLATE, (table) => {
@@ -164,8 +175,8 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable(tables.BUDGET_TEMPLATE, (table) => {
     table.increments();
-    table.string("budget_cat_id_temp");
-    table.string("budget_description_temp");
+    table.string("budget_cat_id");
+    table.string("description");
   });
 }
 

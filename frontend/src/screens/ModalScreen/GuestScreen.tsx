@@ -2,22 +2,22 @@ import { Box, Heading, HStack, Text, VStack } from 'native-base';
 import React, { useState } from 'react';
 import { View, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { ErrorMsg } from '../../components/ErrorMsg';
+import { useSelector } from 'react-redux';
+import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { IRootState } from '../../redux/store';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
-  // const { isLoading, error, data } = useQuery('userData', async () => {
-  //   const postData = (
-  //     await fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
-  //   ).json();
 
-  //   return postData;
-  // });
+  useRefreshOnFocus(() =>
+    fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setGuestList(data.guestList))
+  );
 
   const [guestList, setGuestList] = useState([]);
   const { isLoading, error, data } = useQuery('userData', () =>
@@ -30,8 +30,6 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
 
   if (error) return <ErrorMsg />;
 
-  // const guestList = data.guestList;
-
   return (
     <TopBar pageName="賓客名單" show="true" navigate="AddGuest">
       <View>
@@ -43,7 +41,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
             <TouchableOpacity
               key={guest.id}
               onPress={() =>
-                navigation.push('EditStackScreen', {
+                navigation.navigate('EditStackScreen', {
                   screen: 'EditGuest',
                   params: {
                     id: guest.id,

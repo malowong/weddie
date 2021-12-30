@@ -6,12 +6,20 @@ import { config } from '../../../app.json';
 import TopBar from '../../components/TopBar';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LoadingMsg } from '../../components/LoadingsMsg';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store';
 
 export default function RundownScreen() {
 
+  const token = useSelector((state: IRootState) => state.auth.token);
+
   const { isLoading, error, data } = useQuery('userData', async () => {
     const postData = (
-      await fetch(`${config.BACKEND_URL}/api/guest/list`)
+      await fetch(`${config.BACKEND_URL}/api/itin`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
     ).json();
 
     return postData;

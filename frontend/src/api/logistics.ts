@@ -56,3 +56,25 @@ export const fetchUpdateLogisticsItem = async (logisticsItem: any) => {
     throw e;
   }
 };
+
+export const fetchDeleteLogisticsItem = async (itemId: number) => {
+  try {
+    console.log('item id: ', itemId);
+
+    const resp = await fetch(
+      `${config.BACKEND_URL}/api/logistics/item/${itemId}`,
+      {
+        method: 'DELETE',
+      }
+    );
+
+    const result = await resp.json();
+
+    if (resp.status !== 200) {
+      console.log('failed');
+      throw new Error(result.message);
+    }
+  } catch (e) {
+    throw e;
+  }
+};

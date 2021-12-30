@@ -8,6 +8,7 @@ import { IRootState } from '../../redux/store';
 import { getTodoListThunk } from '../../redux/todo/thunk';
 
 export default function CheckListScreen({ navigation }: { navigation: any }) {
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const dispatch = useDispatch();
   const todoList = useSelector((state: IRootState) => state.todo.todoList);
   const completedTodoItems = todoList.filter(
@@ -34,7 +35,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
             <TouchableOpacity
               key={todoItem.id}
               onPress={() =>
-                navigation.navigate('EditStackScreen', {
+                navigation.push('EditStackScreen', {
                   screen: 'EditTodoItem',
                   params: {
                     id: todoItem.id,
@@ -73,7 +74,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
           <TouchableOpacity
             key={todoItem.id}
             onPress={() =>
-              navigation.navigate('EditStackScreen', {
+              navigation.push('EditStackScreen', {
                 screen: 'EditTodoItem',
                 params: {
                   id: todoItem.id,

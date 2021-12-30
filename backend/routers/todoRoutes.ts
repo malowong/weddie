@@ -9,4 +9,5 @@ const todoController = new TodoController(todoService);
 
 export const todoRoutes = express.Router();
 
-todoRoutes.get("/list", asyncWrapper(todoController.getTodoList));
+todoRoutes.get("/list/:id", asyncWrapper(todoController.getTodoList));
+todoRoutes.post("/item", asyncWrapper(todoController.addTodoItem));

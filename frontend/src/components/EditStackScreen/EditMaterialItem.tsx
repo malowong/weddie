@@ -7,7 +7,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
-import { fetchUpdateLogisticsItem } from '../../api/logistics';
+import {
+  fetchDeleteLogisticsItem,
+  fetchUpdateLogisticsItem,
+} from '../../api/logistics';
 
 export function EditMaterialItem({ route, navigation }: any) {
   let remarks = '';
@@ -32,26 +35,16 @@ export function EditMaterialItem({ route, navigation }: any) {
     },
   });
 
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) =>
-  //     console.log(value, name, type)
-  //   );
-  //   return () => subscription.unsubscribe();
-  // }, [watch]);
-
-  const mutation: any = useMutation(fetchUpdateLogisticsItem);
+  const updateItemMutation: any = useMutation(fetchUpdateLogisticsItem);
+  const deleteItemMutation: any = useMutation(fetchDeleteLogisticsItem);
 
   const onSubmit = (data: any) => {
     data['materialItemId'] = route.params.id;
-    console.log(data);
-    mutation.mutate(data);
+    updateItemMutation.mutate(data);
   };
 
   const deleteMaterialItem = () => {
-    const itemId = JSON.stringify(route.params.id);
-    console.log(itemId);
-    console.log('hello');
-    navigation.goBack();
+    deleteItemMutation.mutate(route.params.id);
   };
 
   return (
@@ -138,11 +131,25 @@ export function EditMaterialItem({ route, navigation }: any) {
         </View>
 
         <View>
-          {mutation.isError ? (
-            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
+          {updateItemMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{updateItemMutation.error.message}
+            </Text>
           ) : null}
 
-          {mutation.isSuccess
+          {updateItemMutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'MaterialScreen' })
+            : null}
+        </View>
+
+        <View>
+          {deleteItemMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{deleteItemMutation.error.message}
+            </Text>
+          ) : null}
+
+          {deleteItemMutation.isSuccess
             ? navigation.push('TabScreen', { screen: 'MaterialScreen' })
             : null}
         </View>

@@ -67,7 +67,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
                   key={guest.id}
                   style={guestStyles.tableRow}
                   onPress={() =>
-                    navigation.navigate('EditStackScreen', {
+                    navigation.push('EditStackScreen', {
                       screen: 'EditGuest',
                       params: {
                         id: guest.id,

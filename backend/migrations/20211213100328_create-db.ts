@@ -96,7 +96,7 @@ export async function up(knex: Knex): Promise<void> {
     table.date("to_do_date").notNullable();
     table.string("to_do_item").notNullable();
     table.string("to_do_remarks");
-    table.string("isFinished").defaultTo(false);
+    table.string("is_finished").defaultTo(false);
   });
 
   await knex.schema.createTable(tables.WEDDING_GUEST_LIST, (table) => {

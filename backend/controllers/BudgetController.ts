@@ -12,9 +12,9 @@ export class BudgetController {
 
   addBudgetItem = async (req: Request, res: Response) => {
     const budgetItem = {
-      wedding_event_id: req.body.eventId,
-      budget_cat_id: req.body.categoryId,
-      expenditure: req.body.expenditure,
+      wedding_event_id: req.body.wedding_event_id,
+      budget_cat_id: parseInt(req.body.categoryId),
+      expenditure: req.body.amount,
       description: req.body.description,
     };
 

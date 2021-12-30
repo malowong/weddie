@@ -22,8 +22,6 @@ export async function fetchGetExpenditureList() {
 
 export async function fetchAddExpenditureItem(expenditureItemData: any) {
   try {
-    console.log('expenditure item data: ', expenditureItemData);
-
     const resp = await fetch(`${config.BACKEND_URL}/api/budget/item`, {
       method: 'POST',
       headers: {
@@ -31,9 +29,7 @@ export async function fetchAddExpenditureItem(expenditureItemData: any) {
       },
       body: JSON.stringify(expenditureItemData),
     });
-
     const result = await resp.json();
-
     if (resp.status !== 200) {
       console.log('failed');
       throw new Error(result.message);

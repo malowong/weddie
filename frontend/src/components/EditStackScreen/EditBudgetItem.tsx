@@ -6,9 +6,11 @@ import { useDispatch } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
 export function EditBudgetItem({ route, navigation }: any) {
-  const dispatch = useDispatch();
   const [category, setCategory] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [id] = route.params.id;
+  const [description] = route.params.description;
+  const [amount] = route.params.amount;
   const {
     control,
     handleSubmit,
@@ -17,8 +19,8 @@ export function EditBudgetItem({ route, navigation }: any) {
   } = useForm({
     defaultValues: {
       itemName: JSON.stringify(route.params.category).replace(/\"/g, ''),
-      amount: JSON.stringify(route.params.amount),
-      description: JSON.stringify(route.params.description).replace(/\"/g, ''),
+      amount: JSON.stringify(amount),
+      description: JSON.stringify(description).replace(/\"/g, ''),
     },
   });
 

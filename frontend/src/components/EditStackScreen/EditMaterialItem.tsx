@@ -13,16 +13,19 @@ import {
 } from '../../api/logistics';
 
 export function EditMaterialItem({ route, navigation }: any) {
-  let remarks = '';
-  if (!route.params.remarks) {
-    remarks = '';
+  const [remarks] = useState(route.params.remarks);
+
+  let remarksInput = '';
+  if (!remarks) {
+    remarksInput = '';
   } else {
-    remarks = JSON.stringify(route.params.remarks).replace(/\"/g, '');
+    remarksInput = JSON.stringify(remarks).replace(/\"/g, '');
   }
 
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
-  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const [itemName] = useState(route.params.itemName);
+  const [id] = useState(route.params.id);
   const {
     control,
     handleSubmit,
@@ -30,8 +33,8 @@ export function EditMaterialItem({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: JSON.stringify(route.params.itemName).replace(/\"/g, ''),
-      remarks: remarks,
+      itemName: JSON.stringify(itemName).replace(/\"/g, ''),
+      remarks: remarksInput,
     },
   });
 
@@ -39,7 +42,7 @@ export function EditMaterialItem({ route, navigation }: any) {
   const deleteItemMutation: any = useMutation(fetchDeleteLogisticsItem);
 
   const onSubmit = (data: any) => {
-    data['materialItemId'] = route.params.id;
+    data['materialItemId'] = id;
     updateItemMutation.mutate(data);
   };
 
@@ -150,7 +153,7 @@ export function EditMaterialItem({ route, navigation }: any) {
           ) : null}
 
           {deleteItemMutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'MaterialScreen' })
+            ? navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
             : null}
         </View>
       </View>

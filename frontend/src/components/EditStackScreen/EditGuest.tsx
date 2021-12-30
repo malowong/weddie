@@ -9,10 +9,17 @@ import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
 import { fetchUpdateGuest } from '../../api/guest';
+import { useNavigation } from '@react-navigation/native';
 
 export function EditGuest({ route, navigation }: any) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [showModal, setShowModal] = useState(false);
+
+  const [name] = useState(route.params.name)
+  const [phone] = useState(route.params.phone)
+  const [relationship] = useState(route.params.relationship)
+  const [id] = useState(route.params.id)
+
   const {
     control,
     handleSubmit,
@@ -20,31 +27,24 @@ export function EditGuest({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: JSON.stringify(route.params.name).replace(/\"/g, ''),
-      phone: JSON.stringify(route.params.phone).replace(/\"/g, ''),
-      relationship: JSON.stringify(route.params.relationship).replace(
+      name: JSON.stringify(name).replace(/\"/g, ''),
+      phone: JSON.stringify(phone).replace(/\"/g, ''),
+      relationship: JSON.stringify(relationship).replace(
         /\"/g,
         ''
       ),
     },
   });
 
-  // useEffect(() => {
-  //   const subscription = watch((value, { name, type }) =>
-  //     console.log(value, name, type)
-  //   );
-  //   return () => subscription.unsubscribe();
-  // }, [watch]);
-
   const mutation: any = useMutation(fetchUpdateGuest);
 
   const onSubmit = (data: any) => {
-    data['guestId'] = route.params.id;
+    data['guestId'] = id;
     mutation.mutate(data);
   };
 
   const deleteGuest = () => {
-    const guestId = JSON.stringify(route.params.id);
+    const guestId = JSON.stringify(id);
     console.log(guestId);
     console.log('hello');
     navigation.goBack();
@@ -170,7 +170,7 @@ export function EditGuest({ route, navigation }: any) {
           ) : null}
 
           {mutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'GuestScreen' })
+            ? navigation.navigate('TabScreen', { screen: 'GuestScreen' })
             : null}
         </View>
       </View>

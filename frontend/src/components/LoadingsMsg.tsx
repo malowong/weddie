@@ -1,10 +1,10 @@
-import { Text } from 'native-base';
+import { Box, Text } from 'native-base';
 import React from 'react';
 
 export function LoadingMsg() {
   return (
-    <Text marginTop={400} marginLeft={170}>
-      載入中
-    </Text>
+    <Box flex="1" justifyContent="center" alignItems="center">
+      <Text>載入中...</Text>
+    </Box>
   );
 }

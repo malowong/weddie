@@ -123,7 +123,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
           ) : null}
 
           {mutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'GuestScreen' })
+            ? navigation.navigate('TabScreen', { screen: 'GuestScreen' })
             : null}
         </View>
       </View>

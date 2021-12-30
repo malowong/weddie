@@ -11,6 +11,6 @@ import React from 'react'
        } else {
          enabledRef.current = true
        }
-     }, [refetch])
+     }, [])
    )
  }

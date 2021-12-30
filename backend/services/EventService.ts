@@ -83,22 +83,6 @@ export class EventService {
         await trx(tables.ITINERARY_ROLE).insert({itinerary_id: itinerary_id, role_id: itin_template[i].wedding_user_id_temp})
         
       }
-
-      // for (let item of itin_template){
-
-        
-
-      //   const [itinerary_id] = await trx(tables.ITINERARY_LIST).insert(
-      //     {
-      //       wedding_event_id: eventId,
-      //       itinerary: item.itin_temp,
-      //       job_duty: item.job_duty_temp,
-      //       itinerary_time: item.itin_time_temp,
-      //     }
-      //   ).returning("id")
-
-      //   await trx(tables.ITINERARY_ROLE).insert({itinerary_id: itinerary_id, role_id: item.wedding_user_id_temp})
-      // }
   
       await trx.commit()
 

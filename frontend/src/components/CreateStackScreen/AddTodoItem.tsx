@@ -12,6 +12,8 @@ import { fetchAddTodoItem } from '../../api/todo';
 export function AddTodoItem({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [date, setDate] = useState<Date>(new Date());
+  console.log('add form:', date);
+
   const {
     control,
     handleSubmit,
@@ -114,6 +116,16 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
         <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
           提交
         </Button>
+
+        <View>
+          {mutation.isError ? (
+            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
+          ) : null}
+
+          {mutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'CheckListScreen' })
+            : null}
+        </View>
       </View>
     </CreateAndEditTopBar>
   );

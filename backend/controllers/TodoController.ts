@@ -24,4 +24,26 @@ export class TodoController {
 
     res.json({ message: "successful add" });
   };
+
+  updateTodoItem = async (req: Request, res: Response) => {
+    const todoItemData = {
+      to_do_date: req.body.dueDate,
+      to_do_item: req.body.itemName,
+      to_do_remarks: req.body.remarks,
+      is_finished: req.body.isCompleted,
+    };
+    const itemId = req.body.itemId;
+
+    await this.todoService.updateTodoItem(todoItemData, itemId);
+
+    res.json({ message: "successful update" });
+  };
+
+  deleteTodoItem = async (req: Request, res: Response) => {
+    const itemId = parseInt(req.params.id);
+
+    await this.todoService.deleteTodoItem(itemId);
+
+    res.json({ message: "successful delete" });
+  };
 }

@@ -1,9 +1,8 @@
 import { Box, Heading, HStack, Text, VStack } from 'native-base';
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { useDispatch, useSelector } from 'react-redux';
-import { getGuestListThunk } from '../../redux/guest/thunk';
+import { useSelector } from 'react-redux';
 import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { LoadingMsg } from '../../components/LoadingsMsg';

@@ -3,23 +3,36 @@ import { StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
 import { View, Text } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
-import { IRootState } from '../../redux/store';
-import { getExpenditureListThunk } from '../../redux/expenditure/thunk';
+import { config } from '../../../app.json';
+import { useQuery } from 'react-query';
+import { ErrorMsg } from '../../components/ErrorMsg';
+import { LoadingMsg } from '../../components/LoadingsMsg';
 
 export default function BudgetScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
   const [budget, setBudget] = useState(100000);
-  const expenditures = useSelector(
-    (state: IRootState) => state.expenditure.expenditureList
+  // const expenditures = useSelector(
+  //   (state: IRootState) => state.expenditure.expenditureList
+  // );
+
+  const [expenditureList, setExpenditureList]: any = useState([]);
+  const { isLoading, error, data } = useQuery('userData', () =>
+    fetch(`${config.BACKEND_URL}/api/budget/list`)
+      .then((res) => res.json())
+      .then((data) => setExpenditureList(data.expenditureList))
   );
 
-  const totalExpenditure = expenditures.reduce((pre, cur) => {
-    return pre + cur.amount;
+  if (isLoading) return <LoadingMsg />;
+
+  if (error) return <ErrorMsg />;
+
+  const totalExpenditure = expenditureList.reduce((pre: any, cur: any) => {
+    return pre + cur.expenditure;
   }, 0);
 
-  useEffect(() => {
-    dispatch(getExpenditureListThunk());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   dispatch(getExpenditureListThunk());
+  // }, [dispatch]);
 
   return (
     <TopBar pageName="婚禮預算" show="true" navigate="AddBudgetItem">
@@ -47,7 +60,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
           </Text>
         </View>
 
-        {expenditures.map((expenditure, idx) => {
+        {expenditureList.map((expenditure, idx) => {
           return (
             <TouchableOpacity
               key={expenditure.id}
@@ -57,15 +70,15 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
                   screen: 'EditBudgetItem',
                   params: {
                     id: expenditure.id,
-                    category: expenditure.category,
-                    amount: expenditure.amount,
+                    // category: expenditure.category,
+                    amount: expenditure.expenditure,
                     description: expenditure.description,
                   },
                 })
               }
             >
-              <Text fontSize={20}>{expenditure.category}</Text>
-              <Text fontSize={20}>${expenditure.amount}</Text>
+              <Text fontSize={20}>{expenditure.description}</Text>
+              <Text fontSize={20}>${expenditure.expenditure}</Text>
             </TouchableOpacity>
           );
         })}

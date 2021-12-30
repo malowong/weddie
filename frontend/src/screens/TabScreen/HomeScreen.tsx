@@ -1,13 +1,5 @@
 import * as React from 'react';
-import {
-  Box,
-  HStack,
-  VStack,
-  Text,
-  Image,
-  Heading,
-  View,
-} from 'native-base';
+import { Box, HStack, VStack, Text, Image, Heading, View } from 'native-base';
 import { Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
@@ -15,8 +7,7 @@ import Carousel from 'react-native-snap-carousel';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 
-
-const rundownData = [ 
+const rundownData = [
   {
     id: 1,
     time: '2022-12-24T03:02:00.230Z',
@@ -73,24 +64,24 @@ function getNumberOfDays(
   return diffInDays;
 }
 
-function getTime(time: string | number | Date){
-  const dateTime = new Date(time)
-  const hours = dateTime.getHours().toString().padStart(2, "0")
-  const minutes = dateTime.getMinutes().toString().padStart(2, "0")
-  return `${hours}:${minutes}`
+function getTime(time: string | number | Date) {
+  const dateTime = new Date(time);
+  const hours = dateTime.getHours().toString().padStart(2, '0');
+  const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
 }
-
-
 
 export default function HomeScreen() {
   const navigation: any = useNavigation();
 
   const [fadeAnim] = useState(new Animated.Value(0));
 
-  const userData = useSelector((state: IRootState) => state.auth.user)
+  const userData = useSelector((state: IRootState) => state.auth.user);
   console.log(userData);
-  const eventData: any = useSelector((state: IRootState) => state.event.event)
-  const isCreated: any = useSelector((state: IRootState) => state.event.isCreated)
+  const eventData: any = useSelector((state: IRootState) => state.event.event);
+  const isCreated: any = useSelector(
+    (state: IRootState) => state.event.isCreated
+  );
   console.log(eventData);
   console.log(eventData.id);
 
@@ -99,7 +90,10 @@ export default function HomeScreen() {
   const carouselData_couple = [
     {
       title: eventData.wedding_name,
-      text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
+      text: `將於${getNumberOfDays(
+        Date.now(),
+        eventData.wedding_date
+      )}日後開始`,
       image: require('../../images/template_1.jpeg'),
     },
     {
@@ -113,11 +107,14 @@ export default function HomeScreen() {
       image: require('../../images/template_3.jpeg'),
     },
   ];
-  
+
   const carouselData_parti = [
     {
       title: eventData.wedding_name,
-      text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
+      text: `將於${getNumberOfDays(
+        Date.now(),
+        eventData.wedding_date
+      )}日後開始`,
       image: require('../../images/template_1.jpeg'),
     },
     {
@@ -131,11 +128,14 @@ export default function HomeScreen() {
       image: require('../../images/template_2.jpeg'),
     },
   ];
-  
+
   const carouselData_helper = [
     {
       title: eventData.wedding_name,
-      text: `將於${getNumberOfDays(Date.now(), eventData.wedding_date)}日後開始`,
+      text: `將於${getNumberOfDays(
+        Date.now(),
+        eventData.wedding_date
+      )}日後開始`,
       image:
         'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
     },
@@ -153,8 +153,6 @@ export default function HomeScreen() {
     },
   ];
 
-  
-  
   const carouselData_today = [
     {
       title: eventData.wedding_name,
@@ -163,7 +161,6 @@ export default function HomeScreen() {
         'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
     },
   ];
-
 
   const fadeIn = () => {
     Animated.timing(fadeAnim, {
@@ -229,7 +226,7 @@ export default function HomeScreen() {
       >
         <Box safeAreaX={3} safeAreaY={1}>
           <Heading size="xl" textAlign="left" mb="3">
-            {userData ? userData.nickname : ""} 你好!
+            {userData ? userData.nickname : ''} 你好!
           </Heading>
           <Carousel
             data={
@@ -276,39 +273,39 @@ export default function HomeScreen() {
             itemWidth={367}
             layout={'default'}
           />
-          
+
           <Heading size="lg" textAlign="left" mb="3">
             你的時間表
           </Heading>
           {rundownData.map((item, index) => (
             <Box
-            key={index}
-            bg="primary.600"
-            py="4"
-            px="3"
-            mb="4"
-            rounded="lg"
-            alignSelf="center"
-            width={375}
-            maxWidth="100%"
-            shadow={3}
-          >
-            <HStack>
-              <View width="20">
-                <Heading size="lg" color="white" textAlign="left" mr="3">
-                  {getTime(item.time)}
-                </Heading>
-              </View>
-              <VStack>
-                <Heading size="lg" color="white" textAlign="left">
-                  {item.item}
-                </Heading>
-                <Text fontSize="md" color="white" textAlign="left">
-                  {item.detail}
-                </Text>
-              </VStack>
-            </HStack>
-          </Box>
+              key={index}
+              bg="primary.600"
+              py="4"
+              px="3"
+              mb="4"
+              rounded="lg"
+              alignSelf="center"
+              width={375}
+              maxWidth="100%"
+              shadow={3}
+            >
+              <HStack>
+                <View width="20">
+                  <Heading size="lg" color="white" textAlign="left" mr="3">
+                    {getTime(item.time)}
+                  </Heading>
+                </View>
+                <VStack>
+                  <Heading size="lg" color="white" textAlign="left">
+                    {item.item}
+                  </Heading>
+                  <Text fontSize="md" color="white" textAlign="left">
+                    {item.detail}
+                  </Text>
+                </VStack>
+              </HStack>
+            </Box>
           ))}
         </Box>
       </Animated.ScrollView>

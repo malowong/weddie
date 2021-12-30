@@ -24,6 +24,11 @@ export class BudgetService {
     return expenditureList;
   };
 
+  addBudgetItem = async (budgetItem: budgetItem) => {
+    await this.knex(tables.WEDDING_BUDGET_LIST).insert(budgetItem);
+    return;
+  };
+
   updateExpenditureList = async (
     budgetListId: number,
     description: string,
@@ -49,11 +54,5 @@ export class BudgetService {
     event_store_new.data = new_data;
 
     // collections.event_store?.insertMany([event_store_old, event_store_new]);
-  };
-
-  addBudgetItem = async (budgetItem: budgetItem) => {
-    await this.knex(tables.WEDDING_BUDGET_LIST).insert(budgetItem);
-
-    return;
   };
 }

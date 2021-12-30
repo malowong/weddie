@@ -13,3 +13,4 @@ export const guestRoutes = express.Router();
 guestRoutes.get("/list/:id", asyncWrapper(guestController.getGuestList));
 guestRoutes.post("/", asyncWrapper(guestController.addGuest));
 guestRoutes.put("/", asyncWrapper(guestController.updateGuest));
+guestRoutes.delete("/:id", asyncWrapper(guestController.deleteGuest));

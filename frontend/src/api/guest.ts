@@ -56,3 +56,22 @@ export const fetchUpdateGuest = async (guestData: any) => {
     throw e;
   }
 };
+
+export const fetchRemoveGuest = async (guestId: number) => {
+  try {
+    console.log('guestId: ', guestId);
+
+    const resp = await fetch(`${config.BACKEND_URL}/api/guest/${guestId}`, {
+      method: 'DELETE',
+    });
+
+    const result = await resp.json();
+
+    if (resp.status !== 200) {
+      console.log('failed');
+      throw new Error(result.message);
+    }
+  } catch (e) {
+    throw e;
+  }
+};

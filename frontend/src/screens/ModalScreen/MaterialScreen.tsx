@@ -42,7 +42,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
               key={material.id}
               style={materialStyles.tableRow}
               onPress={() =>
-                navigation.navigate('EditStackScreen', {
+                navigation.push('EditStackScreen', {
                   screen: 'EditMaterialItem',
                   params: {
                     id: material.id,

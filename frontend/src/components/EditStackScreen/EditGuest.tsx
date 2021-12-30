@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import TopBar from '../TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text, Modal } from 'native-base';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
-import { fetchUpdateGuest } from '../../api/guest';
-import { useNavigation } from '@react-navigation/native';
+import { fetchRemoveGuest, fetchUpdateGuest } from '../../api/guest';
 
 export function EditGuest({ route, navigation }: any) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
@@ -36,18 +33,16 @@ export function EditGuest({ route, navigation }: any) {
     },
   });
 
-  const mutation: any = useMutation(fetchUpdateGuest);
+  const updateGuestMutation: any = useMutation(fetchUpdateGuest);
+  const removeGuestMutation: any = useMutation(fetchRemoveGuest);
 
   const onSubmit = (data: any) => {
     data['guestId'] = id;
-    mutation.mutate(data);
+    updateGuestMutation.mutate(data);
   };
 
-  const deleteGuest = () => {
-    const guestId = JSON.stringify(id);
-    console.log(guestId);
-    console.log('hello');
-    navigation.goBack();
+  const removeGuest = () => {
+    removeGuestMutation.mutate(id);
   };
 
   return (
@@ -152,7 +147,7 @@ export function EditGuest({ route, navigation }: any) {
                   <Button
                     colorScheme="danger"
                     onPress={() => {
-                      deleteGuest();
+                      removeGuest();
                       setShowModal(false);
                     }}
                   >
@@ -165,12 +160,26 @@ export function EditGuest({ route, navigation }: any) {
         </View>
 
         <View>
-          {mutation.isError ? (
-            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
+          {updateGuestMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{updateGuestMutation.error.message}
+            </Text>
           ) : null}
 
-          {mutation.isSuccess
-            ? navigation.navigate('TabScreen', { screen: 'GuestScreen' })
+          {updateGuestMutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'GuestScreen' })
+            : null}
+        </View>
+
+        <View>
+          {removeGuestMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{removeGuestMutation.error.message}
+            </Text>
+          ) : null}
+
+          {removeGuestMutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'GuestScreen' })
             : null}
         </View>
       </View>

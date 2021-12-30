@@ -53,7 +53,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
               key={expenditure.id}
               style={budgetStyles.tableRow}
               onPress={() =>
-                navigation.navigate('EditStackScreen', {
+                navigation.push('EditStackScreen', {
                   screen: 'EditBudgetItem',
                   params: {
                     id: expenditure.id,

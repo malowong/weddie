@@ -26,4 +26,9 @@ export class LogisticsService {
 
     return;
   };
+
+  deleteLogisticsItem = async (itemId: number) => {
+    await this.knex(tables.WEDDING_LOGISTICS).where("id", itemId).del();
+    return;
+  };
 }

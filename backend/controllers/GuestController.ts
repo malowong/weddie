@@ -16,7 +16,7 @@ export class GuestController {
 
     await this.guestService.addGuest(guestData);
 
-    res.json({ message: "add success" });
+    res.json({ message: "successful add" });
   };
 
   updateGuest = async (req: Request, res: Response) => {
@@ -24,6 +24,14 @@ export class GuestController {
 
     await this.guestService.updateGuest(guestData, guestId);
 
-    res.json({ message: "update success" });
+    res.json({ message: "successful update" });
+  };
+
+  deleteGuest = async (req: Request, res: Response) => {
+    const guestId = parseInt(req.params.id);
+
+    await this.guestService.deleteGuest(guestId);
+
+    res.json({ message: "successful delete" });
   };
 }

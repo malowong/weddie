@@ -35,4 +35,12 @@ export class LogisticsController {
 
     res.json({ message: "successful update" });
   };
+
+  deleteLogisticsItem = async (req: Request, res: Response) => {
+    const itemId = parseInt(req.params.id);
+
+    await this.logisticsService.deleteLogisticsItem(itemId);
+
+    res.json({ message: "successful delete" });
+  };
 }

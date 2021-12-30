@@ -4,13 +4,13 @@ import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
 import { useDispatch } from 'react-redux';
 import { getGuestListThunk } from '../../redux/guest/thunk';
-import { IRootState } from '../../redux/store';
 import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { useSelector } from 'react-redux';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
+import { IRootState } from '../../redux/store';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);

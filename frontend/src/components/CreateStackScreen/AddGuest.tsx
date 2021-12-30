@@ -25,12 +25,12 @@ export function AddGuest({ navigation }: { navigation: any }) {
     },
   });
 
-  useEffect(() => {
-    let sub = watch((data) => {
-      console.log('update form data:', data);
-    });
-    return () => sub.unsubscribe();
-  }, [watch]);
+  // useEffect(() => {
+  //   let sub = watch((data) => {
+  //     console.log('update form data:', data);
+  //   });
+  //   return () => sub.unsubscribe();
+  // }, [watch]);
 
   const mutation: any = useMutation(fetchAddGuest);
 

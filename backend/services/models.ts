@@ -49,3 +49,10 @@ export interface GuestList {
   phone: string;
   relationship: string;
 }
+
+export interface LogisticsItem {
+  wedding_event_id?: number;
+  logistics_item: string;
+  logistics_remarks: string;
+  // is_ready: boolean;
+}

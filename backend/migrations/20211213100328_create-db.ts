@@ -117,7 +117,7 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.string("logistics_item").notNullable().unique();
     table.string("logistics_remarks");
-    table.boolean("isReady").defaultTo(false);
+    table.boolean("is_ready").defaultTo(false);
   });
 
   await knex.schema.createTable(tables.WEDDING_BUDGET_LIST, (table) => {

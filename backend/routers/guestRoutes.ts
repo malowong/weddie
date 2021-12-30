@@ -10,6 +10,6 @@ const guestController = new GuestController(guestService);
 
 export const guestRoutes = express.Router();
 
-guestRoutes.get("/list", asyncWrapper(guestController.getGuestList));
+guestRoutes.get("/list/:id", asyncWrapper(guestController.getGuestList));
 guestRoutes.post("/", asyncWrapper(guestController.addGuest));
 guestRoutes.put("/", asyncWrapper(guestController.updateGuest));

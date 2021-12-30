@@ -9,23 +9,31 @@ import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { ErrorMsg } from '../../components/ErrorMsg';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
-  const { isLoading, error, data } = useQuery('userData', async () => {
-    const postData = (
-      await fetch(`${config.BACKEND_URL}/api/guest/list`)
-    ).json();
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  // const { isLoading, error, data } = useQuery('userData', async () => {
+  //   const postData = (
+  //     await fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
+  //   ).json();
 
-    return postData;
-  });
+  //   return postData;
+  // });
+
+  const [guestList, setGuestList] = useState([]);
+  const { isLoading, error, data } = useQuery('userData', () =>
+    fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setGuestList(data.guestList))
+  );
 
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
 
-  console.log('data: ', data.guestList);
-
-  const guestList = data.guestList;
+  // const guestList = data.guestList;
 
   return (
     <TopBar pageName="賓客名單" show="true" navigate="AddGuest">

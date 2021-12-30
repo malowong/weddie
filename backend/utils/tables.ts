@@ -12,6 +12,7 @@ export const tables = Object.freeze({
   WEDDING_LOGISTICS: "wedding_logistics",
   WEDDING_BUDGET_LIST: "wedding_budget_list",
   ITINERARY_LIST: "itinerary_list",
+  ITINERARY_ROLE: "itinerary_role",
   WEDDING_USER_ITINERARY: "wedding_user_itinerary",
   LOGISTICS_LIST_TEMPLATE: "logistics_list_template",
   TO_DO_LIST_TEMPLATE: "to_do_list_template",

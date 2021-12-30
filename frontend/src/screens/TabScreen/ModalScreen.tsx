@@ -54,7 +54,7 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
             }
           >
             <Ionicons name={'ios-person-add-outline'} size={50} />
-            <Text>來賓名單</Text>
+            <Text>賓客名單</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.mainModalButton}

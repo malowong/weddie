@@ -4,9 +4,16 @@ import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, TextArea, Text, View } from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store';
+import { useMutation } from 'react-query';
+import { fetchAddTodoItem } from '../../api/todo';
 
 export function AddTodoItem({ navigation }: { navigation: any }) {
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [date, setDate] = useState<Date>(new Date());
+  console.log('add form:', date);
+
   const {
     control,
     handleSubmit,
@@ -21,16 +28,21 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
     },
   });
 
-  useEffect(() => {
-    let sub = watch((data) => {
-      console.log('update form data:', data);
-    });
-    return () => sub.unsubscribe();
-  }, [watch]);
+  // useEffect(() => {
+  //   let sub = watch((data) => {
+  //     console.log('update form data:', data);
+  //   });
+  //   return () => sub.unsubscribe();
+  // }, [watch]);
+
+  const mutation: any = useMutation(fetchAddTodoItem);
 
   const onSubmit = (data: any) => {
     data.status = false;
+    data['wedding_event_id'] = eventId;
+    data['dueDate'] = date;
     console.log('submit form data:', data);
+    mutation.mutate(data);
   };
 
   return (
@@ -87,7 +99,6 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
           control={control}
           rules={{
             maxLength: 100,
-            required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextArea
@@ -105,6 +116,16 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
         <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
           提交
         </Button>
+
+        <View>
+          {mutation.isError ? (
+            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
+          ) : null}
+
+          {mutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'CheckListScreen' })
+            : null}
+        </View>
       </View>
     </CreateAndEditTopBar>
   );

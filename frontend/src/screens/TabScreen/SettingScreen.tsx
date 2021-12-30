@@ -5,16 +5,12 @@ import TopBar from '../../components/TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutThunk } from '../../redux/auth/thunk';
-import { useQuery } from 'react-query';
-import { config } from '../../../app.json';
 import { IRootState } from '../../redux/store';
-import { LoadingMsg } from '../../components/LoadingsMsg';
-import { ErrorMsg } from '../../components/ErrorMsg';
+import { CommonActions } from '@react-navigation/native';
 
 export default function SettingScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
-  const userID = useSelector((state: IRootState) => state.auth);
-  console.log(userID);
+  const user = useSelector((state: IRootState) => state.auth.user)!;
   const [showModal, setShowModal] = useState(false);
   const {
     control,
@@ -27,19 +23,15 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     },
   });
 
-  const { isLoading, error, data } = useQuery('userData', async () => {
-    const postData = (
-      await fetch(`${config.BACKEND_URL}/api/users/info`)
-    ).json();
+  // const { isLoading, error, data } = useQuery('userData', async () => {
+  //   const postData = (await fetch(`${config.BACKEND_URL}/api/users`)).json();
 
-    return postData;
-  });
+  //   return postData;
+  // });
 
-  if (isLoading) return <LoadingMsg />;
+  // if (isLoading) return <LoadingMsg />;
 
-  if (error) return <ErrorMsg />;
-
-  const { userInfo } = data;
+  // if (error) return <ErrorMsg />;
 
   const onSubmit = (data: any) => {
     const phoneNumber = parseInt(data.phoneNumber);
@@ -47,17 +39,16 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     setShowModal(false);
   };
 
-  function onPress() {
-    console.log('submit form data:');
+  const onPress = () => {
     dispatch(logoutThunk());
-  }
+  };
 
-  useEffect(() => {
-    let sub = watch((data) => {
-      console.log('update form data:', data);
-    });
-    return () => sub.unsubscribe();
-  }, [watch]);
+  // useEffect(() => {
+  //   let sub = watch((data) => {
+  //     console.log('update form data:', data);
+  //   });
+  //   return () => sub.unsubscribe();
+  // }, [watch]);
 
   return (
     <TopBar pageName="用戶設定" show="false" navigate="">
@@ -68,14 +59,14 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
         alignItems="center"
         minHeight="100%"
       >
-        <Text fontSize={20}>{userInfo.nickname}</Text>
+        <Text fontSize={20}>{user ? user.nickname : null}</Text>
 
         <Text fontSize={20} marginTop="2">
-          {userInfo.email}
+          {user ? user.email : null}
         </Text>
 
         <Text fontSize={20} marginTop="2">
-          電話號碼 {userInfo.phone}
+          電話號碼 {user ? user.phone : null}
         </Text>
 
         <Button
@@ -86,14 +77,34 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
           更改電話號碼
         </Button>
 
-        <Button
-          variant="outline"
-          colorScheme="red"
-          marginTop="8"
-          onPress={onPress}
+        <View
+          display="flex"
+          justifyContent="space-around"
+          flexDirection="row"
+          width={250}
         >
-          登出
-        </Button>
+          <Button
+            variant="outline"
+            colorScheme="red"
+            marginTop="8"
+            onPress={() => {
+              navigation.navigate('EditStackScreen', {
+                screen: 'SelectEvent',
+              });
+            }}
+          >
+            切換婚禮
+          </Button>
+
+          <Button
+            variant="outline"
+            colorScheme="#ffff1a"
+            marginTop="8"
+            onPress={onPress}
+          >
+            登出
+          </Button>
+        </View>
 
         <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
           <Modal.Content maxWidth="400px">

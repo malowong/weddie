@@ -45,3 +45,25 @@ export interface EventStore {
   weddingCreatedAtDate: number;
   weddingDate: number;
 }
+
+export interface GuestList {
+  wedding_event_id: number;
+  name: string;
+  phone: string;
+  relationship: string;
+}
+
+export interface LogisticsItem {
+  wedding_event_id?: number;
+  logistics_item: string;
+  logistics_remarks: string;
+  is_ready?: boolean;
+}
+
+export interface TodoItem {
+  wedding_event_id?: number;
+  to_do_date: Date;
+  to_do_item: string;
+  to_do_remarks?: string;
+  is_finished?: boolean;
+}

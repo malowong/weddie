@@ -33,10 +33,8 @@ import AuthStackScreen from './src/screens/AuthStackScreen';
 import TabScreen from './src/screens/TabScreen';
 import { AddTodoItem } from './src/components/CreateStackScreen/AddTodoItem';
 import { EditTodoItem } from './src/components/EditStackScreen/EditTodoItem';
-import {
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query'
+import { SelectEvent } from './src/components/EditStackScreen/SelectEvent';
+import { QueryClient, QueryClientProvider } from 'react-query';
 import CreateEventStackScreen from './src/screens/CreateEventStackScreen';
 
 // this is for create items
@@ -76,6 +74,7 @@ function EditStackScreen() {
       <EditStack.Screen name="EditParti" component={EditParti} />
       <EditStack.Screen name="EditGuest" component={EditGuest} />
       <EditStack.Screen name="EditTodoItem" component={EditTodoItem} />
+      <EditStack.Screen name="SelectEvent" component={SelectEvent} />
     </EditStack.Navigator>
   );
 }
@@ -107,7 +106,6 @@ function MainStackScreen() {
 const RootStack = createStackNavigator();
 
 function RootStackScreen() {
-  
   return (
     <RootStack.Navigator
       screenOptions={{ headerShown: false, gestureEnabled: false }}
@@ -116,12 +114,15 @@ function RootStackScreen() {
       <RootStack.Screen name="MainStackScreen" component={MainStackScreen} />
       <RootStack.Screen name="LoadingScreen" component={LoadingScreen} />
       <RootStack.Screen name="AuthStackScreen" component={AuthStackScreen} />
-      <RootStack.Screen name="CreateEventStackScreen" component={CreateEventStackScreen} />
+      <RootStack.Screen
+        name="CreateEventStackScreen"
+        component={CreateEventStackScreen}
+      />
     </RootStack.Navigator>
   );
 }
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 const App = () => {
   return (

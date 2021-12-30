@@ -6,7 +6,7 @@ import { checkPassword, hashPassword } from "../utils/hash";
 export class UserController {
   constructor(private userService: UserService) { }
 
-  getUser = async (req: Request, res: Response) => {
+  getUserByToken = async (req: Request, res: Response) => {
     let userData
     if (req.user) {
       userData = {
@@ -101,5 +101,15 @@ export class UserController {
     }
 
     res.json({ token, userData });
+  }
+
+  getUserById = async (req: Request, res: Response) => {
+
+    const userId = req.body.userId
+
+    const settingData = await this.userService.getUserById(userId)
+
+    res.json({ settingData })
+
   }
 }

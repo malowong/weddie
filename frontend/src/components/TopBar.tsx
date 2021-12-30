@@ -12,9 +12,8 @@ interface ITopBarProps {
 }
 
 export default function TopBar(props: ITopBarProps) {
-
   const navigation: any = useNavigation();
-  
+
   const [fadeAnim] = useState(new Animated.Value(0));
 
   const fadeIn = () => {
@@ -46,10 +45,18 @@ export default function TopBar(props: ITopBarProps) {
           justifyContent: 'flex-end',
         }}
       >
-        {props.show === 'true' && <TouchableOpacity onPress={() => navigation.navigate("CreateStackScreen", {screen: `${props.navigate}`})}>
-          <Icon as={Ionicons} name="add" size="9"/>
-        </TouchableOpacity>}
-        <Box style={{height: 36}}></Box>
+        {props.show === 'true' && (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.push('CreateStackScreen', {
+                screen: `${props.navigate}`,
+              })
+            }
+          >
+            <Icon as={Ionicons} name="add" size="9" />
+          </TouchableOpacity>
+        )}
+        <Box style={{ height: 36 }}></Box>
       </View>
       <Animated.View
         style={{

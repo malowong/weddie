@@ -1,69 +1,88 @@
-import { Button, Checkbox, Text } from 'native-base';
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Box, Heading, HStack, Text, VStack } from 'native-base';
+import React, { useState } from 'react';
+import { View, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { useForm, Controller } from 'react-hook-form';
-import { useDispatch, useSelector } from 'react-redux';
-import { getGuestListThunk } from '../../redux/guest/thunk';
+import { useQuery } from 'react-query';
+import { config } from '../../../app.json';
+import { LoadingMsg } from '../../components/LoadingsMsg';
+import { ErrorMsg } from '../../components/ErrorMsg';
+import { useSelector } from 'react-redux';
+import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { IRootState } from '../../redux/store';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
-  const dispatch = useDispatch();
-  const guestList = useSelector((state: IRootState) => state.guest.guestList);
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
 
-  useEffect(() => {
-    dispatch(getGuestListThunk());
-  }, [dispatch]);
+  useRefreshOnFocus(() =>
+    fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setGuestList(data.guestList))
+  );
+
+  const [guestList, setGuestList] = useState([]);
+  const { isLoading, error, data } = useQuery('userData', () =>
+    fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setGuestList(data.guestList))
+  );
+
+  if (isLoading) return <LoadingMsg />;
+
+  if (error) return <ErrorMsg />;
 
   return (
     <TopBar pageName="賓客名單" show="true" navigate="AddGuest">
       <View>
-        <View style={guestStyles.tableRow}>
-          <Text style={[guestStyles.tableColumn, guestStyles.tableHeader]}>
-            名稱
-          </Text>
-          <Text style={[guestStyles.tableColumn, guestStyles.tableHeader]}>
-            電話號碼
-          </Text>
-          <Text
-            style={[
-              guestStyles.tableColumn,
-              guestStyles.tableRelationShip,
-              guestStyles.tableHeader,
-            ]}
-          >
-            關係
-          </Text>
-        </View>
-
-        {guestList.map((guest) => {
+        {guestList.length === 0 && (
+          <Text fontSize="md">請加入你準備邀請的來賓！</Text>
+        )}
+        {guestList.map((guest: any) => {
           return (
             <TouchableOpacity
               key={guest.id}
-              style={guestStyles.tableRow}
               onPress={() =>
                 navigation.navigate('EditStackScreen', {
                   screen: 'EditGuest',
                   params: {
                     id: guest.id,
                     name: guest.name,
-                    phoneNumber: guest.phoneNumber,
+                    phone: guest.phone,
                     relationship: guest.relationship,
                   },
                 })
               }
             >
-              <View style={guestStyles.tableColumn}>
-                <Text fontSize={15}>{guest.name}</Text>
-              </View>
-              <View style={guestStyles.tableColumn}>
-                <Text fontSize={15}>{guest.phoneNumber}</Text>
-              </View>
-              <View
-                style={[guestStyles.tableColumn, guestStyles.tableRelationShip]}
+              <Box
+                py="3"
+                alignSelf="center"
+                width={375}
+                maxWidth="100%"
+                borderBottomWidth="1"
+                borderColor="muted.300"
               >
-                <Text fontSize={15}>{guest.relationship}</Text>
-              </View>
+                <HStack>
+                  <VStack>
+                    <View>
+                      <Heading size="md">{guest.name}</Heading>
+                    </View>
+                    <View>
+                      <Text fontSize="md">{guest.phone}</Text>
+                    </View>
+                  </VStack>
+                  <Box
+                    flex="1"
+                    flex-direction="column"
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
+                  >
+                    <Box px="2" py="0.5" rounded="md" bg="primary.600">
+                      <Text fontSize="md" color="white">
+                        {guest.relationship}
+                      </Text>
+                    </Box>
+                  </Box>
+                </HStack>
+              </Box>
             </TouchableOpacity>
           );
         })}
@@ -72,26 +91,26 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   );
 }
 
-const guestStyles = StyleSheet.create({
-  tableRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    marginTop: 15,
-  },
-  tableColumn: {
-    flex: 1,
-    textAlign: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    fontSize: 17,
-  },
-  tableRelationShip: {
-    flex: 1.5,
-  },
-  tableHeader: {
-    fontWeight: 'bold',
-  },
-});
+// const guestStyles = StyleSheet.create({
+//   tableRow: {
+//     display: 'flex',
+//     flexDirection: 'row',
+//     justifyContent: 'space-evenly',
+//     alignItems: 'center',
+//     marginTop: 15,
+//   },
+//   tableColumn: {
+//     flex: 1,
+//     textAlign: 'left',
+//     display: 'flex',
+//     justifyContent: 'center',
+//     flexDirection: 'row',
+//     fontSize: 17,
+//   },
+//   tableRelationShip: {
+//     flex: 1.5,
+//   },
+//   tableHeader: {
+//     fontWeight: 'bold',
+//   },
+// });

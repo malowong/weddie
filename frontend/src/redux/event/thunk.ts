@@ -28,10 +28,12 @@ export function createEventThunk(event: ICreateEvent) {
 }
 
 export function restoreEventThunk() {
-    return async (dispatch: Dispatch<any>) => {
+    return async (dispatch: Dispatch<any>, getState: ()=>IRootState) => {
         try {
 
-            const userId = useSelector((state: IRootState) => state.auth.user?.id);
+            const userId = getState().auth.user?.id
+
+            console.log(userId)
 
             if (!userId) {
                 return dispatch(getEventFailed('No event'))
@@ -46,7 +48,7 @@ export function restoreEventThunk() {
                 return dispatch(getEventFailed(result.error))
             }
 
-            if (!result.eventData) {
+            if (!result.id) {
                 return dispatch(getEventFailed('No event'))
             }
 

@@ -1,6 +1,6 @@
 import { Knex } from "knex";
 import { tables } from "../utils/tables";
-import { collections } from "./mongoService";
+// import { collections } from "./mongoService";
 import { EventStore, EventType } from "./models";
 
 interface budgetItem {
@@ -22,6 +22,11 @@ export class BudgetService {
       .where("wedding_event_id", eventId);
 
     return expenditureList;
+  };
+
+  addBudgetItem = async (budgetItem: budgetItem) => {
+    await this.knex(tables.WEDDING_BUDGET_LIST).insert(budgetItem);
+    return;
   };
 
   updateExpenditureList = async (
@@ -68,11 +73,6 @@ export class BudgetService {
     event_store_new.weddingCreatedAtDate = weddingCreatedAtDate;
     event_store_new.weddingDate = weddingDate;
 
-    collections.event_store?.insertMany([event_store_old, event_store_new]);
-  };
-  addBudgetItem = async (budgetItem: budgetItem) => {
-    await this.knex(tables.WEDDING_BUDGET_LIST).insert(budgetItem);
-
-    return;
+    // collections.event_store?.insertMany([event_store_old, event_store_new]);
   };
 }

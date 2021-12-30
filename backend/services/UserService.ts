@@ -22,7 +22,7 @@ export class UserService {
     return user;
   }
 
-  insertNewUser = async (newUser: SignupUser) => {
+  async insertNewUser(newUser: SignupUser) {
     console.log(newUser)
     const newUserID = await this.knex(tables.USER_INFO).insert(newUser).returning("id");
     return newUserID;

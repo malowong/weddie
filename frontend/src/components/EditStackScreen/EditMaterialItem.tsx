@@ -3,8 +3,14 @@ import { View, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text, TextArea, Modal, FormControl } from 'native-base';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
+import { IRootState } from '../../redux/store';
+import { useMutation } from 'react-query';
+import {
+  fetchDeleteLogisticsItem,
+  fetchUpdateLogisticsItem,
+} from '../../api/logistics';
 
 export function EditMaterialItem({ route, navigation }: any) {
   let remarks = '';
@@ -14,6 +20,7 @@ export function EditMaterialItem({ route, navigation }: any) {
     remarks = JSON.stringify(route.params.remarks).replace(/\"/g, '');
   }
 
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
   const {
@@ -28,23 +35,16 @@ export function EditMaterialItem({ route, navigation }: any) {
     },
   });
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  const updateItemMutation: any = useMutation(fetchUpdateLogisticsItem);
+  const deleteItemMutation: any = useMutation(fetchDeleteLogisticsItem);
 
   const onSubmit = (data: any) => {
-    data.amount = parseInt(data.amount);
-    console.log(data);
+    data['materialItemId'] = route.params.id;
+    updateItemMutation.mutate(data);
   };
 
   const deleteMaterialItem = () => {
-    const itemId = JSON.stringify(route.params.id);
-    console.log(itemId);
-    console.log('hello');
-    navigation.goBack();
+    deleteItemMutation.mutate(route.params.id);
   };
 
   return (
@@ -128,6 +128,30 @@ export function EditMaterialItem({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
+        </View>
+
+        <View>
+          {updateItemMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{updateItemMutation.error.message}
+            </Text>
+          ) : null}
+
+          {updateItemMutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'MaterialScreen' })
+            : null}
+        </View>
+
+        <View>
+          {deleteItemMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{deleteItemMutation.error.message}
+            </Text>
+          ) : null}
+
+          {deleteItemMutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'MaterialScreen' })
+            : null}
         </View>
       </View>
     </CreateAndEditTopBar>

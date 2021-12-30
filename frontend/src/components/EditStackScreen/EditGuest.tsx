@@ -1,15 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import TopBar from '../TopBar';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text, Modal } from 'native-base';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
+import { IRootState } from '../../redux/store';
+import { useMutation } from 'react-query';
+import { fetchRemoveGuest, fetchUpdateGuest } from '../../api/guest';
 
 export function EditGuest({ route, navigation }: any) {
-  const dispatch = useDispatch();
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [showModal, setShowModal] = useState(false);
+
+  const [name] = useState(route.params.name)
+  const [phone] = useState(route.params.phone)
+  const [relationship] = useState(route.params.relationship)
+  const [id] = useState(route.params.id)
+
   const {
     control,
     handleSubmit,
@@ -17,32 +24,25 @@ export function EditGuest({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: JSON.stringify(route.params.name).replace(/\"/g, ''),
-      phoneNumber: JSON.stringify(route.params.phoneNumber),
-      relationship: JSON.stringify(route.params.relationship).replace(
+      name: JSON.stringify(name).replace(/\"/g, ''),
+      phone: JSON.stringify(phone).replace(/\"/g, ''),
+      relationship: JSON.stringify(relationship).replace(
         /\"/g,
         ''
       ),
     },
   });
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  const updateGuestMutation: any = useMutation(fetchUpdateGuest);
+  const removeGuestMutation: any = useMutation(fetchRemoveGuest);
 
   const onSubmit = (data: any) => {
-    data.amount = parseInt(data.amount);
-    console.log(data);
+    data['guestId'] = id;
+    updateGuestMutation.mutate(data);
   };
 
-  const deleteGuest = () => {
-    const guestId = JSON.stringify(route.params.id);
-    console.log(guestId);
-    console.log('hello');
-    navigation.goBack();
+  const removeGuest = () => {
+    removeGuestMutation.mutate(id);
   };
 
   return (
@@ -65,11 +65,13 @@ export function EditGuest({ route, navigation }: any) {
           )}
           name="name"
         />
+        {errors.name && <Text color="danger.500">請填寫名稱。</Text>}
 
         <Controller
           control={control}
           rules={{
-            maxLength: 100,
+            maxLength: 8,
+            minLength: 8,
             required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
@@ -83,8 +85,17 @@ export function EditGuest({ route, navigation }: any) {
               keyboardType="numeric"
             />
           )}
-          name="phoneNumber"
+          name="phone"
         />
+        {errors.phone?.type === 'required' && (
+          <Text color="danger.500">請填寫你的電話號碼。</Text>
+        )}
+        {errors.phone?.type === 'maxLength' && (
+          <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+        )}
+        {errors.phone?.type === 'minLength' && (
+          <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+        )}
 
         <Controller
           control={control}
@@ -104,6 +115,7 @@ export function EditGuest({ route, navigation }: any) {
           )}
           name="relationship"
         />
+        {errors.relationship && <Text color="danger.500">請填寫關係。</Text>}
 
         <View style={editGuestStyles.buttonRow}>
           <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
@@ -135,7 +147,7 @@ export function EditGuest({ route, navigation }: any) {
                   <Button
                     colorScheme="danger"
                     onPress={() => {
-                      deleteGuest();
+                      removeGuest();
                       setShowModal(false);
                     }}
                   >
@@ -145,6 +157,30 @@ export function EditGuest({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
+        </View>
+
+        <View>
+          {updateGuestMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{updateGuestMutation.error.message}
+            </Text>
+          ) : null}
+
+          {updateGuestMutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'GuestScreen' })
+            : null}
+        </View>
+
+        <View>
+          {removeGuestMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{removeGuestMutation.error.message}
+            </Text>
+          ) : null}
+
+          {removeGuestMutation.isSuccess
+            ? navigation.push('TabScreen', { screen: 'GuestScreen' })
+            : null}
         </View>
       </View>
     </CreateAndEditTopBar>

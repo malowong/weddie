@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import TopBar from '../../components/TopBar';
 import { View, Text, HStack, Box, Heading, VStack } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +13,7 @@ import { ErrorMsg } from '../../components/ErrorMsg';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { IRootState } from '../../redux/store';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
+import { ProgressChart } from 'react-native-chart-kit';
 
 interface Expenditure {
   id: number;
@@ -34,6 +39,7 @@ const budgetCategoryMap = new Map([
 ]);
 
 export default function BudgetScreen({ navigation }: { navigation: any }) {
+  const { height, width } = useWindowDimensions();
   const budget: number = parseInt(
     useSelector((state: IRootState) => state.event.event!.budget)
   );
@@ -62,8 +68,62 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
     0
   );
 
+  const chartData = {
+    labels: ['支出'],
+    data: [totalExpenditure / budget],
+  };
+
   return (
     <TopBar pageName="婚禮預算" show="true" navigate="AddBudgetItem">
+      {/* <PieChart
+        data={chartData}
+        width={350}
+        height={300}
+        chartConfig={{
+          backgroundColor: '#e26a00',
+          backgroundGradientFrom: '#fb8c00',
+          backgroundGradientTo: '#ffa726',
+          decimalPlaces: 2, // optional, defaults to 2dp
+          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          style: {
+            borderRadius: 16,
+          },
+          propsForDots: {
+            r: '6',
+            strokeWidth: '2',
+            stroke: '#ffa726',
+          },
+        }}
+        accessor={'population'}
+        backgroundColor={'transparent'}
+        paddingLeft={'15'}
+      /> */}
+      <ProgressChart
+        data={chartData}
+        width={width * 0.9}
+        height={height * 0.2}
+        strokeWidth={20}
+        radius={50}
+        chartConfig={{
+          // backgroundColor: '#ffffff',
+          backgroundGradientFrom: '#fb8c00',
+          backgroundGradientTo: '#ffa726',
+          decimalPlaces: 2, // optional, defaults to 2dp
+          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          style: {
+            borderRadius: 16,
+          },
+          propsForDots: {
+            r: '6',
+            strokeWidth: '2',
+            stroke: '#ffa726',
+          },
+        }}
+        hideLegend={false}
+      />
+
       <View mb={5} mt={3}>
         <Text fontSize={22} marginLeft={15}>
           總預算: {budget}

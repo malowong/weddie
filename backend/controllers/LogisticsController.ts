@@ -21,7 +21,7 @@ export class LogisticsController {
 
     await this.logisticsService.addLogisticsItem(logisticsItem);
 
-    res.json({ message: "successful add" });
+    res.json({ message: "successful add logistics item" });
   };
 
   updateLogisticsItem = async (req: Request, res: Response) => {
@@ -33,7 +33,7 @@ export class LogisticsController {
 
     await this.logisticsService.updateLogisticsItem(logisticsItem, itemId);
 
-    res.json({ message: "successful update" });
+    res.json({ message: "successful update logistics item" });
   };
 
   deleteLogisticsItem = async (req: Request, res: Response) => {
@@ -41,6 +41,15 @@ export class LogisticsController {
 
     await this.logisticsService.deleteLogisticsItem(itemId);
 
-    res.json({ message: "successful delete" });
+    res.json({ message: "successful delete logistics item" });
+  };
+
+  updateLogisticsItemIsReadyStatus = async (req: Request, res: Response) => {
+    const isReady = req.body.isReady;
+    const itemId = parseInt(req.params.id);
+
+    await this.logisticsService.updateLogisticsItemIsReadyStatus(isReady, itemId);
+
+    res.json({ message: "successful update logistics item is_ready status" });
   };
 }

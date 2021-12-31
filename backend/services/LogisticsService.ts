@@ -17,18 +17,20 @@ export class LogisticsService {
 
   addLogisticsItem = async (logisticsItem: LogisticsItem) => {
     await this.knex(tables.WEDDING_LOGISTICS).insert(logisticsItem);
-
     return;
   };
 
   updateLogisticsItem = async (logisticsItem: LogisticsItem, itemId: number) => {
     await this.knex(tables.WEDDING_LOGISTICS).update(logisticsItem).where("id", itemId);
-
     return;
   };
 
   deleteLogisticsItem = async (itemId: number) => {
     await this.knex(tables.WEDDING_LOGISTICS).where("id", itemId).del();
     return;
+  };
+
+  updateLogisticsItemIsReadyStatus = async (isReady: boolean, itemId: number) => {
+    await this.knex(tables.WEDDING_LOGISTICS).update("is_ready", isReady).where("id", itemId);
   };
 }

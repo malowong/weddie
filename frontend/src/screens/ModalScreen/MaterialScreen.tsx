@@ -1,18 +1,27 @@
-import React, { useEffect, useState } from 'react';
-import { Checkbox, Text } from 'native-base';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState } from 'react';
+import { Box, Checkbox, Heading, HStack, Text, VStack } from 'native-base';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
-import { getAllMaterialItemsThunk } from '../../redux/logistics/thunk';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
+import { fetchChangeIsReadyStatus } from '../../api/logistics';
+
+interface LogisticsDatabase {
+  id: number;
+  wedding_event_id: number;
+  logistics_item: string;
+  logistics_remarks: string;
+  is_ready: boolean;
+}
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const mutation: any = useMutation(fetchChangeIsReadyStatus);
 
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
@@ -31,16 +40,23 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
 
   if (error) return <ErrorMsg />;
 
+  // const changeIsReadyStatus = (itemId: number, isReady: boolean) => {
+  //   console.log(isReady);
+  //   isReady = !isReady;
+  //   const data = { itemId, isReady };
+  //   mutation.mutate(data);
+  // };
+
   return (
     <TopBar pageName="物資管理" show="true" navigate="AddMaterialItem">
       {materialList &&
-        materialList.map((material: any) => {
+        materialList.map((material: LogisticsDatabase) => {
           return (
             <TouchableOpacity
               key={material.id}
               style={materialStyles.tableRow}
               onPress={() =>
-                navigation.push('EditStackScreen', {
+                navigation.navigate('EditStackScreen', {
                   screen: 'EditMaterialItem',
                   params: {
                     id: material.id,
@@ -50,12 +66,47 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
                 })
               }
             >
-              <Text fontSize={25}>{material.logistics_item}</Text>
-              <Checkbox
-                colorScheme="green"
-                value={material.id}
-                aria-label="Attend"
-              />
+              <Box
+                py="3"
+                alignSelf="center"
+                width={375}
+                maxWidth="100%"
+                borderBottomWidth="1"
+                borderColor="muted.300"
+              >
+                <HStack>
+                  <VStack>
+                    <View>
+                      <Heading size="md">{material.logistics_item}</Heading>
+                    </View>
+                  </VStack>
+                  <Box
+                    flex="1"
+                    flex-direction="column"
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
+                  >
+                    <Checkbox
+                      defaultIsChecked={material.is_ready}
+                      colorScheme="green"
+                      value={String(material.id)}
+                      aria-label="Attend"
+                      onChange={() => {
+                        // const mutation: any = useMutation(
+                        //   fetchChangeIsReadyStatus
+                        // );
+
+                        const isReady = !material.is_ready;
+                        material.is_ready = !material.is_ready;
+                        const itemId = material.id;
+                        const data = { itemId, isReady };
+                        mutation.mutate(data);
+                        // changeIsReadyStatus(material.id, material.is_ready);
+                      }}
+                    />
+                  </Box>
+                </HStack>
+              </Box>
             </TouchableOpacity>
           );
         })}

@@ -19,21 +19,6 @@ import {
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 
-const budgetCategoryMap = new Map([
-  [1, '攝影'],
-  [2, '婚前中式禮儀'],
-  [3, '派帖'],
-  [4, '美容'],
-  [5, '早上敬茶、出門入門'],
-  [6, '証婚'],
-  [7, '晚上婚宴'],
-  [8, '婚禮服飾'],
-  [9, '婚禮當日化妝'],
-  [10, '交通'],
-  [11, '回門'],
-  [12, '其他'],
-]);
-
 export function EditBudgetItem({ route, navigation }: any) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [categoryId, setCategoryId] = useState(route.params.categoryId);
@@ -51,7 +36,7 @@ export function EditBudgetItem({ route, navigation }: any) {
     defaultValues: {
       categoryId: categoryId,
       expenditure: JSON.stringify(expenditure),
-      description: JSON.stringify(route.params.description).replace(/\"/g, ''),
+      description: JSON.stringify(description).replace(/\"/g, ''),
     },
   });
 

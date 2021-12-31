@@ -12,3 +12,5 @@ export const budgetRoutes = express.Router();
 budgetRoutes.get("/list", asyncWrapper(budgetController.getExpenditureList));
 // budgetRoutes.post("/update", asyncWrapper(budgetController.updateExpenditureList));
 budgetRoutes.post("/item", asyncWrapper(budgetController.addBudgetItem));
+budgetRoutes.put("/item", asyncWrapper(budgetController.updateBudgetItem));
+budgetRoutes.delete("/item/:id", asyncWrapper(budgetController.deleteTodoItem));

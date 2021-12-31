@@ -9,14 +9,16 @@ import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LoadingMsg } from '../../components/LoadingsMsg';
+import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
 
-  // const dispatch = useDispatch();
-  // const materialList = useSelector(
-  //   (state: IRootState) => state.logistics.materialList
-  // );
+  useRefreshOnFocus(() =>
+    fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setMaterialList(data.logisticsList))
+  );
 
   const [materialList, setMaterialList] = useState([]);
   const { isLoading, error, data } = useQuery('logisticsData', () =>
@@ -28,10 +30,6 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
-
-  // useEffect(() => {
-  //   dispatch(getAllMaterialItemsThunk());
-  // }, [dispatch]);
 
   return (
     <TopBar pageName="物資管理" show="true" navigate="AddMaterialItem">

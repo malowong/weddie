@@ -11,9 +11,10 @@ import {
   fetchDeleteLogisticsItem,
   fetchUpdateLogisticsItem,
 } from '../../api/logistics';
+import { useNavigation } from '@react-navigation/native';
 
 export function EditMaterialItem({ route, navigation }: any) {
-  const [remarks] = useState(route.params.remarks);
+  const [remarks, setRemarks] = useState(route.params.remarks);
 
   let remarksInput = '';
   if (!remarks) {
@@ -24,8 +25,8 @@ export function EditMaterialItem({ route, navigation }: any) {
 
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [showModal, setShowModal] = useState(false);
-  const [itemName] = useState(route.params.itemName);
-  const [id] = useState(route.params.id);
+  const [itemName, setItemName] = useState(route.params.itemName);
+  const [id, setId] = useState(route.params.id);
   const {
     control,
     handleSubmit,
@@ -47,7 +48,7 @@ export function EditMaterialItem({ route, navigation }: any) {
   };
 
   const deleteMaterialItem = () => {
-    deleteItemMutation.mutate(route.params.id);
+    deleteItemMutation.mutate(id);
   };
 
   return (
@@ -70,13 +71,12 @@ export function EditMaterialItem({ route, navigation }: any) {
           )}
           name="itemName"
         />
-        {errors.itemName && <Text>This is required.</Text>}
+        {errors.itemName && <Text>請填寫物品。</Text>}
 
         <Controller
           control={control}
           rules={{
             maxLength: 100,
-            required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextArea
@@ -141,7 +141,7 @@ export function EditMaterialItem({ route, navigation }: any) {
           ) : null}
 
           {updateItemMutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'MaterialScreen' })
+            ? navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
             : null}
         </View>
 

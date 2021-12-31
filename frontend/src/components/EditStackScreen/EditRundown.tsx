@@ -8,7 +8,7 @@ import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
 import { fetchRemoveGuest, fetchUpdateGuest } from '../../api/guest';
 
-export function EditGuest({ route, navigation }: any) {
+export function EditRundown({ route, navigation }: any) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [showModal, setShowModal] = useState(false);
 

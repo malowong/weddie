@@ -32,8 +32,8 @@ export class EventService {
         await trx(tables.WEDDING_BUDGET_LIST).insert(
           {
             wedding_event_id: eventId,
-            budget_cat_id: item.budget_cat_id,
-            description: item.description,
+            budget_cat_id: item.budget_cat_id_temp,
+            description: item.budget_description_temp,
             expenditure: 0,
           }
         )
@@ -54,6 +54,7 @@ export class EventService {
             wedding_event_id: eventId,
             to_do_date: getDate(wedding_date, item.days_prior_wedding),
             to_do_item: item.to_do_temp,
+            to_do_remarks: '',
           }
         )
       }

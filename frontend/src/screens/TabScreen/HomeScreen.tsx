@@ -279,7 +279,6 @@ export default function HomeScreen() {
           </Heading>
           {rundownData.map((item, index) => (
             <Box
-<<<<<<< HEAD
             key={index}
             bg="primary.600"
             py="4"
@@ -307,35 +306,6 @@ export default function HomeScreen() {
               </VStack>
             </HStack>
           </Box>
-=======
-              key={index}
-              bg="primary.600"
-              py="4"
-              px="3"
-              mb="4"
-              rounded="lg"
-              alignSelf="center"
-              width={375}
-              maxWidth="100%"
-              shadow={3}
-            >
-              <HStack>
-                <View width="20">
-                  <Heading size="lg" color="white" textAlign="left" mr="3">
-                    {getTime(item.time)}
-                  </Heading>
-                </View>
-                <VStack>
-                  <Heading size="lg" color="white" textAlign="left">
-                    {item.item}
-                  </Heading>
-                  <Text fontSize="md" color="white" textAlign="left">
-                    {item.detail}
-                  </Text>
-                </VStack>
-              </HStack>
-            </Box>
->>>>>>> 79aeb32c7f720234dc0d155c548d15985769f6be
           ))}
         </Box>
       </Animated.ScrollView>

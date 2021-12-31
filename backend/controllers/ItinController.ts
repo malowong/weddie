@@ -16,8 +16,10 @@ export class ItinController {
       res.status(400).json({ message: "User not found" })
     }
 
-    const itinList = await this.itinService.getItinList(eventId);
+    const itinMap = await this.itinService.getItinList(eventId);
 
-    res.json({ itinList });
+    console.log(itinMap)
+
+    res.json(Array.from(itinMap.values()) );
   };
 }

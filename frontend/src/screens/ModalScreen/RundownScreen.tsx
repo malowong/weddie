@@ -16,8 +16,6 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
 
   const token = useSelector((state: IRootState) => state.auth.token);
 
-  console.log(token);
-
   // useRefreshOnFocus(() =>
   //   fetch(`${config.BACKEND_URL}/api/itin/${eventId}`)
   //     .then((res) => res.json())
@@ -32,10 +30,10 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
       },
     });
     const data = await resp.json();
-    setItinList(data.itinList);
+    console.log('data: ', data);
+    setItinList(data);
   });
 
-  console.log('hi', itinList);
 
   function getTime(time: string) {
     return time.substring(0, 5);
@@ -46,42 +44,63 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
   if (error) return <ErrorMsg />;
 
   return (
-    <TopBar pageName="當日流程" show="true" navigate="AddTodoItem">
-        {itinList.map((item: any) => {
-          return (
-            <TouchableOpacity
-              key={item.id}
-              onPress={() =>
-                navigation.navigate('EditStackScreen', {
-                  screen: 'EditItin',
-                  params: {
-                    id: item.id,
-                    name: item.name,
-                    phone: item.phone,
-                    relationship: item.relationship,
-                  },
-                })
-              }
-            >
-              <Box py="1" flex="1">
-                <HStack borderBottomWidth="1" py="3" alignItems="center" borderColor="muted.300">
-                  <Box mr="3" width="20%">
-                    <Heading size="lg">{getTime(item.itinerary_time)}</Heading>
-                  </Box>
-                  <Box width="75%">
-                    <Heading size="md">{item.itinerary}</Heading>
-                    {item.job_duty ? <Text fontSize="md">{item.job_duty}</Text> : null}
-                    <Box px="2" py="0.5" rounded="md" bg="primary.600">
-                      {/* <Text fontSize="md" color="white">
-                        {guest.relationship}
-                      </Text> */}
-                    </Box>
-                  </Box>
-                </HStack>
-              </Box>
-            </TouchableOpacity>
-          );
-        })}
+    <TopBar pageName="當日流程" show="true" navigate="AddRundown">
+      {itinList.map((item: any) => {
+        return (
+          <TouchableOpacity
+            key={item.id}
+            onPress={() =>
+              navigation.navigate('EditStackScreen', {
+                screen: 'EditRundown',
+                params: {
+                  id: item.id,
+                  name: item.name,
+                  phone: item.phone,
+                  relationship: item.relationship,
+                },
+              })
+            }
+          >
+            <Box py="1" flex="1">
+              <HStack
+                borderBottomWidth="1"
+                py="3"
+                alignItems="center"
+                borderColor="muted.300"
+              >
+                <Box mr="3" width="20%">
+                  <Heading size="lg">{getTime(item.itinerary_time)}</Heading>
+                </Box>
+                <Box width="75%">
+                  <Heading size="md">{item.itinerary}</Heading>
+                  {item.job_duty ? (
+                    <Text fontSize="md">{item.job_duty}</Text>
+                  ) : null}
+                  <HStack mt="2">
+                  {item.role_id_arr.map((role: any, idx: number) => {
+                    return (
+                      <Box px="2" py="0.5" mr="3" rounded="md" bg="primary.600" key={idx}>
+                        <Text fontSize="md" color="white">
+                          {role === 1 && '新郎'}
+                          {role === 2 && '新娘'}
+                          {role === 3 && '兄弟'}
+                          {role === 4 && '姊妹'}
+                          {role === 5 && '攝影師'}
+                          {role === 6 && '司儀'}
+                          {role === 7 && '表演者'}
+                          {role === 8 && '大妗姐'}
+                          {role === 9 && '化妝師'}
+                        </Text>
+                      </Box>
+                    );
+                  })}
+                  </HStack>
+                </Box>
+              </HStack>
+            </Box>
+          </TouchableOpacity>
+        );
+      })}
     </TopBar>
   );
 }

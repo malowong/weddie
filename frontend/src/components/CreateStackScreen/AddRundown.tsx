@@ -9,7 +9,7 @@ import { fetchAddGuest } from '../../api/guest';
 import { IRootState } from '../../redux/store';
 import { useNavigation } from '@react-navigation/native';
 
-export function AddGuest({ navigation }: { navigation: any }) {
+export function AddRundown({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   console.log(eventId);
   const {

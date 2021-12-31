@@ -8,6 +8,7 @@ import { useQuery } from 'react-query';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { IRootState } from '../../redux/store';
+import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 
 interface Expenditure {
   id: number;
@@ -35,6 +36,12 @@ const budgetCategoryMap = new Map([
 export default function BudgetScreen({ navigation }: { navigation: any }) {
   const budget: number = parseInt(
     useSelector((state: IRootState) => state.event.event!.budget)
+  );
+
+  useRefreshOnFocus(() =>
+    fetch(`${config.BACKEND_URL}/api/budget/list`)
+      .then((res) => res.json())
+      .then((data) => setExpenditureList(data.expenditureList))
   );
 
   const [expenditureList, setExpenditureList]: any = useState([]);
@@ -87,12 +94,12 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
               key={expenditure.id}
               style={budgetStyles.tableRow}
               onPress={() =>
-                navigation.push('EditStackScreen', {
+                navigation.navigate('EditStackScreen', {
                   screen: 'EditBudgetItem',
                   params: {
                     id: expenditure.id,
-                    // category: expenditure.category,
-                    amount: expenditure.expenditure,
+                    categoryId: expenditure.budget_cat_id,
+                    expenditure: expenditure.expenditure,
                     description: expenditure.description,
                   },
                 })

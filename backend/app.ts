@@ -4,19 +4,19 @@ dotenv.config();
 
 import knexConfig from "./knexfile";
 export const knex = Knex(knexConfig[process.env.NODE_ENV || "development"]);
-import { connectToMongo } from "../backend/services/mongoService";
+// import { connectToMongo } from "../backend/services/mongoService";
 import express from "express";
 import { logger } from "./utils/logger";
 
-async function connectMongo() {
-  try {
-    await connectToMongo();
-  } catch (err) {
-    console.log("Database connection failed", err);
-  } finally {
-    process.exit();
-  }
-}
+// async function connectMongo() {
+//   try {
+//     await connectToMongo();
+//   } catch (err) {
+//     console.log("Database connection failed", err);
+//   } finally {
+//     process.exit();
+//   }
+// }
 
 const app = express();
 app.use(express.json());
@@ -28,7 +28,7 @@ app.use((req, res, next) => {
   next();
 });
 
-connectMongo();
+// connectMongo();
 import { routes } from "./routes";
 const API_VERSION = "/api";
 app.use(API_VERSION, routes);

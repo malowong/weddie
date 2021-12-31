@@ -12,10 +12,10 @@ export function EditGuest({ route, navigation }: any) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [showModal, setShowModal] = useState(false);
 
-  const [name] = useState(route.params.name)
-  const [phone] = useState(route.params.phone)
-  const [relationship] = useState(route.params.relationship)
-  const [id] = useState(route.params.id)
+  const [name] = useState(route.params.name);
+  const [phone] = useState(route.params.phone);
+  const [relationship] = useState(route.params.relationship);
+  const [id] = useState(route.params.id);
 
   const {
     control,
@@ -26,10 +26,7 @@ export function EditGuest({ route, navigation }: any) {
     defaultValues: {
       name: JSON.stringify(name).replace(/\"/g, ''),
       phone: JSON.stringify(phone).replace(/\"/g, ''),
-      relationship: JSON.stringify(relationship).replace(
-        /\"/g,
-        ''
-      ),
+      relationship: JSON.stringify(relationship).replace(/\"/g, ''),
     },
   });
 
@@ -167,7 +164,7 @@ export function EditGuest({ route, navigation }: any) {
           ) : null}
 
           {updateGuestMutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'GuestScreen' })
+            ? navigation.navigate('TabScreen', { screen: 'GuestScreen' })
             : null}
         </View>
 
@@ -179,7 +176,7 @@ export function EditGuest({ route, navigation }: any) {
           ) : null}
 
           {removeGuestMutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'GuestScreen' })
+            ? navigation.navigate('TabScreen', { screen: 'GuestScreen' })
             : null}
         </View>
       </View>

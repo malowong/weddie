@@ -11,7 +11,7 @@ import { useNavigation } from '@react-navigation/native';
 
 export function AddGuest({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
-  console.log(eventId);
+
   const {
     control,
     handleSubmit,
@@ -24,13 +24,6 @@ export function AddGuest({ navigation }: { navigation: any }) {
       relationship: '',
     },
   });
-
-  // useEffect(() => {
-  //   let sub = watch((data) => {
-  //     console.log('update form data:', data);
-  //   });
-  //   return () => sub.unsubscribe();
-  // }, [watch]);
 
   const mutation: any = useMutation(fetchAddGuest);
 

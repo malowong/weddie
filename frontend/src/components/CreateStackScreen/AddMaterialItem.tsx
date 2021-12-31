@@ -80,7 +80,7 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
           ) : null}
 
           {mutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'MaterialScreen' })
+            ? navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
             : null}
         </View>
       </View>

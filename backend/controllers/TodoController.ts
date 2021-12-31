@@ -22,7 +22,7 @@ export class TodoController {
 
     await this.todoService.addTodoItem(todoItemData);
 
-    res.json({ message: "successful add" });
+    res.json({ message: "successful add todo item" });
   };
 
   updateTodoItem = async (req: Request, res: Response) => {
@@ -36,7 +36,7 @@ export class TodoController {
 
     await this.todoService.updateTodoItem(todoItemData, itemId);
 
-    res.json({ message: "successful update" });
+    res.json({ message: "successful update todo item" });
   };
 
   deleteTodoItem = async (req: Request, res: Response) => {
@@ -44,6 +44,6 @@ export class TodoController {
 
     await this.todoService.deleteTodoItem(itemId);
 
-    res.json({ message: "successful delete" });
+    res.json({ message: "successful delete todo item" });
   };
 }

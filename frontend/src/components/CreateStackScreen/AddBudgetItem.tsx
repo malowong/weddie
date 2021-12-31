@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
-import TopBar from '../TopBar';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, Select, TextArea } from 'native-base';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
+import { Input, Button, Text, Select, TextArea, CheckIcon } from 'native-base';
+import { useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useMutation } from 'react-query';
 import { fetchAddExpenditureItem } from '../../api/expenditure';
@@ -27,7 +25,6 @@ import { IRootState } from '../../redux/store';
 
 export function AddBudgetItem({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
-  const [categoryId, setCategoryId] = useState('');
   const {
     control,
     handleSubmit,
@@ -44,7 +41,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
 
   const onSubmit = (data: any) => {
     data.amount = parseInt(data.amount);
-    data.categoryId = categoryId;
+    data.categoryId = parseInt(data.categoryId);
     data.wedding_event_id = eventId;
     console.log('submit form data:', data);
     mutation.mutate(data);
@@ -53,7 +50,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
   return (
     <CreateAndEditTopBar pageName="新增支出">
       <View>
-        <Select
+        {/* <Select
           selectedValue={categoryId}
           placeholder="請選擇種類"
           minWidth="200"
@@ -62,6 +59,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
           placeholderTextColor="gray.700"
           _selectedItem={{
             bg: 'teal.600',
+            endIcon: <CheckIcon size="5" />,
           }}
           mt={1}
           onValueChange={(itemValue) => {
@@ -80,7 +78,48 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
           <Select.Item label="交通" value="10" />
           <Select.Item label="回門" value="11" />
           <Select.Item label="其他" value="12" />
-        </Select>
+        </Select> */}
+
+        <Controller
+          name="categoryId"
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { value, onChange } }) => (
+            <>
+              <Select
+                minWidth="200"
+                accessibilityLabel="請選擇種類"
+                placeholder="請選擇種類"
+                _selectedItem={{
+                  bg: 'teal.600',
+                  endIcon: <CheckIcon size="5" />,
+                }}
+                fontSize="md"
+                onValueChange={onChange}
+              >
+                <Select.Item label="攝影" value="1" />
+                <Select.Item label="婚前中式禮儀" value="2" />
+                <Select.Item label="派帖" value="3" />
+                <Select.Item label="美容" value="4" />
+                <Select.Item label="早上敬茶、出門入門" value="5" />
+                <Select.Item label="証婚" value="6" />
+                <Select.Item label="晚上婚宴" value="7" />
+                <Select.Item label="婚禮服飾" value="8" />
+                <Select.Item label="婚禮當日化妝" value="9" />
+                <Select.Item label="交通" value="10" />
+                <Select.Item label="回門" value="11" />
+                <Select.Item label="其他" value="12" />
+              </Select>
+            </>
+          )}
+        />
+        {errors.categoryId?.type === 'required' && (
+          <Text color="danger.500" marginTop={1}>
+            請選擇種類。
+          </Text>
+        )}
 
         <Controller
           control={control}
@@ -129,7 +168,9 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
 
         <View>
           {mutation.isError ? (
-            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
+            <Text color="danger.500" marginTop={2}>
+              {mutation.error.message}
+            </Text>
           ) : null}
 
           {mutation.isSuccess

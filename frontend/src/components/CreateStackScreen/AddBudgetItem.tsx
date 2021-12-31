@@ -8,21 +8,6 @@ import { useMutation } from 'react-query';
 import { fetchAddExpenditureItem } from '../../api/expenditure';
 import { IRootState } from '../../redux/store';
 
-// enum BudgetCategory {
-//   '攝影' = 1,
-//   '婚前中式禮儀' = 2,
-//   '派帖' = 3,
-//   '美容' = 4,
-//   '早上敬茶、出門入門' = 5,
-//   '証婚' = 6,
-//   '晚上婚宴' = 7,
-//   '婚禮服飾' = 8,
-//   '婚禮當日化妝' = 9,
-//   '交通' = 10,
-//   '回門' = 11,
-//   '其他' = 12,
-// }
-
 export function AddBudgetItem({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const {

@@ -28,6 +28,10 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
       .then((data) => setTodoList(data.todoList))
   );
 
+  todoList.map((todoItem: TodoItem) =>
+    console.log(todoItem.to_do_item, ': ', todoItem.to_do_remarks)
+  );
+
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;

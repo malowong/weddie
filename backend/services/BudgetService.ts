@@ -54,8 +54,10 @@ export class BudgetService {
     event_store_old.eventType = EventType.Delete;
     event_store_old.data = old_data;
     event_store_old.amendDate = amendDate.getTime();
-    event_store_old.weddingCreatedAtDate = weddingCreatedAtDate;
-    event_store_old.weddingDate = weddingDate;
+    console.log(weddingCreatedAtDate);
+    console.log(weddingDate);
+    // event_store_old.weddingCreatedAtDate = weddingCreatedAtDate;
+    // event_store_old.weddingDate = weddingDate;
 
     await this.knex(tables.WEDDING_BUDGET_LIST)
       .where("id", budgetListId)
@@ -70,8 +72,8 @@ export class BudgetService {
     event_store_new.eventType = EventType.Add;
     event_store_new.data = new_data;
     event_store_new.amendDate = amendDate.getTime();
-    event_store_new.weddingCreatedAtDate = weddingCreatedAtDate;
-    event_store_new.weddingDate = weddingDate;
+    // event_store_new.weddingCreatedAtDate = weddingCreatedAtDate;
+    // event_store_new.weddingDate = weddingDate;
 
     // collections.event_store?.insertMany([event_store_old, event_store_new]);
   };

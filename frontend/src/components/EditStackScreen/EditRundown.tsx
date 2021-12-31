@@ -8,14 +8,14 @@ import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
 import { fetchRemoveGuest, fetchUpdateGuest } from '../../api/guest';
 
-export function EditGuest({ route, navigation }: any) {
+export function EditRundown({ route, navigation }: any) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [showModal, setShowModal] = useState(false);
 
-  const [name] = useState(route.params.name)
-  const [phone] = useState(route.params.phone)
-  const [relationship] = useState(route.params.relationship)
-  const [id] = useState(route.params.id)
+  // const [name] = useState(route.params.name)
+  // const [phone] = useState(route.params.phone)
+  // const [relationship] = useState(route.params.relationship)
+  // const [id] = useState(route.params.id)
 
   const {
     control,
@@ -24,9 +24,12 @@ export function EditGuest({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: JSON.stringify(name).replace(/\"/g, ''),
-      phone: JSON.stringify(phone).replace(/\"/g, ''),
-      relationship: JSON.stringify(relationship).replace(/\"/g, ''),
+      name: JSON.stringify(route.params.name).replace(/\"/g, ''),
+      phone: JSON.stringify(route.params.phone).replace(/\"/g, ''),
+      relationship: JSON.stringify(route.params.relationship).replace(
+        /\"/g,
+        ''
+      ),
     },
   });
 
@@ -34,12 +37,12 @@ export function EditGuest({ route, navigation }: any) {
   const removeGuestMutation: any = useMutation(fetchRemoveGuest);
 
   const onSubmit = (data: any) => {
-    // navigation.setParams({
-    //   name: data.name,
-    //   phone: data.phone,
-    //   relationship: data.relationship,
-    //   id: data.id,
-    // })
+    navigation.setParams({
+      name: data.name,
+      phone: data.phone,
+      relationship: data.relationship,
+      id: data.id,
+    })
     console.log(data)
     data['guestId'] = route.params.id;
     updateGuestMutation.mutate(data);

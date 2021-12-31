@@ -6,18 +6,20 @@ export class ItinController {
 
   getItinList = async (req: Request, res: Response) => {
 
-    const userId = req.body.userId;
+    const userId = req.user;
+
+    const eventId = parseInt(req.params.id);
 
     console.log(userId)
 
     if (!userId) {
       res.status(400).json({ message: "User not found" })
     }
-    
-    const eventId = await this.itinService.getEventId(userId)
 
-    const itinList = await this.itinService.getItinList(eventId);
+    const itinMap = await this.itinService.getItinList(eventId);
 
-    res.json({ itinList });
+    console.log(itinMap)
+
+    res.json(Array.from(itinMap.values()) );
   };
 }

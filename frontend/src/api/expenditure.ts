@@ -22,10 +22,29 @@ export async function fetchGetExpenditureList() {
 
 export async function fetchAddExpenditureItem(expenditureItemData: any) {
   try {
-    console.log('expenditure item data: ', expenditureItemData);
-
     const resp = await fetch(`${config.BACKEND_URL}/api/budget/item`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(expenditureItemData),
+    });
+    const result = await resp.json();
+    if (resp.status !== 200) {
+      console.log('failed');
+      throw new Error(result.message);
+    }
+  } catch (e) {
+    throw e;
+  }
+}
+
+export const fetchUpdateBudgetItem = async (expenditureItemData: any) => {
+  try {
+    console.log(expenditureItemData);
+
+    const resp = await fetch(`${config.BACKEND_URL}/api/budget/item`, {
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -41,4 +60,26 @@ export async function fetchAddExpenditureItem(expenditureItemData: any) {
   } catch (e) {
     throw e;
   }
-}
+};
+
+export const fetchDeleteBudgetItem = async (itemId: number) => {
+  try {
+    console.log('item id: ', itemId);
+
+    const resp = await fetch(
+      `${config.BACKEND_URL}/api/budget/item/${itemId}`,
+      {
+        method: 'DELETE',
+      }
+    );
+
+    const result = await resp.json();
+
+    if (resp.status !== 200) {
+      console.log('failed');
+      throw new Error(result.message);
+    }
+  } catch (e) {
+    throw e;
+  }
+};

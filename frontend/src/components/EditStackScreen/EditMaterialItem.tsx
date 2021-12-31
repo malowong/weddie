@@ -11,18 +11,22 @@ import {
   fetchDeleteLogisticsItem,
   fetchUpdateLogisticsItem,
 } from '../../api/logistics';
+import { useNavigation } from '@react-navigation/native';
 
 export function EditMaterialItem({ route, navigation }: any) {
-  let remarks = '';
-  if (!route.params.remarks) {
-    remarks = '';
+  const [remarks, setRemarks] = useState(route.params.remarks);
+
+  let remarksInput = '';
+  if (!remarks) {
+    remarksInput = '';
   } else {
-    remarks = JSON.stringify(route.params.remarks).replace(/\"/g, '');
+    remarksInput = JSON.stringify(remarks).replace(/\"/g, '');
   }
 
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
-  const dispatch = useDispatch();
   const [showModal, setShowModal] = useState(false);
+  const [itemName, setItemName] = useState(route.params.itemName);
+  const [id, setId] = useState(route.params.id);
   const {
     control,
     handleSubmit,
@@ -30,8 +34,8 @@ export function EditMaterialItem({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: JSON.stringify(route.params.itemName).replace(/\"/g, ''),
-      remarks: remarks,
+      itemName: JSON.stringify(itemName).replace(/\"/g, ''),
+      remarks: remarksInput,
     },
   });
 
@@ -39,12 +43,12 @@ export function EditMaterialItem({ route, navigation }: any) {
   const deleteItemMutation: any = useMutation(fetchDeleteLogisticsItem);
 
   const onSubmit = (data: any) => {
-    data['materialItemId'] = route.params.id;
+    data['materialItemId'] = id;
     updateItemMutation.mutate(data);
   };
 
   const deleteMaterialItem = () => {
-    deleteItemMutation.mutate(route.params.id);
+    deleteItemMutation.mutate(id);
   };
 
   return (
@@ -67,13 +71,12 @@ export function EditMaterialItem({ route, navigation }: any) {
           )}
           name="itemName"
         />
-        {errors.itemName && <Text>This is required.</Text>}
+        {errors.itemName && <Text>請填寫物品。</Text>}
 
         <Controller
           control={control}
           rules={{
             maxLength: 100,
-            required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
             <TextArea
@@ -138,7 +141,7 @@ export function EditMaterialItem({ route, navigation }: any) {
           ) : null}
 
           {updateItemMutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'MaterialScreen' })
+            ? navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
             : null}
         </View>
 
@@ -150,7 +153,7 @@ export function EditMaterialItem({ route, navigation }: any) {
           ) : null}
 
           {deleteItemMutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'MaterialScreen' })
+            ? navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
             : null}
         </View>
       </View>

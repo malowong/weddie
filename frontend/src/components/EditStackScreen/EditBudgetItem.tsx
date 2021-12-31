@@ -1,14 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, Modal, Select, TextArea } from 'native-base';
-import { useDispatch } from 'react-redux';
+import {
+  Input,
+  Button,
+  Text,
+  Modal,
+  Select,
+  TextArea,
+  CheckIcon,
+} from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
+import { useMutation } from 'react-query';
+import {
+  fetchDeleteBudgetItem,
+  fetchUpdateBudgetItem,
+} from '../../api/expenditure';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store';
 
 export function EditBudgetItem({ route, navigation }: any) {
-  const dispatch = useDispatch();
-  const [category, setCategory] = useState('');
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const [categoryId, setCategoryId] = useState(route.params.categoryId);
+  const [description, setDescription] = useState(route.params.description);
+  const [expenditure, setExpenditure] = useState(route.params.expenditure);
+  const [id, setId] = useState(route.params.id);
   const [showModal, setShowModal] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -16,36 +34,34 @@ export function EditBudgetItem({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: JSON.stringify(route.params.category).replace(/\"/g, ''),
-      amount: JSON.stringify(route.params.amount),
-      description: JSON.stringify(route.params.description).replace(/\"/g, ''),
+      categoryId: categoryId,
+      expenditure: JSON.stringify(expenditure),
+      description: JSON.stringify(description).replace(/\"/g, ''),
     },
   });
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
+  const updateBudgetItemMutation: any = useMutation(fetchUpdateBudgetItem);
+  const deleteBudgetItemMutation: any = useMutation(fetchDeleteBudgetItem);
 
   const onSubmit = (data: any) => {
-    data.amount = parseInt(data.amount);
-    console.log(data);
+    data.expenditure = parseInt(data.expenditure);
+    data.categoryId = parseInt(data.categoryId);
+    data.id = id;
+    data.wedding_event_id = eventId;
+    console.log('submit form data:', data);
+    updateBudgetItemMutation.mutate(data);
   };
 
   const deleteBudgetItem = () => {
-    const itemId = JSON.stringify(route.params.id);
-    console.log(itemId);
-    console.log('hello');
-    navigation.goBack();
+    deleteBudgetItemMutation.mutate(id);
   };
 
   return (
     <CreateAndEditTopBar pageName="編輯支出">
       <View>
-        <Select
-          selectedValue={category}
+        {/* <Select
+          defaultValue={String(categoryId)}
+          selectedValue={String(categoryId)}
           placeholder="請選擇種類"
           minWidth="200"
           marginTop={5}
@@ -53,25 +69,64 @@ export function EditBudgetItem({ route, navigation }: any) {
           placeholderTextColor="gray.700"
           _selectedItem={{
             bg: 'teal.600',
+            endIcon: <CheckIcon size="5" />,
           }}
           mt={1}
           onValueChange={(itemValue) => {
-            setCategory(itemValue);
+            console.log(itemValue);
+            setCategoryId(parseInt(itemValue));
           }}
         >
-          <Select.Item label="攝影" value="攝影" />
-          <Select.Item label="婚前中式禮儀" value="婚前中式禮儀" />
-          <Select.Item label="派帖" value="派帖" />
-          <Select.Item label="美容" value="美容" />
-          <Select.Item label="早上敬茶、出門入門" value="早上敬茶、出門入門" />
-          <Select.Item label="証婚" value="証婚" />
-          <Select.Item label="晚上婚宴" value="晚上婚宴" />
-          <Select.Item label="婚禮服飾" value="婚禮服飾" />
-          <Select.Item label="婚禮當日化妝" value="婚禮當日化妝" />
-          <Select.Item label="交通" value="交通" />
-          <Select.Item label="回門" value="回門" />
-          <Select.Item label="其他" value="其他" />
-        </Select>
+          <Select.Item label="攝影" value="1" />
+          <Select.Item label="婚前中式禮儀" value="2" />
+          <Select.Item label="派帖" value="3" />
+          <Select.Item label="美容" value="4" />
+          <Select.Item label="早上敬茶、出門入門" value="5" />
+          <Select.Item label="証婚" value="6" />
+          <Select.Item label="晚上婚宴" value="7" />
+          <Select.Item label="婚禮服飾" value="8" />
+          <Select.Item label="婚禮當日化妝" value="9" />
+          <Select.Item label="交通" value="10" />
+          <Select.Item label="回門" value="11" />
+          <Select.Item label="其他" value="12" />
+        </Select> */}
+
+        <Controller
+          name="categoryId"
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { value, onChange } }) => (
+            <>
+              <Select
+                defaultValue={String(categoryId)}
+                minWidth="200"
+                accessibilityLabel="請選擇種類"
+                placeholder="請選擇種類"
+                _selectedItem={{
+                  bg: 'teal.600',
+                  endIcon: <CheckIcon size="5" />,
+                }}
+                fontSize="md"
+                onValueChange={onChange}
+              >
+                <Select.Item label="攝影" value="1" />
+                <Select.Item label="婚前中式禮儀" value="2" />
+                <Select.Item label="派帖" value="3" />
+                <Select.Item label="美容" value="4" />
+                <Select.Item label="早上敬茶、出門入門" value="5" />
+                <Select.Item label="証婚" value="6" />
+                <Select.Item label="晚上婚宴" value="7" />
+                <Select.Item label="婚禮服飾" value="8" />
+                <Select.Item label="婚禮當日化妝" value="9" />
+                <Select.Item label="交通" value="10" />
+                <Select.Item label="回門" value="11" />
+                <Select.Item label="其他" value="12" />
+              </Select>
+            </>
+          )}
+        />
 
         <Controller
           control={control}
@@ -91,6 +146,7 @@ export function EditBudgetItem({ route, navigation }: any) {
           )}
           name="description"
         />
+        {errors.description && <Text color="danger.500">請填寫事項。</Text>}
 
         <Controller
           control={control}
@@ -109,9 +165,9 @@ export function EditBudgetItem({ route, navigation }: any) {
               keyboardType="numeric"
             />
           )}
-          name="amount"
+          name="expenditure"
         />
-        {errors.amount && <Text>This is required.</Text>}
+        {errors.expenditure && <Text color="danger.500">請填寫金額。</Text>}
 
         <View style={editBudgetStyles.buttonRow}>
           <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
@@ -152,6 +208,30 @@ export function EditBudgetItem({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
+        </View>
+
+        <View>
+          {updateBudgetItemMutation.isError ? (
+            <Text color="danger.500">
+              {updateBudgetItemMutation.error.message}
+            </Text>
+          ) : null}
+
+          {updateBudgetItemMutation.isSuccess
+            ? navigation.navigate('TabScreen', { screen: 'BudgetScreen' })
+            : null}
+        </View>
+
+        <View>
+          {deleteBudgetItemMutation.isError ? (
+            <Text color="danger.500">
+              {deleteBudgetItemMutation.error.message}
+            </Text>
+          ) : null}
+
+          {deleteBudgetItemMutation.isSuccess
+            ? navigation.navigate('TabScreen', { screen: 'BudgetScreen' })
+            : null}
         </View>
       </View>
     </CreateAndEditTopBar>

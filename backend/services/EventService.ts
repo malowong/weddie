@@ -50,6 +50,7 @@ export class EventService {
           wedding_event_id: eventId,
           to_do_date: getDate(wedding_date, item.days_prior_wedding),
           to_do_item: item.to_do_temp,
+          to_do_remarks: "",
         });
       }
 

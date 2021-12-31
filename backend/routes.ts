@@ -6,6 +6,7 @@ import { logisticsRoutes } from "./routers/logisticsRoutes";
 import { todoRoutes } from "./routers/todoRoutes";
 import { itinRoutes } from "./routers/itinRoutes";
 import { userRoutes } from "./routers/userRoutes";
+import { isLoggedIn } from "./utils/guards";
 
 export const routes = express.Router();
 
@@ -15,5 +16,5 @@ routes.use("/logistics", logisticsRoutes);
 routes.use("/guest", guestRoutes);
 routes.use("/budget", budgetRoutes);
 routes.use("/todo", todoRoutes);
-routes.use("/itin", itinRoutes);
+routes.use("/itin", isLoggedIn, itinRoutes);
 routes.use("/event", eventRoutes);

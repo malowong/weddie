@@ -3,14 +3,9 @@ import {
   Center,
   Box,
   Button,
-  FormControl,
   Heading,
-  HStack,
   Input,
-  Link,
-  Stack,
   Text,
-  WarningOutlineIcon,
   Icon,
   View,
   Radio,
@@ -25,7 +20,7 @@ import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { fetchRegister } from '../../api/auth';
 import { ISignupUser } from '../../redux/auth/state';
-import { loginThunk, restoreLoginThunk } from '../../redux/auth/thunk';
+import { restoreLoginThunk } from '../../redux/auth/thunk';
 import { useNavigation } from '@react-navigation/native';
 
 export default function SignupScreen() {

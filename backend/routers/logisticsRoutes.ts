@@ -10,6 +10,6 @@ const logisticsController = new LogisticsController(logisticsService);
 export const logisticsRoutes = express.Router();
 
 logisticsRoutes.get("/list/:id", asyncWrapper(logisticsController.getLogisticsList));
-// logisticsRoutes.post("/item", asyncWrapper(logisticsController.addLogisticsItem));
-// logisticsRoutes.put("/item", asyncWrapper(logisticsController.updateLogisticsItem));
-// logisticsRoutes.delete("/item/:id", asyncWrapper(logisticsController.deleteLogisticsItem));
+logisticsRoutes.post("/item", asyncWrapper(logisticsController.addLogisticsItem));
+logisticsRoutes.put("/item", asyncWrapper(logisticsController.updateLogisticsItem));
+logisticsRoutes.delete("/item/:id", asyncWrapper(logisticsController.deleteLogisticsItem));

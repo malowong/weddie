@@ -35,6 +35,13 @@ export class BudgetService {
     return;
   };
 
+  // event_store_old.eventType = EventType.Delete;
+  // event_store_old.data = old_data;
+  // event_store_old.amendDate = amendDate.getTime();
+  // console.log(weddingCreatedAtDate);
+  // console.log(weddingDate);
+  // event_store_old.weddingCreatedAtDate = weddingCreatedAtDate;
+  // event_store_old.weddingDate = weddingDate;
   deleteBudgetItem = async (itemId: number) => {
     await this.knex(tables.WEDDING_BUDGET_LIST).where("id", itemId).del();
     return;
@@ -68,6 +75,11 @@ export class BudgetService {
   //   event_store_old.weddingCreatedAtDate = weddingCreatedAtDate;
   //   event_store_old.weddingDate = weddingDate;
 
+  // event_store_new.eventType = EventType.Add;
+  // event_store_new.data = new_data;
+  // event_store_new.amendDate = amendDate.getTime();
+  // event_store_new.weddingCreatedAtDate = weddingCreatedAtDate;
+  // event_store_new.weddingDate = weddingDate;
   //   await this.knex(tables.WEDDING_BUDGET_LIST)
   //     .where("id", budgetListId)
   //     .update({ description, expenditure, payment_date: paymentDate });

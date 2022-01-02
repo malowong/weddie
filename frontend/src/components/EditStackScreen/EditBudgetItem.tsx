@@ -217,9 +217,7 @@ export function EditBudgetItem({ route, navigation }: any) {
             </Text>
           ) : null}
 
-          {updateBudgetItemMutation.isSuccess
-            ? navigation.navigate('TabScreen', { screen: 'BudgetScreen' })
-            : null}
+          {updateBudgetItemMutation.isSuccess ? navigation.goBack() : null}
         </View>
 
         <View>
@@ -229,9 +227,7 @@ export function EditBudgetItem({ route, navigation }: any) {
             </Text>
           ) : null}
 
-          {deleteBudgetItemMutation.isSuccess
-            ? navigation.navigate('TabScreen', { screen: 'BudgetScreen' })
-            : null}
+          {deleteBudgetItemMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

@@ -12,10 +12,10 @@ export function EditGuest({ route, navigation }: any) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [showModal, setShowModal] = useState(false);
 
-  const [name] = useState(route.params.name)
-  const [phone] = useState(route.params.phone)
-  const [relationship] = useState(route.params.relationship)
-  const [id] = useState(route.params.id)
+  const [name] = useState(route.params.name);
+  const [phone] = useState(route.params.phone);
+  const [relationship] = useState(route.params.relationship);
+  const [id] = useState(route.params.id);
 
   const {
     control,
@@ -40,13 +40,13 @@ export function EditGuest({ route, navigation }: any) {
     //   relationship: data.relationship,
     //   id: data.id,
     // })
-    console.log(data)
-    data['guestId'] = route.params.id;
+    console.log(data);
+    data['guestId'] = id;
     updateGuestMutation.mutate(data);
   };
 
   const removeGuest = () => {
-    removeGuestMutation.mutate(route.params.id);
+    removeGuestMutation.mutate(id);
   };
 
   return (
@@ -170,9 +170,7 @@ export function EditGuest({ route, navigation }: any) {
             </Text>
           ) : null}
 
-          {updateGuestMutation.isSuccess
-            ? navigation.goBack()
-            : null}
+          {updateGuestMutation.isSuccess ? navigation.goBack() : null}
         </View>
 
         <View>
@@ -181,9 +179,7 @@ export function EditGuest({ route, navigation }: any) {
               錯誤：{removeGuestMutation.error.message}
             </Text>
           ) : null}
-          {removeGuestMutation.isSuccess
-            ? navigation.goBack()
-            : null}
+          {removeGuestMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

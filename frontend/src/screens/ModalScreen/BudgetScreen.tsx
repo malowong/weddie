@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  useWindowDimensions,
+} from 'react-native';
 import TopBar from '../../components/TopBar';
 import { View, Text, HStack, Box, Heading, VStack } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +13,7 @@ import { ErrorMsg } from '../../components/ErrorMsg';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { IRootState } from '../../redux/store';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
+import { ProgressChart } from 'react-native-chart-kit';
 
 interface Expenditure {
   id: number;
@@ -34,6 +39,7 @@ const budgetCategoryMap = new Map([
 ]);
 
 export default function BudgetScreen({ navigation }: { navigation: any }) {
+  const { height, width } = useWindowDimensions();
   const budget: number = parseInt(
     useSelector((state: IRootState) => state.event.event!.budget)
   );
@@ -62,18 +68,59 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
     0
   );
 
+  const chartData = {
+    labels: ['支出'],
+    data: [totalExpenditure / budget],
+  };
+
   return (
     <TopBar pageName="婚禮預算" show="true" navigate="AddBudgetItem">
+      {totalExpenditure <= budget && (
+        <ProgressChart
+          data={chartData}
+          width={width * 0.9}
+          height={height * 0.2}
+          strokeWidth={20}
+          radius={60}
+          chartConfig={{
+            backgroundColor: '##ec489a',
+            backgroundGradientFrom: '##ec489a',
+            backgroundGradientTo: '#ec489b',
+            decimalPlaces: 2, // optional, defaults to 2dp
+            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            style: {
+              borderRadius: 16,
+            },
+            propsForDots: {
+              r: '6',
+              strokeWidth: '2',
+              stroke: '#ffa726',
+            },
+          }}
+          hideLegend={false}
+        />
+      )}
+
       <View mb={5} mt={3}>
-        <Text fontSize={22} marginLeft={15}>
-          總預算: {budget}
-        </Text>
-        <Text fontSize={22} marginLeft={15}>
-          總支出: {totalExpenditure}
-        </Text>
-        <Text fontSize={22} marginLeft={15}>
-          剩餘預算: {budget - totalExpenditure}
-        </Text>
+        <View display="flex" flexDirection="row" justifyContent="space-evenly">
+          <Text fontSize={22} marginLeft={15}>
+            總預算
+          </Text>
+          <Text fontSize={22}>{budget}</Text>
+        </View>
+        <View display="flex" flexDirection="row" justifyContent="space-evenly">
+          <Text fontSize={22} marginLeft={15}>
+            總支出
+          </Text>
+          <Text fontSize={22}>{totalExpenditure}</Text>
+        </View>
+        <View display="flex" flexDirection="row" justifyContent="space-evenly">
+          <Text fontSize={22} marginLeft={15}>
+            剩餘預算
+          </Text>
+          <Text fontSize={22}>{budget - totalExpenditure}</Text>
+        </View>
       </View>
       <View borderBottomColor="black" borderBottomWidth={1} />
       <View marginTop={5}>

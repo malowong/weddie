@@ -78,3 +78,33 @@ export const fetchDeleteLogisticsItem = async (itemId: number) => {
     throw e;
   }
 };
+
+export const fetchChangeIsReadyStatus = async (data: {
+  itemId: number;
+  isReady: boolean;
+}) => {
+  try {
+    const { itemId, isReady } = data;
+    const isReadyObj = { isReady };
+
+    const resp = await fetch(
+      `${config.BACKEND_URL}/api/logistics/item/is-ready/${itemId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(isReadyObj),
+      }
+    );
+
+    const result = await resp.json();
+
+    if (resp.status !== 200) {
+      console.log('failed');
+      throw new Error(result.message);
+    }
+  } catch (e) {
+    throw e;
+  }
+};

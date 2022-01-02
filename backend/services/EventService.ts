@@ -29,16 +29,13 @@ export class EventService {
     const trx = await this.knex.transaction();
 
     try {
-
-      for (let item of budget_template){
-        await trx(tables.WEDDING_BUDGET_LIST).insert(
-          {
-            wedding_event_id: eventId,
-            budget_cat_id: item.budget_cat_id_temp,
-            description: item.budget_description_temp,
-            expenditure: 0,
-          }
-        )
+      for (let item of budget_template) {
+        await trx(tables.WEDDING_BUDGET_LIST).insert({
+          wedding_event_id: eventId,
+          budget_cat_id: item.budget_cat_id_temp,
+          description: item.budget_description_temp,
+          expenditure: 0,
+        });
       }
 
       for (let item of logistics_list_template) {
@@ -48,15 +45,13 @@ export class EventService {
         });
       }
 
-      for (let item of to_do_list_template){
-        await trx(tables.WEDDING_TO_DO_LIST).insert(
-          {
-            wedding_event_id: eventId,
-            to_do_date: getDate(wedding_date, item.days_prior_wedding),
-            to_do_item: item.to_do_temp,
-            to_do_remarks: '',
-          }
-        )
+      for (let item of to_do_list_template) {
+        await trx(tables.WEDDING_TO_DO_LIST).insert({
+          wedding_event_id: eventId,
+          to_do_date: getDate(wedding_date, item.days_prior_wedding),
+          to_do_item: item.to_do_temp,
+          to_do_remarks: "",
+        });
       }
 
       let id_temp;

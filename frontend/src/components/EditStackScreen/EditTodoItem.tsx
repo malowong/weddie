@@ -190,9 +190,7 @@ export function EditTodoItem({ route, navigation }: any) {
             </Text>
           ) : null}
 
-          {updateTodoItemMutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'CheckListScreen' })
-            : null}
+          {updateTodoItemMutation.isSuccess ? navigation.goBack() : null}
         </View>
 
         <View>
@@ -202,9 +200,7 @@ export function EditTodoItem({ route, navigation }: any) {
             </Text>
           ) : null}
 
-          {deleteTodoItemMutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'CheckListScreen' })
-            : null}
+          {deleteTodoItemMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

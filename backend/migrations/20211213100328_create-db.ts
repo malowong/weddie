@@ -175,8 +175,8 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable(tables.BUDGET_TEMPLATE, (table) => {
     table.increments();
-    table.string("budget_cat_id");
-    table.string("description");
+    table.string("budget_cat_id_temp");
+    table.string("budget_description_temp");
   });
 }
 

@@ -13,8 +13,12 @@ export function TodoItem(props: ITodoItemProp) {
   console.log('after toString: ', dueDate);
   return (
     <View style={todoStyles.tableRow}>
-      <Text fontSize={17}>{props.itemName}</Text>
-      <Text fontSize={17}>{dueDate.slice(4, 15)}</Text>
+      <View style={todoStyles.itemName}>
+        <Text fontSize={17}>{props.itemName}</Text>
+      </View>
+      <View style={todoStyles.date}>
+        <Text fontSize={17}>{dueDate.slice(4, 15)}</Text>
+      </View>
     </View>
   );
 }
@@ -31,5 +35,11 @@ const todoStyles = StyleSheet.create({
     borderRadius: 15,
     paddingVertical: 10,
     paddingHorizontal: 15,
+  },
+  itemName: {
+    width: '67%',
+  },
+  date: {
+    width: '33%',
   },
 });

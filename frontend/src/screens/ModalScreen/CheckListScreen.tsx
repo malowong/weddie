@@ -20,8 +20,8 @@ interface TodoItem {
 }
 
 export default function CheckListScreen({ navigation }: { navigation: any }) {
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [todoList, setTodoList] = useState([]);
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const { isLoading, error, data } = useQuery('userData', () =>
     fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
       .then((res) => res.json())

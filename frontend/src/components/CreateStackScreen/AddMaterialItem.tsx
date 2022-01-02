@@ -79,9 +79,7 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
             <Text color="danger.500">錯誤：{mutation.error.message}</Text>
           ) : null}
 
-          {mutation.isSuccess
-            ? navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
-            : null}
+          {mutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

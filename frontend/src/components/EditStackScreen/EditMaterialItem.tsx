@@ -140,9 +140,7 @@ export function EditMaterialItem({ route, navigation }: any) {
             </Text>
           ) : null}
 
-          {updateItemMutation.isSuccess
-            ? navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
-            : null}
+          {updateItemMutation.isSuccess ? navigation.goBack() : null}
         </View>
 
         <View>
@@ -152,9 +150,7 @@ export function EditMaterialItem({ route, navigation }: any) {
             </Text>
           ) : null}
 
-          {deleteItemMutation.isSuccess
-            ? navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
-            : null}
+          {deleteItemMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

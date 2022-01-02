@@ -158,9 +158,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
             </Text>
           ) : null}
 
-          {mutation.isSuccess
-            ? navigation.navigate('TabScreen', { screen: 'BudgetScreen' })
-            : null}
+          {mutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

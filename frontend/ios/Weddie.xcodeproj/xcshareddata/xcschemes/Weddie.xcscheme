@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "AwesomeTSProject2.app"
-               BlueprintName = "AwesomeTSProject2"
-               ReferencedContainer = "container:AwesomeTSProject2.xcodeproj">
+               BuildableName = "Weddie.app"
+               BlueprintName = "Weddie"
+               ReferencedContainer = "container:Weddie.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "AwesomeTSProject2Tests.xctest"
-               BlueprintName = "AwesomeTSProject2Tests"
-               ReferencedContainer = "container:AwesomeTSProject2.xcodeproj">
+               BuildableName = "WeddieTests.xctest"
+               BlueprintName = "WeddieTests"
+               ReferencedContainer = "container:Weddie.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "AwesomeTSProject2.app"
-            BlueprintName = "AwesomeTSProject2"
-            ReferencedContainer = "container:AwesomeTSProject2.xcodeproj">
+            BuildableName = "Weddie.app"
+            BlueprintName = "Weddie"
+            ReferencedContainer = "container:Weddie.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "AwesomeTSProject2.app"
-            BlueprintName = "AwesomeTSProject2"
-            ReferencedContainer = "container:AwesomeTSProject2.xcodeproj">
+            BuildableName = "Weddie.app"
+            BlueprintName = "Weddie"
+            ReferencedContainer = "container:Weddie.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

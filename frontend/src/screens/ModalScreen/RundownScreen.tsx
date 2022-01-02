@@ -16,11 +16,24 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
 
   const token = useSelector((state: IRootState) => state.auth.token);
 
-  // useRefreshOnFocus(() =>
-  //   fetch(`${config.BACKEND_URL}/api/itin/${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setItinList(data.itinList))
-  // );
+  useRefreshOnFocus(async () => {
+    const resp = await fetch(`${config.BACKEND_URL}/api/itin/list/${eventId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    const data = await resp.json();
+    console.log('data: ', data);
+
+    data.sort((a: any, b: any) => {
+      const keyA = getTime(a.itinerary_time)
+      const keyB = getTime(b.itinerary_time)
+      if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+      return 0;
+    })
+    setItinList(data);
+  })
 
   const [itinList, setItinList] = useState([]);
   const { isLoading, error, data } = useQuery('userData', async () => {
@@ -31,12 +44,30 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
     });
     const data = await resp.json();
     console.log('data: ', data);
+
+    data.sort((a: any, b: any) => {
+      const keyA = getTime(a.itinerary_time)
+      const keyB = getTime(b.itinerary_time)
+      if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+      return 0;
+    })
+
+    console.log('data sorted: ', data);
+
     setItinList(data);
   });
 
 
-  function getTime(time: string) {
+  function getTimeString(time: string) {
     return time.substring(0, 5);
+  }
+
+  function getTime(itinerary_time: string) {
+    const time = new Date();
+    time.setHours(parseInt(itinerary_time.substring(0, 2)));
+    time.setMinutes(parseInt(itinerary_time.substring(3, 5)));
+    return time;
   }
 
   if (isLoading) return <LoadingMsg />;
@@ -54,9 +85,10 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
                 screen: 'EditRundown',
                 params: {
                   id: item.id,
-                  name: item.name,
-                  phone: item.phone,
-                  relationship: item.relationship,
+                  itinerary_time: item.itinerary_time,
+                  itinerary: item.itinerary,
+                  job_duty: item.job_duty,
+                  role_id_arr: item.role_id_arr,
                 },
               })
             }
@@ -69,7 +101,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
                 borderColor="muted.300"
               >
                 <Box mr="3" width="20%">
-                  <Heading size="lg">{getTime(item.itinerary_time)}</Heading>
+                  <Heading size="lg">{getTimeString(item.itinerary_time)}</Heading>
                 </Box>
                 <Box width="75%">
                   <Heading size="md">{item.itinerary}</Heading>

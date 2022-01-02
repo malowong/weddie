@@ -18,9 +18,7 @@ export function EditTodoItem({ route, navigation }: any) {
   const [itemName] = useState(
     JSON.stringify(route.params.itemName).replace(/\"/g, '')
   );
-  const [remarks] = useState(
-    JSON.stringify(route.params.remarks).replace(/\"/g, '')
-  );
+  const [remarks] = useState(JSON.stringify(route.params.remarks).replace(/\"/g, ''));
 
   const {
     control,

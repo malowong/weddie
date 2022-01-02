@@ -46,6 +46,13 @@ export interface EventStore {
   weddingDate: number;
 }
 
+export interface ItinList {
+  wedding_event_id: number;
+  itinerary: string;
+  job_duty: string;
+  itinerary_time: string;
+}
+
 export interface GuestList {
   wedding_event_id: number;
   name: string;

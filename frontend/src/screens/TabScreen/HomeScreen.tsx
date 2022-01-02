@@ -6,6 +6,8 @@ import { useEffect, useState } from 'react';
 import Carousel from 'react-native-snap-carousel';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
+import { useQuery } from 'react-query';
+import { config } from '../../../app.json';
 
 const rundownData = [
   {
@@ -64,11 +66,22 @@ function getNumberOfDays(
   return diffInDays;
 }
 
-function getTime(time: string | number | Date) {
-  const dateTime = new Date(time);
-  const hours = dateTime.getHours().toString().padStart(2, '0');
-  const minutes = dateTime.getMinutes().toString().padStart(2, '0');
-  return `${hours}:${minutes}`;
+// function getTime(time: string | number | Date) {
+//   const dateTime = new Date(time);
+//   const hours = dateTime.getHours().toString().padStart(2, '0');
+//   const minutes = dateTime.getMinutes().toString().padStart(2, '0');
+//   return `${hours}:${minutes}`;
+// }
+
+function getTimeString(time: string) {
+  return time.substring(0, 5);
+}
+
+function getTime(itinerary_time: string) {
+  const time = new Date();
+  time.setHours(parseInt(itinerary_time.substring(0, 2)));
+  time.setMinutes(parseInt(itinerary_time.substring(3, 5)));
+  return time;
 }
 
 export default function HomeScreen() {
@@ -79,13 +92,36 @@ export default function HomeScreen() {
   const userData = useSelector((state: IRootState) => state.auth.user);
   console.log(userData);
   const eventData: any = useSelector((state: IRootState) => state.event.event);
-  const isCreated: any = useSelector(
-    (state: IRootState) => state.event.isCreated
-  );
+  const token = useSelector((state: IRootState) => state.auth.token);
+
   console.log(eventData);
   console.log(eventData.id);
 
-  // const DEFAULT_IMAGE = Image.resolveAssetSource(Template1).uri;
+  const [itinList, setItinList] = useState([]);
+  const { isLoading, error, data } = useQuery('itinData', async () => {
+    const resp = await fetch(
+      `${config.BACKEND_URL}/api/itin/me/${eventData.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await resp.json();
+    console.log('data: ', data);
+
+    data.sort((a: any, b: any) => {
+      const keyA = getTime(a.itinerary_time);
+      const keyB = getTime(b.itinerary_time);
+      if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+      return 0;
+    });
+
+    console.log('data sorted: ', data);
+
+    setItinList(data);
+  });
 
   const carouselData_couple = [
     {
@@ -99,7 +135,7 @@ export default function HomeScreen() {
     {
       title: '邀請你的朋友幫忙',
       text: '於人員名單加入你的兄弟姊妹',
-      image: require('../../images/template_2.jpeg'),
+      image: require('../../images/template_4.jpeg'),
     },
     {
       title: '記下你的所有事項',
@@ -120,7 +156,7 @@ export default function HomeScreen() {
     {
       title: '看看有什麼需要幫忙',
       text: '你可於待辦事項查看',
-      image: require('../../images/template_2.jpeg'),
+      image: require('../../images/template_3.jpeg'),
     },
     {
       title: '熟習當日流程',
@@ -136,20 +172,17 @@ export default function HomeScreen() {
         Date.now(),
         eventData.wedding_date
       )}日後開始`,
-      image:
-        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+      image: require('../../images/template_1.jpeg'),
     },
     {
       title: '聯絡查詢最新安排',
       text: '你可於人員名單查詢各人聯絡方式',
-      image:
-        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+      image: require('../../images/template_3.jpeg'),
     },
     {
       title: '預早了解當日行程',
       text: '查閱「你的時間表」了解更多',
-      image:
-        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+      image: require('../../images/template_2.jpeg'),
     },
   ];
 
@@ -277,35 +310,35 @@ export default function HomeScreen() {
           <Heading size="lg" textAlign="left" mb="3">
             你的時間表
           </Heading>
-          {rundownData.map((item, index) => (
+          {itinList.map((item: any, index) => (
             <Box
-            key={index}
-            bg="primary.600"
-            py="4"
-            px="3"
-            mb="4"
-            rounded="lg"
-            alignSelf="center"
-            width="100%"
-            maxWidth="100%"
-            shadow={3}
-          >
-            <HStack>
-              <View width="23%">
-                <Heading size="lg" color="white" textAlign="left" mr="3">
-                  {getTime(item.time)}
-                </Heading>
-              </View>
-              <VStack>
-                <Heading size="lg" color="white" textAlign="left">
-                  {item.item}
-                </Heading>
-                <Text fontSize="md" color="white" textAlign="left">
-                  {item.detail}
-                </Text>
-              </VStack>
-            </HStack>
-          </Box>
+              key={index}
+              bg="primary.600"
+              py="4"
+              px="3"
+              mb="4"
+              rounded="lg"
+              alignSelf="center"
+              width="100%"
+              maxWidth="100%"
+              shadow={3}
+            >
+              <HStack>
+                <View width="25%">
+                  <Heading size="lg" color="white" textAlign="left" mr="3">
+                    {getTimeString(item.itinerary_time)}
+                  </Heading>
+                </View>
+                <VStack width="75%">
+                  <Heading size="lg" color="white" textAlign="left">
+                    {item.itinerary}
+                  </Heading>
+                  <Text fontSize="md" color="white" textAlign="left">
+                    {item.job_duty}
+                  </Text>
+                </VStack>
+              </HStack>
+            </Box>
           ))}
         </Box>
       </Animated.ScrollView>

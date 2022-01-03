@@ -103,19 +103,19 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
       )}
 
       <View mb={5} mt={3}>
-        <View display="flex" flexDirection="row" justifyContent="space-evenly">
+        <View display="flex" flexDirection="row" justifyContent="space-between">
           <Text fontSize={22} marginLeft={15}>
             總預算
           </Text>
           <Text fontSize={22}>{budget}</Text>
         </View>
-        <View display="flex" flexDirection="row" justifyContent="space-evenly">
+        <View display="flex" flexDirection="row" justifyContent="space-between">
           <Text fontSize={22} marginLeft={15}>
             總支出
           </Text>
           <Text fontSize={22}>{totalExpenditure}</Text>
         </View>
-        <View display="flex" flexDirection="row" justifyContent="space-evenly">
+        <View display="flex" flexDirection="row" justifyContent="space-between">
           <Text fontSize={22} marginLeft={15}>
             剩餘預算
           </Text>
@@ -188,6 +188,25 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
             </TouchableOpacity>
           );
         })}
+
+        {expenditureList.length === 0 && (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('CreateStackScreen', {
+                screen: 'AddBudgetItem',
+              })
+            }
+          >
+            <Text
+              fontSize={18}
+              color="danger.600"
+              marginTop={10}
+              marginLeft={15}
+            >
+              尚未有任何支出，按此新增
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </TopBar>
   );

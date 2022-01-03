@@ -74,3 +74,8 @@ export interface TodoItem {
   to_do_remarks?: string;
   is_finished?: boolean;
 }
+
+export interface MessageList {
+  wedding_event_id: number;
+  content: string;
+}

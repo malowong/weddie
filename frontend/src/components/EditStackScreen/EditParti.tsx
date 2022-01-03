@@ -77,7 +77,7 @@ export function EditParti({ route, navigation }: any) {
         {errors.amount && <Text>This is required.</Text>}
 
         <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-          提交
+          更改
         </Button>
       </View>
 

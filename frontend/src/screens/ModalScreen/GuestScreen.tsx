@@ -86,6 +86,20 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
             </TouchableOpacity>
           );
         })}
+
+        {guestList.length === 0 && (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('CreateStackScreen', {
+                screen: 'AddGuest',
+              })
+            }
+          >
+            <Text fontSize={18} color="danger.600" marginTop={10}>
+              尚未有賓客名單，按此新增
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </TopBar>
   );

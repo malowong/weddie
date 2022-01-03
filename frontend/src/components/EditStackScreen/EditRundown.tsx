@@ -74,7 +74,7 @@ export function EditRundown({ route, navigation }: any) {
       .toString()
       .padStart(2, '0')}:${time.getMinutes().toString()}:00`;
     data['role_id_arr'] = roleArray;
-    data['wedding_event_id'] = eventId
+    data['wedding_event_id'] = eventId;
     console.log(data);
     updateRundownMutation.mutate(data);
   };
@@ -161,7 +161,7 @@ export function EditRundown({ route, navigation }: any) {
                     const newRoleArray = roleArray.slice();
                     const index = newRoleArray.indexOf(role.id);
                     if (index > -1) {
-                        newRoleArray.splice(index, 1);
+                      newRoleArray.splice(index, 1);
                     }
                     setRoleArray(newRoleArray);
                   }
@@ -216,7 +216,7 @@ export function EditRundown({ route, navigation }: any) {
 
         <View style={editGuestStyles.buttonRow}>
           <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-            提交
+            更改
           </Button>
 
           <Button

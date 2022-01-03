@@ -110,6 +110,20 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
           </TouchableOpacity>
         );
       })}
+
+      {todoList.length === 0 && (
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('CreateStackScreen', {
+              screen: 'AddTodoItem',
+            })
+          }
+        >
+          <Text fontSize={18} color="danger.600" marginTop={7}>
+            尚未有待辦事項，按此新增
+          </Text>
+        </TouchableOpacity>
+      )}
     </TopBar>
   );
 }

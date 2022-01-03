@@ -19,4 +19,6 @@ export const tables = Object.freeze({
   ITIN_TEMPLATE: "itin_template",
   BUDGET_TEMPLATE: "budget_template",
   WEDDING_GUEST_LIST: "wedding_guest_list",
+  MESSAGE_ROLE: "message_role",
+  MESSAGE_LIST: "message_list",
 });

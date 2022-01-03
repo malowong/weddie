@@ -176,7 +176,7 @@ export function EditBudgetItem({ route, navigation }: any) {
 
         <View style={editBudgetStyles.buttonRow}>
           <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-            提交
+            更改
           </Button>
           <Button
             colorScheme="danger"

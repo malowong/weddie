@@ -5,23 +5,10 @@ import { Input, Button, Text, Box, Checkbox, TextArea } from 'native-base';
 import { useDispatch, useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useMutation } from 'react-query';
-import { fetchAddGuest } from '../../api/guest';
 import { IRootState } from '../../redux/store';
-import { useNavigation } from '@react-navigation/native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { fetchAddRundown } from '../../api/rundown';
-
-const roleList = [
-  { id: 1, role: '新郎' },
-  { id: 2, role: '新娘' },
-  { id: 3, role: '兄弟' },
-  { id: 4, role: '姊妹' },
-  { id: 5, role: '攝影師' },
-  { id: 6, role: '司儀' },
-  { id: 7, role: '表演者' },
-  { id: 8, role: '大妗姐' },
-  { id: 9, role: '化妝師' },
-];
+import { roleList } from '../roleList';
 
 export function AddRundown({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
@@ -55,7 +42,9 @@ export function AddRundown({ navigation }: { navigation: any }) {
       .getHours()
       .toString()
       .padStart(2, '0')}:${time.getMinutes().toString()}:00`;
-    roleArray.length === 0 ? data['role_id_arr'] = [1,2]: data['role_id_arr'] = roleArray;
+    roleArray.length === 0
+      ? (data['role_id_arr'] = [1, 2])
+      : (data['role_id_arr'] = roleArray);
     data['wedding_event_id'] = eventId;
     console.log('submit form data:', data);
     mutation.mutate(data);

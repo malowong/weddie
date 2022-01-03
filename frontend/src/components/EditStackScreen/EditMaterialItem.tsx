@@ -94,7 +94,7 @@ export function EditMaterialItem({ route, navigation }: any) {
 
         <View style={editMaterialStyles.buttonRow}>
           <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-            提交
+            更改
           </Button>
           <Button
             colorScheme="danger"

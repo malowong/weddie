@@ -98,7 +98,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
 
           <Button
             variant="outline"
-            colorScheme="#ffff1a"
+            color="#ffff1a"
             marginTop="8"
             onPress={onPress}
           >

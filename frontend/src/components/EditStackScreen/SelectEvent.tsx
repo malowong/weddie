@@ -1,11 +1,23 @@
 import React from 'react';
-import { Text, View } from 'native-base';
+import { Button, Text, View } from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 export function SelectEvent({ navigation }: { navigation: any }) {
   return (
     <CreateAndEditTopBar pageName="選擇婚禮">
+      <Button
+        marginTop={5}
+        marginBottom={5}
+        colorScheme="pink"
+        onPress={() =>
+          navigation.navigate('AuthStackScreen', {
+            screen: 'CreateEventScreen',
+          })
+        }
+      >
+        新增婚禮
+      </Button>
       <View style={styles.boxContainer}>
         <TouchableOpacity style={styles.eventBox}>
           <Text>1</Text>

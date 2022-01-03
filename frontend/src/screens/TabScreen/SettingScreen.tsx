@@ -69,13 +69,13 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
           電話號碼 {user ? user.phone : null}
         </Text>
 
-        <Button
+        {/* <Button
           colorScheme="dark"
           marginTop="8"
           onPress={() => setShowModal(true)}
         >
           更改電話號碼
-        </Button>
+        </Button> */}
 
         <View
           display="flex"

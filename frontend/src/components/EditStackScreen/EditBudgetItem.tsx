@@ -48,12 +48,17 @@ export function EditBudgetItem({ route, navigation }: any) {
     data.categoryId = parseInt(data.categoryId);
     data.id = id;
     data.wedding_event_id = eventId;
+    data.updateTime = Date.parse(new Date().toString());
     console.log('submit form data:', data);
     updateBudgetItemMutation.mutate(data);
   };
 
   const deleteBudgetItem = () => {
-    deleteBudgetItemMutation.mutate(id);
+    const data = {
+      itemId: id,
+      deleteTime: Date.parse(new Date().toString()),
+    };
+    deleteBudgetItemMutation.mutate(data);
   };
 
   return (

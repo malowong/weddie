@@ -83,8 +83,8 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
           strokeWidth={20}
           radius={60}
           chartConfig={{
-            backgroundColor: '##ec489a',
-            backgroundGradientFrom: '##ec489a',
+            backgroundColor: '#ec489a',
+            backgroundGradientFrom: '#ec489a',
             backgroundGradientTo: '#ec489b',
             decimalPlaces: 2, // optional, defaults to 2dp
             color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,

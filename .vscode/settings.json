@@ -14,12 +14,12 @@
     {
       "previewLimit": 50,
       "server": "localhost",
-      "port": 5432,
+      "port": 6432,
       "driver": "PostgreSQL",
       "name": "localhost",
       "database": "wedding",
       "username": "postgres",
-      "password": "sp080040"
+      "password": "postgres"
     }
   ]
 }

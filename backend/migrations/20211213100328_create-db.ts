@@ -126,9 +126,9 @@ export async function up(knex: Knex): Promise<void> {
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.integer("budget_cat_id").unsigned();
     table.foreign("budget_cat_id").references(`${tables.BUDGET_CAT}.id`);
+    table.integer("budget_description_id").unsigned();
     table.string("description").notNullable();
     table.integer("expenditure").unsigned();
-    table.date("payment_date");
   });
 
   await knex.schema.createTable(tables.ITINERARY_LIST, (table) => {

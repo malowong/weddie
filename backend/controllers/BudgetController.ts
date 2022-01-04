@@ -45,18 +45,31 @@ export class BudgetController {
     res.json({ message: "successful delete budget item" });
   };
 
-  // need 7 params for this fnc
-  // updateExpenditureList = async (req: Request, res: Response) => {
-  //   const updatedExpenditureList = await this.budgetService.updateExpenditureList(
-  //     req.body.budgetListId,
-  //     req.body.description,
-  //     req.body.expenditure,
-  //     req.body.paymentDate,
-  //     req.body.amendDate,
-  //     req.body.weddingEventId,
-  //     req.body.recordCreatedAtDate
-  //   );
+  // categoryId if might not be useful
+  updateExpenditureList = async (req: Request, res: Response) => {
+    await this.budgetService.updateExpenditureList(
+      req.body.budgetListId,
+      req.body.description,
+      req.body.expenditure,
+      req.body.amendDate
+    );
+    res.status(200).json({ msg: "successfully updated" });
+  };
 
-  //   res.json(updatedExpenditureList);
-  // };
+  deleteExpenditureList = async (req: Request, res: Response) => {
+    await this.budgetService.deleteExpenditureList(req.body.budgetListId, req.body.amendDate);
+    res.status(200).json({ msg: "successfully deleted" });
+  };
+
+  addExpenditureList = async (req: Request, res: Response) => {
+    const budgetItemData = {
+      wedding_event_id: req.body.wedding_event_id,
+      description: req.body.description,
+      expenditure: req.body.expenditure,
+      budget_cat_id: req.body.budget_cat_id,
+    };
+    // console.log(req.body);
+    await this.budgetService.addExpenditureList(budgetItemData, req.body.amendDate);
+    res.status(200).json({ msg: "successfully added" });
+  };
 }

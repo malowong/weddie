@@ -9,6 +9,7 @@ import { IRootState } from '../../redux/store';
 import { CommonActions } from '@react-navigation/native';
 
 export default function SettingScreen({ navigation }: { navigation: any }) {
+  const role = useSelector((state: IRootState) => state.event.event?.role);
   const dispatch = useDispatch();
   const user = useSelector((state: IRootState) => state.auth.user)!;
   const [showModal, setShowModal] = useState(false);
@@ -23,16 +24,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     },
   });
 
-  // const { isLoading, error, data } = useQuery('userData', async () => {
-  //   const postData = (await fetch(`${config.BACKEND_URL}/api/users`)).json();
-
-  //   return postData;
-  // });
-
-  // if (isLoading) return <LoadingMsg />;
-
-  // if (error) return <ErrorMsg />;
-
   const onSubmit = (data: any) => {
     const phoneNumber = parseInt(data.phoneNumber);
 
@@ -42,13 +33,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
   const onPress = () => {
     dispatch(logoutThunk());
   };
-
-  // useEffect(() => {
-  //   let sub = watch((data) => {
-  //     console.log('update form data:', data);
-  //   });
-  //   return () => sub.unsubscribe();
-  // }, [watch]);
 
   return (
     <TopBar pageName="用戶設定" show="false" navigate="">
@@ -62,6 +46,10 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
         <Text fontSize={20}>{user ? user.nickname : null}</Text>
 
         <Text fontSize={20} marginTop="2">
+          {role ? role : null}
+        </Text>
+
+        <Text fontSize={20} marginTop="2">
           {user ? user.email : null}
         </Text>
 
@@ -69,13 +57,13 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
           電話號碼 {user ? user.phone : null}
         </Text>
 
-        <Button
+        {/* <Button
           colorScheme="dark"
           marginTop="8"
           onPress={() => setShowModal(true)}
         >
           更改電話號碼
-        </Button>
+        </Button> */}
 
         <View
           display="flex"
@@ -98,7 +86,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
 
           <Button
             variant="outline"
-            colorScheme="#ffff1a"
+            color="#ffff1a"
             marginTop="8"
             onPress={onPress}
           >

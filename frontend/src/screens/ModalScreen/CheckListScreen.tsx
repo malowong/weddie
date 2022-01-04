@@ -20,8 +20,8 @@ interface TodoItem {
 }
 
 export default function CheckListScreen({ navigation }: { navigation: any }) {
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [todoList, setTodoList] = useState([]);
+  const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const { isLoading, error, data } = useQuery('userData', () =>
     fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
       .then((res) => res.json())
@@ -110,6 +110,20 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
           </TouchableOpacity>
         );
       })}
+
+      {todoList.length === 0 && (
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('CreateStackScreen', {
+              screen: 'AddTodoItem',
+            })
+          }
+        >
+          <Text fontSize={18} color="danger.600" marginTop={7}>
+            尚未有待辦事項，按此新增
+          </Text>
+        </TouchableOpacity>
+      )}
     </TopBar>
   );
 }

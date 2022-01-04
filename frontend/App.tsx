@@ -36,6 +36,9 @@ import { EditTodoItem } from './src/components/EditStackScreen/EditTodoItem';
 import { SelectEvent } from './src/components/EditStackScreen/SelectEvent';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import CreateEventStackScreen from './src/screens/CreateEventStackScreen';
+import { EditRundown } from './src/components/EditStackScreen/EditRundown';
+import { AddRundown } from './src/components/CreateStackScreen/AddRundown';
+import { AddMessage } from './src/components/CreateStackScreen/AddMessage';
 
 // this is for create items
 
@@ -49,6 +52,8 @@ function CreateStackScreen() {
       <CreateStack.Screen name="AddParti" component={AddParti} />
       <CreateStack.Screen name="AddGuest" component={AddGuest} />
       <CreateStack.Screen name="AddTodoItem" component={AddTodoItem} />
+      <CreateStack.Screen name="AddRundown" component={AddRundown} />
+      <CreateStack.Screen name="AddMessage" component={AddMessage} />
     </CreateStack.Navigator>
   );
 }
@@ -74,6 +79,7 @@ function EditStackScreen() {
       <EditStack.Screen name="EditParti" component={EditParti} />
       <EditStack.Screen name="EditGuest" component={EditGuest} />
       <EditStack.Screen name="EditTodoItem" component={EditTodoItem} />
+      <EditStack.Screen name="EditRundown" component={EditRundown} />
       <EditStack.Screen name="SelectEvent" component={SelectEvent} />
     </EditStack.Navigator>
   );

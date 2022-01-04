@@ -1,19 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, TextArea, Modal, FormControl } from 'native-base';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch, useSelector } from 'react-redux';
+import { Input, Button, Text, TextArea, Modal, View } from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
-import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
 import {
   fetchDeleteLogisticsItem,
   fetchUpdateLogisticsItem,
 } from '../../api/logistics';
-import { useNavigation } from '@react-navigation/native';
 
 export function EditMaterialItem({ route, navigation }: any) {
+  const { height, width } = useWindowDimensions();
   const [remarks, setRemarks] = useState(route.params.remarks);
 
   let remarksInput = '';
@@ -23,7 +20,6 @@ export function EditMaterialItem({ route, navigation }: any) {
     remarksInput = JSON.stringify(remarks).replace(/\"/g, '');
   }
 
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [showModal, setShowModal] = useState(false);
   const [itemName, setItemName] = useState(route.params.itemName);
   const [id, setId] = useState(route.params.id);
@@ -53,54 +49,52 @@ export function EditMaterialItem({ route, navigation }: any) {
 
   return (
     <CreateAndEditTopBar pageName="編輯物資">
-      <View>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="物品"
-              style={editMaterialStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="itemName"
-        />
-        {errors.itemName && <Text>請填寫物品。</Text>}
+      <View display="flex" flexDirection="column">
+        <View height={height * 0.65}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="物品"
+                // style={editMaterialStyles.input}
+                onBlur={onBlur}
+                size="xl"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="itemName"
+          />
+          {errors.itemName && <Text>請填寫物品。</Text>}
 
-        <Controller
-          control={control}
-          rules={{
-            maxLength: 100,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextArea
-              marginTop={5}
-              placeholder="備註"
-              style={editMaterialStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              keyboardType="numeric"
-            />
-          )}
-          name="remarks"
-        />
+          <Controller
+            control={control}
+            rules={{
+              maxLength: 100,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextArea
+                marginTop={5}
+                placeholder="備註"
+                // style={editMaterialStyles.input}
+                onBlur={onBlur}
+                size="xl"
+                onChangeText={onChange}
+                value={value}
+                keyboardType="numeric"
+              />
+            )}
+            name="remarks"
+          />
+        </View>
 
         <View style={editMaterialStyles.buttonRow}>
-          <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-            提交
-          </Button>
-          <Button
-            colorScheme="danger"
-            marginTop={20}
-            onPress={() => setShowModal(true)}
-          >
+          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
+          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
             移除物資
           </Button>
 
@@ -140,21 +134,15 @@ export function EditMaterialItem({ route, navigation }: any) {
             </Text>
           ) : null}
 
-          {updateItemMutation.isSuccess
-            ? navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
-            : null}
-        </View>
+          {updateItemMutation.isSuccess ? navigation.goBack() : null}
 
-        <View>
           {deleteItemMutation.isError ? (
             <Text color="danger.500">
               錯誤：{deleteItemMutation.error.message}
             </Text>
           ) : null}
 
-          {deleteItemMutation.isSuccess
-            ? navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
-            : null}
+          {deleteItemMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

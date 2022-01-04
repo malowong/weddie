@@ -1,6 +1,6 @@
 {
-  "name": "AwesomeTSProject2",
-  "displayName": "AwesomeTSProject2",
+  "name": "Weddie",
+  "displayName": "Weddie",
   "config": {
     "BACKEND_URL": "http://localhost:8080"
   }

@@ -1,23 +1,7 @@
-import {
-  VStack,
-  Center,
-  Box,
-  Button,
-  FormControl,
-  Heading,
-  HStack,
-  Input,
-  Link,
-  Stack,
-  Text,
-  WarningOutlineIcon,
-} from 'native-base';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { IRootState } from '../../redux/store';
+import { VStack, Center, Box, Button, Heading, Text } from 'native-base';
+import React from 'react';
 
-export default function WelcomingScreen({navigation,}: {navigation: any;}) {
-  
+export default function WelcomingScreen({ navigation }: { navigation: any }) {
   return (
     <Center flex={1} px="3">
       <Box safeArea w="90%">

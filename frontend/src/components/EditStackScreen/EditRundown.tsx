@@ -1,21 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, Modal } from 'native-base';
+import {
+  Input,
+  Button,
+  Text,
+  Modal,
+  TextArea,
+  Checkbox,
+  Box,
+  View,
+} from 'native-base';
 import { useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
-import { fetchRemoveGuest, fetchUpdateGuest } from '../../api/guest';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { fetchRemoveRundown, fetchUpdateRundown } from '../../api/rundown';
+
+const roleList = [
+  { id: 1, role: '新郎' },
+  { id: 2, role: '新娘' },
+  { id: 3, role: '兄弟' },
+  { id: 4, role: '姊妹' },
+  { id: 5, role: '攝影師' },
+  { id: 6, role: '司儀' },
+  { id: 7, role: '表演者' },
+  { id: 8, role: '大妗姐' },
+  { id: 9, role: '化妝師' },
+];
 
 export function EditRundown({ route, navigation }: any) {
+  const { height, width } = useWindowDimensions();
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [showModal, setShowModal] = useState(false);
 
-  // const [name] = useState(route.params.name)
-  // const [phone] = useState(route.params.phone)
-  // const [relationship] = useState(route.params.relationship)
-  // const [id] = useState(route.params.id)
+  const [time, setTime] = useState(getTime(route.params.itinerary_time));
+  const [roleArray, setRoleArray] = useState<number[]>([]);
+
+  function getTime(itinerary_time: string) {
+    const time = new Date();
+    time.setHours(parseInt(itinerary_time.substring(0, 2)));
+    time.setMinutes(parseInt(itinerary_time.substring(3, 5)));
+    return time;
+  }
 
   const {
     control,
@@ -24,122 +52,183 @@ export function EditRundown({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      name: JSON.stringify(route.params.name).replace(/\"/g, ''),
-      phone: JSON.stringify(route.params.phone).replace(/\"/g, ''),
-      relationship: JSON.stringify(route.params.relationship).replace(
-        /\"/g,
-        ''
-      ),
+      id: route.params.id,
+      itinerary: JSON.stringify(route.params.itinerary).replace(/\"/g, ''),
+      role_id_arr: route.params.role_id_arr,
+      job_duty: JSON.stringify(route.params.job_duty)
+        .replace(/"/g, '')
+        .replace(/\\n/g, '\n'),
     },
   });
 
-  const updateGuestMutation: any = useMutation(fetchUpdateGuest);
-  const removeGuestMutation: any = useMutation(fetchRemoveGuest);
+  const updateRundownMutation: any = useMutation(fetchUpdateRundown);
+  const removeRundownMutation: any = useMutation(fetchRemoveRundown);
 
   const onSubmit = (data: any) => {
-    navigation.setParams({
-      name: data.name,
-      phone: data.phone,
-      relationship: data.relationship,
-      id: data.id,
-    })
-    console.log(data)
-    data['guestId'] = route.params.id;
-    updateGuestMutation.mutate(data);
+    // navigation.setParams({
+    //   name: data.name,
+    //   phone: data.phone,
+    //   relationship: data.relationship,
+    //   id: data.id,
+    // });
+    data['itinerary_time'] = `${time
+      .getHours()
+      .toString()
+      .padStart(2, '0')}:${time.getMinutes().toString()}:00`;
+    data['role_id_arr'] = roleArray;
+    data['wedding_event_id'] = eventId;
+    console.log(data);
+    updateRundownMutation.mutate(data);
   };
 
-  const removeGuest = () => {
-    removeGuestMutation.mutate(route.params.id);
+  const removeRundown = () => {
+    removeRundownMutation.mutate(route.params.id);
   };
 
   return (
-    <CreateAndEditTopBar pageName="編輯賓客資料">
-      <View>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="名字"
-              style={editGuestStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
+    <CreateAndEditTopBar pageName="編輯當日流程">
+      <View display="flex" flexDirection="column">
+        <View height={height * 0.65}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="事項"
+                style={editGuestStyles.input}
+                onBlur={onBlur}
+                size="xl"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="itinerary"
+          />
+          {errors.itinerary && (
+            <Text color="danger.500" marginTop={2} marginLeft={1}>
+              請填寫事項。
+            </Text>
           )}
-          name="name"
-        />
-        {errors.name && <Text color="danger.500">請填寫名稱。</Text>}
 
-        <Controller
-          control={control}
-          rules={{
-            maxLength: 8,
-            minLength: 8,
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="電話號碼"
-              style={editGuestStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              keyboardType="numeric"
-            />
-          )}
-          name="phone"
-        />
-        {errors.phone?.type === 'required' && (
-          <Text color="danger.500">請填寫你的電話號碼。</Text>
-        )}
-        {errors.phone?.type === 'maxLength' && (
-          <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-        )}
-        {errors.phone?.type === 'minLength' && (
-          <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-        )}
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextArea
+                h={150}
+                marginTop={5}
+                placeholder="詳情"
+                style={editGuestStyles.input}
+                onBlur={onBlur}
+                size="xl"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="job_duty"
+          />
 
-        <Controller
+          {/* <Controller
           control={control}
           rules={{
             maxLength: 100,
             required: true,
           }}
           render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="關係"
-              style={editGuestStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
+            <>
+            </>
           )}
-          name="relationship"
+          name="role_id_arr"
         />
-        {errors.relationship && <Text color="danger.500">請填寫關係。</Text>}
+        {errors.role_id_arr && <Text color="danger.500">請選擇負責人士。</Text>} */}
+
+          <Text marginTop={5} fontSize={18} mb="2">
+            負責人士
+          </Text>
+          <Box flexDirection="row" flexWrap="wrap">
+            {roleList.map(
+              (role, idx) => (
+                <Checkbox
+                  key={idx}
+                  value={role.id.toString()}
+                  accessibilityLabel="This is a checkbox"
+                  width="100"
+                  mb="2"
+                  onChange={(event) => {
+                    if (event) {
+                      const newRoleArray = roleArray.slice();
+                      newRoleArray.push(role.id);
+                      setRoleArray(newRoleArray);
+                    } else {
+                      const newRoleArray = roleArray.slice();
+                      const index = newRoleArray.indexOf(role.id);
+                      if (index > -1) {
+                        newRoleArray.splice(index, 1);
+                      }
+                      setRoleArray(newRoleArray);
+                    }
+                    console.log(roleArray);
+                  }}
+                >
+                  {role.role}
+                </Checkbox>
+              )
+              // double mappping, but not work as i don't know how to show the others
+              //     route.params.role_id_arr.map((role_id: any) =>
+              //       role.id === role_id ? (
+              //         <Checkbox
+              //           key={idx}
+              //           value={role.id.toString()}
+              //           accessibilityLabel="This is a checkbox"
+              //           width="100"
+              //           mb="2"
+              //           isChecked
+              //           onChange={() => {
+              //             console.log(route.params.role_id_arr);
+              //           }}
+              //         >
+              //           {role.role}
+              //         </Checkbox>
+              //       ) : (null)
+              //   )
+            )}
+          </Box>
+          {roleArray.length == 0 && (
+            <Text color="danger.500">請選擇負責人士。</Text>
+          )}
+
+          <Text marginLeft={1} marginTop={5} fontSize={18}>
+            時間
+          </Text>
+          <View style={editGuestStyles.dateTimePicker}>
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={time}
+              mode="time"
+              style={{ width: 100, marginLeft: -10 }}
+              is24Hour={true}
+              display="default"
+              onChange={(event: any, selectedDate?: Date) => {
+                const currentDate = selectedDate || time;
+                setTime(currentDate);
+                console.log(currentDate);
+              }}
+            />
+          </View>
+        </View>
 
         <View style={editGuestStyles.buttonRow}>
-          <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-            提交
-          </Button>
+          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
 
-          <Button
-            colorScheme="danger"
-            marginTop={20}
-            onPress={() => setShowModal(true)}
-          >
-            移除賓客資料
+          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
+            移除流程事項
           </Button>
 
           <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
             <Modal.Content maxWidth="400px">
-              <Modal.Header>確定移除賓客資料？</Modal.Header>
+              <Modal.Header>確定移除流程事項？</Modal.Header>
               <Modal.Footer>
                 <Button.Group space={2}>
                   <Button
@@ -154,7 +243,7 @@ export function EditRundown({ route, navigation }: any) {
                   <Button
                     colorScheme="danger"
                     onPress={() => {
-                      removeGuest();
+                      removeRundown();
                       setShowModal(false);
                     }}
                   >
@@ -167,26 +256,22 @@ export function EditRundown({ route, navigation }: any) {
         </View>
 
         <View>
-          {updateGuestMutation.isError ? (
+          {updateRundownMutation.isError ? (
             <Text color="danger.500">
-              錯誤：{updateGuestMutation.error.message}
+              錯誤：{updateRundownMutation.error.message}
             </Text>
           ) : null}
 
-          {updateGuestMutation.isSuccess
-            ? navigation.goBack()
-            : null}
+          {updateRundownMutation.isSuccess ? navigation.goBack() : null}
         </View>
 
         <View>
-          {removeGuestMutation.isError ? (
+          {removeRundownMutation.isError ? (
             <Text color="danger.500">
-              錯誤：{removeGuestMutation.error.message}
+              錯誤：{removeRundownMutation.error.message}
             </Text>
           ) : null}
-          {removeGuestMutation.isSuccess
-            ? navigation.goBack()
-            : null}
+          {removeRundownMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>
@@ -201,5 +286,8 @@ const editGuestStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-evenly',
+  },
+  dateTimePicker: {
+    marginTop: 3,
   },
 });

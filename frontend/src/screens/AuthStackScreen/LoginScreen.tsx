@@ -4,20 +4,17 @@ import {
   Center,
   Box,
   Heading,
-  HStack,
   Input,
-  Link,
   VStack,
   Icon,
   View,
 } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TextInput, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { loginThunk } from '../../redux/auth/thunk';
-import { IRootState } from '../../redux/store';
 
 type LoginFormState = {
   email: string;
@@ -48,7 +45,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 
   function onSubmit(data: LoginFormState) {
     console.log('submit form data:', data);
-  dispatch(loginThunk(data.email, data.password));
+    dispatch(loginThunk(data.email, data.password));
   }
 
   return (

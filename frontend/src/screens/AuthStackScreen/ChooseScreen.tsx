@@ -1,24 +1,11 @@
-import {
-  Button,
-  Text,
-  Center,
-  Box,
-  Heading,
-  VStack,
-  Icon,
-  View,
-} from 'native-base';
+import { Button, Text, Center, Box, Heading, VStack, View } from 'native-base';
 import React from 'react';
-import { TouchableOpacity } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useDispatch } from 'react-redux';
 
 export default function ChooseScreen({ navigation }: { navigation: any }) {
   return (
     <>
       <Box safeAreaTop backgroundColor="#f2f2f2" />
-      <Box safeAreaX={3} safeAreaY={1}>
-      </Box>
+      <Box safeAreaX={3} safeAreaY={1}></Box>
       <Center flex={0.9} px="3">
         <Box safeArea w="90%">
           <Heading

@@ -62,14 +62,21 @@ export const fetchUpdateBudgetItem = async (expenditureItemData: any) => {
   }
 };
 
-export const fetchDeleteBudgetItem = async (itemId: number) => {
+export const fetchDeleteBudgetItem = async (data: {
+  itemId: number;
+  deleteTime: number;
+}) => {
   try {
-    console.log('item id: ', itemId);
+    const { itemId, deleteTime } = data;
 
     const resp = await fetch(
       `${config.BACKEND_URL}/api/budget/item/${itemId}`,
       {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ deleteTime }),
       }
     );
 

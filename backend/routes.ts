@@ -7,6 +7,7 @@ import { todoRoutes } from "./routers/todoRoutes";
 import { itinRoutes } from "./routers/itinRoutes";
 import { userRoutes } from "./routers/userRoutes";
 import { isLoggedIn } from "./utils/guards";
+import { messageRoutes } from "./routers/messageRoutes";
 
 export const routes = express.Router();
 
@@ -18,3 +19,4 @@ routes.use("/budget", budgetRoutes);
 routes.use("/todo", todoRoutes);
 routes.use("/itin", isLoggedIn, itinRoutes);
 routes.use("/event", eventRoutes);
+routes.use("/message", messageRoutes);

@@ -10,7 +10,7 @@ export class TodoService {
       .select("*")
       .from(tables.WEDDING_TO_DO_LIST)
       .where("wedding_event_id", eventId)
-      .orderBy("id");
+      .orderBy("to_do_date");
 
     return todoList;
   };

@@ -45,6 +45,7 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
                 placeholder="物品"
                 // style={addMaterialStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
               />
@@ -63,6 +64,7 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
                 placeholder="備註"
                 // style={addMaterialStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
               />

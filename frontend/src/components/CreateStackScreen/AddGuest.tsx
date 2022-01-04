@@ -49,6 +49,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
                 placeholder="名稱"
                 // style={addMaterialStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
               />
@@ -70,6 +71,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
                 placeholder="電話號碼"
                 // style={addMaterialStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
                 keyboardType="numeric"
@@ -99,6 +101,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
                 placeholder="關係"
                 // style={addMaterialStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
               />

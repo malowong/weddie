@@ -62,6 +62,7 @@ export function EditMaterialItem({ route, navigation }: any) {
                 placeholder="物品"
                 // style={editMaterialStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
               />
@@ -81,6 +82,7 @@ export function EditMaterialItem({ route, navigation }: any) {
                 placeholder="備註"
                 // style={editMaterialStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
                 keyboardType="numeric"

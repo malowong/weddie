@@ -65,6 +65,7 @@ export function EditGuest({ route, navigation }: any) {
                 placeholder="名字"
                 // style={editGuestStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
               />
@@ -86,6 +87,7 @@ export function EditGuest({ route, navigation }: any) {
                 placeholder="電話號碼"
                 // style={editGuestStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
                 keyboardType="numeric"
@@ -115,6 +117,7 @@ export function EditGuest({ route, navigation }: any) {
                 placeholder="關係"
                 // style={editGuestStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
               />

@@ -125,6 +125,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
               <TextArea
                 marginTop={5}
                 placeholder="事項"
+                size="xl"
                 // style={addBudgetStyles.input}
                 onBlur={onBlur}
                 onChangeText={onChange}
@@ -142,6 +143,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
+                size="xl"
                 marginTop={5}
                 placeholder="金額"
                 // style={addBudgetStyles.input}

@@ -21,6 +21,8 @@ const tables = Object.freeze({
   ITIN_TEMPLATE: "itin_template",
   BUDGET_TEMPLATE: "budget_template",
   WEDDING_GUEST_LIST: "wedding_guest_list",
+  MESSAGE_ROLE: "message_role",
+  MESSAGE_LIST: "message_list",
 });
 
 export async function up(knex: Knex): Promise<void> {
@@ -115,7 +117,7 @@ export async function up(knex: Knex): Promise<void> {
     table.increments();
     table.integer("wedding_event_id").unsigned();
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
-    table.string("logistics_item").notNullable().unique();
+    table.string("logistics_item").notNullable();
     table.string("logistics_remarks");
     table.boolean("is_ready").defaultTo(false);
   });
@@ -152,6 +154,23 @@ export async function up(knex: Knex): Promise<void> {
     table.increments();
     table.integer("wedding_event_user_id").notNullable().unsigned();
     table.foreign("wedding_event_user_id").references(`${tables.WEDDING_USER}.id`);
+  });
+
+  await knex.schema.createTable(tables.MESSAGE_LIST, (table) => {
+    table.increments();
+    table.integer("wedding_event_id").unsigned();
+    table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
+    table.string("content").notNullable();
+    table.timestamp("created_at", { useTz: false }).defaultTo(knex.fn.now());
+    table.timestamp("updated_at", { useTz: false }).defaultTo(knex.fn.now());
+  });
+
+  await knex.schema.createTable(tables.MESSAGE_ROLE, (table) => {
+    table.increments();
+    table.integer("message_id").notNullable().unsigned();
+    table.foreign("message_id").references(`${tables.MESSAGE_LIST}.id`);
+    table.integer("role_id").notNullable().unsigned();
+    table.foreign("role_id").references(`${tables.ROLE}.id`);
   });
 
   await knex.schema.createTable(tables.LOGISTICS_LIST_TEMPLATE, (table) => {

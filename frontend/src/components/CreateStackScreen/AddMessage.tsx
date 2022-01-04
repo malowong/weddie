@@ -1,66 +1,50 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, useWindowDimensions } from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import {
-  Input,
-  Button,
-  Text,
-  Box,
-  Checkbox,
-  TextArea,
-  View,
-} from 'native-base';
-import { useSelector } from 'react-redux';
-import CreateAndEditTopBar from '../CreateAndEditTopBar';
+import { Box, Button, Checkbox, Text, TextArea, View } from 'native-base';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+import { useWindowDimensions } from 'react-native';
 import { useMutation } from 'react-query';
+import { useSelector } from 'react-redux';
+import { fetchAddMessage } from '../../api/message';
 import { IRootState } from '../../redux/store';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { fetchAddRundown } from '../../api/rundown';
-import { roleList } from '../roleList';
+import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
-export function AddRundown({ navigation }: { navigation: any }) {
-  const { height, width } = useWindowDimensions();
+const roleList = [
+  { id: 3, role: '兄弟' },
+  { id: 4, role: '姊妹' },
+  { id: 5, role: '攝影師' },
+  { id: 6, role: '司儀' },
+  { id: 7, role: '表演者' },
+  { id: 8, role: '大妗姐' },
+  { id: 9, role: '化妝師' },
+];
+
+export function AddMessage({ navigation }: { navigation: any }) {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const { height, width } = useWindowDimensions();
   const [roleArray, setRoleArray] = useState<number[]>([]);
-  const [time, setTime] = useState(new Date());
 
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itinerary: '',
+      content: '',
       role_id_arr: '',
-      job_duty: '',
     },
   });
 
-  useEffect(() => {
-    let sub = watch((data) => {
-      console.log('update form data:', data);
-    });
-    return () => sub.unsubscribe();
-  }, [watch]);
-
-  const mutation: any = useMutation(fetchAddRundown);
+  const mutation: any = useMutation(fetchAddMessage);
 
   const onSubmit = (data: any) => {
-    data['itinerary_time'] = `${time
-      .getHours()
-      .toString()
-      .padStart(2, '0')}:${time.getMinutes().toString()}:00`;
-    roleArray.length === 0
-      ? (data['role_id_arr'] = [1, 2])
-      : (data['role_id_arr'] = roleArray);
     data['wedding_event_id'] = eventId;
-    console.log('submit form data:', data);
+    data['role_id_arr'] = roleArray;
+    console.log('submit from data: ', data);
     mutation.mutate(data);
   };
 
   return (
-    <CreateAndEditTopBar pageName="新增當日流程">
+    <CreateAndEditTopBar pageName="新增訊息">
       <View display="flex" flexDirection="column">
         <View height={height * 0.65}>
           <Controller
@@ -69,42 +53,26 @@ export function AddRundown({ navigation }: { navigation: any }) {
               required: true,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                marginTop={5}
-                placeholder="事項"
-                style={editGuestStyles.input}
+              <TextArea
+                marginTop={10}
+                placeholder="訊息"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                size="lg"
+                width={width * 0.9}
+                height={height * 0.2}
               />
             )}
-            name="itinerary"
+            name="content"
           />
-          {errors.itinerary && (
-            <Text color="danger.500" marginTop={2} marginLeft={1}>
-              請填寫事項。
+          {errors.content && (
+            <Text color="danger.500" marginTop={2}>
+              請填寫訊息。
             </Text>
           )}
 
-          <Controller
-            control={control}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextArea
-                h={150}
-                marginTop={5}
-                placeholder="詳情"
-                style={editGuestStyles.input}
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="job_duty"
-          />
-
           <Text marginTop={5} fontSize={18} mb="2">
-            負責人士
+            接收人士
           </Text>
           <Box flexDirection="row" flexWrap="wrap">
             {roleList.map(
@@ -155,27 +123,8 @@ export function AddRundown({ navigation }: { navigation: any }) {
             )}
           </Box>
           {roleArray.length === 0 && (
-            <Text color="danger.500">請選擇負責人士。</Text>
+            <Text color="danger.500">請選擇接收人士。</Text>
           )}
-
-          <Text marginLeft={1} marginTop={5} fontSize={18}>
-            時間
-          </Text>
-          <View style={editGuestStyles.dateTimePicker}>
-            <DateTimePicker
-              testID="dateTimePicker"
-              value={time}
-              mode="time"
-              style={{ width: 100 }}
-              is24Hour={true}
-              display="default"
-              onChange={(event: any, selectedDate?: Date) => {
-                const currentDate = selectedDate || time;
-                setTime(currentDate);
-                console.log(currentDate);
-              }}
-            />
-          </View>
         </View>
 
         <View>
@@ -193,16 +142,3 @@ export function AddRundown({ navigation }: { navigation: any }) {
     </CreateAndEditTopBar>
   );
 }
-const editGuestStyles = StyleSheet.create({
-  input: {
-    borderWidth: 2,
-  },
-  buttonRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-  },
-  dateTimePicker: {
-    marginTop: 3,
-  },
-});

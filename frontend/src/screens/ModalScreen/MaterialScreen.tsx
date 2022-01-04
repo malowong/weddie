@@ -110,6 +110,20 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
             </TouchableOpacity>
           );
         })}
+
+      {materialList.length === 0 && (
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('CreateStackScreen', {
+              screen: 'AddMaterialItem',
+            })
+          }
+        >
+          <Text fontSize={18} color="danger.600" marginTop={10}>
+            尚未有物資名單，按此新增
+          </Text>
+        </TouchableOpacity>
+      )}
     </TopBar>
   );
 }

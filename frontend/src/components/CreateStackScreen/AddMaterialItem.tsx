@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, Icon, TextArea } from 'native-base';
-import { useDispatch, useSelector } from 'react-redux';
+import { Input, Button, Text, View, TextArea } from 'native-base';
+import { useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
-import { useNavigation } from '@react-navigation/native';
 import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
 import { fetchAddLogisticsItem } from '../../api/logistics';
 
 export function AddMaterialItem({ navigation }: { navigation: any }) {
+  const { height, width } = useWindowDimensions();
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const {
     control,
@@ -32,47 +32,48 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
 
   return (
     <CreateAndEditTopBar pageName="新增物資">
-      <View>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="物品"
-              style={addMaterialStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="itemName"
-        />
-        {errors.itemName && <Text color="danger.500">請填寫物品。</Text>}
+      <View display="flex" flexDirection="column">
+        <View height={height * 0.65}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="物品"
+                // style={addMaterialStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="itemName"
+          />
+          {errors.itemName && <Text color="danger.500">請填寫物品。</Text>}
+          <Controller
+            control={control}
+            rules={{
+              maxLength: 100,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextArea
+                marginTop={5}
+                placeholder="備註"
+                // style={addMaterialStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="remarks"
+          />
+        </View>
 
-        <Controller
-          control={control}
-          rules={{
-            maxLength: 100,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextArea
-              marginTop={5}
-              placeholder="備註"
-              style={addMaterialStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="remarks"
-        />
-
-        <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-          提交
-        </Button>
+        <View>
+          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
+        </View>
 
         <View>
           {mutation.isError ? (

@@ -1,7 +1,6 @@
 import { Box, Heading, HStack, Text } from 'native-base';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
-import { styles } from '../../../style';
 import { config } from '../../../app.json';
 import TopBar from '../../components/TopBar';
 import { ErrorMsg } from '../../components/ErrorMsg';
@@ -21,19 +20,19 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
       headers: {
         Authorization: `Bearer ${token}`,
       },
-    })
+    });
     const data = await resp.json();
     console.log('data: ', data);
 
     data.sort((a: any, b: any) => {
-      const keyA = getTime(a.itinerary_time)
-      const keyB = getTime(b.itinerary_time)
+      const keyA = getTime(a.itinerary_time);
+      const keyB = getTime(b.itinerary_time);
       if (keyA < keyB) return -1;
       if (keyA > keyB) return 1;
       return 0;
-    })
+    });
     setItinList(data);
-  })
+  });
 
   const [itinList, setItinList] = useState([]);
   const { isLoading, error, data } = useQuery('userData', async () => {
@@ -46,18 +45,17 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
     console.log('data: ', data);
 
     data.sort((a: any, b: any) => {
-      const keyA = getTime(a.itinerary_time)
-      const keyB = getTime(b.itinerary_time)
+      const keyA = getTime(a.itinerary_time);
+      const keyB = getTime(b.itinerary_time);
       if (keyA < keyB) return -1;
       if (keyA > keyB) return 1;
       return 0;
-    })
+    });
 
     console.log('data sorted: ', data);
 
     setItinList(data);
   });
-
 
   function getTimeString(time: string) {
     return time.substring(0, 5);
@@ -101,7 +99,9 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
                 borderColor="muted.300"
               >
                 <Box mr="3" width="20%">
-                  <Heading size="lg">{getTimeString(item.itinerary_time)}</Heading>
+                  <Heading size="lg">
+                    {getTimeString(item.itinerary_time)}
+                  </Heading>
                 </Box>
                 <Box width="75%">
                   <Heading size="md">{item.itinerary}</Heading>
@@ -109,23 +109,30 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
                     <Text fontSize="md">{item.job_duty}</Text>
                   ) : null}
                   <HStack mt="2">
-                  {item.role_id_arr.map((role: any, idx: number) => {
-                    return (
-                      <Box px="2" py="0.5" mr="3" rounded="md" bg="primary.600" key={idx}>
-                        <Text fontSize="md" color="white">
-                          {role === 1 && '新郎'}
-                          {role === 2 && '新娘'}
-                          {role === 3 && '兄弟'}
-                          {role === 4 && '姊妹'}
-                          {role === 5 && '攝影師'}
-                          {role === 6 && '司儀'}
-                          {role === 7 && '表演者'}
-                          {role === 8 && '大妗姐'}
-                          {role === 9 && '化妝師'}
-                        </Text>
-                      </Box>
-                    );
-                  })}
+                    {item.role_id_arr.map((role: any, idx: number) => {
+                      return (
+                        <Box
+                          px="2"
+                          py="0.5"
+                          mr="3"
+                          rounded="md"
+                          bg="primary.600"
+                          key={idx}
+                        >
+                          <Text fontSize="md" color="white">
+                            {role === 1 && '新郎'}
+                            {role === 2 && '新娘'}
+                            {role === 3 && '兄弟'}
+                            {role === 4 && '姊妹'}
+                            {role === 5 && '攝影師'}
+                            {role === 6 && '司儀'}
+                            {role === 7 && '表演者'}
+                            {role === 8 && '大妗姐'}
+                            {role === 9 && '化妝師'}
+                          </Text>
+                        </Box>
+                      );
+                    })}
                   </HStack>
                 </Box>
               </HStack>

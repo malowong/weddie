@@ -1,53 +1,100 @@
-import { Button, Icon, Modal, FormControl, Input } from 'native-base';
+import { Text, Box, Heading, HStack, VStack } from 'native-base';
 import React, { useState } from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import TopBar from '../../components/TopBar';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const participants = [
   {
     id: 1,
     name: 'Matthew',
-    phoneNumber: 12345678,
-    position: '兄弟',
+    phone: 12345678,
+    role: '兄弟',
   },
   {
     id: 2,
     name: 'Dennis',
-    phoneNumber: 23456781,
-    position: '兄弟',
+    phone: 23456781,
+    role: '兄弟',
   },
   {
     id: 3,
     name: 'Billy',
-    phoneNumber: 23475899,
-    position: '姊妹',
+    phone: 23475899,
+    role: '姊妹',
   },
 ];
 
-export default function ParticipantsScreen() {
+export default function ParticipantsScreen({
+  navigation,
+}: {
+  navigation: any;
+}) {
   return (
-    <TopBar pageName="人員名單" show="true" navigate="editMaterialItem">
+    <TopBar pageName="人員名單" show="true" navigate="AddParti">
       <View>
-        <View style={partiStyles.tableRow}>
-          <Text style={partiStyles.tableColumn}>名字</Text>
-          <Text style={partiStyles.tableColumn}>電話號碼</Text>
-          <Text style={partiStyles.tableColumn}>崗位</Text>
-        </View>
-
-        {participants.map((participant, idx) => {
+        {participants.map((participant: any) => {
           return (
-            <View key={participant.id} style={partiStyles.tableRow}>
-              <Text style={partiStyles.tableColumn}>{participant.name}</Text>
-              <Text style={partiStyles.tableColumn}>
-                {participant.phoneNumber}
-              </Text>
-              <Text style={partiStyles.tableColumn}>
-                {participant.position}
-              </Text>
-            </View>
+            <TouchableOpacity
+              key={participant.id}
+              onPress={() =>
+                navigation.navigate('EditStackScreen', {
+                  screen: 'EditParti',
+                  params: {
+                    id: participant.id,
+                    phone: participant.phone,
+                    role: participant.role,
+                  },
+                })
+              }
+            >
+              <Box
+                py="3"
+                alignSelf="center"
+                width={375}
+                maxWidth="100%"
+                borderBottomWidth="1"
+                borderColor="muted.300"
+              >
+                <HStack>
+                  <VStack>
+                    <View>
+                      <Heading size="md">{participant.name}</Heading>
+                    </View>
+                    <View>
+                      <Text fontSize="md">{participant.phone}</Text>
+                    </View>
+                  </VStack>
+                  <Box
+                    flex="1"
+                    flex-direction="column"
+                    alignItems="flex-end"
+                    justifyContent="flex-end"
+                  >
+                    <Box px="2" py="0.5" rounded="md" bg="primary.600">
+                      <Text fontSize="md" color="white">
+                        {participant.role}
+                      </Text>
+                    </Box>
+                  </Box>
+                </HStack>
+              </Box>
+            </TouchableOpacity>
           );
         })}
+
+        {participants.length === 0 && (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('CreateStackScreen', {
+                screen: 'AddParti',
+              })
+            }
+          >
+            <Text fontSize={18} color="danger.600" marginTop={10}>
+              尚未有人員名單，按此新增
+            </Text>
+          </TouchableOpacity>
+        )}
       </View>
     </TopBar>
   );

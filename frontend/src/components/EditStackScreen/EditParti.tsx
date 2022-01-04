@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
-import TopBar from '../TopBar';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text } from 'native-base';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { Input, Button, Text, Modal, View } from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 
 export function EditParti({ route, navigation }: any) {
-  const dispatch = useDispatch();
+  const { height, width } = useWindowDimensions();
+  const [phone] = useState(route.params.phone);
+  const [role] = useState(route.params.role);
+  const [showModal, setShowModal] = useState(false);
+
   const {
     control,
     handleSubmit,
@@ -16,82 +17,113 @@ export function EditParti({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      itemName: JSON.stringify(route.params.name).replace(/\"/g, ''),
-      amount: JSON.stringify(route.params.phoneNumber),
+      phone: JSON.stringify(phone).replace(/\"/g, ''),
+      role: JSON.stringify(role),
     },
   });
 
-  useEffect(() => {
-    const subscription = watch((value, { name, type }) =>
-      console.log(value, name, type)
-    );
-    return () => subscription.unsubscribe();
-  }, [watch]);
-
   const onSubmit = (data: any) => {
-    data.amount = parseInt(data.amount);
     console.log(data);
   };
 
   return (
-    <CreateAndEditTopBar pageName="編輯物資">
-      <View>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="物品"
-              style={editMaterialStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
+    <CreateAndEditTopBar pageName="編輯人員資料">
+      <View display="flex" flexDirection="column">
+        <View height={height * 0.65}>
+          <Controller
+            control={control}
+            rules={{
+              maxLength: 8,
+              minLength: 8,
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="電話號碼"
+                // style={editGuestStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                keyboardType="numeric"
+              />
+            )}
+            name="phone"
+          />
+          {errors.phone?.type === 'required' && (
+            <Text color="danger.500">請填寫賓客電話號碼。</Text>
           )}
-          name="itemName"
-        />
-        {errors.itemName && <Text>This is required.</Text>}
-
-        <Controller
-          control={control}
-          rules={{
-            maxLength: 100,
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="金額"
-              style={editMaterialStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              keyboardType="numeric"
-            />
+          {errors.phone?.type === 'maxLength' && (
+            <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
           )}
-          name="amount"
-        />
-        {errors.amount && <Text>This is required.</Text>}
+          {errors.phone?.type === 'minLength' && (
+            <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+          )}
+        </View>
 
-        <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-          提交
-        </Button>
+        <View style={editPartiStyles.buttonRow}>
+          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
+
+          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
+            移除賓客資料
+          </Button>
+
+          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+            <Modal.Content maxWidth="400px">
+              <Modal.Header>確定移除賓客資料？</Modal.Header>
+              <Modal.Footer>
+                <Button.Group space={2}>
+                  <Button
+                    variant="ghost"
+                    colorScheme="blueGray"
+                    onPress={() => {
+                      setShowModal(false);
+                    }}
+                  >
+                    取消
+                  </Button>
+                  <Button
+                    colorScheme="danger"
+                    onPress={() => {
+                      // removeGuest();
+                      setShowModal(false);
+                    }}
+                  >
+                    確定
+                  </Button>
+                </Button.Group>
+              </Modal.Footer>
+            </Modal.Content>
+          </Modal>
+        </View>
+
+        {/* <View>
+          {updateGuestMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{updateGuestMutation.error.message}
+            </Text>
+          ) : null}
+
+          {updateGuestMutation.isSuccess ? navigation.goBack() : null}
+
+          {removeGuestMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{removeGuestMutation.error.message}
+            </Text>
+          ) : null}
+          {removeGuestMutation.isSuccess ? navigation.goBack() : null}
+        </View> */}
       </View>
-
-      <TouchableOpacity onPress={() => navigation.goBack()}>
-        <Button marginTop={5} colorScheme="secondary">
-          返回
-        </Button>
-      </TouchableOpacity>
     </CreateAndEditTopBar>
   );
 }
-
-const editMaterialStyles = StyleSheet.create({
+const editPartiStyles = StyleSheet.create({
   input: {
     borderWidth: 2,
+  },
+  buttonRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
 });

@@ -38,6 +38,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import CreateEventStackScreen from './src/screens/CreateEventStackScreen';
 import { EditRundown } from './src/components/EditStackScreen/EditRundown';
 import { AddRundown } from './src/components/CreateStackScreen/AddRundown';
+import { AddMessage } from './src/components/CreateStackScreen/AddMessage';
 
 // this is for create items
 
@@ -52,6 +53,7 @@ function CreateStackScreen() {
       <CreateStack.Screen name="AddGuest" component={AddGuest} />
       <CreateStack.Screen name="AddTodoItem" component={AddTodoItem} />
       <CreateStack.Screen name="AddRundown" component={AddRundown} />
+      <CreateStack.Screen name="AddMessage" component={AddMessage} />
     </CreateStack.Navigator>
   );
 }

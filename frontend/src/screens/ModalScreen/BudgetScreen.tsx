@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
 } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { View, Text, HStack, Box, Heading, VStack } from 'native-base';
-import { useDispatch, useSelector } from 'react-redux';
+import { View, Text, HStack, Box, Heading, VStack, Button } from 'native-base';
+import { useSelector } from 'react-redux';
 import { config } from '../../../app.json';
 import { useQuery } from 'react-query';
 import { ErrorMsg } from '../../components/ErrorMsg';
@@ -14,6 +14,7 @@ import { LoadingMsg } from '../../components/LoadingsMsg';
 import { IRootState } from '../../redux/store';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { ProgressChart } from 'react-native-chart-kit';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface Expenditure {
   id: number;
@@ -40,6 +41,7 @@ const budgetCategoryMap = new Map([
 
 export default function BudgetScreen({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
+  const [sorting, setSorting] = useState(false);
   const budget: number = parseInt(
     useSelector((state: IRootState) => state.event.event!.budget)
   );
@@ -125,14 +127,28 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
       <View borderBottomColor="black" borderBottomWidth={1} />
       <View marginTop={5}>
         <View style={budgetStyles.addRow}>
-          <Text
-            fontSize={24}
-            marginBottom={2}
-            fontWeight="bold"
-            marginLeft={15}
-          >
+          <Text fontSize={24} fontWeight="bold" marginLeft={15}>
             支出
           </Text>
+          <Button
+            size="lg"
+            marginRight={15}
+            onPress={() => {
+              const sortedExpenditureList = expenditureList.sort(
+                (a: Expenditure, b: Expenditure) => {
+                  if (sorting) {
+                    return a.expenditure - b.expenditure;
+                  } else {
+                    return b.expenditure - a.expenditure;
+                  }
+                }
+              );
+              setSorting(!sorting);
+              setExpenditureList([...sortedExpenditureList]);
+            }}
+          >
+            <Ionicons name="ios-funnel-outline" />
+          </Button>
         </View>
 
         {expenditureList.map((expenditure: Expenditure, idx: number) => {
@@ -231,8 +247,8 @@ const budgetStyles = StyleSheet.create({
   addRow: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
   },
 });

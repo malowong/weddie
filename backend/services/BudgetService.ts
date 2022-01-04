@@ -1,7 +1,8 @@
 import { Knex } from "knex";
 import { tables } from "../utils/tables";
-// import { collections } from "./mongoService";
-// import { EventStore, EventType } from "./models";
+import { collections } from "../mongoConnection";
+import { EventStore, EventType } from "./models";
+import { budget_template } from "../seeds/dataset/template/budget_template";
 
 interface BudgetItem {
   id?: number;
@@ -27,6 +28,7 @@ export class BudgetService {
 
   addBudgetItem = async (budgetItem: BudgetItem) => {
     await this.knex(tables.WEDDING_BUDGET_LIST).insert(budgetItem);
+
     return;
   };
 
@@ -35,67 +37,153 @@ export class BudgetService {
     return;
   };
 
-  // event_store_old.eventType = EventType.Delete;
-  // event_store_old.data = old_data;
-  // event_store_old.amendDate = amendDate.getTime();
-  // console.log(weddingCreatedAtDate);
-  // console.log(weddingDate);
-  // event_store_old.weddingCreatedAtDate = weddingCreatedAtDate;
-  // event_store_old.weddingDate = weddingDate;
   deleteBudgetItem = async (itemId: number) => {
     await this.knex(tables.WEDDING_BUDGET_LIST).where("id", itemId).del();
     return;
   };
 
-  // updateExpenditureList = async (
-  //   budgetListId: number,
-  //   description: string,
-  //   expenditure: number,
-  //   paymentDate: Date,
-  //   amendDate: Date,
-  //   weddingEventId: number,
-  //   recordCreatedAtDate: Date
-  // ) => {
-  //   let event_store_old = {} as EventStore;
-  //   let event_store_new = {} as EventStore;
-  //   const weddingCreatedAtDate = this.knex(tables.WEDDING_EVENT)
-  //     .select("created_at")
-  //     .where("id", weddingEventId)
-  //     .first();
-  //   const weddingDate = this.knex(tables.WEDDING_EVENT).select("wedding_date").where("id", weddingEventId).first();
-  //   const old_data = await this.knex(tables.WEDDING_BUDGET_LIST)
-  //     .join(tables.BUDGET_CAT, `${tables.WEDDING_BUDGET_LIST}.budget_cat_id`, `${tables.BUDGET_CAT}.id`)
-  //     .select()
-  //     .where("id", budgetListId)
-  //     .first();
+  updateExpenditureList = async (budgetListId: number, description: string, expenditure: number, amendDate: number) => {
+    const weddingEventId = (await this.knex(tables.WEDDING_BUDGET_LIST).select().where("id", budgetListId).first())
+      .wedding_event_id;
+    const mongoRecordNum = await collections.event_store
+      ?.find({
+        $and: [
+          { "data.wedding_event_id": weddingEventId },
+          { "data.budget_description_id": { $gt: budget_template.length } },
+        ],
+      })
+      .count();
+    let newBudgetDescriptionId;
 
-  //   event_store_old.eventType = EventType.Delete;
-  //   event_store_old.data = old_data;
-  //   event_store_old.amendDate = amendDate.getTime();
-  //   event_store_old.weddingCreatedAtDate = weddingCreatedAtDate;
-  //   event_store_old.weddingDate = weddingDate;
+    const weddingEventInfo = await this.knex(tables.WEDDING_EVENT).select().where("id", weddingEventId).first();
+    const weddingCreatedAtDate = weddingEventInfo.created_at.getTime();
+    const weddingDate = weddingEventInfo.wedding_date.getTime();
 
-  // event_store_new.eventType = EventType.Add;
-  // event_store_new.data = new_data;
-  // event_store_new.amendDate = amendDate.getTime();
-  // event_store_new.weddingCreatedAtDate = weddingCreatedAtDate;
-  // event_store_new.weddingDate = weddingDate;
-  //   await this.knex(tables.WEDDING_BUDGET_LIST)
-  //     .where("id", budgetListId)
-  //     .update({ description, expenditure, payment_date: paymentDate });
+    const old_budget_data = await this.knex(tables.WEDDING_BUDGET_LIST)
+      .select()
+      .where(`${tables.WEDDING_BUDGET_LIST}.id`, budgetListId)
+      .join(tables.BUDGET_CAT, `${tables.WEDDING_BUDGET_LIST}.budget_cat_id`, `${tables.BUDGET_CAT}.id`)
+      .first();
 
-  //   const new_data = await this.knex(tables.WEDDING_BUDGET_LIST)
-  //     .join(tables.BUDGET_CAT, `${tables.WEDDING_BUDGET_LIST}.budget_cat_id`, `${tables.BUDGET_CAT}.id`)
-  //     .select()
-  //     .where("id", budgetListId)
-  //     .first();
+    if (
+      description.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "") !==
+      old_budget_data.description.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+    ) {
+      //id轉107打後
+      newBudgetDescriptionId = budget_template.length + 1 + mongoRecordNum!!;
+    } else {
+      newBudgetDescriptionId = old_budget_data.budget_description_id;
+    }
 
-  //   event_store_new.eventType = EventType.Add;
-  //   event_store_new.data = new_data;
-  //   event_store_new.amendDate = amendDate.getTime();
-  //   event_store_new.weddingCreatedAtDate = weddingCreatedAtDate;
-  //   event_store_new.weddingDate = weddingDate;
+    let event_store_old = {} as EventStore;
+    event_store_old.eventType = EventType.Delete;
+    event_store_old.data = old_budget_data;
+    event_store_old.amendDate = amendDate;
+    event_store_old.weddingCreatedAtDate = weddingCreatedAtDate;
+    event_store_old.weddingDate = weddingDate;
+    // console.log(event_store_old);
 
-  // collections.event_store?.insertMany([event_store_old, event_store_new]);
-  // };
+    await this.knex(tables.WEDDING_BUDGET_LIST)
+      .where("id", budgetListId)
+      .update({ description: description, expenditure: expenditure });
+
+    const new_budget_data = await this.knex(tables.WEDDING_BUDGET_LIST)
+      .select()
+      .where(`${tables.WEDDING_BUDGET_LIST}.id`, budgetListId)
+      .join(tables.BUDGET_CAT, `${tables.WEDDING_BUDGET_LIST}.budget_cat_id`, `${tables.BUDGET_CAT}.id`)
+      .first();
+
+    new_budget_data.budget_description_id = newBudgetDescriptionId;
+
+    let event_store_new = { ...event_store_old } as EventStore;
+    event_store_new.amendDate = amendDate;
+    event_store_new.eventType = EventType.Add;
+    event_store_new.data = new_budget_data;
+    // console.log(event_store_new);
+
+    let insertArr = [event_store_old, event_store_new];
+
+    try {
+      await collections.event_store?.insertMany(insertArr);
+    } catch (e) {
+      console.log(e);
+      process.exit();
+    }
+
+    return;
+  };
+
+  deleteExpenditureList = async (budgetListId: number, amendDate: number) => {
+    const weddingEventId = (await this.knex(tables.WEDDING_BUDGET_LIST).select().where("id", budgetListId).first())
+      .wedding_event_id;
+
+    const weddingEvent = await this.knex(tables.WEDDING_EVENT).select().where("id", weddingEventId).first();
+    const weddingCreatedAtDate = weddingEvent.created_at.getTime();
+    const weddingDate = weddingEvent.wedding_date.getTime();
+    // console.log(`weddingCreatedAtDate:${weddingEvent.created_at.getTime()}`);
+    // console.log(`weddingDate:${weddingEvent.wedding_date.getTime()}`);
+
+    const deletedItem = await this.knex(tables.WEDDING_BUDGET_LIST)
+      .select()
+      .where(`${tables.WEDDING_BUDGET_LIST}.id`, budgetListId)
+      .join(tables.BUDGET_CAT, `${tables.WEDDING_BUDGET_LIST}.budget_cat_id`, `${tables.BUDGET_CAT}.id`)
+      .first();
+
+    let deleteAction = {} as EventStore;
+    deleteAction.eventType = EventType.Delete;
+    deleteAction.data = deletedItem;
+    deleteAction.amendDate = amendDate;
+    deleteAction.weddingCreatedAtDate = weddingCreatedAtDate;
+    deleteAction.weddingDate = weddingDate;
+    console.log(deleteAction);
+
+    await this.knex(tables.WEDDING_BUDGET_LIST).where(`${tables.WEDDING_BUDGET_LIST}.id`, budgetListId).del();
+
+    try {
+      await collections.event_store?.insertOne(deleteAction);
+    } catch (e) {
+      console.log(e);
+      process.exit();
+    }
+
+    return;
+  };
+
+  addExpenditureList = async (budgetItem: any, amendDate: number) => {
+    const currentRecordNum = (await this.knex(tables.WEDDING_BUDGET_LIST)
+      .select()
+      .where("wedding_event_id", budgetItem.wedding_event_id)
+      .count()
+      .first())!!.count; //string
+
+    budgetItem.budget_description_id = Number(currentRecordNum) + 1;
+    const addedItemId = await this.knex(tables.WEDDING_BUDGET_LIST).insert(budgetItem).returning("id");
+    const addedItem = await this.knex(tables.WEDDING_BUDGET_LIST)
+      .select()
+      .where(`${tables.WEDDING_BUDGET_LIST}.id`, Number(addedItemId))
+      .join(tables.BUDGET_CAT, `${tables.WEDDING_BUDGET_LIST}.budget_cat_id`, `${tables.BUDGET_CAT}.id`)
+      .first();
+
+    const weddingEvent = await this.knex(tables.WEDDING_EVENT)
+      .select()
+      .where("id", budgetItem.wedding_event_id)
+      .first();
+    const weddingCreatedAtDate = weddingEvent.created_at.getTime();
+    const weddingDate = weddingEvent.wedding_date.getTime();
+
+    let addAction = {} as EventStore;
+    addAction.eventType = EventType.Add;
+    addAction.data = addedItem;
+    addAction.amendDate = amendDate;
+    addAction.weddingCreatedAtDate = weddingCreatedAtDate;
+    addAction.weddingDate = weddingDate;
+    console.log(addAction);
+
+    try {
+      await collections.event_store?.insertOne(addAction);
+    } catch (e) {
+      console.log(e);
+      process.exit();
+    }
+  };
 }

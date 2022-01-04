@@ -131,4 +131,34 @@ export const logistics_list_template = [
   {
     logistics_item: "新郎媽媽晚裝",
   },
+  {
+    logistics_item: "遊戲用品",
+  },
+  {
+    logistics_item: "跪墊",
+  },
+  {
+    logistics_item: "羽毛筆",
+  },
+  {
+    logistics_item: "結婚證書套",
+  },
+  {
+    logistics_item: "婚禮簽名布",
+  },
+  {
+    logistics_item: "紅遮、紅米",
+  },
+  {
+    logistics_item: "囍字貼、男女家對聯",
+  },
+  {
+    logistics_item: "蓮子、紅棗、湯丸",
+  },
+  {
+    logistics_item: "戒指枕",
+  },
+  {
+    logistics_item: "敬茶用具",
+  },
 ];

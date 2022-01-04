@@ -1,29 +1,28 @@
 import Knex from "knex";
 import dotenv from "dotenv";
-import cors from 'cors';
+import cors from "cors";
 
 dotenv.config();
 
 import knexConfig from "./knexfile";
 export const knex = Knex(knexConfig[process.env.NODE_ENV || "development"]);
-import { connectToMongo } from "./mongoConnection";
+// import { connectToMongo } from "./mongoConnection";
 import express from "express";
 import { logger } from "./utils/logger";
 
-async function connectMongo() {
-  try {
-    await connectToMongo();
-  } catch (err) {
-    console.log("Database connection failed", err);
-    process.exit();
-  }
-}
+// async function connectMongo() {
+//   try {
+//     await connectToMongo();
+//   } catch (err) {
+//     console.log("Database connection failed", err);
+//     process.exit();
+//   }
+// }
 
 const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 
 app.use((req, res, next) => {
   const cur = new Date().toISOString();
@@ -32,7 +31,7 @@ app.use((req, res, next) => {
   next();
 });
 
-connectMongo();
+// connectMongo();
 import { routes } from "./routes";
 const API_VERSION = "/api";
 app.use(API_VERSION, routes);

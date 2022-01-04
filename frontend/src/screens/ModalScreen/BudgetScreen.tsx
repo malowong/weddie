@@ -144,7 +144,8 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
                 }
               );
               setSorting(!sorting);
-              setExpenditureList([...sortedExpenditureList]);
+              // setExpenditureList([...sortedExpenditureList]);
+              setExpenditureList(sortedExpenditureList);
             }}
           >
             <Ionicons name="ios-funnel-outline" />

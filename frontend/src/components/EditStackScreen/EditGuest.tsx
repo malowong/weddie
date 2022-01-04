@@ -63,7 +63,7 @@ export function EditGuest({ route, navigation }: any) {
               <Input
                 marginTop={5}
                 placeholder="名字"
-                style={editGuestStyles.input}
+                // style={editGuestStyles.input}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -71,7 +71,7 @@ export function EditGuest({ route, navigation }: any) {
             )}
             name="name"
           />
-          {errors.name && <Text color="danger.500">請填寫名稱。</Text>}
+          {errors.name && <Text color="danger.500">請填寫賓客名稱。</Text>}
 
           <Controller
             control={control}
@@ -84,7 +84,7 @@ export function EditGuest({ route, navigation }: any) {
               <Input
                 marginTop={5}
                 placeholder="電話號碼"
-                style={editGuestStyles.input}
+                // style={editGuestStyles.input}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -113,7 +113,7 @@ export function EditGuest({ route, navigation }: any) {
               <Input
                 marginTop={5}
                 placeholder="關係"
-                style={editGuestStyles.input}
+                // style={editGuestStyles.input}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}

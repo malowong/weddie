@@ -7,20 +7,20 @@ const participants = [
   {
     id: 1,
     name: 'Matthew',
-    phoneNumber: 12345678,
-    position: '兄弟',
+    phone: 12345678,
+    role: '兄弟',
   },
   {
     id: 2,
     name: 'Dennis',
-    phoneNumber: 23456781,
-    position: '兄弟',
+    phone: 23456781,
+    role: '兄弟',
   },
   {
     id: 3,
     name: 'Billy',
-    phoneNumber: 23475899,
-    position: '姊妹',
+    phone: 23475899,
+    role: '姊妹',
   },
 ];
 
@@ -41,9 +41,8 @@ export default function ParticipantsScreen({
                   screen: 'EditParti',
                   params: {
                     id: participant.id,
-                    name: participant.name,
                     phone: participant.phone,
-                    relationship: participant.relationship,
+                    role: participant.role,
                   },
                 })
               }
@@ -62,7 +61,7 @@ export default function ParticipantsScreen({
                       <Heading size="md">{participant.name}</Heading>
                     </View>
                     <View>
-                      <Text fontSize="md">{participant.phoneNumber}</Text>
+                      <Text fontSize="md">{participant.phone}</Text>
                     </View>
                   </VStack>
                   <Box
@@ -73,7 +72,7 @@ export default function ParticipantsScreen({
                   >
                     <Box px="2" py="0.5" rounded="md" bg="primary.600">
                       <Text fontSize="md" color="white">
-                        {participant.position}
+                        {participant.role}
                       </Text>
                     </Box>
                   </Box>

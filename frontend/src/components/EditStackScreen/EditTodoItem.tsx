@@ -1,13 +1,22 @@
 import React, { useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, TextArea, Modal, Select } from 'native-base';
+import {
+  Input,
+  Button,
+  Text,
+  TextArea,
+  Modal,
+  Select,
+  View,
+} from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useMutation } from 'react-query';
 import { fetchDeleteTodoItem, fetchUpdateTodoItem } from '../../api/todo';
 
 export function EditTodoItem({ route, navigation }: any) {
+  const { height, width } = useWindowDimensions();
   console.log('params date: ', route.params.dueDate);
   const [date, setDate] = useState<Date>(new Date(route.params.dueDate));
   console.log('edit form:', date);
@@ -18,7 +27,9 @@ export function EditTodoItem({ route, navigation }: any) {
   const [itemName] = useState(
     JSON.stringify(route.params.itemName).replace(/\"/g, '')
   );
-  const [remarks] = useState(JSON.stringify(route.params.remarks).replace(/\"/g, ''));
+  const [remarks] = useState(
+    JSON.stringify(route.params.remarks).replace(/\"/g, '')
+  );
 
   const {
     control,
@@ -51,106 +62,102 @@ export function EditTodoItem({ route, navigation }: any) {
 
   return (
     <CreateAndEditTopBar pageName="編輯待辦事項">
-      <View>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="事項"
-              style={editTodoItemStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="itemName"
-        />
-        {errors.itemName && (
-          <Text color="danger.500" marginTop={2} marginLeft={1}>
-            請填寫待辦事項。
-          </Text>
-        )}
-
-        <Text marginLeft={1} marginTop={5} fontSize={18}>
-          到期日
-        </Text>
-
-        <View style={editTodoItemStyles.dateTimePicker}>
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={date}
-            mode="date"
-            style={{ width: 230 }}
-            display="default"
-            onChange={(event: any, selectedDate?: Date) => {
-              const currentDate = selectedDate || date;
-              console.log('cur: ', currentDate);
-              console.log('date: ', date);
-              setDate(currentDate);
+      <View display="flex" flexDirection="column">
+        <View height={height * 0.65}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
             }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="事項"
+                // style={editTodoItemStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="itemName"
           />
+          {errors.itemName && (
+            <Text color="danger.500" marginTop={2} marginLeft={1}>
+              請填寫待辦事項。
+            </Text>
+          )}
+
+          <Text marginLeft={1} marginTop={5} fontSize={18}>
+            到期日
+          </Text>
+
+          <View style={editTodoItemStyles.dateTimePicker}>
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={date}
+              mode="date"
+              style={{ width: 230 }}
+              display="default"
+              onChange={(event: any, selectedDate?: Date) => {
+                const currentDate = selectedDate || date;
+                console.log('cur: ', currentDate);
+                console.log('date: ', date);
+                setDate(currentDate);
+              }}
+            />
+          </View>
+
+          {date.toISOString() < new Date().toISOString() && (
+            <Text color="danger.500" marginTop={2} marginLeft={2.5}>
+              請選擇正確的日子。
+            </Text>
+          )}
+
+          <Controller
+            control={control}
+            rules={{
+              maxLength: 100,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextArea
+                marginTop={5}
+                placeholder="備註"
+                // style={editTodoItemStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="remarks"
+          />
+
+          <Select
+            defaultValue={isCompleted ? 'completed' : 'pending'}
+            minWidth="200"
+            marginTop={5}
+            accessibilityLabel="狀態"
+            placeholderTextColor="gray.700"
+            _selectedItem={{
+              bg: 'teal.600',
+            }}
+            mt={1}
+            onValueChange={(itemValue) => {
+              if (itemValue === 'pending') {
+                setIsCompleted(false);
+              } else {
+                setIsCompleted(true);
+              }
+            }}
+          >
+            <Select.Item label="未完成" value="pending" />
+            <Select.Item label="已完成" value="completed" />
+          </Select>
         </View>
 
-        {date.toISOString() < new Date().toISOString() && (
-          <Text color="danger.500" marginTop={2} marginLeft={2.5}>
-            請選擇正確的日子。
-          </Text>
-        )}
-
-        <Controller
-          control={control}
-          rules={{
-            maxLength: 100,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextArea
-              marginTop={5}
-              placeholder="備註"
-              style={editTodoItemStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="remarks"
-        />
-
-        <Select
-          defaultValue={isCompleted ? 'completed' : 'pending'}
-          minWidth="200"
-          marginTop={5}
-          accessibilityLabel="狀態"
-          placeholderTextColor="gray.700"
-          _selectedItem={{
-            bg: 'teal.600',
-          }}
-          mt={1}
-          onValueChange={(itemValue) => {
-            if (itemValue === 'pending') {
-              setIsCompleted(false);
-            } else {
-              setIsCompleted(true);
-            }
-          }}
-        >
-          <Select.Item label="未完成" value="pending" />
-          <Select.Item label="已完成" value="completed" />
-        </Select>
-
         <View style={editTodoItemStyles.buttonRow}>
-          <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-            更改
-          </Button>
+          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
 
-          <Button
-            colorScheme="danger"
-            marginTop={20}
-            onPress={() => setShowModal(true)}
-          >
+          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
             移除待辦事項
           </Button>
 
@@ -191,9 +198,7 @@ export function EditTodoItem({ route, navigation }: any) {
           ) : null}
 
           {updateTodoItemMutation.isSuccess ? navigation.goBack() : null}
-        </View>
 
-        <View>
           {deleteTodoItemMutation.isError ? (
             <Text color="danger.500">
               錯誤：{deleteTodoItemMutation.error.message}

@@ -17,7 +17,6 @@ interface Message {
 export default function NotificationsScreen() {
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const role = useSelector((state: IRootState) => state.event.event?.role);
-  console.log(role);
   const token = useSelector((state: IRootState) => state.auth.token);
   const [messageList, setMessageList] = useState([]);
 

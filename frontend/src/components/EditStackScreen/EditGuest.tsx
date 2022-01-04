@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, Modal } from 'native-base';
+import { Input, Button, Text, Modal, View } from 'native-base';
 import { useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { IRootState } from '../../redux/store';
@@ -9,6 +9,7 @@ import { useMutation } from 'react-query';
 import { fetchRemoveGuest, fetchUpdateGuest } from '../../api/guest';
 
 export function EditGuest({ route, navigation }: any) {
+  const { height, width } = useWindowDimensions();
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [showModal, setShowModal] = useState(false);
 
@@ -51,86 +52,82 @@ export function EditGuest({ route, navigation }: any) {
 
   return (
     <CreateAndEditTopBar pageName="編輯賓客資料">
-      <View>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="名字"
-              style={editGuestStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="name"
-        />
-        {errors.name && <Text color="danger.500">請填寫名稱。</Text>}
+      <View display="flex" flexDirection="column">
+        <View height={height * 0.65}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="名字"
+                style={editGuestStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="name"
+          />
+          {errors.name && <Text color="danger.500">請填寫名稱。</Text>}
 
-        <Controller
-          control={control}
-          rules={{
-            maxLength: 8,
-            minLength: 8,
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="電話號碼"
-              style={editGuestStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              keyboardType="numeric"
-            />
+          <Controller
+            control={control}
+            rules={{
+              maxLength: 8,
+              minLength: 8,
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="電話號碼"
+                style={editGuestStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                keyboardType="numeric"
+              />
+            )}
+            name="phone"
+          />
+          {errors.phone?.type === 'required' && (
+            <Text color="danger.500">請填寫賓客電話號碼。</Text>
           )}
-          name="phone"
-        />
-        {errors.phone?.type === 'required' && (
-          <Text color="danger.500">請填寫你的電話號碼。</Text>
-        )}
-        {errors.phone?.type === 'maxLength' && (
-          <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-        )}
-        {errors.phone?.type === 'minLength' && (
-          <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-        )}
+          {errors.phone?.type === 'maxLength' && (
+            <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+          )}
+          {errors.phone?.type === 'minLength' && (
+            <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+          )}
 
-        <Controller
-          control={control}
-          rules={{
-            maxLength: 100,
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="關係"
-              style={editGuestStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="relationship"
-        />
-        {errors.relationship && <Text color="danger.500">請填寫關係。</Text>}
+          <Controller
+            control={control}
+            rules={{
+              maxLength: 100,
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="關係"
+                style={editGuestStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="relationship"
+          />
+          {errors.relationship && <Text color="danger.500">請填寫關係。</Text>}
+        </View>
 
         <View style={editGuestStyles.buttonRow}>
-          <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-            更改
-          </Button>
+          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
 
-          <Button
-            colorScheme="danger"
-            marginTop={20}
-            onPress={() => setShowModal(true)}
-          >
+          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
             移除賓客資料
           </Button>
 
@@ -171,9 +168,7 @@ export function EditGuest({ route, navigation }: any) {
           ) : null}
 
           {updateGuestMutation.isSuccess ? navigation.goBack() : null}
-        </View>
 
-        <View>
           {removeGuestMutation.isError ? (
             <Text color="danger.500">
               錯誤：{removeGuestMutation.error.message}

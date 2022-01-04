@@ -6,7 +6,7 @@ export class MessageService {
   constructor(private knex: Knex) {}
 
   getMessageList = async (eventId: number) => {
-    const messageList = await this.knex.select("*").from(tables.MESSAGE_LIST).orderBy("created_at", "DESC").limit(15);
+    const messageList = await this.knex.select("*").from(tables.MESSAGE_LIST).orderBy("created_at", "DESC").limit(20);
     return messageList;
   };
 

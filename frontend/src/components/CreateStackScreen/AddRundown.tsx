@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Modal } from 'react-native';
+import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, Box, Checkbox, TextArea } from 'native-base';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  Input,
+  Button,
+  Text,
+  Box,
+  Checkbox,
+  TextArea,
+  View,
+} from 'native-base';
+import { useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useMutation } from 'react-query';
 import { IRootState } from '../../redux/store';
@@ -11,6 +19,7 @@ import { fetchAddRundown } from '../../api/rundown';
 import { roleList } from '../roleList';
 
 export function AddRundown({ navigation }: { navigation: any }) {
+  const { height, width } = useWindowDimensions();
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
   const [roleArray, setRoleArray] = useState<number[]>([]);
   const [time, setTime] = useState(new Date());
@@ -52,125 +61,125 @@ export function AddRundown({ navigation }: { navigation: any }) {
 
   return (
     <CreateAndEditTopBar pageName="新增當日流程">
-      <View>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              marginTop={5}
-              placeholder="事項"
-              style={editGuestStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-              size="lg"
-            />
-          )}
-          name="itinerary"
-        />
-        {errors.itinerary && (
-          <Text color="danger.500" marginTop={2} marginLeft={1}>
-            請填寫事項。
-          </Text>
-        )}
-
-        <Controller
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <TextArea
-              h={150}
-              marginTop={5}
-              placeholder="詳情"
-              style={editGuestStyles.input}
-              onBlur={onBlur}
-              onChangeText={onChange}
-              value={value}
-            />
-          )}
-          name="job_duty"
-        />
-
-        <Text marginTop={5} fontSize={18} mb="2">
-          負責人士
-        </Text>
-        <Box flexDirection="row" flexWrap="wrap">
-          {roleList.map(
-            (role, idx) => (
-              <Checkbox
-                key={idx}
-                value={role.id.toString()}
-                accessibilityLabel="This is a checkbox"
-                width="100"
-                mb="2"
-                onChange={(event) => {
-                  if (event) {
-                    const newRoleArray = roleArray.slice();
-                    newRoleArray.push(role.id);
-                    setRoleArray(newRoleArray);
-                  } else {
-                    const newRoleArray = roleArray.slice();
-                    const index = newRoleArray.indexOf(role.id);
-                    if (index > -1) {
-                      newRoleArray.splice(index, 1);
-                    }
-                    setRoleArray(newRoleArray);
-                  }
-                  console.log(roleArray);
-                }}
-              >
-                {role.role}
-              </Checkbox>
-            )
-            // double mappping, but not work as i don't know how to show the others
-            //     route.params.role_id_arr.map((role_id: any) =>
-            //       role.id === role_id ? (
-            //         <Checkbox
-            //           key={idx}
-            //           value={role.id.toString()}
-            //           accessibilityLabel="This is a checkbox"
-            //           width="100"
-            //           mb="2"
-            //           isChecked
-            //           onChange={() => {
-            //             console.log(route.params.role_id_arr);
-            //           }}
-            //         >
-            //           {role.role}
-            //         </Checkbox>
-            //       ) : (null)
-            //   )
-          )}
-        </Box>
-        {roleArray.length === 0 && (
-          <Text color="danger.500">請選擇負責人士。</Text>
-        )}
-
-        <Text marginLeft={1} marginTop={5} fontSize={18}>
-          時間
-        </Text>
-        <View style={editGuestStyles.dateTimePicker}>
-          <DateTimePicker
-            testID="dateTimePicker"
-            value={time}
-            mode="time"
-            style={{ width: 100 }}
-            is24Hour={true}
-            display="default"
-            onChange={(event: any, selectedDate?: Date) => {
-              const currentDate = selectedDate || time;
-              setTime(currentDate);
-              console.log(currentDate);
+      <View display="flex" flexDirection="column">
+        <View height={height * 0.65}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
             }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="事項"
+                style={editGuestStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+                size="lg"
+              />
+            )}
+            name="itinerary"
           />
+          {errors.itinerary && (
+            <Text color="danger.500" marginTop={2} marginLeft={1}>
+              請填寫事項。
+            </Text>
+          )}
+
+          <Controller
+            control={control}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <TextArea
+                h={150}
+                marginTop={5}
+                placeholder="詳情"
+                style={editGuestStyles.input}
+                onBlur={onBlur}
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="job_duty"
+          />
+
+          <Text marginTop={5} fontSize={18} mb="2">
+            負責人士
+          </Text>
+          <Box flexDirection="row" flexWrap="wrap">
+            {roleList.map(
+              (role, idx) => (
+                <Checkbox
+                  key={idx}
+                  value={role.id.toString()}
+                  accessibilityLabel="This is a checkbox"
+                  width="100"
+                  mb="2"
+                  onChange={(event) => {
+                    if (event) {
+                      const newRoleArray = roleArray.slice();
+                      newRoleArray.push(role.id);
+                      setRoleArray(newRoleArray);
+                    } else {
+                      const newRoleArray = roleArray.slice();
+                      const index = newRoleArray.indexOf(role.id);
+                      if (index > -1) {
+                        newRoleArray.splice(index, 1);
+                      }
+                      setRoleArray(newRoleArray);
+                    }
+                    console.log(roleArray);
+                  }}
+                >
+                  {role.role}
+                </Checkbox>
+              )
+              // double mappping, but not work as i don't know how to show the others
+              //     route.params.role_id_arr.map((role_id: any) =>
+              //       role.id === role_id ? (
+              //         <Checkbox
+              //           key={idx}
+              //           value={role.id.toString()}
+              //           accessibilityLabel="This is a checkbox"
+              //           width="100"
+              //           mb="2"
+              //           isChecked
+              //           onChange={() => {
+              //             console.log(route.params.role_id_arr);
+              //           }}
+              //         >
+              //           {role.role}
+              //         </Checkbox>
+              //       ) : (null)
+              //   )
+            )}
+          </Box>
+          {roleArray.length === 0 && (
+            <Text color="danger.500">請選擇負責人士。</Text>
+          )}
+
+          <Text marginLeft={1} marginTop={5} fontSize={18}>
+            時間
+          </Text>
+          <View style={editGuestStyles.dateTimePicker}>
+            <DateTimePicker
+              testID="dateTimePicker"
+              value={time}
+              mode="time"
+              style={{ width: 100 }}
+              is24Hour={true}
+              display="default"
+              onChange={(event: any, selectedDate?: Date) => {
+                const currentDate = selectedDate || time;
+                setTime(currentDate);
+                console.log(currentDate);
+              }}
+            />
+          </View>
         </View>
 
-        <View style={editGuestStyles.buttonRow}>
-          <Button marginTop={20} onPress={handleSubmit(onSubmit)}>
-            提交
-          </Button>
+        <View>
+          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
         </View>
 
         <View>

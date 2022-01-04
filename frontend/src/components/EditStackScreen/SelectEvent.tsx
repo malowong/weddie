@@ -11,8 +11,8 @@ export function SelectEvent({ navigation }: { navigation: any }) {
         marginBottom={5}
         colorScheme="pink"
         onPress={() =>
-          navigation.navigate('AuthStackScreen', {
-            screen: 'CreateEventScreen',
+          navigation.navigate('CreateEventStackScreen', {
+            screen: 'ChooseScreen',
           })
         }
       >

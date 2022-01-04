@@ -114,6 +114,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
               請選擇種類。
             </Text>
           )}
+
           <Controller
             control={control}
             rules={{

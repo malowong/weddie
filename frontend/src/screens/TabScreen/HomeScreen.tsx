@@ -8,51 +8,9 @@ import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
+import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
+import { Dimensions } from 'react-native';
 
-const rundownData = [
-  {
-    id: 1,
-    time: '2022-12-24T03:02:00.230Z',
-    item: '到場',
-    detail: '買早餐上新郎屋企',
-    date_to_wedding: '30',
-  },
-  {
-    id: 2,
-    time: '2022-12-24T05:02:00.230Z',
-    item: '新郎化妝',
-    detail: '化妝師協助',
-    date_to_wedding: '30',
-  },
-  {
-    id: 3,
-    time: '2022-12-24T05:02:00.230Z',
-    item: '新郎化妝',
-    detail: '化妝師協助',
-    date_to_wedding: '30',
-  },
-  {
-    id: 4,
-    time: '2022-12-24T05:02:00.230Z',
-    item: '新郎化妝',
-    detail: '化妝師協助',
-    date_to_wedding: '30',
-  },
-  {
-    id: 5,
-    time: '2022-12-24T05:02:00.230Z',
-    item: '新郎化妝',
-    detail: '化妝師協助',
-    date_to_wedding: '30',
-  },
-  {
-    id: 6,
-    time: '2022-12-24T05:02:00.230Z',
-    item: '新郎化妝',
-    detail: '化妝師協助',
-    date_to_wedding: '30',
-  },
-];
 
 function getNumberOfDays(
   start: string | number | Date,
@@ -66,12 +24,6 @@ function getNumberOfDays(
   return diffInDays;
 }
 
-// function getTime(time: string | number | Date) {
-//   const dateTime = new Date(time);
-//   const hours = dateTime.getHours().toString().padStart(2, '0');
-//   const minutes = dateTime.getMinutes().toString().padStart(2, '0');
-//   return `${hours}:${minutes}`;
-// }
 
 function getTimeString(time: string) {
   return time.substring(0, 5);
@@ -86,6 +38,7 @@ function getTime(itinerary_time: string) {
 
 export default function HomeScreen() {
   const navigation: any = useNavigation();
+  const windowWidth = Dimensions.get('window').width;
 
   const [fadeAnim] = useState(new Animated.Value(0));
 
@@ -96,6 +49,31 @@ export default function HomeScreen() {
 
   console.log(eventData);
   console.log(eventData.id);
+
+  useRefreshOnFocus(async () => {
+    const resp = await fetch(
+      `${config.BACKEND_URL}/api/itin/me/${eventData.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await resp.json();
+    console.log('data: ', data);
+
+    data.sort((a: any, b: any) => {
+      const keyA = getTime(a.itinerary_time);
+      const keyB = getTime(b.itinerary_time);
+      if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+      return 0;
+    });
+
+    console.log('data sorted: ', data);
+
+    setItinList(data);
+  })
 
   const [itinList, setItinList] = useState([]);
   const { isLoading, error, data } = useQuery('itinData', async () => {
@@ -302,8 +280,8 @@ export default function HomeScreen() {
                 </Box>
               );
             }}
-            sliderWidth={367}
-            itemWidth={367}
+            sliderWidth={windowWidth - 24}
+            itemWidth={windowWidth - 24}
             layout={'default'}
           />
 

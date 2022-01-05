@@ -144,7 +144,6 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
                 }
               );
               setSorting(!sorting);
-              // setExpenditureList([...sortedExpenditureList]);
               setExpenditureList(sortedExpenditureList);
             }}
           >

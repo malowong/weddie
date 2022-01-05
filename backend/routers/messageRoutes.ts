@@ -9,5 +9,5 @@ const messageController = new MessageController(messageService);
 
 export const messageRoutes = express.Router();
 
-messageRoutes.get("/list/:id", asyncWrapper(messageController.getMessageList));
+messageRoutes.get("/list/all/:id", asyncWrapper(messageController.getAllMessageList));
 messageRoutes.post("/", asyncWrapper(messageController.addMessage));

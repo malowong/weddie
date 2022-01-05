@@ -518,11 +518,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Weddie/Weddie.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-<<<<<<< HEAD
-				DEVELOPMENT_TEAM = 79GACPXQYP;
-=======
 				DEVELOPMENT_TEAM = 5LWJ7QWYP7;
->>>>>>> c5dd50d8ffe4bc15d62b469f2a823f10e7504d73
 				INFOPLIST_FILE = Weddie/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

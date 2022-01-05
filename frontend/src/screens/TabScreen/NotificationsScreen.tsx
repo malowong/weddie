@@ -22,7 +22,7 @@ export default function NotificationsScreen() {
 
   useRefreshOnFocus(async () => {
     const resp = await fetch(
-      `${config.BACKEND_URL}/api/message/list/${eventId}`,
+      `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

@@ -103,4 +103,13 @@ export class EventService {
 
     return eventData;
   }
+
+  async getEventListByUserId(userId: number) {
+    const eventList = await this.knex(tables.WEDDING_USER)
+      .select("wedding_event.wedding_name", "wedding_event.wedding_date")
+      .innerJoin(tables.WEDDING_EVENT, "wedding_event.id", "wedding_user.wedding_event_id")
+      .where("wedding_user.user_id", userId);
+
+    return eventList;
+  }
 }

@@ -1,24 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import { Input, Button, Text, Modal, View } from 'native-base';
+import {
+  Input,
+  Button,
+  Text,
+  Modal,
+  View,
+  Select,
+  CheckIcon,
+} from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
+import { roleList } from '../roleList';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../../redux/store';
 
 export function EditParti({ route, navigation }: any) {
   const { height, width } = useWindowDimensions();
   const [phone] = useState(route.params.phone);
-  const [role] = useState(route.params.role);
+  const [roleId] = useState(route.params.roleId);
   const [showModal, setShowModal] = useState(false);
+  const role = useSelector((state: IRootState) => state.event.event?.role);
 
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
       phone: JSON.stringify(phone).replace(/\"/g, ''),
-      role: JSON.stringify(role),
+      roleId: '',
     },
   });
 
@@ -46,6 +57,7 @@ export function EditParti({ route, navigation }: any) {
                 onChangeText={onChange}
                 value={value}
                 keyboardType="numeric"
+                size="xl"
               />
             )}
             name="phone"
@@ -58,6 +70,47 @@ export function EditParti({ route, navigation }: any) {
           )}
           {errors.phone?.type === 'minLength' && (
             <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+          )}
+
+          <Controller
+            name="roleId"
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { value, onChange } }) => (
+              <>
+                <Select
+                  defaultValue={String(roleId)}
+                  marginTop={5}
+                  minWidth="200"
+                  accessibilityLabel="請選擇角色"
+                  placeholder="請選擇角色"
+                  _selectedItem={{
+                    bg: 'teal.600',
+                    endIcon: <CheckIcon size="5" />,
+                  }}
+                  fontSize="md"
+                  onValueChange={onChange}
+                >
+                  {roleList
+                    .filter((roleObject) => roleObject.role !== role)
+                    .map((roleObject) => {
+                      return (
+                        <Select.Item
+                          label={roleObject.role}
+                          value={String(roleObject.id)}
+                        />
+                      );
+                    })}
+                </Select>
+              </>
+            )}
+          />
+          {errors.roleId?.type === 'required' && (
+            <Text color="danger.500" marginTop={1}>
+              請選擇角色。
+            </Text>
           )}
         </View>
 

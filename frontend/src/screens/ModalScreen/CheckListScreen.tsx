@@ -1,6 +1,6 @@
 import { Text, View } from 'native-base';
 import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { TodoItem } from '../../components/TodoItem';
 import TopBar from '../../components/TopBar';
@@ -9,6 +9,7 @@ import { config } from '../../../app.json';
 import { useQuery } from 'react-query';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LoadingMsg } from '../../components/LoadingsMsg';
+import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 
 interface TodoItem {
   id: number;
@@ -22,6 +23,13 @@ interface TodoItem {
 export default function CheckListScreen({ navigation }: { navigation: any }) {
   const [todoList, setTodoList] = useState([]);
   const eventId = useSelector((state: IRootState) => state.event.event?.id);
+
+  useRefreshOnFocus(() =>
+    fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setTodoList(data.todoList))
+  );
+
   const { isLoading, error, data } = useQuery('userData', () =>
     fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
       .then((res) => res.json())
@@ -55,6 +63,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
         {pendingTodoItems.map((todoItem: TodoItem) => {
           return (
             <TouchableOpacity
+              style={todoItemStyles.itemRow}
               key={todoItem.id}
               onPress={() =>
                 navigation.push('EditStackScreen', {
@@ -89,6 +98,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
       {completedTodoItems.map((todoItem: TodoItem) => {
         return (
           <TouchableOpacity
+            style={todoItemStyles.itemRow}
             key={todoItem.id}
             onPress={() =>
               navigation.push('EditStackScreen', {
@@ -127,3 +137,9 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
     </TopBar>
   );
 }
+
+const todoItemStyles = StyleSheet.create({
+  itemRow: {
+    marginBottom: 10,
+  },
+});

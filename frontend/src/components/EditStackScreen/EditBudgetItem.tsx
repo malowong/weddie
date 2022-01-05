@@ -144,6 +144,7 @@ export function EditBudgetItem({ route, navigation }: any) {
               <TextArea
                 marginTop={5}
                 placeholder="事項"
+                size="xl"
                 // style={editBudgetStyles.input}
                 onBlur={onBlur}
                 onChangeText={onChange}
@@ -165,6 +166,7 @@ export function EditBudgetItem({ route, navigation }: any) {
                 placeholder="金額"
                 // style={editBudgetStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
                 keyboardType="numeric"

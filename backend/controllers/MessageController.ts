@@ -4,10 +4,10 @@ import { Request, Response } from "express";
 export class MessageController {
   constructor(private messageService: MessageService) {}
 
-  getMessageList = async (req: Request, res: Response) => {
+  getAllMessageList = async (req: Request, res: Response) => {
     const eventId = parseInt(req.params.id);
 
-    const messageList = await this.messageService.getMessageList(eventId);
+    const messageList = await this.messageService.getAllMessageList(eventId);
 
     res.json({ messageList });
   };

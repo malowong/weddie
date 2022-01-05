@@ -1,6 +1,7 @@
 import { Text, Box, Heading, HStack, VStack } from 'native-base';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { roleList } from '../../components/roleList';
 import TopBar from '../../components/TopBar';
 
 const participants = [
@@ -8,19 +9,19 @@ const participants = [
     id: 1,
     name: 'Matthew',
     phone: 12345678,
-    role: '兄弟',
+    roleId: 6,
   },
   {
     id: 2,
     name: 'Dennis',
     phone: 23456781,
-    role: '兄弟',
+    roleId: 5,
   },
   {
     id: 3,
     name: 'Billy',
     phone: 23475899,
-    role: '姊妹',
+    roleId: 4,
   },
 ];
 
@@ -42,7 +43,7 @@ export default function ParticipantsScreen({
                   params: {
                     id: participant.id,
                     phone: participant.phone,
-                    role: participant.role,
+                    roleId: participant.roleId,
                   },
                 })
               }
@@ -72,7 +73,11 @@ export default function ParticipantsScreen({
                   >
                     <Box px="2" py="0.5" rounded="md" bg="primary.600">
                       <Text fontSize="md" color="white">
-                        {participant.role}
+                        {
+                          roleList.find(
+                            (roleObject) => roleObject.id === participant.roleId
+                          )!.role
+                        }
                       </Text>
                     </Box>
                   </Box>

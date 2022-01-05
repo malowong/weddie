@@ -76,7 +76,7 @@ export function AddRundown({ navigation }: { navigation: any }) {
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
-                size="lg"
+                size="xl"
               />
             )}
             name="itinerary"
@@ -96,6 +96,7 @@ export function AddRundown({ navigation }: { navigation: any }) {
                 placeholder="詳情"
                 style={editGuestStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
               />
@@ -166,7 +167,7 @@ export function AddRundown({ navigation }: { navigation: any }) {
               testID="dateTimePicker"
               value={time}
               mode="time"
-              style={{ width: 100 }}
+              style={{ width: 100, marginLeft: -10 }}
               is24Hour={true}
               display="default"
               onChange={(event: any, selectedDate?: Date) => {

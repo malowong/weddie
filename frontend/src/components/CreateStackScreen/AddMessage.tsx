@@ -57,6 +57,7 @@ export function AddMessage({ navigation }: { navigation: any }) {
                 marginTop={10}
                 placeholder="訊息"
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
                 width={width * 0.9}

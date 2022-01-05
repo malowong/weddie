@@ -100,9 +100,9 @@ export function EditRundown({ route, navigation }: any) {
                 placeholder="事項"
                 style={editGuestStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
-                size="lg"
               />
             )}
             name="itinerary"
@@ -122,6 +122,7 @@ export function EditRundown({ route, navigation }: any) {
                 placeholder="詳情"
                 style={editGuestStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
               />
@@ -206,7 +207,7 @@ export function EditRundown({ route, navigation }: any) {
               testID="dateTimePicker"
               value={time}
               mode="time"
-              style={{ width: 100 }}
+              style={{ width: 100, marginLeft: -10 }}
               is24Hour={true}
               display="default"
               onChange={(event: any, selectedDate?: Date) => {

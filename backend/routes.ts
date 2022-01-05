@@ -18,5 +18,5 @@ routes.use("/guest", guestRoutes);
 routes.use("/budget", budgetRoutes);
 routes.use("/todo", todoRoutes);
 routes.use("/itin", isLoggedIn, itinRoutes);
-routes.use("/event", eventRoutes);
+// routes.use("/event", eventRoutes);
 routes.use("/message", messageRoutes);

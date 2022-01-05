@@ -54,6 +54,7 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
                 placeholder="事項"
                 style={addTodoItemStyles.input}
                 onBlur={onBlur}
+                size="xl"
                 onChangeText={onChange}
                 value={value}
               />
@@ -75,7 +76,7 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
               testID="dateTimePicker"
               value={date}
               mode="date"
-              style={{ width: 230 }}
+              style={{ width: 230, marginLeft: -10 }}
               display="default"
               onChange={(event: any, selectedDate?: Date) => {
                 const currentDate = selectedDate || date;
@@ -85,7 +86,7 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
           </View>
 
           {date.toISOString() < new Date().toISOString() && (
-            <Text color="danger.500" marginTop={2} marginLeft={2.5}>
+            <Text color="danger.500" marginTop={2} marginLeft={1}>
               請選擇正確的日子。
             </Text>
           )}
@@ -99,6 +100,7 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
               <TextArea
                 marginTop={5}
                 placeholder="備註"
+                size="xl"
                 style={addTodoItemStyles.input}
                 onBlur={onBlur}
                 onChangeText={onChange}

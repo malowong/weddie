@@ -11,7 +11,6 @@ import { config } from '../../../app.json';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { Dimensions } from 'react-native';
 
-
 function getNumberOfDays(
   start: string | number | Date,
   end: string | number | Date
@@ -23,7 +22,6 @@ function getNumberOfDays(
   const diffInDays = Math.round(diffInTime / oneDay);
   return diffInDays;
 }
-
 
 function getTimeString(time: string) {
   return time.substring(0, 5);
@@ -47,8 +45,8 @@ export default function HomeScreen() {
   const eventData: any = useSelector((state: IRootState) => state.event.event);
   const token = useSelector((state: IRootState) => state.auth.token);
 
-  console.log(eventData);
-  console.log(eventData.id);
+  // console.log(eventData);
+  // console.log(eventData.id);
 
   useRefreshOnFocus(async () => {
     const resp = await fetch(
@@ -73,7 +71,7 @@ export default function HomeScreen() {
     console.log('data sorted: ', data);
 
     setItinList(data);
-  })
+  });
 
   const [itinList, setItinList] = useState([]);
   const { isLoading, error, data } = useQuery('itinData', async () => {

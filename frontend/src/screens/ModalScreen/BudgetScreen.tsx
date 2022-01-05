@@ -83,14 +83,15 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
           width={width * 0.9}
           height={height * 0.2}
           strokeWidth={20}
-          radius={60}
+          radius={65}
           chartConfig={{
-            backgroundColor: '#ec489a',
-            backgroundGradientFrom: '#ec489a',
-            backgroundGradientTo: '#ec489b',
+            backgroundColor: '#f2f2f2',
+            backgroundGradientFrom: '#f2f2f2',
+            backgroundGradientTo: '#f2f2f2',
+            // f2f2f2
             decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            color: (opacity = 1) => `rgba(233, 30, 98, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(233, 30, 98, ${opacity})`,
             style: {
               borderRadius: 16,
             },
@@ -100,37 +101,32 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
               stroke: '#ffa726',
             },
           }}
-          hideLegend={false}
+          hideLegend={true}
         />
       )}
 
-      <View mb={5} mt={3}>
+      <View mb={5} mt={3} marginX={2}>
         <View display="flex" flexDirection="row" justifyContent="space-between">
-          <Text fontSize={22} marginLeft={15}>
-            總預算
-          </Text>
+          <Text fontSize={22}>總預算</Text>
           <Text fontSize={22}>{budget}</Text>
         </View>
         <View display="flex" flexDirection="row" justifyContent="space-between">
-          <Text fontSize={22} marginLeft={15}>
-            總支出
-          </Text>
+          <Text fontSize={22}>總支出</Text>
           <Text fontSize={22}>{totalExpenditure}</Text>
         </View>
         <View display="flex" flexDirection="row" justifyContent="space-between">
-          <Text fontSize={22} marginLeft={15}>
-            剩餘預算
-          </Text>
+          <Text fontSize={22}>剩餘預算</Text>
           <Text fontSize={22}>{budget - totalExpenditure}</Text>
         </View>
       </View>
       <View borderBottomColor="black" borderBottomWidth={1} />
       <View marginTop={5}>
         <View style={budgetStyles.addRow}>
-          <Text fontSize={24} fontWeight="bold" marginLeft={15}>
+          <Text fontSize={24} fontWeight="bold" marginLeft={2}>
             支出
           </Text>
           <Button
+            backgroundColor="#f2f2f2"
             size="lg"
             marginRight={15}
             onPress={() => {
@@ -147,7 +143,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
               setExpenditureList(sortedExpenditureList);
             }}
           >
-            <Ionicons name="ios-funnel-outline" />
+            <Ionicons name="ios-funnel-outline" color="#e91e63" size={30} />
           </Button>
         </View>
 
@@ -193,9 +189,9 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
                     alignItems="flex-end"
                     justifyContent="flex-end"
                   >
-                    <Box px="2" py="0.5" rounded="md" bg="primary.600">
-                      <Text fontSize="md" color="white">
-                        {expenditure.expenditure}
+                    <Box px="2" py="0.5" rounded="md">
+                      <Text fontSize="md" color="black" fontFamily="arial">
+                        ${expenditure.expenditure}
                       </Text>
                     </Box>
                   </Box>

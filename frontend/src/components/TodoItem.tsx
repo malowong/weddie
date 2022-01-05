@@ -17,7 +17,7 @@ export function TodoItem(props: ITodoItemProp) {
         <Text fontSize={17}>{props.itemName}</Text>
       </View>
       <View style={todoStyles.date}>
-        <Text fontSize={17}>{dueDate.slice(4, 15)}</Text>
+        <Text fontSize={15}>{dueDate.slice(4, 15)}</Text>
       </View>
     </View>
   );
@@ -31,15 +31,19 @@ const todoStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 16,
     marginHorizontal: 10,
-    borderWidth: 1,
-    borderRadius: 15,
-    paddingVertical: 10,
+    // borderWidth: 1,
+    // borderRadius: 15,
+    paddingVertical: 15,
     paddingHorizontal: 15,
+    backgroundColor: '#D3D3D3',
+    // backgroundColor: '#ffffff',
   },
   itemName: {
     width: '67%',
+    marginRight: 5,
   },
   date: {
     width: '33%',
+    marginRight: -15,
   },
 });

@@ -8,7 +8,10 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
     <View
       style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}
     >
-      <TouchableOpacity onPress={() => navigation.goBack()} style={{ flex: 1 }}/>
+      <TouchableOpacity
+        onPress={() => navigation.goBack()}
+        style={{ flex: 1 }}
+      />
       <View
         style={{
           height: '50%',
@@ -75,7 +78,11 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
             <Text>座位安排</Text>
           </TouchableOpacity>
         </View>
-        <Button onPress={() => navigation.goBack()} title="返回" />
+        <Button
+          onPress={() => navigation.goBack()}
+          color="#ec4899"
+          title="返回"
+        />
       </View>
     </View>
   );

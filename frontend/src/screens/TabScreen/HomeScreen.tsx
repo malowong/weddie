@@ -47,8 +47,8 @@ export default function HomeScreen() {
   const eventData: any = useSelector((state: IRootState) => state.event.event);
   const token = useSelector((state: IRootState) => state.auth.token);
 
-  console.log(eventData);
-  console.log(eventData.id);
+  // console.log(eventData);
+  // console.log(eventData.id);
 
   useRefreshOnFocus(async () => {
     const resp = await fetch(

@@ -50,7 +50,7 @@ export function EditMaterialItem({ route, navigation }: any) {
   return (
     <CreateAndEditTopBar pageName="編輯物資">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{
@@ -92,10 +92,30 @@ export function EditMaterialItem({ route, navigation }: any) {
           />
         </View>
 
+        <View>
+          {updateItemMutation.isError ? (
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
+          ) : null}
+
+          {updateItemMutation.isSuccess ? navigation.goBack() : null}
+
+          {deleteItemMutation.isError ? (
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
+          ) : null}
+
+          {deleteItemMutation.isSuccess ? navigation.goBack() : null}
+        </View>
+
         <View style={editMaterialStyles.buttonRow}>
-          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
-          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
-            移除物資
+          <Button width="48%" onPress={handleSubmit(onSubmit)}>
+            儲存
+          </Button>
+          <Button
+            width="48%"
+            colorScheme="danger"
+            onPress={() => setShowModal(true)}
+          >
+            移除
           </Button>
 
           <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -125,24 +145,6 @@ export function EditMaterialItem({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
-        </View>
-
-        <View>
-          {updateItemMutation.isError ? (
-            <Text color="danger.500">
-              錯誤：{updateItemMutation.error.message}
-            </Text>
-          ) : null}
-
-          {updateItemMutation.isSuccess ? navigation.goBack() : null}
-
-          {deleteItemMutation.isError ? (
-            <Text color="danger.500">
-              錯誤：{deleteItemMutation.error.message}
-            </Text>
-          ) : null}
-
-          {deleteItemMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

@@ -75,7 +75,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
           <Select.Item label="其他" value="12" />
         </Select> */}
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             name="categoryId"
             control={control}
@@ -89,7 +89,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
                   accessibilityLabel="請選擇種類"
                   placeholder="請選擇種類"
                   _selectedItem={{
-                    bg: 'teal.600',
+                    bg: 'secondary.500',
                     endIcon: <CheckIcon size="5" />,
                   }}
                   fontSize="md"

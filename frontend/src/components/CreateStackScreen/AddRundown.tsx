@@ -64,7 +64,7 @@ export function AddRundown({ navigation }: { navigation: any }) {
   return (
     <CreateAndEditTopBar pageName="新增當日流程">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{
@@ -182,15 +182,15 @@ export function AddRundown({ navigation }: { navigation: any }) {
         </View>
 
         <View>
-          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
-        </View>
-
-        <View>
           {mutation.isError ? (
             <Text color="danger.500">錯誤：{mutation.error.message}</Text>
           ) : null}
 
           {mutation.isSuccess ? navigation.goBack() : null}
+        </View>
+
+        <View>
+          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
         </View>
       </View>
     </CreateAndEditTopBar>

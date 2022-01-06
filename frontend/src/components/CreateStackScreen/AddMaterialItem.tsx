@@ -35,7 +35,7 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
   return (
     <CreateAndEditTopBar pageName="新增物資">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{

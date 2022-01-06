@@ -99,7 +99,7 @@ export function EditBudgetItem({ route, navigation }: any) {
           <Select.Item label="回門" value="11" />
           <Select.Item label="其他" value="12" />
         </Select> */}
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             name="categoryId"
             control={control}
@@ -179,10 +179,31 @@ export function EditBudgetItem({ route, navigation }: any) {
           {errors.expenditure && <Text color="danger.500">請填寫金額。</Text>}
         </View>
 
+        <View>
+          {updateBudgetItemMutation.isError ? (
+            <Text color="danger.500">
+              {updateBudgetItemMutation.error.message}
+            </Text>
+          ) : null}
+          {updateBudgetItemMutation.isSuccess ? navigation.goBack() : null}
+          {deleteBudgetItemMutation.isError ? (
+            <Text color="danger.500">
+              {deleteBudgetItemMutation.error.message}
+            </Text>
+          ) : null}
+          {deleteBudgetItemMutation.isSuccess ? navigation.goBack() : null}
+        </View>
+
         <View style={editBudgetStyles.buttonRow}>
-          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
-          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
-            移除支出
+          <Button width="48%" onPress={handleSubmit(onSubmit)}>
+            儲存
+          </Button>
+          <Button
+            width="48%"
+            colorScheme="danger"
+            onPress={() => setShowModal(true)}
+          >
+            移除
           </Button>
           <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
             <Modal.Content maxWidth="400px">
@@ -211,21 +232,6 @@ export function EditBudgetItem({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
-        </View>
-
-        <View>
-          {updateBudgetItemMutation.isError ? (
-            <Text color="danger.500">
-              {updateBudgetItemMutation.error.message}
-            </Text>
-          ) : null}
-          {updateBudgetItemMutation.isSuccess ? navigation.goBack() : null}
-          {deleteBudgetItemMutation.isError ? (
-            <Text color="danger.500">
-              {deleteBudgetItemMutation.error.message}
-            </Text>
-          ) : null}
-          {deleteBudgetItemMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

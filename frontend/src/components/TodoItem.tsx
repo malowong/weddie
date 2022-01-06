@@ -35,8 +35,8 @@ const todoStyles = StyleSheet.create({
     // borderRadius: 15,
     paddingVertical: 15,
     paddingHorizontal: 15,
-    backgroundColor: '#D3D3D3',
-    // backgroundColor: '#ffffff',
+    // backgroundColor: '#D3D3D3',
+    backgroundColor: '#ffffff',
   },
   itemName: {
     width: '67%',

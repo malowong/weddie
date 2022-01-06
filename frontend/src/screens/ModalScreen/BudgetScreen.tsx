@@ -42,19 +42,23 @@ const budgetCategoryMap = new Map([
 export default function BudgetScreen({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
   const [sorting, setSorting] = useState(false);
-  let budget = parseInt(
-    useSelector((state: IRootState) => state.event.event!.budget)
-  );
-  const eventId = useSelector(
-    (state: IRootState) => state.event.event?.wedding_event_id
-  );
-  console.log('eventId: ', eventId);
 
-  if (!budget) {
-    budget = 0;
+  let eventData: any = useSelector((state: IRootState) => state.event.event);
+
+  if (!eventData) {
+    eventData = {
+      budget: '',
+      wedding_event_id: '',
+    };
   }
 
+  const budget = parseInt(eventData.budget);
+  const eventId = eventData.wedding_event_id;
+
+  console.log('eventId: ', eventId);
+
   const [expenditureList, setExpenditureList]: any = useState([]);
+
   const { isLoading, error, data } = useQuery('budgetData', () =>
     fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
       .then((res) => res.json())

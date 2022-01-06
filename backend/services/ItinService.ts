@@ -29,10 +29,12 @@ export class ItinService {
 
   getMyItinList = async (eventID: number, userId: number) => {
 
-    const itinList = await this.knex.select(`${tables.ITINERARY_LIST}.id`, 'itinerary', 'job_duty', 'itinerary_time', `${tables.ITINERARY_ROLE}.role_id`).from(tables.ITINERARY_LIST)
-      .where(`${tables.ITINERARY_LIST}.wedding_event_id`, eventID)
+    const itinList = await this.knex.select(`${tables.ITINERARY_LIST}.id`, 'itinerary', 'job_duty', 'itinerary_time', `${tables.ITINERARY_ROLE}.role_id`)
+      .from(tables.ITINERARY_LIST)
+      .distinctOn('id')
       .innerJoin(tables.ITINERARY_ROLE, `${tables.ITINERARY_LIST}.id`, `${tables.ITINERARY_ROLE}.itinerary_id`)
       .innerJoin(tables.WEDDING_USER, `${tables.WEDDING_USER}.role_id`, `${tables.ITINERARY_ROLE}.role_id`)
+      .where(`${tables.ITINERARY_LIST}.wedding_event_id`, eventID)
       .where(`${tables.WEDDING_USER}.user_id`, userId)
 
     return itinList;
@@ -43,7 +45,7 @@ export class ItinService {
     return eventId;
   }
 
-  async addItin(itinData: ItinList, role_id_arr: number[]){
+  async addItin(itinData: ItinList, role_id_arr: number[]) {
     const [itinId] = await this.knex(tables.ITINERARY_LIST).insert(itinData).returning('id')
 
     for (const role of role_id_arr) {
@@ -66,7 +68,7 @@ export class ItinService {
 
   }
 
-  async deleteItin(itinId: number){
+  async deleteItin(itinId: number) {
     await this.knex(tables.ITINERARY_ROLE).where('itinerary_id', itinId).del()
     await this.knex(tables.ITINERARY_LIST).where('id', itinId).del()
   }

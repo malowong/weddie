@@ -11,7 +11,7 @@ import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { TouchableOpacity, View } from 'react-native';
 
 export default function RundownScreen({ navigation }: { navigation: any }) {
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector((state: IRootState) => state.event.event?.wedding_event_id);
 
   const token = useSelector((state: IRootState) => state.auth.token);
 

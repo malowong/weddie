@@ -6,7 +6,7 @@ export class GuestService {
   constructor(private knex: Knex) {}
 
   getGuestList = async (eventId: number) => {
-    const guestList = await this.knex
+    const guestList: GuestList[] = await this.knex
       .select("*")
       .from(tables.WEDDING_GUEST_LIST)
       .where("wedding_event_id", eventId)

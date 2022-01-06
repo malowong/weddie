@@ -18,15 +18,6 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { ICreateEvent } from '../../redux/event/state';
 import { createEventThunk } from '../../redux/event/thunk';
 import { useDispatch, useSelector } from 'react-redux';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query';
-import { fetchCreateEvent } from '../../api/event';
 import { IRootState } from '../../redux/store';
 import { useNavigation } from '@react-navigation/native';
 

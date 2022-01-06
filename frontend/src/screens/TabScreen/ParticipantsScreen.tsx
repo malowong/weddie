@@ -1,39 +1,47 @@
 import { Text, Box, Heading, HStack, VStack } from 'native-base';
 import React, { useState } from 'react';
 import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { roleList } from '../../components/roleList';
+import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
+import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
+import { ErrorMsg } from '../../components/ErrorMsg';
+import { LoadingMsg } from '../../components/LoadingsMsg';
+import { roleList } from '../../../utils/roleList';
 import TopBar from '../../components/TopBar';
-
-const participants = [
-  {
-    id: 1,
-    name: 'Matthew',
-    phone: 12345678,
-    roleId: 6,
-  },
-  {
-    id: 2,
-    name: 'Dennis',
-    phone: 23456781,
-    roleId: 5,
-  },
-  {
-    id: 3,
-    name: 'Billy',
-    phone: 23475899,
-    roleId: 4,
-  },
-];
+import { IRootState } from '../../redux/store';
+import { config } from '../../../app.json';
 
 export default function ParticipantsScreen({
   navigation,
 }: {
   navigation: any;
 }) {
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
+
+  useRefreshOnFocus(() =>
+    fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setParticipantList(data.partiList))
+  );
+
+  const [participantList, setParticipantList] = useState([]);
+
+  const { isLoading, error, data } = useQuery('partiData', () =>
+    fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setParticipantList(data.partiList))
+  );
+
+  if (isLoading) return <LoadingMsg />;
+
+  if (error) return <ErrorMsg />;
+
   return (
     <TopBar pageName="人員名單" show="true" navigate="AddParti">
       <View>
-        {participants.map((participant: any) => {
+        {participantList.map((participant: any) => {
           return (
             <TouchableOpacity
               key={participant.id}
@@ -42,8 +50,9 @@ export default function ParticipantsScreen({
                   screen: 'EditParti',
                   params: {
                     id: participant.id,
+                    name: participant.name,
                     phone: participant.phone,
-                    roleId: participant.roleId,
+                    roleId: participant.role_id,
                   },
                 })
               }
@@ -75,7 +84,8 @@ export default function ParticipantsScreen({
                       <Text fontSize="md" color="white">
                         {
                           roleList.find(
-                            (roleObject) => roleObject.id === participant.roleId
+                            (roleObject) =>
+                              roleObject.id === participant.role_id
                           )!.role
                         }
                       </Text>
@@ -87,7 +97,7 @@ export default function ParticipantsScreen({
           );
         })}
 
-        {participants.length === 0 && (
+        {participantList.length === 0 && (
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('CreateStackScreen', {

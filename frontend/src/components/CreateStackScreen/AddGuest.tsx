@@ -10,7 +10,9 @@ import { IRootState } from '../../redux/store';
 
 export function AddGuest({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
 
   const {
     control,
@@ -112,16 +114,16 @@ export function AddGuest({ navigation }: { navigation: any }) {
         </View>
 
         <View>
-          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
-        </View>
-
-        <View>
           {mutation.isError ? (
-            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
           ) : null}
 
           {mutation.isSuccess ? navigation.goBack() : null}
         </View>
+      </View>
+
+      <View>
+        <Button onPress={handleSubmit(onSubmit)}>提交</Button>
       </View>
     </CreateAndEditTopBar>
   );

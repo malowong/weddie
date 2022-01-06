@@ -16,11 +16,13 @@ import { useMutation } from 'react-query';
 import { IRootState } from '../../redux/store';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { fetchAddRundown } from '../../api/rundown';
-import { roleList } from '../roleList';
+import { roleList } from '../../../utils/roleList';
 
 export function AddRundown({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
   const [roleArray, setRoleArray] = useState<number[]>([]);
   const [time, setTime] = useState(new Date());
 

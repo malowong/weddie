@@ -11,7 +11,9 @@ import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { IRootState } from '../../redux/store';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
 
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)

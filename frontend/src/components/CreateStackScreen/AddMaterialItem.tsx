@@ -7,6 +7,7 @@ import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
 import { fetchAddLogisticsItem } from '../../api/logistics';
+import { MutationResult } from '../MutationResult';
 
 export function AddMaterialItem({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
@@ -75,16 +76,10 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
           />
         </View>
 
+        <MutationResult mutation={mutation} navigation={navigation} />
+
         <View>
           <Button onPress={handleSubmit(onSubmit)}>提交</Button>
-        </View>
-
-        <View>
-          {mutation.isError ? (
-            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
-          ) : null}
-
-          {mutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

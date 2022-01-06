@@ -15,6 +15,7 @@ import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useMutation } from 'react-query';
 import { fetchAddExpenditureItem } from '../../api/expenditure';
 import { IRootState } from '../../redux/store';
+import { MutationResult } from '../MutationResult';
 
 export function AddBudgetItem({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
@@ -160,17 +161,10 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
           {errors.amount && <Text color="danger.500">請填寫金額。</Text>}
         </View>
 
-        <View>
-          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
-        </View>
+        <MutationResult mutation={mutation} navigation={navigation} />
 
         <View>
-          {mutation.isError ? (
-            <Text color="danger.500" marginTop={2}>
-              {mutation.error.message}
-            </Text>
-          ) : null}
-          {mutation.isSuccess ? navigation.goBack() : null}
+          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
         </View>
       </View>
     </CreateAndEditTopBar>

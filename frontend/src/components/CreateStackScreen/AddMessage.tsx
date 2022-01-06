@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { fetchAddMessage } from '../../api/message';
 import { IRootState } from '../../redux/store';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
+import { MutationResult } from '../MutationResult';
 
 const roleList = [
   { id: 3, role: '兄弟' },
@@ -130,16 +131,10 @@ export function AddMessage({ navigation }: { navigation: any }) {
           )}
         </View>
 
+        <MutationResult mutation={mutation} navigation={navigation} />
+
         <View>
           <Button onPress={handleSubmit(onSubmit)}>提交</Button>
-        </View>
-
-        <View>
-          {mutation.isError ? (
-            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
-          ) : null}
-
-          {mutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

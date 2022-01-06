@@ -90,7 +90,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
                   >
                     <Checkbox
                       defaultIsChecked={material.is_ready}
-                      colorScheme="green"
+                      colorScheme="pink"
                       value={String(material.id)}
                       aria-label="Attend"
                       onChange={() => {
@@ -136,7 +136,7 @@ const materialStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     marginTop: 5,
   },
 });

@@ -1,5 +1,5 @@
-import { StyleSheet, View } from 'react-native';
-import { Text } from 'native-base';
+import { StyleSheet } from 'react-native';
+import { Box, Heading, HStack, View, VStack } from 'native-base';
 import React from 'react';
 
 interface ITodoItemProp {
@@ -11,15 +11,32 @@ export function TodoItem(props: ITodoItemProp) {
   console.log('taken out from db:', props.dueDate);
   const dueDate = new Date(props.dueDate).toString();
   console.log('after toString: ', dueDate);
+
   return (
-    <View style={todoStyles.tableRow}>
-      <View style={todoStyles.itemName}>
-        <Text fontSize={17}>{props.itemName}</Text>
-      </View>
-      <View style={todoStyles.date}>
-        <Text fontSize={15}>{dueDate.slice(4, 15)}</Text>
-      </View>
-    </View>
+    <Box
+      bg="white"
+      py="4"
+      px="3"
+      mb="3"
+      rounded="xl"
+      alignSelf="center"
+      width="100%"
+      maxWidth="100%"
+      shadow={3}
+    >
+      <HStack>
+        <View width="60%">
+          <Heading size="sm" textAlign="left" color="black">
+            {props.itemName}
+          </Heading>
+        </View>
+        <VStack width="40%">
+          <Heading size="sm" textAlign="center" color="secondary.600">
+            {dueDate.slice(4, 15)}
+          </Heading>
+        </VStack>
+      </HStack>
+    </Box>
   );
 }
 

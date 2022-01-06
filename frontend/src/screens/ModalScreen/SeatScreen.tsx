@@ -6,9 +6,7 @@ import TopBar from '../../components/TopBar';
 export default function SeatScreen() {
   return (
     <TopBar pageName="座位安排" show="true" navigate="AddTodoItem">
-      <Text style={styles.baseText}>
-        座位安排座位安排座位安排座位安排座位安排
-      </Text>
+      <Text style={styles.baseText}>請等待 3.2 版本更新</Text>
     </TopBar>
   );
 }

@@ -116,7 +116,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
                           py="0.5"
                           mr="3"
                           rounded="md"
-                          bg="primary.600"
+                          bg="secondary.500"
                           key={idx}
                         >
                           <Text fontSize="md" color="white">

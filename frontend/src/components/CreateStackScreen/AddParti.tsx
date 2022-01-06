@@ -8,6 +8,7 @@ import { fetchAddParti } from '../../api/parti';
 import { IRootState } from '../../redux/store';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { roleList } from '../../../utils/roleList';
+import { MutationResult } from '../MutationResult';
 
 export function AddParti({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
@@ -40,7 +41,7 @@ export function AddParti({ navigation }: { navigation: any }) {
   };
 
   return (
-    <CreateAndEditTopBar pageName="新增賓客">
+    <CreateAndEditTopBar pageName="新增人員">
       <View display="flex" flexDirection="column">
         <View height={height * 0.75}>
           <Controller
@@ -107,7 +108,7 @@ export function AddParti({ navigation }: { navigation: any }) {
                   accessibilityLabel="請選擇角色"
                   placeholder="請選擇角色"
                   _selectedItem={{
-                    bg: 'teal.600',
+                    bg: 'secondary.500',
                     endIcon: <CheckIcon size="5" />,
                   }}
                   fontSize="md"
@@ -135,13 +136,7 @@ export function AddParti({ navigation }: { navigation: any }) {
           )}
         </View>
 
-        <View>
-          {mutation.isError ? (
-            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
-          ) : null}
-
-          {mutation.isSuccess ? navigation.goBack() : null}
-        </View>
+        <MutationResult mutation={mutation} navigation={navigation} />
 
         <View>
           <Button onPress={handleSubmit(onSubmit)}>儲存</Button>

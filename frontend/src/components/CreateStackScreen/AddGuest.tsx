@@ -7,6 +7,7 @@ import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useMutation } from 'react-query';
 import { fetchAddGuest } from '../../api/guest';
 import { IRootState } from '../../redux/store';
+import { MutationResult } from '../MutationResult';
 
 export function AddGuest({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
@@ -112,15 +113,9 @@ export function AddGuest({ navigation }: { navigation: any }) {
           />
           {errors.relationship && <Text color="danger.500">請填寫關係。</Text>}
         </View>
-
-        <View>
-          {mutation.isError ? (
-            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
-          ) : null}
-
-          {mutation.isSuccess ? navigation.goBack() : null}
-        </View>
       </View>
+
+      <MutationResult mutation={mutation} navigation={navigation} />
 
       <View>
         <Button onPress={handleSubmit(onSubmit)}>提交</Button>

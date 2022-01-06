@@ -74,7 +74,6 @@ export default function NotificationsScreen() {
         >
           Click here to push notification
         </Button> */}
-
       {messageList.map((message: Message, idx: number) => {
         return (
           <Box

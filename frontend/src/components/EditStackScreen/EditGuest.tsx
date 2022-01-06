@@ -10,7 +10,9 @@ import { fetchRemoveGuest, fetchUpdateGuest } from '../../api/guest';
 
 export function EditGuest({ route, navigation }: any) {
   const { height, width } = useWindowDimensions();
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
   const [showModal, setShowModal] = useState(false);
 
   const [name] = useState(route.params.name);

@@ -10,7 +10,9 @@ import { fetchAddLogisticsItem } from '../../api/logistics';
 
 export function AddMaterialItem({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
   const {
     control,
     handleSubmit,

@@ -32,7 +32,9 @@ const roleList = [
 
 export function EditRundown({ route, navigation }: any) {
   const { height, width } = useWindowDimensions();
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
   const [showModal, setShowModal] = useState(false);
 
   const [time, setTime] = useState(getTime(route.params.itinerary_time));

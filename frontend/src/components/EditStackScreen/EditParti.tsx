@@ -11,16 +11,22 @@ import {
   CheckIcon,
 } from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
-import { roleList } from '../roleList';
+import { roleList } from '../../../utils/roleList';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 
 export function EditParti({ route, navigation }: any) {
   const { height, width } = useWindowDimensions();
+  const [id] = useState(route.params.id);
+  const [name] = useState(route.params.name);
   const [phone] = useState(route.params.phone);
   const [roleId] = useState(route.params.roleId);
   const [showModal, setShowModal] = useState(false);
   const role = useSelector((state: IRootState) => state.event.event?.role);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
+  console.log(route.params);
 
   const {
     control,
@@ -28,19 +34,44 @@ export function EditParti({ route, navigation }: any) {
     formState: { errors },
   } = useForm({
     defaultValues: {
+      name: name,
       phone: JSON.stringify(phone).replace(/\"/g, ''),
       roleId: '',
     },
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    data['wedding_event_id'] = eventId;
+    data['role_id'] = data.roleId;
+    data['partiId'] = id;
+    delete data['roleId'];
+    String(data['phone']);
+    console.log('submit form data:', data);
   };
 
   return (
     <CreateAndEditTopBar pageName="編輯人員資料">
       <View display="flex" flexDirection="column">
         <View height={height * 0.65}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="名稱"
+                onBlur={onBlur}
+                size="xl"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="name"
+          />
+          {errors.name && <Text color="danger.500">請填寫名稱。</Text>}
+
           <Controller
             control={control}
             rules={{
@@ -52,7 +83,6 @@ export function EditParti({ route, navigation }: any) {
               <Input
                 marginTop={5}
                 placeholder="電話號碼"
-                // style={editGuestStyles.input}
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
@@ -107,15 +137,10 @@ export function EditParti({ route, navigation }: any) {
               </>
             )}
           />
-          {errors.roleId?.type === 'required' && (
-            <Text color="danger.500" marginTop={1}>
-              請選擇角色。
-            </Text>
-          )}
         </View>
 
         <View style={editPartiStyles.buttonRow}>
-          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
+          <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
 
           <Button colorScheme="danger" onPress={() => setShowModal(true)}>
             移除賓客資料

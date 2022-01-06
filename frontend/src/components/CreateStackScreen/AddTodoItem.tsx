@@ -11,7 +11,9 @@ import { fetchAddTodoItem } from '../../api/todo';
 
 export function AddTodoItem({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
   const [date, setDate] = useState<Date>(new Date());
   console.log('add form:', date);
 

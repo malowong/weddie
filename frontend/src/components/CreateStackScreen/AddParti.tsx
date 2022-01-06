@@ -2,14 +2,18 @@ import { View, Text, Input, Button, Select, CheckIcon } from 'native-base';
 import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useWindowDimensions } from 'react-native';
+import { useMutation } from 'react-query';
 import { useSelector } from 'react-redux';
+import { fetchAddParti } from '../../api/parti';
 import { IRootState } from '../../redux/store';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
-import { roleList } from '../roleList';
+import { roleList } from '../../../utils/roleList';
 
 export function AddParti({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
   const role = useSelector((state: IRootState) => state.event.event?.role);
 
   const {
@@ -18,22 +22,47 @@ export function AddParti({ navigation }: { navigation: any }) {
     formState: { errors },
   } = useForm({
     defaultValues: {
+      name: '',
       phone: '',
       roleId: '',
     },
   });
 
+  const mutation: any = useMutation(fetchAddParti);
+
   const onSubmit = (data: any) => {
-    console.log('submit form data:', data);
     data['wedding_event_id'] = eventId;
+    data['role_id'] = data.roleId;
+    delete data['roleId'];
     String(data['phone']);
-    // mutation.mutate(data);
+    console.log('submit form data:', data);
+    mutation.mutate(data);
   };
 
   return (
     <CreateAndEditTopBar pageName="新增賓客">
       <View display="flex" flexDirection="column">
         <View height={height * 0.65}>
+          <Controller
+            control={control}
+            rules={{
+              required: true,
+            }}
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                marginTop={5}
+                placeholder="名稱"
+                // style={addMaterialStyles.input}
+                onBlur={onBlur}
+                size="xl"
+                onChangeText={onChange}
+                value={value}
+              />
+            )}
+            name="name"
+          />
+          {errors.name && <Text color="danger.500">請填寫名稱。</Text>}
+
           <Controller
             control={control}
             rules={{
@@ -89,6 +118,7 @@ export function AddParti({ navigation }: { navigation: any }) {
                     .map((roleObject) => {
                       return (
                         <Select.Item
+                          key={roleObject.id}
                           label={roleObject.role}
                           value={String(roleObject.id)}
                         />
@@ -106,18 +136,16 @@ export function AddParti({ navigation }: { navigation: any }) {
         </View>
 
         <View>
-          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
-        </View>
-
-        {/* <View> */}
-        {/* <View>
           {mutation.isError ? (
-            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
           ) : null}
 
           {mutation.isSuccess ? navigation.goBack() : null}
-        </View> */}
-        {/* </View> */}
+        </View>
+
+        <View>
+          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
+        </View>
       </View>
     </CreateAndEditTopBar>
   );

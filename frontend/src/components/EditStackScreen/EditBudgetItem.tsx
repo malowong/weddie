@@ -22,7 +22,9 @@ import { IRootState } from '../../redux/store';
 
 export function EditBudgetItem({ route, navigation }: any) {
   const { height, width } = useWindowDimensions();
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
   const [categoryId, setCategoryId] = useState(route.params.categoryId);
   const [description, setDescription] = useState(route.params.description);
   const [expenditure, setExpenditure] = useState(route.params.expenditure);

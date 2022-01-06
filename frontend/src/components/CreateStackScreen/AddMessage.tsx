@@ -19,7 +19,9 @@ const roleList = [
 ];
 
 export function AddMessage({ navigation }: { navigation: any }) {
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
   const { height, width } = useWindowDimensions();
   const [roleArray, setRoleArray] = useState<number[]>([]);
 

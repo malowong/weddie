@@ -8,10 +8,6 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
     <View
       style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-end' }}
     >
-      <TouchableOpacity
-        onPress={() => navigation.goBack()}
-        style={{ flex: 1 }}
-      />
       <View
         style={{
           height: '50%',
@@ -29,8 +25,8 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
               navigation.navigate('TabScreen', { screen: 'BudgetScreen' })
             }
           >
-            <Ionicons name={'pie-chart-outline'} size={50} />
-            <Text>婚禮預算</Text>
+            <Ionicons name={'pie-chart-outline'} size={50} color="#e91e63"/>
+            <Text style={styles.modalText}>婚禮預算</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.mainModalButton}
@@ -38,8 +34,8 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
               navigation.navigate('TabScreen', { screen: 'CheckListScreen' })
             }
           >
-            <Ionicons name={'ios-checkbox-outline'} size={50} />
-            <Text>待辦事項</Text>
+            <Ionicons name={'ios-checkbox-outline'} size={50} color="#e91e63"/>
+            <Text style={styles.modalText}>待辦事項</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.mainModalButton}
@@ -47,8 +43,8 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
               navigation.navigate('TabScreen', { screen: 'MaterialScreen' })
             }
           >
-            <Ionicons name={'ios-briefcase-outline'} size={50} />
-            <Text>物資管理</Text>
+            <Ionicons name={'ios-briefcase-outline'} size={50} color="#e91e63"/>
+            <Text style={styles.modalText}>物資管理</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.mainModalButton}
@@ -56,8 +52,8 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
               navigation.navigate('TabScreen', { screen: 'GuestScreen' })
             }
           >
-            <Ionicons name={'ios-person-add-outline'} size={50} />
-            <Text>賓客名單</Text>
+            <Ionicons name={'ios-person-add-outline'} size={50} color="#e91e63"/>
+            <Text style={styles.modalText}>賓客名單</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.mainModalButton}
@@ -65,8 +61,8 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
               navigation.navigate('TabScreen', { screen: 'RundownScreen' })
             }
           >
-            <Ionicons name={'ios-alarm-outline'} size={50} />
-            <Text>當日流程</Text>
+            <Ionicons name={'ios-alarm-outline'} size={50} color="#e91e63"/>
+            <Text style={styles.modalText}>當日流程</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.mainModalButton}
@@ -74,15 +70,10 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
               navigation.navigate('TabScreen', { screen: 'SeatScreen' })
             }
           >
-            <Ionicons name={'ios-restaurant-outline'} size={50} />
-            <Text>座位安排</Text>
+            <Ionicons name={'ios-restaurant-outline'} size={50} color="#e91e63"/>
+            <Text style={styles.modalText}>座位安排</Text>
           </TouchableOpacity>
         </View>
-        <Button
-          onPress={() => navigation.goBack()}
-          color="#ec4899"
-          title="返回"
-        />
       </View>
     </View>
   );

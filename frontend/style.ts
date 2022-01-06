@@ -18,11 +18,15 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     justifyContent: "space-around",
+    paddingTop: 40,
     paddingBottom: 30,
   },
   mainModalButton: {
     paddingHorizontal: 30,
     alignItems: "center",
-    paddingBottom: 30,
+    paddingBottom: 50,
   },
+  modalText: {
+    marginTop: 5,
+  }
 });

@@ -42,13 +42,18 @@ const budgetCategoryMap = new Map([
 export default function BudgetScreen({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
   const [sorting, setSorting] = useState(false);
-  const budget: number = parseInt(
+  let budget: number = parseInt(
     useSelector((state: IRootState) => state.event.event!.budget)
   );
   const eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
   );
   console.log('eventId: ', eventId);
+
+  if (!budget) {
+    budget = 0;
+  }
+
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
       .then((res) => res.json())

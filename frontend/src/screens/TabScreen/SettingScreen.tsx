@@ -6,7 +6,6 @@ import { useForm, Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutThunk } from '../../redux/auth/thunk';
 import { IRootState } from '../../redux/store';
-import { CommonActions } from '@react-navigation/native';
 
 export default function SettingScreen({ navigation }: { navigation: any }) {
   const role = useSelector((state: IRootState) => state.event.event?.role);
@@ -29,10 +28,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     const phoneNumber = parseInt(data.phoneNumber);
 
     setShowModal(false);
-  };
-
-  const onPress = () => {
-    dispatch(logoutThunk());
   };
 
   return (
@@ -133,7 +128,9 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
             variant="outline"
             color="#ffff1a"
             marginTop="8"
-            onPress={onPress}
+            onPress={() => {
+              dispatch(logoutThunk());
+            }}
           >
             登出
           </Button>

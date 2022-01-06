@@ -11,6 +11,7 @@ import { config } from '../../../app.json';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { Dimensions } from 'react-native';
 
+
 function getNumberOfDays(
   start: string | number | Date,
   end: string | number | Date
@@ -22,6 +23,7 @@ function getNumberOfDays(
   const diffInDays = Math.round(diffInTime / oneDay);
   return diffInDays;
 }
+
 
 function getTimeString(time: string) {
   return time.substring(0, 5);
@@ -42,11 +44,20 @@ export default function HomeScreen() {
 
   const userData = useSelector((state: IRootState) => state.auth.user);
   console.log(userData);
-  const eventData: any = useSelector((state: IRootState) => state.event.event);
+  let eventData: any = useSelector((state: IRootState) => state.event.event);
   const token = useSelector((state: IRootState) => state.auth.token);
 
   // console.log(eventData);
   // console.log(eventData.id);
+
+  if(!eventData){
+    eventData = {
+      id: '',
+      wedding_name: '',
+      wedding_date: '',
+      role: '',
+    }
+  }
 
   useRefreshOnFocus(async () => {
     const resp = await fetch(
@@ -71,7 +82,7 @@ export default function HomeScreen() {
     console.log('data sorted: ', data);
 
     setItinList(data);
-  });
+  })
 
   const [itinList, setItinList] = useState([]);
   const { isLoading, error, data } = useQuery('itinData', async () => {
@@ -283,7 +294,7 @@ export default function HomeScreen() {
             layout={'default'}
           />
 
-          <Heading size="lg" textAlign="left" mb="3">
+          <Heading size="lg" textAlign="left" mb="3" color="secondary.600">
             你的時間表
           </Heading>
           {itinList.map((item: any, index) => (

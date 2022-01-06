@@ -2,19 +2,13 @@ import React, { useState } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text, Modal, View } from 'native-base';
-import { useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
-import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
 import { fetchRemoveGuest, fetchUpdateGuest } from '../../api/guest';
 
 export function EditGuest({ route, navigation }: any) {
   const { height, width } = useWindowDimensions();
-  const eventId = useSelector(
-    (state: IRootState) => state.event.event?.wedding_event_id
-  );
   const [showModal, setShowModal] = useState(false);
-
   const [name] = useState(route.params.name);
   const [phone] = useState(route.params.phone);
   const [relationship] = useState(route.params.relationship);
@@ -23,7 +17,6 @@ export function EditGuest({ route, navigation }: any) {
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -37,13 +30,6 @@ export function EditGuest({ route, navigation }: any) {
   const removeGuestMutation: any = useMutation(fetchRemoveGuest);
 
   const onSubmit = (data: any) => {
-    // navigation.setParams({
-    //   name: data.name,
-    //   phone: data.phone,
-    //   relationship: data.relationship,
-    //   id: data.id,
-    // })
-    console.log(data);
     data['guestId'] = id;
     updateGuestMutation.mutate(data);
   };
@@ -130,7 +116,7 @@ export function EditGuest({ route, navigation }: any) {
         </View>
 
         <View style={editGuestStyles.buttonRow}>
-          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
+          <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
 
           <Button colorScheme="danger" onPress={() => setShowModal(true)}>
             移除賓客資料
@@ -167,17 +153,13 @@ export function EditGuest({ route, navigation }: any) {
 
         <View>
           {updateGuestMutation.isError ? (
-            <Text color="danger.500">
-              錯誤：{updateGuestMutation.error.message}
-            </Text>
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
           ) : null}
 
           {updateGuestMutation.isSuccess ? navigation.goBack() : null}
 
           {removeGuestMutation.isError ? (
-            <Text color="danger.500">
-              錯誤：{removeGuestMutation.error.message}
-            </Text>
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
           ) : null}
           {removeGuestMutation.isSuccess ? navigation.goBack() : null}
         </View>

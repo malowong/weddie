@@ -14,15 +14,15 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   const eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
   );
-
+  console.log('eventId: ', eventId);
+  const [guestList, setGuestList] = useState([]);
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setGuestList(data.guestList))
   );
 
-  const [guestList, setGuestList] = useState([]);
-  const { isLoading, error, data } = useQuery('userData', () =>
+  const { isLoading, error, data } = useQuery('guestData', () =>
     fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setGuestList(data.guestList))
@@ -106,27 +106,3 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
     </TopBar>
   );
 }
-
-// const guestStyles = StyleSheet.create({
-//   tableRow: {
-//     display: 'flex',
-//     flexDirection: 'row',
-//     justifyContent: 'space-evenly',
-//     alignItems: 'center',
-//     marginTop: 15,
-//   },
-//   tableColumn: {
-//     flex: 1,
-//     textAlign: 'left',
-//     display: 'flex',
-//     justifyContent: 'center',
-//     flexDirection: 'row',
-//     fontSize: 17,
-//   },
-//   tableRelationShip: {
-//     flex: 1.5,
-//   },
-//   tableHeader: {
-//     fontWeight: 'bold',
-//   },
-// });

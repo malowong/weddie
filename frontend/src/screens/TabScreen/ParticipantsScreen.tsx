@@ -1,6 +1,6 @@
 import { Text, Box, Heading, HStack, VStack } from 'native-base';
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
@@ -19,14 +19,14 @@ export default function ParticipantsScreen({
   const eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
   );
+  console.log('eventId', eventId);
 
+  const [participantList, setParticipantList] = useState([]);
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setParticipantList(data.partiList))
   );
-
-  const [participantList, setParticipantList] = useState([]);
 
   const { isLoading, error, data } = useQuery('partiData', () =>
     fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
@@ -41,7 +41,7 @@ export default function ParticipantsScreen({
   return (
     <TopBar pageName="人員名單" show="true" navigate="AddParti">
       <View>
-        {participantList.map((participant: any) => {
+        {participantList.map((participant: any, idx: number) => {
           return (
             <TouchableOpacity
               key={participant.id}
@@ -114,21 +114,3 @@ export default function ParticipantsScreen({
     </TopBar>
   );
 }
-
-const partiStyles = StyleSheet.create({
-  tableRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  tableColumn: {
-    flex: 1,
-    textAlign: 'center',
-    marginTop: 10,
-    fontSize: 18,
-  },
-  input: {
-    marginTop: 4,
-  },
-});

@@ -18,4 +18,20 @@ export class PartiController {
 
     res.json({ message: "successful add" });
   };
+
+  updateParti = async (req: Request, res: Response) => {
+    const { partiId, ...partiData } = req.body;
+
+    await this.partiService.updateParti(partiData, partiId);
+
+    res.json({ message: "successful update" });
+  };
+
+  deleteParti = async (req: Request, res: Response) => {
+    const partiId = parseInt(req.params.id);
+
+    await this.partiService.deleteParti(partiId);
+
+    res.json({ message: "successful delete" });
+  };
 }

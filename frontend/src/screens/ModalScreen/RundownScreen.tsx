@@ -15,6 +15,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
 
   const token = useSelector((state: IRootState) => state.auth.token);
 
+  const [itinList, setItinList] = useState([]);
   useRefreshOnFocus(async () => {
     const resp = await fetch(`${config.BACKEND_URL}/api/itin/list/${eventId}`, {
       headers: {
@@ -34,8 +35,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
     setItinList(data);
   });
 
-  const [itinList, setItinList] = useState([]);
-  const { isLoading, error, data } = useQuery('userData', async () => {
+  const { isLoading, error, data } = useQuery('itinData', async () => {
     const resp = await fetch(`${config.BACKEND_URL}/api/itin/list/${eventId}`, {
       headers: {
         Authorization: `Bearer ${token}`,

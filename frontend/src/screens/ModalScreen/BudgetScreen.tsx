@@ -45,20 +45,23 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
   const budget: number = parseInt(
     useSelector((state: IRootState) => state.event.event!.budget)
   );
-
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
+  console.log('eventId: ', eventId);
   useRefreshOnFocus(() =>
-    fetch(`${config.BACKEND_URL}/api/budget/list`)
+    fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setExpenditureList(data.expenditureList))
   );
 
   const [expenditureList, setExpenditureList]: any = useState([]);
-  const { isLoading, error, data } = useQuery('userData', () =>
-    fetch(`${config.BACKEND_URL}/api/budget/list`)
+  const { isLoading, error, data } = useQuery('budgetData', () =>
+    fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setExpenditureList(data.expenditureList))
   );
-
+  // console.log(expenditureList);
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;

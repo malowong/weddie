@@ -34,10 +34,18 @@ export function resetEvent() {
     }
 }
 
+export function changeEvent() {
+    return {
+        type: "@@event/CHANGE_EVENT" as const,
+    }
+}
+
 export type IEventAction =
     | ReturnType<typeof createEventSuccess>
     | ReturnType<typeof createEventFailed>
     | ReturnType<typeof getEventSuccess>
     | ReturnType<typeof getEventFailed>
     | ReturnType<typeof resetEvent>
+    | ReturnType<typeof changeEvent>
+
 

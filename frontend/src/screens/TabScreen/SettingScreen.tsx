@@ -6,6 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutThunk } from '../../redux/auth/thunk';
 import { IRootState } from '../../redux/store';
+import { changeEvent } from '../../redux/event/actions';
 
 export default function SettingScreen({ navigation }: { navigation: any }) {
   const role = useSelector((state: IRootState) => state.event.event?.role);
@@ -69,9 +70,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
             colorScheme="red"
             marginTop="8"
             onPress={() => {
-              navigation.navigate('EditStackScreen', {
-                screen: 'SelectEvent',
-              });
+              dispatch(changeEvent());
             }}
           >
             切換婚禮
@@ -130,6 +129,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
             marginTop="8"
             onPress={() => {
               dispatch(logoutThunk());
+              navigation.navigate('AuthStackScreen', {screen: 'WelcomingScreen'})
             }}
           >
             登出

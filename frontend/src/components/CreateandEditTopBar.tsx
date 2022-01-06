@@ -36,7 +36,7 @@ export default function CreateAndEditTopBar(props: ICreateandEditTopBarProps) {
         </Box>
       </View>
       <View>
-        <Box safeAreaX={3} safeAreaY={1}>
+        <Box safeAreaX={3} safeAreaY={1} marginBottom="10">
           {props.children}
         </Box>
       </View>

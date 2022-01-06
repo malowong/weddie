@@ -91,7 +91,8 @@ export function signUpThunk() {
             }
 
             dispatch(loginSuccess(token, result.userData))
-            dispatch(resetEvent());
+
+            dispatch(restoreEventThunk());
 
         } catch (e) {
             console.error(e)

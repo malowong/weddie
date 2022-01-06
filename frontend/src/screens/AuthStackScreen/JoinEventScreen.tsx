@@ -19,38 +19,40 @@ import {
 } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TextInput, TouchableOpacity } from 'react-native';
+import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useQuery } from 'react-query';
+import { useDispatch, useSelector } from 'react-redux';
+import { ErrorMsg } from '../../components/ErrorMsg';
+import { LoadingMsg } from '../../components/LoadingsMsg';
+import { IRootState } from '../../redux/store';
+import { config } from '../../../app.json';
+import { chooseEventThunk } from '../../redux/event/thunk';
 
-type FormState = {
-  phone: string;
-  password: string;
-};
+interface Event {
+  wedding_date: string;
+  wedding_name: string;
+  id: string;
+}
 
 export default function JoinEventScreen({ navigation }: { navigation: any }) {
+  
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    formState: { errors },
-  } = useForm<FormState>({
-    defaultValues: {
-      phone: '',
-      password: '',
-    },
-  });
+  const dispatch = useDispatch();
+  const userId = useSelector((state: IRootState) => state.auth.user?.id);
+  console.log(userId);
 
-  useEffect(() => {
-    let sub = watch((data) => {
-      console.log('update form data:', data);
-    });
-    return () => sub.unsubscribe();
-  }, [watch]);
+  const [eventList, setEventList] = useState([]);
+  const { isLoading, error, data } = useQuery('userData', () =>
+    fetch(`${config.BACKEND_URL}/api/events/list/${userId}`)
+      .then((res) => res.json())
+      .then((data) => setEventList(data.eventList))
+  );
 
-  function onSubmit(data: FormState) {
-    console.log('submit form data:', data);
-  }
+  console.log(eventList);
+  if (isLoading) return <LoadingMsg />;
+
+  if (error) return <ErrorMsg />;
 
   return (
     <>
@@ -70,71 +72,18 @@ export default function JoinEventScreen({ navigation }: { navigation: any }) {
               color: 'warmGray.50',
             }}
           >
-            加入婚禮
+            選擇婚禮
           </Heading>
 
           <VStack space={3} mt="5">
-            <View>
-              <Controller
-                name="phone"
-                control={control}
-                rules={{
-                  required: true,
-                  maxLength: 8,
-                  minLength: 8,
-                }}
-                render={({ field: { value, onChange } }) => (
-                  <Input
-                    type="number"
-                    placeholder="電話號碼"
-                    fontSize="md"
-                    value={value}
-                    onChangeText={onChange}
-                    keyboardType="numeric"
-                  />
-                )}
-              />
-              {errors.phone?.type === 'required' && (
-                <Text color="danger.500">請填寫你的電話號碼。</Text>
-              )}
-              {errors.phone?.type === 'maxLength' && (
-                <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-              )}
-              {errors.phone?.type === 'minLength' && (
-                <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-              )}
-
-              <Controller
-                name="password"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <Input
-                    type="password"
-                    placeholder="密碼"
-                    fontSize="md"
-                    mt="3"
-                    value={value}
-                    onChangeText={onChange}
-                  />
-                )}
-                rules={{
-                  required: true,
-                }}
-              />
-              {errors.password && (
-                <Text color="danger.500">請填寫你的密碼。</Text>
-              )}
-              <Button
-                mt="4"
-                // colorScheme="indigo"
-                onPress={() => navigation.navigate('MainStackScreen')}
-                // onPress={handleSubmit(onSubmit)}
-              >
-                <Text fontSize="lg" fontWeight="bold" color="white">
-                  加入
-                </Text>
-              </Button>
-            </View>
+            {eventList.map((event: Event, idx: number) => {
+              return (
+                <Button mt="4" key={idx} onPress={() => dispatch(chooseEventThunk(event.id))} justifyContent="flex-start">
+                <Text fontSize="2xl" fontWeight="bold" color="white">{event.wedding_name}</Text>
+                <Text fontSize="lg" color="white">{event.wedding_date.slice(0, 10)}</Text>
+                </Button>
+              )
+            })}
           </VStack>
         </Box>
       </Center>

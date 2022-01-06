@@ -47,21 +47,21 @@ export default function HomeScreen() {
   let eventData: any = useSelector((state: IRootState) => state.event.event);
   const token = useSelector((state: IRootState) => state.auth.token);
 
-  // console.log(eventData);
-  // console.log(eventData.id);
-
+  
   if(!eventData){
     eventData = {
-      id: '',
+      wedding_event_id: '',
       wedding_name: '',
       wedding_date: '',
       role: '',
     }
   }
+  console.log(eventData);
+  console.log(eventData.wedding_event_id);
 
   useRefreshOnFocus(async () => {
     const resp = await fetch(
-      `${config.BACKEND_URL}/api/itin/me/${eventData.id}`,
+      `${config.BACKEND_URL}/api/itin/me/${eventData.wedding_event_id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ export default function HomeScreen() {
   const [itinList, setItinList] = useState([]);
   const { isLoading, error, data } = useQuery('itinData', async () => {
     const resp = await fetch(
-      `${config.BACKEND_URL}/api/itin/me/${eventData.id}`,
+      `${config.BACKEND_URL}/api/itin/me/${eventData.wedding_event_id}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -190,7 +190,7 @@ export default function HomeScreen() {
     }).start();
   };
 
-  const fadeOut = () => {
+const fadeOut = () => {
     Animated.timing(fadeAnim, {
       toValue: 0,
       duration: 50,
@@ -200,7 +200,7 @@ export default function HomeScreen() {
 
   return (
     <>
-      <Box safeAreaTop backgroundColor="#f2f2f2" />
+      <Box safeAreaTop backgroundColor="#f2f1f5" />
       <View
         style={{
           bottom: '0.2%',
@@ -244,7 +244,7 @@ export default function HomeScreen() {
           }
         }}
       >
-        <Box safeAreaX={3} safeAreaY={1}>
+        <Box safeAreaX={3} safeAreaY={1} marginBottom="10">
           <Heading size="xl" textAlign="left" mb="3">
             {userData ? userData.nickname : ''} 你好!
           </Heading>
@@ -267,15 +267,15 @@ export default function HomeScreen() {
                     height="250"
                     width="100%"
                     maxWidth="100%"
-                    roundedTop="lg"
+                    roundedTop="xl"
                   />
                   <Box
-                    bg="primary.600"
+                    bg="secondary.600"
                     pt="4"
                     pb="4"
                     px="3"
                     mb="4"
-                    roundedBottom="lg"
+                    roundedBottom="xl"
                     width="100%"
                     maxWidth="100%"
                   >
@@ -294,17 +294,17 @@ export default function HomeScreen() {
             layout={'default'}
           />
 
-          <Heading size="lg" textAlign="left" mb="3" color="secondary.600">
+          <Heading size="lg" textAlign="left" mb="3">
             你的時間表
           </Heading>
           {itinList.map((item: any, index) => (
             <Box
               key={index}
-              bg="primary.600"
+              bg="white"
               py="4"
               px="3"
               mb="4"
-              rounded="lg"
+              rounded="xl"
               alignSelf="center"
               width="100%"
               maxWidth="100%"
@@ -312,15 +312,15 @@ export default function HomeScreen() {
             >
               <HStack>
                 <View width="25%">
-                  <Heading size="lg" color="white" textAlign="left" mr="3">
+                  <Heading size="lg" textAlign="left" mr="3" color="secondary.600">
                     {getTimeString(item.itinerary_time)}
                   </Heading>
                 </View>
                 <VStack width="75%">
-                  <Heading size="lg" color="white" textAlign="left">
+                  <Heading size="lg" textAlign="left" color="secondary.600">
                     {item.itinerary}
                   </Heading>
-                  <Text fontSize="md" color="white" textAlign="left">
+                  <Text fontSize="md" textAlign="left">
                     {item.job_duty}
                   </Text>
                 </VStack>

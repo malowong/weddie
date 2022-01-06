@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
 import { Dispatch } from 'redux';
 import { fetchLogin, fetchRegister, fetchUser } from '../../api/auth';
-import { fetchCreateEvent, fetchEvent } from '../../api/event';
+import { fetchCreateEvent, fetchEventByEventId, fetchEventByUserId } from '../../api/event';
 import { IRootState } from '../store';
 import {
   createEventFailed,
@@ -41,7 +41,7 @@ export function restoreEventThunk() {
         return dispatch(getEventFailed('No event'));
       }
 
-      const resp = await fetchEvent(userId);
+      const resp = await fetchEventByUserId(userId);
       const result = await resp.json();
 
       console.log(result);
@@ -61,3 +61,31 @@ export function restoreEventThunk() {
     }
   };
 }
+
+export function chooseEventThunk(eventId: string){
+  return async (dispatch: Dispatch<any>) => {
+    try{
+      const resp = await fetchEventByEventId(parseInt(eventId));
+      
+      const result = await resp.json();
+
+      console.log(result);
+
+      if (resp.status !== 200) {
+        return dispatch(getEventFailed(result.error));
+      }
+
+      if (!result.id) {
+        return dispatch(getEventFailed('No event'));
+      }
+
+      dispatch(getEventSuccess(result));
+
+    } catch (e) {
+      console.error(e);
+      dispatch(getEventFailed('Unknown Error'));
+    }
+  }
+}
+
+

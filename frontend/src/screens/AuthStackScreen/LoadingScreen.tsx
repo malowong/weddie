@@ -17,18 +17,12 @@ export default function LoadingScreen({ navigation }: { navigation: any }) {
   }, [dispatch]);
 
   useEffect(() => {
-    if (isAuthenticated === null) {
-      return;
-    }
-    if (isAuthenticated) {
-      if (isCreated == null) {
-        return 
-      }
-      if (isCreated){
-        navigation.navigate('MainStackScreen', {screen: 'HomeScreen' });
-      } else if (isCreated == false) {
-        navigation.navigate('CreateEventStackScreen', {screen: 'ChooseScreen' });
-      }
+    if (isAuthenticated && isCreated) {
+      console.log('1')
+      navigation.navigate('MainStackScreen', {screen: 'HomeScreen' });
+    } else if (isAuthenticated && isCreated == false) {
+      console.log('2')
+      navigation.navigate('CreateEventStackScreen', {screen: 'ChooseScreen' });
     } else {
       navigation.navigate('AuthStackScreen');
     }

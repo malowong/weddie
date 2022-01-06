@@ -42,7 +42,7 @@ const budgetCategoryMap = new Map([
 export default function BudgetScreen({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
   const [sorting, setSorting] = useState(false);
-  let budget: number = parseInt(
+  let budget = parseInt(
     useSelector((state: IRootState) => state.event.event!.budget)
   );
 

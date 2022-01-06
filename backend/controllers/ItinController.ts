@@ -35,6 +35,8 @@ export class ItinController {
 
     const itinList = await this.itinService.getMyItinList(eventId, user!!.id);
 
+    console.log(itinList);
+
     res.json(itinList);
   };
 

@@ -9,7 +9,7 @@
  */
 
 import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -136,9 +136,17 @@ const App = () => {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
-          <NavigationContainer>
+          <NavigationContainer
+            theme={{
+              ...DefaultTheme,
+              colors: {
+                ...DefaultTheme.colors,
+                background: '#f2f1f5',
+              },
+            }}
+          >
             <NativeBaseProvider>
-              <StatusBar barStyle="dark-content" />
+              <StatusBar barStyle="dark-content"/>
               <RootStackScreen />
             </NativeBaseProvider>
           </NavigationContainer>

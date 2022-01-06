@@ -39,6 +39,12 @@ export const eventReducers = (state: IEventState = initialState, action: IEventA
                 event: null,
                 message: null,
             }
+        case "@@event/CHANGE_EVENT":
+            return {
+                isCreated: false,
+                event: null,
+                message: null,
+            }
         default:
             return state
     }

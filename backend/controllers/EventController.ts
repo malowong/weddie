@@ -27,12 +27,12 @@ export class EventController {
 
     await this.eventService.createEvent(event);
 
-    const eventData = await this.eventService.getEventById(user_id);
+    const eventData = await this.eventService.getEventByUserId(user_id);
 
     res.json(eventData);
   };
 
-  getEventById = async (req: Request, res: Response) => {
+  getEventByUserId = async (req: Request, res: Response) => {
     console.log(req.body);
 
     const userId = req.body.userId;
@@ -42,11 +42,7 @@ export class EventController {
       return;
     }
 
-    const eventData = await this.eventService.getEventById(userId);
-    // const eventData = {
-    //     id: event.wedding_event_id,
-
-    // }
+    const eventData = await this.eventService.getEventByUserId(userId);
 
     if (!eventData) {
       res.status(401).json({ msg: "Request are null" });
@@ -70,4 +66,26 @@ export class EventController {
 
     res.json({ eventList });
   };
+
+  getEventByEventId = async (req: Request, res: Response) => {
+    console.log(req.params.id);
+
+    const eventId = parseInt(req.params.id);
+
+    if (!eventId){
+      res.status(401).json({ msg: "Request are null" })
+      return;
+    }
+
+    const eventData = await this.eventService.getEventByEventId(eventId)
+
+    if (!eventData) {
+      res.status(401).json({ msg: "Request are null" });
+      return;
+    }
+
+    res.json(eventData)
+  }
+
+
 }

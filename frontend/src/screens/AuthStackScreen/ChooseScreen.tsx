@@ -36,7 +36,7 @@ export default function ChooseScreen({ navigation }: { navigation: any }) {
                 // onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
-                  加入婚禮
+                  選擇婚禮
                 </Text>
               </Button>
             </View>

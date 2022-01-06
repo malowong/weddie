@@ -109,12 +109,12 @@ export function EditBudgetItem({ route, navigation }: any) {
             render={({ field: { value, onChange } }) => (
               <>
                 <Select
-                  defaultValue={String(categoryId)}
+                  selectedValue={String(categoryId)}
                   minWidth="200"
                   accessibilityLabel="請選擇種類"
                   placeholder="請選擇種類"
                   _selectedItem={{
-                    bg: 'teal.600',
+                    bg: 'secondary.500',
                     endIcon: <CheckIcon size="5" />,
                   }}
                   fontSize="md"
@@ -144,6 +144,7 @@ export function EditBudgetItem({ route, navigation }: any) {
             }}
             render={({ field: { onChange, onBlur, value } }) => (
               <TextArea
+                isReadOnly
                 marginTop={5}
                 placeholder="事項"
                 size="xl"
@@ -181,15 +182,11 @@ export function EditBudgetItem({ route, navigation }: any) {
 
         <View>
           {updateBudgetItemMutation.isError ? (
-            <Text color="danger.500">
-              {updateBudgetItemMutation.error.message}
-            </Text>
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
           ) : null}
           {updateBudgetItemMutation.isSuccess ? navigation.goBack() : null}
           {deleteBudgetItemMutation.isError ? (
-            <Text color="danger.500">
-              {deleteBudgetItemMutation.error.message}
-            </Text>
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
           ) : null}
           {deleteBudgetItemMutation.isSuccess ? navigation.goBack() : null}
         </View>

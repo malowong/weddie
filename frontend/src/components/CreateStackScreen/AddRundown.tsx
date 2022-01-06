@@ -17,6 +17,7 @@ import { IRootState } from '../../redux/store';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { fetchAddRundown } from '../../api/rundown';
 import { roleList } from '../../../utils/roleList';
+import { MutationResult } from '../MutationResult';
 
 export function AddRundown({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
@@ -181,13 +182,7 @@ export function AddRundown({ navigation }: { navigation: any }) {
           </View>
         </View>
 
-        <View>
-          {mutation.isError ? (
-            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
-          ) : null}
-
-          {mutation.isSuccess ? navigation.goBack() : null}
-        </View>
+        <MutationResult mutation={mutation} navigation={navigation} />
 
         <View>
           <Button onPress={handleSubmit(onSubmit)}>提交</Button>

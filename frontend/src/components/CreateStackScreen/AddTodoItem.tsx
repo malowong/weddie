@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 import { useMutation } from 'react-query';
 import { fetchAddTodoItem } from '../../api/todo';
+import { MutationResult } from '../MutationResult';
 
 export function AddTodoItem({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
@@ -113,15 +114,7 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
           />
         </View>
 
-        <View>
-          {mutation.isError ? (
-            <Text color="danger.500">錯誤：{mutation.error.message}</Text>
-          ) : null}
-
-          {mutation.isSuccess
-            ? navigation.push('TabScreen', { screen: 'CheckListScreen' })
-            : null}
-        </View>
+        <MutationResult mutation={mutation} navigation={navigation} />
 
         <View>
           <Button onPress={handleSubmit(onSubmit)}>提交</Button>

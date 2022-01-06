@@ -58,7 +58,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
     <TopBar pageName="待辦事項" show="true" navigate="AddTodoItem">
       <View marginTop={15}>
         {pendingTodoItems.length > 0 && (
-          <Text marginLeft={15} fontSize={25}>
+          <Text fontSize={25} marginLeft={1} fontWeight="bold" marginBottom={5}>
             未完成
           </Text>
         )}
@@ -92,7 +92,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
 
       {completedTodoItems.length > 0 && (
         <View marginTop={20}>
-          <Text marginLeft={15} fontSize={25}>
+          <Text fontSize={25} marginLeft={1} fontWeight="bold" marginBottom={5}>
             已完成
           </Text>
         </View>

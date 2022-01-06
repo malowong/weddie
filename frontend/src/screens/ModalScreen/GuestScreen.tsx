@@ -77,7 +77,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
                     alignItems="flex-end"
                     justifyContent="flex-end"
                   >
-                    <Box px="2" py="0.5" rounded="md" bg="primary.600">
+                    <Box px="2" py="0.5" rounded="md" bg="secondary.500">
                       <Text fontSize="md" color="white">
                         {guest.relationship}
                       </Text>

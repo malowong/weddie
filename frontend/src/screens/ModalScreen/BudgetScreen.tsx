@@ -66,7 +66,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
       .then((res) => res.json())
       .then((data) => setExpenditureList(data.expenditureList))
   );
-  // console.log(expenditureList);
+  console.log(expenditureList);
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
@@ -130,7 +130,12 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
       <View borderBottomColor="black" borderBottomWidth={1} />
       <View marginTop={5}>
         <View style={budgetStyles.addRow}>
-          <Text fontSize={24} fontWeight="bold" marginLeft={2}>
+          <Text
+            fontSize={24}
+            fontWeight="bold"
+            marginLeft={2}
+            color="secondary.500"
+          >
             支出
           </Text>
           <Button
@@ -198,7 +203,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
                     justifyContent="flex-end"
                   >
                     <Box px="2" py="0.5" rounded="md">
-                      <Text fontSize="md" color="black" fontFamily="arial">
+                      <Text fontSize="lg" color="black" fontFamily="arial">
                         ${expenditure.expenditure}
                       </Text>
                     </Box>

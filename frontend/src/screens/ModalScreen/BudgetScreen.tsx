@@ -54,19 +54,20 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
     budget = 0;
   }
 
-  useRefreshOnFocus(() =>
-    fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => setExpenditureList(data.expenditureList))
-  );
-
   const [expenditureList, setExpenditureList]: any = useState([]);
   const { isLoading, error, data } = useQuery('budgetData', () =>
     fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setExpenditureList(data.expenditureList))
   );
-  console.log(expenditureList);
+
+  useRefreshOnFocus(() =>
+    fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setExpenditureList(data.expenditureList))
+  );
+
+  // console.log(expenditureList);
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;

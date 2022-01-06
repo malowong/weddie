@@ -19,7 +19,7 @@ import { styles } from './style';
 import ModalScreen from './src/screens/TabScreen/ModalScreen';
 import LoadingScreen from './src/screens/AuthStackScreen/LoadingScreen';
 import { Provider } from 'react-redux';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, StatusBar } from 'native-base';
 import { store } from './src/redux/store';
 import { AddMaterialItem } from './src/components/CreateStackScreen/AddMaterialItem';
 import { EditMaterialItem } from './src/components/EditStackScreen/EditMaterialItem';
@@ -98,6 +98,7 @@ function MainStackScreen() {
           presentation: 'transparentModal',
           cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
           cardOverlayEnabled: true,
+          gestureResponseDistance: 1000,
         }}
       />
       <MainStack.Screen
@@ -137,6 +138,7 @@ const App = () => {
         <SafeAreaProvider>
           <NavigationContainer>
             <NativeBaseProvider>
+              <StatusBar barStyle="dark-content" />
               <RootStackScreen />
             </NativeBaseProvider>
           </NavigationContainer>

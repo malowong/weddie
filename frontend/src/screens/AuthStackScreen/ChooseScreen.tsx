@@ -16,11 +16,8 @@ export default function ChooseScreen({ navigation }: { navigation: any }) {
               color: 'warmGray.50',
             }}
           >
-            感謝你的加入！
-          </Heading>
-          <Text fontSize="lg" mt="3">
             請選擇項目：
-          </Text>
+          </Heading>
           <VStack space={3} mt="5">
             <View>
               <Button

@@ -20,7 +20,7 @@ import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { fetchRegister } from '../../api/auth';
 import { ISignupUser } from '../../redux/auth/state';
-import { restoreLoginThunk } from '../../redux/auth/thunk';
+import { signUpThunk } from '../../redux/auth/thunk';
 import { useNavigation } from '@react-navigation/native';
 
 export default function SignupScreen() {
@@ -59,7 +59,7 @@ export default function SignupScreen() {
   }
 
   if (mutation.status === 'success') {
-    dispatch(restoreLoginThunk());
+    dispatch(signUpThunk());
   }
 
   return (

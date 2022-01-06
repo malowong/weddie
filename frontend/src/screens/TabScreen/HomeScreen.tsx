@@ -57,7 +57,33 @@ export default function HomeScreen() {
     }
   }
   console.log(eventData);
-  console.log(eventData.wedding_event_id);
+  console.log("hi", eventData.wedding_event_id);
+  const [itinList, setItinList] = useState([]);
+
+  const { isLoading, error, data } = useQuery('itinData', async () => {
+    const resp = await fetch(
+      `${config.BACKEND_URL}/api/itin/me/${eventData.wedding_event_id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const data = await resp.json();
+    console.log('data: ', data);
+
+    data.sort((a: any, b: any) => {
+      const keyA = getTime(a.itinerary_time);
+      const keyB = getTime(b.itinerary_time);
+      if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+      return 0;
+    });
+
+    console.log('data sorted: ', data);
+
+    setItinList(data);
+  });
 
   useRefreshOnFocus(async () => {
     const resp = await fetch(
@@ -83,32 +109,6 @@ export default function HomeScreen() {
 
     setItinList(data);
   })
-
-  const [itinList, setItinList] = useState([]);
-  const { isLoading, error, data } = useQuery('itinData', async () => {
-    const resp = await fetch(
-      `${config.BACKEND_URL}/api/itin/me/${eventData.wedding_event_id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const data = await resp.json();
-    console.log('data: ', data);
-
-    data.sort((a: any, b: any) => {
-      const keyA = getTime(a.itinerary_time);
-      const keyB = getTime(b.itinerary_time);
-      if (keyA < keyB) return -1;
-      if (keyA > keyB) return 1;
-      return 0;
-    });
-
-    console.log('data sorted: ', data);
-
-    setItinList(data);
-  });
 
   const carouselData_couple = [
     {

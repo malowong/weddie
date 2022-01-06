@@ -42,12 +42,12 @@ export function EditParti({ route, navigation }: any) {
   const removePartiMutation: any = useMutation(fetchRemoveParti);
 
   const onSubmit = (data: any) => {
-    data['role_id'] = data.roleId;
+    data['role_id'] = data.roleId || String(roleId);
     data['partiId'] = id;
     delete data['roleId'];
     String(data['phone']);
     console.log('submit form data: ', data);
-    // updatePartiMutation.mutate(data);
+    updatePartiMutation.mutate(data);
   };
 
   const removeParti = () => {
@@ -57,7 +57,7 @@ export function EditParti({ route, navigation }: any) {
   return (
     <CreateAndEditTopBar pageName="編輯人員資料">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{
@@ -110,9 +110,11 @@ export function EditParti({ route, navigation }: any) {
           <Controller
             name="roleId"
             control={control}
-            rules={{
-              required: true,
-            }}
+            // rules={
+            //   {
+            //     // required: true,
+            //   }
+            // }
             render={({ field: { value, onChange } }) => (
               <>
                 <Select
@@ -122,7 +124,7 @@ export function EditParti({ route, navigation }: any) {
                   accessibilityLabel="請選擇角色"
                   placeholder="請選擇角色"
                   _selectedItem={{
-                    bg: 'teal.600',
+                    bg: 'secondary.500',
                     endIcon: <CheckIcon size="5" />,
                   }}
                   fontSize="md"
@@ -145,11 +147,30 @@ export function EditParti({ route, navigation }: any) {
           />
         </View>
 
-        <View style={editPartiStyles.buttonRow}>
-          <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
+        <View>
+          {updatePartiMutation.isError ? (
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
+          ) : null}
 
-          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
-            移除人員資料
+          {updatePartiMutation.isSuccess ? navigation.goBack() : null}
+
+          {removePartiMutation.isError ? (
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
+          ) : null}
+          {removePartiMutation.isSuccess ? navigation.goBack() : null}
+        </View>
+
+        <View style={editPartiStyles.buttonRow}>
+          <Button width="48%" onPress={handleSubmit(onSubmit)}>
+            儲存
+          </Button>
+
+          <Button
+            width="48%"
+            colorScheme="danger"
+            onPress={() => setShowModal(true)}
+          >
+            移除
           </Button>
 
           <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -179,19 +200,6 @@ export function EditParti({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
-        </View>
-
-        <View>
-          {updatePartiMutation.isError ? (
-            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
-          ) : null}
-
-          {updatePartiMutation.isSuccess ? navigation.goBack() : null}
-
-          {removePartiMutation.isError ? (
-            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
-          ) : null}
-          {removePartiMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

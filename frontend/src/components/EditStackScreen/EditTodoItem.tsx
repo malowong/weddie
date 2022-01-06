@@ -63,7 +63,7 @@ export function EditTodoItem({ route, navigation }: any) {
   return (
     <CreateAndEditTopBar pageName="編輯待辦事項">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{
@@ -156,11 +156,35 @@ export function EditTodoItem({ route, navigation }: any) {
           </Select>
         </View>
 
-        <View style={editTodoItemStyles.buttonRow}>
-          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
+        <View>
+          {updateTodoItemMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{updateTodoItemMutation.error.message}
+            </Text>
+          ) : null}
 
-          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
-            移除待辦事項
+          {updateTodoItemMutation.isSuccess ? navigation.goBack() : null}
+
+          {deleteTodoItemMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{deleteTodoItemMutation.error.message}
+            </Text>
+          ) : null}
+
+          {deleteTodoItemMutation.isSuccess ? navigation.goBack() : null}
+        </View>
+
+        <View style={editTodoItemStyles.buttonRow}>
+          <Button width="48%" onPress={handleSubmit(onSubmit)}>
+            儲存
+          </Button>
+
+          <Button
+            width="48%"
+            colorScheme="danger"
+            onPress={() => setShowModal(true)}
+          >
+            移除
           </Button>
 
           <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -190,24 +214,6 @@ export function EditTodoItem({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
-        </View>
-
-        <View>
-          {updateTodoItemMutation.isError ? (
-            <Text color="danger.500">
-              錯誤：{updateTodoItemMutation.error.message}
-            </Text>
-          ) : null}
-
-          {updateTodoItemMutation.isSuccess ? navigation.goBack() : null}
-
-          {deleteTodoItemMutation.isError ? (
-            <Text color="danger.500">
-              錯誤：{deleteTodoItemMutation.error.message}
-            </Text>
-          ) : null}
-
-          {deleteTodoItemMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

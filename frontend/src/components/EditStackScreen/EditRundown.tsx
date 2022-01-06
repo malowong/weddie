@@ -90,7 +90,7 @@ export function EditRundown({ route, navigation }: any) {
   return (
     <CreateAndEditTopBar pageName="編輯當日流程">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{
@@ -221,11 +221,34 @@ export function EditRundown({ route, navigation }: any) {
           </View>
         </View>
 
-        <View style={editGuestStyles.buttonRow}>
-          <Button onPress={handleSubmit(onSubmit)}>更改</Button>
+        <View>
+          {updateRundownMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{updateRundownMutation.error.message}
+            </Text>
+          ) : null}
 
-          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
-            移除流程事項
+          {updateRundownMutation.isSuccess ? navigation.goBack() : null}
+
+          {removeRundownMutation.isError ? (
+            <Text color="danger.500">
+              錯誤：{removeRundownMutation.error.message}
+            </Text>
+          ) : null}
+          {removeRundownMutation.isSuccess ? navigation.goBack() : null}
+        </View>
+
+        <View style={editGuestStyles.buttonRow}>
+          <Button width="48%" onPress={handleSubmit(onSubmit)}>
+            儲存
+          </Button>
+
+          <Button
+            width="48%"
+            colorScheme="danger"
+            onPress={() => setShowModal(true)}
+          >
+            移除
           </Button>
 
           <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -255,25 +278,6 @@ export function EditRundown({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
-        </View>
-
-        <View>
-          {updateRundownMutation.isError ? (
-            <Text color="danger.500">
-              錯誤：{updateRundownMutation.error.message}
-            </Text>
-          ) : null}
-
-          {updateRundownMutation.isSuccess ? navigation.goBack() : null}
-        </View>
-
-        <View>
-          {removeRundownMutation.isError ? (
-            <Text color="danger.500">
-              錯誤：{removeRundownMutation.error.message}
-            </Text>
-          ) : null}
-          {removeRundownMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

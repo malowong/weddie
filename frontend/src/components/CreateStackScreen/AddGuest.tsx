@@ -39,7 +39,7 @@ export function AddGuest({ navigation }: { navigation: any }) {
   return (
     <CreateAndEditTopBar pageName="新增賓客">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{

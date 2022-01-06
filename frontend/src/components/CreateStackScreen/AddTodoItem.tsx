@@ -44,7 +44,7 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
   return (
     <CreateAndEditTopBar pageName="新增待辦事項">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{
@@ -114,10 +114,6 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
         </View>
 
         <View>
-          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
-        </View>
-
-        <View>
           {mutation.isError ? (
             <Text color="danger.500">錯誤：{mutation.error.message}</Text>
           ) : null}
@@ -125,6 +121,10 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
           {mutation.isSuccess
             ? navigation.push('TabScreen', { screen: 'CheckListScreen' })
             : null}
+        </View>
+
+        <View>
+          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
         </View>
       </View>
     </CreateAndEditTopBar>

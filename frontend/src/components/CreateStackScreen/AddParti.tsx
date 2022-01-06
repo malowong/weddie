@@ -42,7 +42,7 @@ export function AddParti({ navigation }: { navigation: any }) {
   return (
     <CreateAndEditTopBar pageName="新增賓客">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{
@@ -144,7 +144,7 @@ export function AddParti({ navigation }: { navigation: any }) {
         </View>
 
         <View>
-          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
+          <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
         </View>
       </View>
     </CreateAndEditTopBar>

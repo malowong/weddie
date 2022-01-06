@@ -41,7 +41,7 @@ export function EditGuest({ route, navigation }: any) {
   return (
     <CreateAndEditTopBar pageName="編輯賓客資料">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{
@@ -115,11 +115,30 @@ export function EditGuest({ route, navigation }: any) {
           {errors.relationship && <Text color="danger.500">請填寫關係。</Text>}
         </View>
 
-        <View style={editGuestStyles.buttonRow}>
-          <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
+        <View>
+          {updateGuestMutation.isError ? (
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
+          ) : null}
 
-          <Button colorScheme="danger" onPress={() => setShowModal(true)}>
-            移除賓客資料
+          {updateGuestMutation.isSuccess ? navigation.goBack() : null}
+
+          {removeGuestMutation.isError ? (
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
+          ) : null}
+          {removeGuestMutation.isSuccess ? navigation.goBack() : null}
+        </View>
+
+        <View style={editGuestStyles.buttonRow}>
+          <Button width="48%" onPress={handleSubmit(onSubmit)}>
+            儲存
+          </Button>
+
+          <Button
+            width="48%"
+            colorScheme="danger"
+            onPress={() => setShowModal(true)}
+          >
+            移除
           </Button>
 
           <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
@@ -149,19 +168,6 @@ export function EditGuest({ route, navigation }: any) {
               </Modal.Footer>
             </Modal.Content>
           </Modal>
-        </View>
-
-        <View>
-          {updateGuestMutation.isError ? (
-            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
-          ) : null}
-
-          {updateGuestMutation.isSuccess ? navigation.goBack() : null}
-
-          {removeGuestMutation.isError ? (
-            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
-          ) : null}
-          {removeGuestMutation.isSuccess ? navigation.goBack() : null}
         </View>
       </View>
     </CreateAndEditTopBar>

@@ -48,7 +48,7 @@ export function AddMessage({ navigation }: { navigation: any }) {
   return (
     <CreateAndEditTopBar pageName="新增訊息">
       <View display="flex" flexDirection="column">
-        <View height={height * 0.65}>
+        <View height={height * 0.75}>
           <Controller
             control={control}
             rules={{

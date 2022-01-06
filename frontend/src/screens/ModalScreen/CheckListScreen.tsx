@@ -22,15 +22,18 @@ interface TodoItem {
 
 export default function CheckListScreen({ navigation }: { navigation: any }) {
   const [todoList, setTodoList] = useState([]);
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
 
+  console.log('eventId: ', eventId);
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setTodoList(data.todoList))
   );
 
-  const { isLoading, error, data } = useQuery('userData', () =>
+  const { isLoading, error, data } = useQuery('todoData', () =>
     fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setTodoList(data.todoList))

@@ -14,6 +14,8 @@ import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { roleList } from '../../../utils/roleList';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
+import { useMutation } from 'react-query';
+import { fetchRemoveParti, fetchUpdateParti } from '../../api/parti';
 
 export function EditParti({ route, navigation }: any) {
   const { height, width } = useWindowDimensions();
@@ -23,10 +25,6 @@ export function EditParti({ route, navigation }: any) {
   const [roleId] = useState(route.params.roleId);
   const [showModal, setShowModal] = useState(false);
   const role = useSelector((state: IRootState) => state.event.event?.role);
-  const eventId = useSelector(
-    (state: IRootState) => state.event.event?.wedding_event_id
-  );
-  console.log(route.params);
 
   const {
     control,
@@ -40,13 +38,20 @@ export function EditParti({ route, navigation }: any) {
     },
   });
 
+  const updatePartiMutation: any = useMutation(fetchUpdateParti);
+  const removePartiMutation: any = useMutation(fetchRemoveParti);
+
   const onSubmit = (data: any) => {
-    data['wedding_event_id'] = eventId;
     data['role_id'] = data.roleId;
     data['partiId'] = id;
     delete data['roleId'];
     String(data['phone']);
-    console.log('submit form data:', data);
+    console.log('submit form data: ', data);
+    // updatePartiMutation.mutate(data);
+  };
+
+  const removeParti = () => {
+    removePartiMutation.mutate(id);
   };
 
   return (
@@ -125,9 +130,10 @@ export function EditParti({ route, navigation }: any) {
                 >
                   {roleList
                     .filter((roleObject) => roleObject.role !== role)
-                    .map((roleObject) => {
+                    .map((roleObject, idx) => {
                       return (
                         <Select.Item
+                          key={idx}
                           label={roleObject.role}
                           value={String(roleObject.id)}
                         />
@@ -143,12 +149,12 @@ export function EditParti({ route, navigation }: any) {
           <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
 
           <Button colorScheme="danger" onPress={() => setShowModal(true)}>
-            移除賓客資料
+            移除人員資料
           </Button>
 
           <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
             <Modal.Content maxWidth="400px">
-              <Modal.Header>確定移除賓客資料？</Modal.Header>
+              <Modal.Header>確定移除人員資料？</Modal.Header>
               <Modal.Footer>
                 <Button.Group space={2}>
                   <Button
@@ -163,7 +169,7 @@ export function EditParti({ route, navigation }: any) {
                   <Button
                     colorScheme="danger"
                     onPress={() => {
-                      // removeGuest();
+                      removeParti();
                       setShowModal(false);
                     }}
                   >
@@ -175,22 +181,18 @@ export function EditParti({ route, navigation }: any) {
           </Modal>
         </View>
 
-        {/* <View>
-          {updateGuestMutation.isError ? (
-            <Text color="danger.500">
-              錯誤：{updateGuestMutation.error.message}
-            </Text>
+        <View>
+          {updatePartiMutation.isError ? (
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
           ) : null}
 
-          {updateGuestMutation.isSuccess ? navigation.goBack() : null}
+          {updatePartiMutation.isSuccess ? navigation.goBack() : null}
 
-          {removeGuestMutation.isError ? (
-            <Text color="danger.500">
-              錯誤：{removeGuestMutation.error.message}
-            </Text>
+          {removePartiMutation.isError ? (
+            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
           ) : null}
-          {removeGuestMutation.isSuccess ? navigation.goBack() : null}
-        </View> */}
+          {removePartiMutation.isSuccess ? navigation.goBack() : null}
+        </View>
       </View>
     </CreateAndEditTopBar>
   );

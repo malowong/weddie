@@ -21,8 +21,10 @@ interface LogisticsDatabase {
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
   const mutation: any = useMutation(fetchChangeIsReadyStatus);
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
-
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
+  console.log(eventId);
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
       .then((res) => res.json())

@@ -5,7 +5,9 @@ export class BudgetController {
   constructor(private budgetService: BudgetService) {}
 
   getExpenditureList = async (req: Request, res: Response) => {
-    const expenditureList = await this.budgetService.getExpenditureList(1);
+    const eventId = parseInt(req.params.id);
+    console.log("eventId: ", eventId);
+    const expenditureList = await this.budgetService.getExpenditureList(eventId);
 
     res.json({ expenditureList });
   };

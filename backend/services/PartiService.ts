@@ -18,4 +18,14 @@ export class PartiService {
   addParti = async (partiData: Parti) => {
     await this.knex<Parti>(tables.WEDDING_PARTI_LIST).insert(partiData);
   };
+
+  updateParti = async (partiData: Parti, partiId: number) => {
+    await this.knex<Parti>(tables.WEDDING_PARTI_LIST).update(partiData).where("id", partiId);
+    return;
+  };
+
+  deleteParti = async (partiId: number) => {
+    await this.knex(tables.WEDDING_PARTI_LIST).where("id", partiId).del();
+    return;
+  };
 }

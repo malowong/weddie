@@ -11,3 +11,5 @@ export const partiRoutes = express.Router();
 
 partiRoutes.get("/list/:id", asyncWrapper(partiController.getPartiList));
 partiRoutes.post("/", asyncWrapper(partiController.addParti));
+partiRoutes.put("/", asyncWrapper(partiController.updateParti));
+partiRoutes.delete("/:id", asyncWrapper(partiController.deleteParti));

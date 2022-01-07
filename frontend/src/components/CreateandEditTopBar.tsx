@@ -1,8 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
-import { Box, Heading, Icon, NativeBaseProvider, Text } from 'native-base';
-import { position } from 'native-base/lib/typescript/theme/styled-system';
-import React, { useState } from 'react';
-import { Animated, TouchableOpacity, View } from 'react-native';
+import { Box, Icon, Text } from 'native-base';
+import React from 'react';
+import { TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 interface ICreateandEditTopBarProps {

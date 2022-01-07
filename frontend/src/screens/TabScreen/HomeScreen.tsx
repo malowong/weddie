@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Box, HStack, VStack, Text, Image, Heading, View } from 'native-base';
 import { Animated } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import Carousel from 'react-native-snap-carousel';
 import { useSelector } from 'react-redux';
@@ -10,7 +10,6 @@ import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { Dimensions } from 'react-native';
-
 
 function getNumberOfDays(
   start: string | number | Date,
@@ -23,7 +22,6 @@ function getNumberOfDays(
   const diffInDays = Math.round(diffInTime / oneDay);
   return diffInDays;
 }
-
 
 function getTimeString(time: string) {
   return time.substring(0, 5);
@@ -43,26 +41,29 @@ export default function HomeScreen() {
   const [fadeAnim] = useState(new Animated.Value(0));
 
   const userData = useSelector((state: IRootState) => state.auth.user);
-  console.log(userData);
   let eventData: any = useSelector((state: IRootState) => state.event.event);
   const token = useSelector((state: IRootState) => state.auth.token);
 
-  
-  if(!eventData){
+  const [counter, setCounter] = useState(0);
+
+  if (!eventData) {
     eventData = {
       wedding_event_id: '',
       wedding_name: '',
       wedding_date: '',
       role: '',
-    }
+    };
   }
-  console.log(eventData);
-  console.log("hi", eventData.wedding_event_id);
-  const [itinList, setItinList] = useState([]);
 
-  const { isLoading, error, data } = useQuery('itinData', async () => {
+  const [itinList, setItinList] = useState([]);
+  const eventId = eventData.wedding_event_id;
+
+  console.log(counter)
+  const { status, data } = useQuery(["itinData", { eventId, counter }], 
+  async () => {
+    console.log("refresh")
     const resp = await fetch(
-      `${config.BACKEND_URL}/api/itin/me/${eventData.wedding_event_id}`,
+      `${config.BACKEND_URL}/api/itin/me/${eventId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -76,38 +77,19 @@ export default function HomeScreen() {
       const keyA = getTime(a.itinerary_time);
       const keyB = getTime(b.itinerary_time);
       if (keyA < keyB) return -1;
-      if (keyA > keyB) return 1;
+    if (keyA > keyB) return 1;
       return 0;
     });
 
     console.log('data sorted: ', data);
 
     setItinList(data);
-  });
+    }
+  );
 
   useRefreshOnFocus(async () => {
-    const resp = await fetch(
-      `${config.BACKEND_URL}/api/itin/me/${eventData.wedding_event_id}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const data = await resp.json();
-    console.log('data: ', data);
-
-    data.sort((a: any, b: any) => {
-      const keyA = getTime(a.itinerary_time);
-      const keyB = getTime(b.itinerary_time);
-      if (keyA < keyB) return -1;
-      if (keyA > keyB) return 1;
-      return 0;
-    });
-
-    console.log('data sorted: ', data);
-
-    setItinList(data);
+    console.log("useRefreshOnFocus")
+    setCounter((counter) => counter + 1)
   })
 
   const carouselData_couple = [
@@ -190,7 +172,7 @@ export default function HomeScreen() {
     }).start();
   };
 
-const fadeOut = () => {
+  const fadeOut = () => {
     Animated.timing(fadeAnim, {
       toValue: 0,
       duration: 50,
@@ -312,7 +294,12 @@ const fadeOut = () => {
             >
               <HStack>
                 <View width="25%">
-                  <Heading size="lg" textAlign="left" mr="3" color="secondary.600">
+                  <Heading
+                    size="lg"
+                    textAlign="left"
+                    mr="3"
+                    color="secondary.600"
+                  >
                     {getTimeString(item.itinerary_time)}
                   </Heading>
                 </View>

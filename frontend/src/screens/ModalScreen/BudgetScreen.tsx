@@ -44,6 +44,9 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
   const [sorting, setSorting] = useState(false);
 
   let eventData: any = useSelector((state: IRootState) => state.event.event)
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
 
   if (!eventData){
     eventData = {
@@ -53,7 +56,6 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
   }
 
   const budget = parseInt(eventData.budget)
-  const eventId = eventData.wedding_event_id
 
   console.log('eventId: ', eventId);
 

@@ -23,8 +23,10 @@ export default function LoadingScreen({ navigation }: { navigation: any }) {
     } else if (isAuthenticated && isCreated == false) {
       console.log('2')
       navigation.navigate('CreateEventStackScreen', {screen: 'ChooseScreen' });
-    } else {
+    } else if (isAuthenticated == false) {
       navigation.navigate('AuthStackScreen');
+    } else {
+      return
     }
   }, [isAuthenticated, isCreated]);
 

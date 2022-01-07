@@ -21,7 +21,7 @@ export default function ChooseScreen({ navigation }: { navigation: any }) {
           <VStack space={3} mt="5">
             <View>
               <Button
-                // colorScheme="indigo"
+                colorScheme="pink"
                 onPress={() => navigation.navigate('CreateEventScreen')}
                 // onPress={handleSubmit(onSubmit)}
               >
@@ -31,7 +31,7 @@ export default function ChooseScreen({ navigation }: { navigation: any }) {
               </Button>
               <Button
                 mt="4"
-                // colorScheme="indigo"
+                colorScheme="pink"
                 onPress={() => navigation.navigate('JoinEventScreen')}
                 // onPress={handleSubmit(onSubmit)}
               >

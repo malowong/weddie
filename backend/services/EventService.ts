@@ -99,6 +99,7 @@ export class EventService {
       .where({ user_id: userId })
       .innerJoin("wedding_event", "wedding_event_id", "wedding_event.id")
       .innerJoin("role", "role_id", "role.id")
+      .orderBy('updated_at', 'desc')
       .first();
 
     return eventData;
@@ -110,6 +111,7 @@ export class EventService {
       .where({ wedding_event_id: eventId })
       .innerJoin("wedding_event", "wedding_event_id", "wedding_event.id")
       .innerJoin("role", "role_id", "role.id")
+      .orderBy('updated_at', 'desc')
       .first();
 
     return eventData;

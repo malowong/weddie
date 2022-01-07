@@ -78,7 +78,7 @@ export default function JoinEventScreen({ navigation }: { navigation: any }) {
           <VStack space={3} mt="5">
             {eventList.map((event: Event, idx: number) => {
               return (
-                <Button mt="4" key={idx} onPress={() => dispatch(chooseEventThunk(event.id))} justifyContent="flex-start">
+                <Button mt="4" key={idx} onPress={() => dispatch(chooseEventThunk(event.id))} justifyContent="flex-start" colorScheme="pink">
                 <Text fontSize="2xl" fontWeight="bold" color="white">{event.wedding_name}</Text>
                 <Text fontSize="lg" color="white">{event.wedding_date.slice(0, 10)}</Text>
                 </Button>

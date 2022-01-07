@@ -11,7 +11,7 @@ import {
 } from 'native-base';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TouchableOpacity } from 'react-native';
+import { Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch } from 'react-redux';
 import { loginThunk } from '../../redux/auth/thunk';
@@ -58,6 +58,8 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
       </Box>
       <Center flex={0.9} px="3">
         <Box safeArea w="90%">
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+
           <Heading
             size="lg"
             fontWeight="600"
@@ -117,7 +119,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
               )}
               <Button
                 mt="4"
-                // colorScheme="indigo"
+                colorScheme="pink"
                 // onPress={() => navigation.navigate('MainStackScreen')}
                 onPress={handleSubmit(onSubmit)}
               >
@@ -127,6 +129,7 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
               </Button>
             </View>
           </VStack>
+          </TouchableWithoutFeedback>
         </Box>
       </Center>
     </>

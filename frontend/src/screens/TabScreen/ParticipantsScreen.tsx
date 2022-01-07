@@ -83,7 +83,7 @@ export default function ParticipantsScreen({
                 bg: 'secondary.500',
                 endIcon: <CheckIcon size="5" />,
               }}
-              fontSize="lg"
+              fontSize="xl"
               onValueChange={(value) => {
                 console.log(value);
                 if (value === 'all') {

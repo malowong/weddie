@@ -1,6 +1,6 @@
 import Knex from "knex";
 import dotenv from "dotenv";
-import cors from 'cors';
+import cors from "cors";
 
 dotenv.config();
 
@@ -23,7 +23,6 @@ const app = express();
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
 
 app.use((req, res, next) => {
   const cur = new Date().toISOString();

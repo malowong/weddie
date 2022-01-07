@@ -11,50 +11,68 @@ import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { TouchableOpacity, View } from 'react-native';
 
 export default function RundownScreen({ navigation }: { navigation: any }) {
-  const eventId = useSelector((state: IRootState) => state.event.event?.wedding_event_id);
+  let eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
+
+  if (!eventId) {
+    eventId = 0;
+  }
 
   const token = useSelector((state: IRootState) => state.auth.token);
 
+  const [counter, setCounter] = useState(0);
   const [itinList, setItinList] = useState([]);
+  // useRefreshOnFocus(async () => {
+  //   const resp = await fetch(`${config.BACKEND_URL}/api/itin/list/${eventId}`, {
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     },
+  //   });
+  //   const data = await resp.json();
+  //   console.log('data: ', data);
+
+  //   data.sort((a: any, b: any) => {
+  //     const keyA = getTime(a.itinerary_time);
+  //     const keyB = getTime(b.itinerary_time);
+  //     if (keyA < keyB) return -1;
+  //     if (keyA > keyB) return 1;
+  //     return 0;
+  //   });
+  //   setItinList(data);
+  // });
+
+  const { isLoading, error, status, data } = useQuery(
+    ['initData', { eventId, counter }],
+    async () => {
+      const resp = await fetch(
+        `${config.BACKEND_URL}/api/itin/list/${eventId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await resp.json();
+      console.log('data: ', data);
+
+      data.sort((a: any, b: any) => {
+        const keyA = getTime(a.itinerary_time);
+        const keyB = getTime(b.itinerary_time);
+        if (keyA < keyB) return -1;
+        if (keyA > keyB) return 1;
+        return 0;
+      });
+
+      console.log('data sorted: ', data);
+
+      setItinList(data);
+    }
+  );
+
   useRefreshOnFocus(async () => {
-    const resp = await fetch(`${config.BACKEND_URL}/api/itin/list/${eventId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await resp.json();
-    console.log('data: ', data);
-
-    data.sort((a: any, b: any) => {
-      const keyA = getTime(a.itinerary_time);
-      const keyB = getTime(b.itinerary_time);
-      if (keyA < keyB) return -1;
-      if (keyA > keyB) return 1;
-      return 0;
-    });
-    setItinList(data);
-  });
-
-  const { isLoading, error, data } = useQuery('itinData', async () => {
-    const resp = await fetch(`${config.BACKEND_URL}/api/itin/list/${eventId}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await resp.json();
-    console.log('data: ', data);
-
-    data.sort((a: any, b: any) => {
-      const keyA = getTime(a.itinerary_time);
-      const keyB = getTime(b.itinerary_time);
-      if (keyA < keyB) return -1;
-      if (keyA > keyB) return 1;
-      return 0;
-    });
-
-    console.log('data sorted: ', data);
-
-    setItinList(data);
+    console.log('useRefreshOnFocus');
+    setCounter((counter) => counter + 1);
   });
 
   function getTimeString(time: string) {

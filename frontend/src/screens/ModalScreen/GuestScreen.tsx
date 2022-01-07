@@ -11,22 +11,35 @@ import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { IRootState } from '../../redux/store';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
-  const eventId = useSelector(
+  let eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
   );
+
+  if (!eventId) {
+    eventId = 0;
+  }
   console.log('eventId: ', eventId);
+  const [counter, setCounter] = useState(0);
+
   const [guestList, setGuestList] = useState([]);
-  useRefreshOnFocus(() =>
-    fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => setGuestList(data.guestList))
+  // useRefreshOnFocus(() =>
+  //   fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
+  //     .then((res) => res.json())
+  //     .then((data) => setGuestList(data.guestList))
+  // );
+
+  const { isLoading, error, status, data } = useQuery(
+    ['guestData', { eventId, counter }],
+    () =>
+      fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
+        .then((res) => res.json())
+        .then((data) => setGuestList(data.guestList))
   );
 
-  const { isLoading, error, data } = useQuery('guestData', () =>
-    fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => setGuestList(data.guestList))
-  );
+  useRefreshOnFocus(async () => {
+    console.log('useRefreshOnFocus');
+    setCounter((counter) => counter + 1);
+  });
 
   if (isLoading) return <LoadingMsg />;
 

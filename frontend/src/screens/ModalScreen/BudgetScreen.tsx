@@ -65,6 +65,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
 
   const budget = parseInt(eventData.budget);
   const eventId = eventData.wedding_event_id;
+  const [counter, setCounter] = useState(0);
 
   console.log('eventId: ', eventId);
 
@@ -73,23 +74,40 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
     []
   );
 
-  const { isLoading, error, data } = useQuery('budgetData', () =>
-    fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setExpenditureList(data.expenditureList);
-        setSelectedExpenditureList(data.expenditureList);
-      })
+  // const { isLoading, error, data } = useQuery('budgetData', () =>
+  //   fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setExpenditureList(data.expenditureList);
+  //       setSelectedExpenditureList(data.expenditureList);
+  //     })
+  // );
+
+  const { isLoading, error, status, data } = useQuery(
+    ['budgetData', { eventId, counter }],
+    () => {
+      fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setExpenditureList(data.expenditureList);
+          setSelectedExpenditureList(data.expenditureList);
+        });
+    }
   );
 
-  useRefreshOnFocus(() =>
-    fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setExpenditureList(data.expenditureList);
-        setSelectedExpenditureList(data.expenditureList);
-      })
-  );
+  // useRefreshOnFocus(() =>
+  //   fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setExpenditureList(data.expenditureList);
+  //       setSelectedExpenditureList(data.expenditureList);
+  //     })
+  // );
+
+  useRefreshOnFocus(async () => {
+    console.log('useRefreshOnFocus');
+    setCounter((counter) => counter + 1);
+  });
 
   // console.log(expenditureList);
   if (isLoading) return <LoadingMsg />;

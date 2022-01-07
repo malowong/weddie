@@ -25,11 +25,11 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     },
   });
 
-  const onSubmit = (data: any) => {
-    const phoneNumber = parseInt(data.phoneNumber);
+  // const onSubmit = (data: any) => {
+  //   const phoneNumber = parseInt(data.phoneNumber);
 
-    setShowModal(false);
-  };
+  //   setShowModal(false);
+  // };
 
   return (
     <TopBar pageName="用戶設定" show="false" navigate="">
@@ -76,7 +76,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
             切換婚禮
           </Button>
 
-          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+          {/* <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
             <Modal.Content maxWidth="400px">
               <Modal.CloseButton />
               <Modal.Header>更改電話號碼</Modal.Header>
@@ -121,7 +121,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
                 <Button onPress={handleSubmit(onSubmit)}>儲存</Button>
               </Modal.Footer>
             </Modal.Content>
-          </Modal>
+          </Modal> */}
 
           <Button
             variant="outline"
@@ -129,7 +129,9 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
             marginTop="8"
             onPress={() => {
               dispatch(logoutThunk());
-              navigation.navigate('AuthStackScreen', {screen: 'WelcomingScreen'})
+              navigation.navigate('AuthStackScreen', {
+                screen: 'WelcomingScreen',
+              });
             }}
           >
             登出

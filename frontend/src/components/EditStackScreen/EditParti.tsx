@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, useWindowDimensions } from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  useWindowDimensions,
+} from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import {
   Input,
@@ -56,152 +61,149 @@ export function EditParti({ route, navigation }: any) {
 
   return (
     <CreateAndEditTopBar pageName="編輯人員資料">
-      <View display="flex" flexDirection="column">
-        <View height={height * 0.75}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                marginTop={5}
-                placeholder="名稱"
-                onBlur={onBlur}
-                size="xl"
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="name"
-          />
-          {errors.name && <Text color="danger.500">請填寫名稱。</Text>}
-
-          <Controller
-            control={control}
-            rules={{
-              maxLength: 8,
-              minLength: 8,
-              required: true,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                marginTop={5}
-                placeholder="電話號碼"
-                onBlur={onBlur}
-                onChangeText={onChange}
-                value={value}
-                keyboardType="numeric"
-                size="xl"
-              />
-            )}
-            name="phone"
-          />
-          {errors.phone?.type === 'required' && (
-            <Text color="danger.500">請填寫賓客電話號碼。</Text>
-          )}
-          {errors.phone?.type === 'maxLength' && (
-            <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-          )}
-          {errors.phone?.type === 'minLength' && (
-            <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-          )}
-
-          <Controller
-            name="roleId"
-            control={control}
-            // rules={
-            //   {
-            //     // required: true,
-            //   }
-            // }
-            render={({ field: { value, onChange } }) => (
-              <>
-                <Select
-                  defaultValue={String(roleId)}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View display="flex" flexDirection="column">
+          <View height={height * 0.75}>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
                   marginTop={5}
-                  minWidth="200"
-                  accessibilityLabel="請選擇角色"
-                  placeholder="請選擇角色"
-                  _selectedItem={{
-                    bg: 'secondary.500',
-                    endIcon: <CheckIcon size="5" />,
-                  }}
-                  fontSize="md"
-                  onValueChange={onChange}
-                >
-                  {roleList
-                    .filter((roleObject) => roleObject.role !== role)
-                    .map((roleObject, idx) => {
-                      return (
-                        <Select.Item
-                          key={idx}
-                          label={roleObject.role}
-                          value={String(roleObject.id)}
-                        />
-                      );
-                    })}
-                </Select>
-              </>
+                  placeholder="名稱"
+                  onBlur={onBlur}
+                  size="xl"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="name"
+            />
+            {errors.name && <Text color="danger.500">請填寫名稱。</Text>}
+
+            <Controller
+              control={control}
+              rules={{
+                maxLength: 8,
+                minLength: 8,
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  marginTop={5}
+                  placeholder="電話號碼"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                  keyboardType="numeric"
+                  size="xl"
+                />
+              )}
+              name="phone"
+            />
+            {errors.phone?.type === 'required' && (
+              <Text color="danger.500">請填寫賓客電話號碼。</Text>
             )}
-          />
-        </View>
+            {errors.phone?.type === 'maxLength' && (
+              <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+            )}
+            {errors.phone?.type === 'minLength' && (
+              <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+            )}
 
-        <View>
-          {updatePartiMutation.isError ? (
-            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
-          ) : null}
-
-          {updatePartiMutation.isSuccess ? navigation.goBack() : null}
-
-          {removePartiMutation.isError ? (
-            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
-          ) : null}
-          {removePartiMutation.isSuccess ? navigation.goBack() : null}
-        </View>
-
-        <View style={editPartiStyles.buttonRow}>
-          <Button width="48%" onPress={handleSubmit(onSubmit)}>
-            儲存
-          </Button>
-
-          <Button
-            width="48%"
-            colorScheme="danger"
-            onPress={() => setShowModal(true)}
-          >
-            移除
-          </Button>
-
-          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-            <Modal.Content maxWidth="400px">
-              <Modal.Header>確定移除人員資料？</Modal.Header>
-              <Modal.Footer>
-                <Button.Group space={2}>
-                  <Button
-                    variant="ghost"
-                    colorScheme="blueGray"
-                    onPress={() => {
-                      setShowModal(false);
+            <Controller
+              name="roleId"
+              control={control}
+              render={({ field: { value, onChange } }) => (
+                <>
+                  <Select
+                    defaultValue={String(roleId)}
+                    marginTop={5}
+                    minWidth="200"
+                    accessibilityLabel="請選擇角色"
+                    placeholder="請選擇角色"
+                    _selectedItem={{
+                      bg: 'secondary.500',
+                      endIcon: <CheckIcon size="5" />,
                     }}
+                    fontSize="md"
+                    onValueChange={onChange}
                   >
-                    取消
-                  </Button>
-                  <Button
-                    colorScheme="danger"
-                    onPress={() => {
-                      removeParti();
-                      setShowModal(false);
-                    }}
-                  >
-                    確定
-                  </Button>
-                </Button.Group>
-              </Modal.Footer>
-            </Modal.Content>
-          </Modal>
+                    {roleList
+                      .filter((roleObject) => roleObject.role !== role)
+                      .map((roleObject, idx) => {
+                        return (
+                          <Select.Item
+                            key={idx}
+                            label={roleObject.role}
+                            value={String(roleObject.id)}
+                          />
+                        );
+                      })}
+                  </Select>
+                </>
+              )}
+            />
+          </View>
+
+          <View>
+            {updatePartiMutation.isError ? (
+              <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
+            ) : null}
+
+            {updatePartiMutation.isSuccess ? navigation.goBack() : null}
+
+            {removePartiMutation.isError ? (
+              <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
+            ) : null}
+            {removePartiMutation.isSuccess ? navigation.goBack() : null}
+          </View>
+
+          <View style={editPartiStyles.buttonRow}>
+            <Button width="48%" onPress={handleSubmit(onSubmit)}>
+              儲存
+            </Button>
+
+            <Button
+              width="48%"
+              colorScheme="danger"
+              onPress={() => setShowModal(true)}
+            >
+              移除
+            </Button>
+
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+              <Modal.Content maxWidth="400px">
+                <Modal.Header>確定移除人員資料？</Modal.Header>
+                <Modal.Footer>
+                  <Button.Group space={2}>
+                    <Button
+                      variant="ghost"
+                      colorScheme="blueGray"
+                      onPress={() => {
+                        setShowModal(false);
+                      }}
+                    >
+                      取消
+                    </Button>
+                    <Button
+                      colorScheme="danger"
+                      onPress={() => {
+                        removeParti();
+                        setShowModal(false);
+                      }}
+                    >
+                      確定
+                    </Button>
+                  </Button.Group>
+                </Modal.Footer>
+              </Modal.Content>
+            </Modal>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </CreateAndEditTopBar>
   );
 }

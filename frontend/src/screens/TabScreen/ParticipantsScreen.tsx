@@ -1,4 +1,12 @@
-import { Text, Box, Heading, HStack, VStack } from 'native-base';
+import {
+  Text,
+  Box,
+  Heading,
+  HStack,
+  VStack,
+  Select,
+  CheckIcon,
+} from 'native-base';
 import React, { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { useQuery } from 'react-query';
@@ -19,19 +27,28 @@ export default function ParticipantsScreen({
   const eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
   );
+  const role = useSelector((state: IRootState) => state.event.event?.role);
   console.log('eventId', eventId);
 
   const [participantList, setParticipantList] = useState([]);
+  const [selectedPartiList, setSelectedPartiList] = useState([]);
+
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
       .then((res) => res.json())
-      .then((data) => setParticipantList(data.partiList))
+      .then((data) => {
+        setParticipantList(data.partiList);
+        setSelectedPartiList(data.partiList);
+      })
   );
 
   const { isLoading, error, data } = useQuery('partiData', () =>
     fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
       .then((res) => res.json())
-      .then((data) => setParticipantList(data.partiList))
+      .then((data) => {
+        setParticipantList(data.partiList);
+        setSelectedPartiList(data.partiList);
+      })
   );
 
   if (isLoading) return <LoadingMsg />;
@@ -41,9 +58,67 @@ export default function ParticipantsScreen({
   return (
     <TopBar pageName="人員名單" show="true" navigate="AddParti">
       <View>
-        {participantList.map((participant: any, idx: number) => {
+        {participantList.length === 0 && (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('CreateStackScreen', {
+                screen: 'AddParti',
+              })
+            }
+          >
+            <Text fontSize={18} color="danger.600" marginTop={10}>
+              尚未有人員名單，按此新增
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        {participantList.length > 0 && (
+          <View>
+            <Select
+              defaultValue="all"
+              marginBottom={3}
+              marginTop={5}
+              minWidth="200"
+              _selectedItem={{
+                bg: 'secondary.500',
+                endIcon: <CheckIcon size="5" />,
+              }}
+              fontSize="lg"
+              onValueChange={(value) => {
+                console.log(value);
+                if (value === 'all') {
+                  setSelectedPartiList(participantList);
+                } else {
+                  const selectedList = participantList.filter(
+                    (participant: any) => {
+                      return participant.role_id === parseInt(value);
+                    }
+                  );
+                  console.log(selectedList);
+                  setSelectedPartiList(() => selectedList);
+                }
+              }}
+            >
+              <Select.Item label="全部" value="all" />
+              {roleList
+                .filter((roleObject) => roleObject.role !== role)
+                .map((roleObject) => {
+                  return (
+                    <Select.Item
+                      key={roleObject.id}
+                      label={roleObject.role}
+                      value={String(roleObject.id)}
+                    />
+                  );
+                })}
+            </Select>
+          </View>
+        )}
+
+        {selectedPartiList.map((participant: any, idx: number) => {
           return (
             <TouchableOpacity
+              style={{ marginHorizontal: 8 }}
               key={participant.id}
               onPress={() =>
                 navigation.navigate('EditStackScreen', {
@@ -96,20 +171,6 @@ export default function ParticipantsScreen({
             </TouchableOpacity>
           );
         })}
-
-        {participantList.length === 0 && (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('CreateStackScreen', {
-                screen: 'AddParti',
-              })
-            }
-          >
-            <Text fontSize={18} color="danger.600" marginTop={10}>
-              尚未有人員名單，按此新增
-            </Text>
-          </TouchableOpacity>
-        )}
       </View>
     </TopBar>
   );

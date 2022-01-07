@@ -50,6 +50,8 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 
   return (
     <>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View height="100%">
       <Box safeAreaTop backgroundColor="#f2f2f2" />
       <Box safeAreaX={3} safeAreaY={1}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
@@ -58,7 +60,6 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
       </Box>
       <Center flex={0.9} px="3">
         <Box safeArea w="90%">
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
           <Heading
             size="lg"
@@ -129,9 +130,10 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
               </Button>
             </View>
           </VStack>
-          </TouchableWithoutFeedback>
         </Box>
       </Center>
+      </View>
+      </TouchableWithoutFeedback>
     </>
   );
 }

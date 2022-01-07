@@ -57,6 +57,7 @@ export default function HomeScreen() {
 
   const [itinList, setItinList] = useState([]);
   const eventId = eventData.wedding_event_id;
+  console.log("yoyoyo", eventData.role)
 
   console.log(counter)
   const { status, data } = useQuery(["itinData", { eventId, counter }], 

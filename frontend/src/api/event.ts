@@ -27,8 +27,8 @@ export const fetchEventByUserId = async (userId: number) => {
   return resp;
 };
 
-export const fetchEventByEventId = async (eventId: number) => {
-  const resp = await fetch(`${config.BACKEND_URL}/api/events/${eventId}`)
+export const fetchEventByEventId = async (eventId: number, userId: number) => {
+  const resp = await fetch(`${config.BACKEND_URL}/api/events/${userId}/${eventId}`)
 
   return resp;
 }

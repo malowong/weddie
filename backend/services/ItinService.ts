@@ -29,6 +29,11 @@ export class ItinService {
 
   getMyItinList = async (eventID: number, userId: number) => {
 
+    const [role] = await this.knex.select('role_id').from(tables.WEDDING_USER).where({
+      wedding_event_id: eventID,
+      user_id: userId,
+    })
+
     const itinList = await this.knex.select(`${tables.ITINERARY_LIST}.id`, 'itinerary', 'job_duty', 'itinerary_time', `${tables.ITINERARY_ROLE}.role_id`)
       .from(tables.ITINERARY_LIST)
       .distinctOn('id')
@@ -36,6 +41,7 @@ export class ItinService {
       .innerJoin(tables.WEDDING_USER, `${tables.WEDDING_USER}.role_id`, `${tables.ITINERARY_ROLE}.role_id`)
       .where(`${tables.ITINERARY_LIST}.wedding_event_id`, eventID)
       .where(`${tables.WEDDING_USER}.user_id`, userId)
+      .where(`${tables.WEDDING_USER}.role_id`, role.role_id)
 
     return itinList;
   };

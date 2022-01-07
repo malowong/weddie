@@ -10,6 +10,10 @@ import { changeEvent } from '../../redux/event/actions';
 
 export default function SettingScreen({ navigation }: { navigation: any }) {
   const role = useSelector((state: IRootState) => state.event.event?.role);
+  const eventId = useSelector((state: IRootState) => state.event.event?.wedding_event_id)
+  console.log("role", role)
+  console.log("eventId", eventId)
+
   const dispatch = useDispatch();
   const user = useSelector((state: IRootState) => state.auth.user)!;
   const [showModal, setShowModal] = useState(false);

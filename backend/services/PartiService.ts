@@ -10,7 +10,7 @@ export class PartiService {
       .select("*")
       .from(tables.WEDDING_PARTI_LIST)
       .where("wedding_event_id", eventId)
-      .orderBy("id");
+      .orderBy("role_id");
 
     return partiList;
   };

@@ -8,9 +8,15 @@ interface ITodoItemProp {
 }
 
 export function TodoItem(props: ITodoItemProp) {
-  console.log('taken out from db:', props.dueDate);
-  const dueDate = new Date(props.dueDate).toString();
-  console.log('after toString: ', dueDate);
+  const dueDate = new Date(props.dueDate);
+  const todayDate = new Date();
+  let backgroundColor = '';
+
+  if (dueDate < todayDate) {
+    backgroundColor = 'pink.200';
+  } else if (dueDate > todayDate) {
+    backgroundColor = 'white';
+  }
 
   return (
     <Box
@@ -23,16 +29,17 @@ export function TodoItem(props: ITodoItemProp) {
       width="100%"
       maxWidth="100%"
       shadow={3}
+      backgroundColor={backgroundColor}
     >
       <HStack>
         <View width="60%">
-          <Heading size="sm" textAlign="left" color="black">
+          <Heading size="sm" textAlign="left">
             {props.itemName}
           </Heading>
         </View>
         <VStack width="40%">
-          <Heading size="sm" textAlign="center" color="secondary.600">
-            {dueDate.slice(4, 15)}
+          <Heading size="xs" textAlign="center">
+            {dueDate.toString().slice(4, 15)}
           </Heading>
         </VStack>
       </HStack>

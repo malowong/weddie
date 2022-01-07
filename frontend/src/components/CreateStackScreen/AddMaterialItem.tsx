@@ -1,5 +1,10 @@
 import React from 'react';
-import { StyleSheet, useWindowDimensions } from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  useWindowDimensions,
+} from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text, View, TextArea } from 'native-base';
 import { useSelector } from 'react-redux';
@@ -35,53 +40,55 @@ export function AddMaterialItem({ navigation }: { navigation: any }) {
 
   return (
     <CreateAndEditTopBar pageName="新增物資">
-      <View display="flex" flexDirection="column">
-        <View height={height * 0.75}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                marginTop={5}
-                placeholder="物品"
-                // style={addMaterialStyles.input}
-                onBlur={onBlur}
-                size="xl"
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="itemName"
-          />
-          {errors.itemName && <Text color="danger.500">請填寫物品。</Text>}
-          <Controller
-            control={control}
-            rules={{
-              maxLength: 100,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextArea
-                marginTop={5}
-                placeholder="備註"
-                // style={addMaterialStyles.input}
-                onBlur={onBlur}
-                size="xl"
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="remarks"
-          />
-        </View>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View display="flex" flexDirection="column">
+          <View height={height * 0.75}>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  marginTop={5}
+                  placeholder="物品"
+                  // style={addMaterialStyles.input}
+                  onBlur={onBlur}
+                  size="xl"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="itemName"
+            />
+            {errors.itemName && <Text color="danger.500">請填寫物品。</Text>}
+            <Controller
+              control={control}
+              rules={{
+                maxLength: 100,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextArea
+                  marginTop={5}
+                  placeholder="備註"
+                  // style={addMaterialStyles.input}
+                  onBlur={onBlur}
+                  size="xl"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="remarks"
+            />
+          </View>
 
-        <MutationResult mutation={mutation} navigation={navigation} />
+          <MutationResult mutation={mutation} navigation={navigation} />
 
-        <View>
-          <Button onPress={handleSubmit(onSubmit)}>提交</Button>
+          <View>
+            <Button onPress={handleSubmit(onSubmit)}>提交</Button>
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </CreateAndEditTopBar>
   );
 }

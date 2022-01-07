@@ -24,7 +24,6 @@ export default function TabScreen() {
         tabBarActiveTintColor: '#e91e63',
         headerShown: false,
       }}
-      
     >
       <Tab.Screen
         name="主頁"
@@ -70,7 +69,10 @@ export default function TabScreen() {
                 shadowRadius: 6,
               }}
             >
-              <Image source={require('../images/App_icon_circle.png')} style={{width: 70, height: 70}}/>
+              <Image
+                source={require('../images/App_icon_circle.png')}
+                style={{ width: 70, height: 70 }}
+              />
             </View>
           ),
         }}

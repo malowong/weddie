@@ -35,9 +35,6 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   return (
     <TopBar pageName="賓客名單" show="true" navigate="AddGuest">
       <View>
-        {/* {guestList.length === 0 && (
-          <Text fontSize="md">請加入你準備邀請的來賓！</Text>
-        )} */}
         {guestList.map((guest: any) => {
           return (
             <TouchableOpacity

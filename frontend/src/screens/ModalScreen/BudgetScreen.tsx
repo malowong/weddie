@@ -5,7 +5,17 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { View, Text, HStack, Box, Heading, VStack, Button } from 'native-base';
+import {
+  View,
+  Text,
+  HStack,
+  Box,
+  Heading,
+  VStack,
+  Button,
+  Select,
+  CheckIcon,
+} from 'native-base';
 import { useSelector } from 'react-redux';
 import { config } from '../../../app.json';
 import { useQuery } from 'react-query';
@@ -15,6 +25,7 @@ import { IRootState } from '../../redux/store';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { ProgressChart } from 'react-native-chart-kit';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { budgetCategoryList } from '../../../utils/budgetCategoryList';
 
 interface Expenditure {
   id: number;
@@ -24,54 +35,63 @@ interface Expenditure {
   expenditure: number;
 }
 
-const budgetCategoryMap = new Map([
-  [1, '攝影'],
-  [2, '婚前中式禮儀'],
-  [3, '派帖'],
-  [4, '美容'],
-  [5, '早上敬茶、出門入門'],
-  [6, '証婚'],
-  [7, '晚上婚宴'],
-  [8, '婚禮服飾'],
-  [9, '婚禮當日化妝'],
-  [10, '交通'],
-  [11, '回門'],
-  [12, '其他'],
-]);
+// const budgetCategoryMap = new Map([
+//   [1, '攝影'],
+//   [2, '婚前中式禮儀'],
+//   [3, '派帖'],
+//   [4, '美容'],
+//   [5, '早上敬茶、出門入門'],
+//   [6, '証婚'],
+//   [7, '晚上婚宴'],
+//   [8, '婚禮服飾'],
+//   [9, '婚禮當日化妝'],
+//   [10, '交通'],
+//   [11, '回門'],
+//   [12, '其他'],
+// ]);
 
 export default function BudgetScreen({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
   const [sorting, setSorting] = useState(false);
 
-  let eventData: any = useSelector((state: IRootState) => state.event.event)
-  const eventId = useSelector(
-    (state: IRootState) => state.event.event?.wedding_event_id
-  );
+  let eventData: any = useSelector((state: IRootState) => state.event.event);
 
-  if (!eventData){
+  if (!eventData) {
     eventData = {
       budget: '',
       wedding_event_id: '',
-    }
+    };
   }
 
-  const budget = parseInt(eventData.budget)
+  const budget = parseInt(eventData.budget);
+  const eventId = eventData.wedding_event_id;
 
   console.log('eventId: ', eventId);
+
+  const [expenditureList, setExpenditureList]: any = useState([]);
+  const [selectedExpenditureList, setSelectedExpenditureList]: any = useState(
+    []
+  );
+
+  const { isLoading, error, data } = useQuery('budgetData', () =>
+    fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setExpenditureList(data.expenditureList);
+        setSelectedExpenditureList(data.expenditureList);
+      })
+  );
 
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
       .then((res) => res.json())
-      .then((data) => setExpenditureList(data.expenditureList))
+      .then((data) => {
+        setExpenditureList(data.expenditureList);
+        setSelectedExpenditureList(data.expenditureList);
+      })
   );
 
-  const [expenditureList, setExpenditureList]: any = useState([]);
-  const { isLoading, error, data } = useQuery('budgetData', () =>
-    fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => setExpenditureList(data.expenditureList))
-  );
-  console.log(expenditureList);
+  // console.log(expenditureList);
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
@@ -90,6 +110,20 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
 
   return (
     <TopBar pageName="婚禮預算" show="true" navigate="AddBudgetItem">
+      {expenditureList.length === 0 && (
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('CreateStackScreen', {
+              screen: 'AddBudgetItem',
+            })
+          }
+        >
+          <Text fontSize={18} color="danger.600" marginTop={10} marginLeft={15}>
+            尚未有任何支出，按此新增
+          </Text>
+        </TouchableOpacity>
+      )}
+
       {totalExpenditure <= budget && (
         <ProgressChart
           data={chartData}
@@ -143,6 +177,45 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
           >
             支出
           </Text>
+
+          <View>
+            <Select
+              // placeholderTextColor="white"
+              defaultValue="all"
+              minWidth="200"
+              _selectedItem={{
+                bg: 'secondary.500',
+                endIcon: <CheckIcon size="5" />,
+              }}
+              fontSize="lg"
+              onValueChange={(value) => {
+                console.log(value);
+                if (value === 'all') {
+                  setSelectedExpenditureList(expenditureList);
+                } else {
+                  const selectedList = expenditureList.filter(
+                    (expenditure: any) => {
+                      return expenditure.budget_cat_id === parseInt(value);
+                    }
+                  );
+                  console.log(selectedList);
+                  setSelectedExpenditureList(() => selectedList);
+                }
+              }}
+            >
+              <Select.Item label="全部" value="all" />
+              {budgetCategoryList.map((budgetCat) => {
+                return (
+                  <Select.Item
+                    key={budgetCat.id}
+                    label={budgetCat.category}
+                    value={String(budgetCat.id)}
+                  />
+                );
+              })}
+            </Select>
+          </View>
+
           <Button
             backgroundColor="#f2f2f2"
             size="lg"
@@ -165,77 +238,65 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
           </Button>
         </View>
 
-        {expenditureList.map((expenditure: Expenditure, idx: number) => {
-          return (
-            <TouchableOpacity
-              key={expenditure.id}
-              style={budgetStyles.tableRow}
-              onPress={() =>
-                navigation.navigate('EditStackScreen', {
-                  screen: 'EditBudgetItem',
-                  params: {
-                    id: expenditure.id,
-                    categoryId: expenditure.budget_cat_id,
-                    expenditure: expenditure.expenditure,
-                    description: expenditure.description,
-                  },
-                })
-              }
-            >
-              <Box
-                py="3"
-                alignSelf="center"
-                width={375}
-                maxWidth="100%"
-                borderBottomWidth="1"
-                borderColor="muted.300"
+        {selectedExpenditureList.map(
+          (expenditure: Expenditure, idx: number) => {
+            return (
+              <TouchableOpacity
+                key={expenditure.id}
+                style={budgetStyles.tableRow}
+                onPress={() =>
+                  navigation.navigate('EditStackScreen', {
+                    screen: 'EditBudgetItem',
+                    params: {
+                      id: expenditure.id,
+                      categoryId: expenditure.budget_cat_id,
+                      expenditure: expenditure.expenditure,
+                      description: expenditure.description,
+                    },
+                  })
+                }
               >
-                <HStack>
-                  <VStack>
-                    <View>
-                      <Heading size="md">{expenditure.description}</Heading>
-                    </View>
-                    <View>
-                      <Text fontSize="md">
-                        {budgetCategoryMap.get(expenditure.budget_cat_id)}
-                      </Text>
-                    </View>
-                  </VStack>
-                  <Box
-                    flex="1"
-                    flex-direction="column"
-                    alignItems="flex-end"
-                    justifyContent="flex-end"
-                  >
-                    <Box px="2" py="0.5" rounded="md">
-                      <Text fontSize="lg" color="black" fontFamily="arial">
-                        ${expenditure.expenditure}
-                      </Text>
+                <Box
+                  py="3"
+                  alignSelf="center"
+                  width={375}
+                  maxWidth="100%"
+                  borderBottomWidth="1"
+                  borderColor="muted.300"
+                >
+                  <HStack>
+                    <VStack>
+                      <View>
+                        <Heading size="md">{expenditure.description}</Heading>
+                      </View>
+                      <View>
+                        <Text fontSize="md">
+                          {
+                            budgetCategoryList.find(
+                              (budgetCat) =>
+                                budgetCat.id === expenditure.budget_cat_id
+                            )?.category
+                          }
+                        </Text>
+                      </View>
+                    </VStack>
+                    <Box
+                      flex="1"
+                      flex-direction="column"
+                      alignItems="flex-end"
+                      justifyContent="flex-end"
+                    >
+                      <Box px="2" py="0.5" rounded="md">
+                        <Text fontSize="lg" color="black" fontFamily="arial">
+                          ${expenditure.expenditure}
+                        </Text>
+                      </Box>
                     </Box>
-                  </Box>
-                </HStack>
-              </Box>
-            </TouchableOpacity>
-          );
-        })}
-
-        {expenditureList.length === 0 && (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('CreateStackScreen', {
-                screen: 'AddBudgetItem',
-              })
-            }
-          >
-            <Text
-              fontSize={18}
-              color="danger.600"
-              marginTop={10}
-              marginLeft={15}
-            >
-              尚未有任何支出，按此新增
-            </Text>
-          </TouchableOpacity>
+                  </HStack>
+                </Box>
+              </TouchableOpacity>
+            );
+          }
         )}
       </View>
     </TopBar>

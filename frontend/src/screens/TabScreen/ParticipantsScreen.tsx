@@ -24,32 +24,45 @@ export default function ParticipantsScreen({
 }: {
   navigation: any;
 }) {
-  const eventId = useSelector(
+  let eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
   );
+
+  if (!eventId) {
+    eventId = 0;
+  }
+
   const role = useSelector((state: IRootState) => state.event.event?.role);
   console.log('eventId', eventId);
+  const [counter, setCounter] = useState(0);
 
   const [participantList, setParticipantList] = useState([]);
   const [selectedPartiList, setSelectedPartiList] = useState([]);
 
-  useRefreshOnFocus(() =>
-    fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setParticipantList(data.partiList);
-        setSelectedPartiList(data.partiList);
-      })
+  // useRefreshOnFocus(() =>
+  //   fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setParticipantList(data.partiList);
+  //       setSelectedPartiList(data.partiList);
+  //     })
+  // );
+
+  const { isLoading, error, status, data } = useQuery(
+    ['partiData', { eventId, counter }],
+    () =>
+      fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setParticipantList(data.partiList);
+          setSelectedPartiList(data.partiList);
+        })
   );
 
-  const { isLoading, error, data } = useQuery('partiData', () =>
-    fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setParticipantList(data.partiList);
-        setSelectedPartiList(data.partiList);
-      })
-  );
+  useRefreshOnFocus(async () => {
+    console.log('useRefreshOnFocus');
+    setCounter((counter) => counter + 1);
+  });
 
   if (isLoading) return <LoadingMsg />;
 

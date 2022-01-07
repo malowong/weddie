@@ -6,6 +6,8 @@ import { config } from '../../../app.json';
 import { IRootState } from '../../redux/store';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { useQuery } from 'react-query';
+import { LoadingMsg } from '../../components/LoadingsMsg';
+import { ErrorMsg } from '../../components/ErrorMsg';
 
 interface Message {
   id: number;
@@ -15,39 +17,54 @@ interface Message {
 }
 
 export default function NotificationsScreen() {
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  let eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
   const role = useSelector((state: IRootState) => state.event.event?.role);
   const token = useSelector((state: IRootState) => state.auth.token);
   const [messageList, setMessageList] = useState([]);
+  const [counter, setCounter] = useState(0);
+
+  if (!eventId) {
+    eventId = 0;
+  }
+  console.log(eventId);
+  // useRefreshOnFocus(async () => {
+  //   const resp = await fetch(
+  //     `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
+  //     {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     }
+  //   );
+  //   const data = await resp.json();
+  //   console.log('messageList: ', data.messageList);
+
+  //   setMessageList(data.messageList);
+  // });
+
+  const { isLoading, error, status, data } = useQuery(
+    ['notiData', { eventId, counter }],
+    async () => {
+      const resp = await fetch(
+        `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await resp.json();
+      console.log('messageList: ', data.messageList);
+
+      setMessageList(data.messageList);
+    }
+  );
 
   useRefreshOnFocus(async () => {
-    const resp = await fetch(
-      `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const data = await resp.json();
-    console.log('messageList: ', data.messageList);
-
-    setMessageList(data.messageList);
-  });
-
-  const { isLoading, error, data } = useQuery('userData', async () => {
-    const resp = await fetch(
-      `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const data = await resp.json();
-    console.log('messageList: ', data.messageList);
-
-    setMessageList(data.messageList);
+    console.log('useRefreshOnFocus');
+    setCounter((counter) => counter + 1);
   });
 
   let isMessageSender;
@@ -56,6 +73,10 @@ export default function NotificationsScreen() {
   } else {
     isMessageSender = false;
   }
+
+  if (isLoading) return <LoadingMsg />;
+
+  if (error) return <ErrorMsg />;
 
   return (
     <TopBar

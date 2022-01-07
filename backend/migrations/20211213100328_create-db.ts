@@ -142,6 +142,7 @@ export async function up(knex: Knex): Promise<void> {
     table.integer("budget_description_id").unsigned();
     table.string("description").notNullable();
     table.integer("expenditure").unsigned();
+    table.timestamp("updated_at", { useTz: false }).defaultTo(knex.fn.now());
   });
 
   await knex.schema.createTable(tables.ITINERARY_LIST, (table) => {

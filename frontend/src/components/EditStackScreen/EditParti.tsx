@@ -60,7 +60,7 @@ export function EditParti({ route, navigation }: any) {
   };
 
   return (
-    <CreateAndEditTopBar pageName="編輯人員資料">
+    <CreateAndEditTopBar pageName="人員資料">
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View display="flex" flexDirection="column">
           <View height={height * 0.75}>
@@ -71,6 +71,7 @@ export function EditParti({ route, navigation }: any) {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
+                  isReadOnly
                   marginTop={5}
                   placeholder="名稱"
                   onBlur={onBlur}
@@ -92,6 +93,7 @@ export function EditParti({ route, navigation }: any) {
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
+                  isReadOnly
                   marginTop={5}
                   placeholder="電話號碼"
                   onBlur={onBlur}
@@ -119,7 +121,7 @@ export function EditParti({ route, navigation }: any) {
               render={({ field: { value, onChange } }) => (
                 <>
                   <Select
-                    defaultValue={String(roleId)}
+                    selectedValue={String(roleId)}
                     marginTop={5}
                     minWidth="200"
                     accessibilityLabel="請選擇角色"
@@ -161,16 +163,8 @@ export function EditParti({ route, navigation }: any) {
             {removePartiMutation.isSuccess ? navigation.goBack() : null}
           </View>
 
-          <View style={editPartiStyles.buttonRow}>
-            <Button width="48%" onPress={handleSubmit(onSubmit)}>
-              儲存
-            </Button>
-
-            <Button
-              width="48%"
-              colorScheme="danger"
-              onPress={() => setShowModal(true)}
-            >
+          <View>
+            <Button colorScheme="danger" onPress={() => setShowModal(true)}>
               移除
             </Button>
 

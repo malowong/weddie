@@ -2,7 +2,7 @@ import { Knex } from "knex";
 import { tables } from "../utils/tables";
 import { collections } from "../mongoConnection";
 import { EventStore, EventType } from "./models";
-import { budget_template } from "../seeds/dataset/template/budget_template";
+// import { budget_template } from "../seeds/dataset/template/budget_template";
 
 interface BudgetItem {
   id?: number;
@@ -45,15 +45,15 @@ export class BudgetService {
   updateExpenditureList = async (budgetListId: number, description: string, expenditure: number, amendDate: number) => {
     const weddingEventId = (await this.knex(tables.WEDDING_BUDGET_LIST).select().where("id", budgetListId).first())
       .wedding_event_id;
-    const mongoRecordNum = await collections.event_store
-      ?.find({
-        $and: [
-          { "data.wedding_event_id": weddingEventId },
-          { "data.budget_description_id": { $gt: budget_template.length } },
-        ],
-      })
-      .count();
-    let newBudgetDescriptionId;
+    // const mongoRecordNum = await collections.event_store
+    //   ?.find({
+    //     $and: [
+    //       { "data.wedding_event_id": weddingEventId },
+    //       { "data.budget_description_id": { $gt: budget_template.length } },
+    //     ],
+    //   })
+    //   .count();
+    // let newBudgetDescriptionId;
 
     const weddingEventInfo = await this.knex(tables.WEDDING_EVENT).select().where("id", weddingEventId).first();
     const weddingCreatedAtDate = weddingEventInfo.created_at.getTime();
@@ -63,17 +63,20 @@ export class BudgetService {
       .select()
       .where(`${tables.WEDDING_BUDGET_LIST}.id`, budgetListId)
       .join(tables.BUDGET_CAT, `${tables.WEDDING_BUDGET_LIST}.budget_cat_id`, `${tables.BUDGET_CAT}.id`)
+      .orderBy("updated_at", "desc")
       .first();
 
-    if (
-      description.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "") !==
-      old_budget_data.description.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
-    ) {
-      //id轉107打後
-      newBudgetDescriptionId = budget_template.length + 1 + mongoRecordNum!!;
-    } else {
-      newBudgetDescriptionId = old_budget_data.budget_description_id;
-    }
+    // console.log(old_budget_data);
+
+    // if (
+    //   description.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "") !==
+    //   old_budget_data.description.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
+    // ) {
+    //   //id轉107打後
+    //   newBudgetDescriptionId = budget_template.length + 1 + mongoRecordNum!!;
+    // } else {
+    //   newBudgetDescriptionId = old_budget_data.budget_description_id;
+    // }
 
     let event_store_old = {} as EventStore;
     event_store_old.eventType = EventType.Delete;
@@ -82,10 +85,10 @@ export class BudgetService {
     event_store_old.weddingCreatedAtDate = weddingCreatedAtDate;
     event_store_old.weddingDate = weddingDate;
     // console.log(event_store_old);
-
+    console.log(amendDate);
     await this.knex(tables.WEDDING_BUDGET_LIST)
       .where("id", budgetListId)
-      .update({ description: description, expenditure: expenditure });
+      .update({ description: description, expenditure: expenditure, updated_at: new Date(amendDate).toISOString() });
 
     const new_budget_data = await this.knex(tables.WEDDING_BUDGET_LIST)
       .select()
@@ -93,13 +96,16 @@ export class BudgetService {
       .join(tables.BUDGET_CAT, `${tables.WEDDING_BUDGET_LIST}.budget_cat_id`, `${tables.BUDGET_CAT}.id`)
       .first();
 
-    new_budget_data.budget_description_id = newBudgetDescriptionId;
+    // new_budget_data.budget_description_id = newBudgetDescriptionId;
+    // console.log(new_budget_data);
 
     let event_store_new = { ...event_store_old } as EventStore;
     event_store_new.amendDate = amendDate;
     event_store_new.eventType = EventType.Add;
     event_store_new.data = new_budget_data;
-    // console.log(event_store_new);
+
+    console.log(event_store_old);
+    console.log(event_store_new);
 
     let insertArr = [event_store_old, event_store_new];
 

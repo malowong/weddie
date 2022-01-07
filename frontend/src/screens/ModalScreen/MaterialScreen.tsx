@@ -29,22 +29,36 @@ interface LogisticsDatabase {
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
   const mutation: any = useMutation(fetchChangeIsReadyStatus);
-  const eventId = useSelector(
+  let eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
   );
+  const [counter, setCounter] = useState(0);
+
+  if (!eventId) {
+    eventId = 0;
+  }
+
   console.log(eventId);
-  useRefreshOnFocus(() =>
-    fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => setMaterialList(data.logisticsList))
-  );
+
+  // useRefreshOnFocus(() =>
+  //   fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
+  //     .then((res) => res.json())
+  //     .then((data) => setMaterialList(data.logisticsList))
+  // );
 
   const [materialList, setMaterialList] = useState([]);
-  const { isLoading, error, data } = useQuery('logisticsData', () =>
-    fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => setMaterialList(data.logisticsList))
+  const { isLoading, error, status, data } = useQuery(
+    ['logisticsData', { eventId, counter }],
+    () =>
+      fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
+        .then((res) => res.json())
+        .then((data) => setMaterialList(data.logisticsList))
   );
+
+  useRefreshOnFocus(async () => {
+    console.log('useRefreshOnFocus');
+    setCounter((counter) => counter + 1);
+  });
 
   if (isLoading) return <LoadingMsg />;
 

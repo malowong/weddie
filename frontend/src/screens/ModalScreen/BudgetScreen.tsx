@@ -271,7 +271,6 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
                       </View>
                       <View>
                         <Text fontSize="md">
-                          {/* {budgetCategoryMap.get(expenditure.budget_cat_id)} */}
                           {
                             budgetCategoryList.find(
                               (budgetCat) =>

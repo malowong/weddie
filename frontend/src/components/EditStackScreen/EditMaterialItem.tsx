@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { StyleSheet, useWindowDimensions } from 'react-native';
+import {
+  Keyboard,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  useWindowDimensions,
+} from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { Input, Button, Text, TextArea, Modal, View } from 'native-base';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
@@ -49,104 +54,105 @@ export function EditMaterialItem({ route, navigation }: any) {
 
   return (
     <CreateAndEditTopBar pageName="編輯物資">
-      <View display="flex" flexDirection="column">
-        <View height={height * 0.75}>
-          <Controller
-            control={control}
-            rules={{
-              required: true,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <Input
-                marginTop={5}
-                placeholder="物品"
-                // style={editMaterialStyles.input}
-                onBlur={onBlur}
-                size="xl"
-                onChangeText={onChange}
-                value={value}
-              />
-            )}
-            name="itemName"
-          />
-          {errors.itemName && <Text>請填寫物品。</Text>}
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View display="flex" flexDirection="column">
+          <View height={height * 0.75}>
+            <Controller
+              control={control}
+              rules={{
+                required: true,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  marginTop={5}
+                  placeholder="物品"
+                  // style={editMaterialStyles.input}
+                  onBlur={onBlur}
+                  size="xl"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="itemName"
+            />
+            {errors.itemName && <Text>請填寫物品。</Text>}
 
-          <Controller
-            control={control}
-            rules={{
-              maxLength: 100,
-            }}
-            render={({ field: { onChange, onBlur, value } }) => (
-              <TextArea
-                marginTop={5}
-                placeholder="備註"
-                // style={editMaterialStyles.input}
-                onBlur={onBlur}
-                size="xl"
-                onChangeText={onChange}
-                value={value}
-                keyboardType="numeric"
-              />
-            )}
-            name="remarks"
-          />
+            <Controller
+              control={control}
+              rules={{
+                maxLength: 100,
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextArea
+                  marginTop={5}
+                  placeholder="備註"
+                  // style={editMaterialStyles.input}
+                  onBlur={onBlur}
+                  size="xl"
+                  onChangeText={onChange}
+                  value={value}
+                />
+              )}
+              name="remarks"
+            />
+          </View>
+
+          <View>
+            {updateItemMutation.isError ? (
+              <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
+            ) : null}
+
+            {updateItemMutation.isSuccess ? navigation.goBack() : null}
+
+            {deleteItemMutation.isError ? (
+              <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
+            ) : null}
+
+            {deleteItemMutation.isSuccess ? navigation.goBack() : null}
+          </View>
+
+          <View style={editMaterialStyles.buttonRow}>
+            <Button width="48%" onPress={handleSubmit(onSubmit)}>
+              儲存
+            </Button>
+            <Button
+              width="48%"
+              colorScheme="danger"
+              onPress={() => setShowModal(true)}
+            >
+              移除
+            </Button>
+
+            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
+              <Modal.Content maxWidth="400px">
+                <Modal.Header>確定移除物資？</Modal.Header>
+                <Modal.Footer>
+                  <Button.Group space={2}>
+                    <Button
+                      variant="ghost"
+                      colorScheme="blueGray"
+                      onPress={() => {
+                        setShowModal(false);
+                      }}
+                    >
+                      取消
+                    </Button>
+                    <Button
+                      colorScheme="danger"
+                      onPress={() => {
+                        deleteMaterialItem();
+                        setShowModal(false);
+                      }}
+                    >
+                      確定
+                    </Button>
+                  </Button.Group>
+                </Modal.Footer>
+              </Modal.Content>
+            </Modal>
+          </View>
         </View>
-
-        <View>
-          {updateItemMutation.isError ? (
-            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
-          ) : null}
-
-          {updateItemMutation.isSuccess ? navigation.goBack() : null}
-
-          {deleteItemMutation.isError ? (
-            <Text color="danger.500">抱歉：伺服器發生錯誤</Text>
-          ) : null}
-
-          {deleteItemMutation.isSuccess ? navigation.goBack() : null}
-        </View>
-
-        <View style={editMaterialStyles.buttonRow}>
-          <Button width="48%" onPress={handleSubmit(onSubmit)}>
-            儲存
-          </Button>
-          <Button
-            width="48%"
-            colorScheme="danger"
-            onPress={() => setShowModal(true)}
-          >
-            移除
-          </Button>
-
-          <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-            <Modal.Content maxWidth="400px">
-              <Modal.Header>確定移除物資？</Modal.Header>
-              <Modal.Footer>
-                <Button.Group space={2}>
-                  <Button
-                    variant="ghost"
-                    colorScheme="blueGray"
-                    onPress={() => {
-                      setShowModal(false);
-                    }}
-                  >
-                    取消
-                  </Button>
-                  <Button
-                    colorScheme="danger"
-                    onPress={() => {
-                      deleteMaterialItem();
-                      setShowModal(false);
-                    }}
-                  >
-                    確定
-                  </Button>
-                </Button.Group>
-              </Modal.Footer>
-            </Modal.Content>
-          </Modal>
-        </View>
-      </View>
+      </TouchableWithoutFeedback>
     </CreateAndEditTopBar>
   );
 }

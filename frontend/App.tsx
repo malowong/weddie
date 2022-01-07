@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React from 'react';
 import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import {
   CardStyleInterpolators,
@@ -146,7 +146,7 @@ const App = () => {
             }}
           >
             <NativeBaseProvider>
-              <StatusBar barStyle="dark-content"/>
+              <StatusBar barStyle="dark-content" />
               <RootStackScreen />
             </NativeBaseProvider>
           </NavigationContainer>

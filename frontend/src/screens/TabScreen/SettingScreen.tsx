@@ -29,12 +29,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     },
   });
 
-  // const onSubmit = (data: any) => {
-  //   const phoneNumber = parseInt(data.phoneNumber);
-
-  //   setShowModal(false);
-  // };
-
   return (
     <TopBar pageName="用戶設定" show="false" navigate="">
       <View>
@@ -70,7 +64,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
 
         <View display="flex" justifyContent="space-around" flexDirection="row">
           <Button
-            variant="outline"
             colorScheme="red"
             marginTop="8"
             onPress={() => {
@@ -128,7 +121,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
           </Modal> */}
 
           <Button
-            variant="outline"
             color="#ffff1a"
             marginTop="8"
             onPress={() => {

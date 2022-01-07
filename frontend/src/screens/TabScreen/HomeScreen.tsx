@@ -58,33 +58,37 @@ export default function HomeScreen() {
   const [itinList, setItinList] = useState([]);
   const eventId = eventData.wedding_event_id;
   console.log("yoyoyo", eventData.role)
+ 
 
   console.log(counter)
+
   const { status, data } = useQuery(["itinData", { eventId, counter }], 
   async () => {
-    console.log("refresh")
-    const resp = await fetch(
-      `${config.BACKEND_URL}/api/itin/me/${eventId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    const data = await resp.json();
-    console.log('data: ', data);
-
-    data.sort((a: any, b: any) => {
-      const keyA = getTime(a.itinerary_time);
-      const keyB = getTime(b.itinerary_time);
-      if (keyA < keyB) return -1;
-    if (keyA > keyB) return 1;
-      return 0;
-    });
-
-    console.log('data sorted: ', data);
-
-    setItinList(data);
+    if (eventId) {
+      console.log("refresh")
+      const resp = await fetch(
+        `${config.BACKEND_URL}/api/itin/me/${eventId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const data = await resp.json();
+      console.log('data: ', data);
+  
+      data.sort((a: any, b: any) => {
+        const keyA = getTime(a.itinerary_time);
+        const keyB = getTime(b.itinerary_time);
+        if (keyA < keyB) return -1;
+      if (keyA > keyB) return 1;
+        return 0;
+      });
+  
+      console.log('data sorted: ', data);
+  
+      setItinList(data);
+    }
     }
   );
 
@@ -92,6 +96,7 @@ export default function HomeScreen() {
     console.log("useRefreshOnFocus")
     setCounter((counter) => counter + 1)
   })
+
 
   const carouselData_couple = [
     {

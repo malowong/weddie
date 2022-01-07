@@ -105,10 +105,13 @@ export class EventService {
     return eventData;
   }
 
-  async getEventByEventId(eventId: number) {
+  async getEventByUserIdAndEventId(eventId: number, userId: number) {
     const eventData = await this.knex
       .from(tables.WEDDING_USER)
-      .where({ wedding_event_id: eventId })
+      .where({
+        wedding_event_id: eventId,
+        user_id: userId,
+      })
       .innerJoin("wedding_event", "wedding_event_id", "wedding_event.id")
       .innerJoin("role", "role_id", "role.id")
       .orderBy('updated_at', 'desc')

@@ -63,9 +63,11 @@ export function restoreEventThunk() {
 }
 
 export function chooseEventThunk(eventId: string){
-  return async (dispatch: Dispatch<any>) => {
+  return async (dispatch: Dispatch<any>, getState: () => IRootState) => {
     try{
-      const resp = await fetchEventByEventId(parseInt(eventId));
+      const userId = getState().auth.user!.id;
+
+      const resp = await fetchEventByEventId(parseInt(eventId), userId);
       
       const result = await resp.json();
 
@@ -80,6 +82,7 @@ export function chooseEventThunk(eventId: string){
       }
 
       dispatch(getEventSuccess(result));
+      console.log("sdfhiosdufh", result)
 
     } catch (e) {
       console.error(e);

@@ -12,4 +12,4 @@ export const eventRoutes = express.Router();
 eventRoutes.post("/", asyncWrapper(eventController.createEvent));
 eventRoutes.post("/id", asyncWrapper(eventController.getEventByUserId));
 eventRoutes.get("/list/:id", asyncWrapper(eventController.getEventListByUserId));
-eventRoutes.get("/:id", asyncWrapper(eventController.getEventByEventId));
+eventRoutes.get("/:userId/:eventId", asyncWrapper(eventController.getEventByUserIdAndEventId));

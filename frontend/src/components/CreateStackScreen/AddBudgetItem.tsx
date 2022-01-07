@@ -1,15 +1,7 @@
 import React from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
-import {
-  Input,
-  Button,
-  Text,
-  Select,
-  TextArea,
-  CheckIcon,
-  View,
-} from 'native-base';
+import { Input, Button, Text, Select, CheckIcon, View } from 'native-base';
 import { useSelector } from 'react-redux';
 import CreateAndEditTopBar from '../CreateAndEditTopBar';
 import { useMutation } from 'react-query';
@@ -46,35 +38,6 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
 
   return (
     <CreateAndEditTopBar pageName="新增支出">
-      {/* <Select
-          selectedValue={categoryId}
-          placeholder="請選擇種類"
-          minWidth="200"
-          marginTop={5}
-          accessibilityLabel="請選擇種類"
-          placeholderTextColor="gray.700"
-          _selectedItem={{
-            bg: 'teal.600',
-            endIcon: <CheckIcon size="5" />,
-          }}
-          mt={1}
-          onValueChange={(itemValue) => {
-            setCategoryId(itemValue);
-          }}
-        >
-          <Select.Item label="攝影" value="1" />
-          <Select.Item label="婚前中式禮儀" value="2" />
-          <Select.Item label="派帖" value="3" />
-          <Select.Item label="美容" value="4" />
-          <Select.Item label="早上敬茶、出門入門" value="5" />
-          <Select.Item label="証婚" value="6" />
-          <Select.Item label="晚上婚宴" value="7" />
-          <Select.Item label="婚禮服飾" value="8" />
-          <Select.Item label="婚禮當日化妝" value="9" />
-          <Select.Item label="交通" value="10" />
-          <Select.Item label="回門" value="11" />
-          <Select.Item label="其他" value="12" />
-        </Select> */}
       <View display="flex" flexDirection="column">
         <View height={height * 0.75}>
           <Controller
@@ -125,7 +88,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
               required: true,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextArea
+              <Input
                 marginTop={5}
                 placeholder="事項"
                 size="xl"

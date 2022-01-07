@@ -92,6 +92,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
                       defaultIsChecked={material.is_ready}
                       colorScheme="pink"
                       value={String(material.id)}
+                      size="lg"
                       aria-label="Attend"
                       onChange={() => {
                         // const mutation: any = useMutation(

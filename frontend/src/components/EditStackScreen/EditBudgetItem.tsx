@@ -7,7 +7,6 @@ import {
   Text,
   Modal,
   Select,
-  TextArea,
   CheckIcon,
   View,
 } from 'native-base';
@@ -68,37 +67,6 @@ export function EditBudgetItem({ route, navigation }: any) {
   return (
     <CreateAndEditTopBar pageName="編輯支出">
       <View display="flex" flexDirection="column">
-        {/* <Select
-          defaultValue={String(categoryId)}
-          selectedValue={String(categoryId)}
-          placeholder="請選擇種類"
-          minWidth="200"
-          marginTop={5}
-          accessibilityLabel="請選擇種類"
-          placeholderTextColor="gray.700"
-          _selectedItem={{
-            bg: 'teal.600',
-            endIcon: <CheckIcon size="5" />,
-          }}
-          mt={1}
-          onValueChange={(itemValue) => {
-            console.log(itemValue);
-            setCategoryId(parseInt(itemValue));
-          }}
-        >
-          <Select.Item label="攝影" value="1" />
-          <Select.Item label="婚前中式禮儀" value="2" />
-          <Select.Item label="派帖" value="3" />
-          <Select.Item label="美容" value="4" />
-          <Select.Item label="早上敬茶、出門入門" value="5" />
-          <Select.Item label="証婚" value="6" />
-          <Select.Item label="晚上婚宴" value="7" />
-          <Select.Item label="婚禮服飾" value="8" />
-          <Select.Item label="婚禮當日化妝" value="9" />
-          <Select.Item label="交通" value="10" />
-          <Select.Item label="回門" value="11" />
-          <Select.Item label="其他" value="12" />
-        </Select> */}
         <View height={height * 0.75}>
           <Controller
             name="categoryId"
@@ -143,7 +111,7 @@ export function EditBudgetItem({ route, navigation }: any) {
               required: true,
             }}
             render={({ field: { onChange, onBlur, value } }) => (
-              <TextArea
+              <Input
                 isReadOnly
                 marginTop={5}
                 placeholder="事項"

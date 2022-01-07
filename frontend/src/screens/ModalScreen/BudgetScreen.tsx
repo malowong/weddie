@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
   useWindowDimensions,
 } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { View, Text, HStack, Box, Heading, VStack } from 'native-base';
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  View,
+  Text,
+  HStack,
+  Box,
+  Heading,
+  VStack,
+  Button,
+  Select,
+  CheckIcon,
+} from 'native-base';
+import { useSelector } from 'react-redux';
 import { config } from '../../../app.json';
 import { useQuery } from 'react-query';
 import { ErrorMsg } from '../../components/ErrorMsg';
@@ -14,6 +24,8 @@ import { LoadingMsg } from '../../components/LoadingsMsg';
 import { IRootState } from '../../redux/store';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { ProgressChart } from 'react-native-chart-kit';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { budgetCategoryList } from '../../../utils/budgetCategoryList';
 
 interface Expenditure {
   id: number;
@@ -23,40 +35,63 @@ interface Expenditure {
   expenditure: number;
 }
 
-const budgetCategoryMap = new Map([
-  [1, '攝影'],
-  [2, '婚前中式禮儀'],
-  [3, '派帖'],
-  [4, '美容'],
-  [5, '早上敬茶、出門入門'],
-  [6, '証婚'],
-  [7, '晚上婚宴'],
-  [8, '婚禮服飾'],
-  [9, '婚禮當日化妝'],
-  [10, '交通'],
-  [11, '回門'],
-  [12, '其他'],
-]);
+// const budgetCategoryMap = new Map([
+//   [1, '攝影'],
+//   [2, '婚前中式禮儀'],
+//   [3, '派帖'],
+//   [4, '美容'],
+//   [5, '早上敬茶、出門入門'],
+//   [6, '証婚'],
+//   [7, '晚上婚宴'],
+//   [8, '婚禮服飾'],
+//   [9, '婚禮當日化妝'],
+//   [10, '交通'],
+//   [11, '回門'],
+//   [12, '其他'],
+// ]);
 
 export default function BudgetScreen({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
-  const budget: number = parseInt(
-    useSelector((state: IRootState) => state.event.event!.budget)
+  const [sorting, setSorting] = useState(false);
+
+  let eventData: any = useSelector((state: IRootState) => state.event.event);
+
+  if (!eventData) {
+    eventData = {
+      budget: '',
+      wedding_event_id: '',
+    };
+  }
+
+  const budget = parseInt(eventData.budget);
+  const eventId = eventData.wedding_event_id;
+
+  console.log('eventId: ', eventId);
+
+  const [expenditureList, setExpenditureList]: any = useState([]);
+  const [selectedExpenditureList, setSelectedExpenditureList]: any = useState(
+    []
+  );
+
+  const { isLoading, error, data } = useQuery('budgetData', () =>
+    fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setExpenditureList(data.expenditureList);
+        setSelectedExpenditureList(data.expenditureList);
+      })
   );
 
   useRefreshOnFocus(() =>
-    fetch(`${config.BACKEND_URL}/api/budget/list`)
+    fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
       .then((res) => res.json())
-      .then((data) => setExpenditureList(data.expenditureList))
+      .then((data) => {
+        setExpenditureList(data.expenditureList);
+        setSelectedExpenditureList(data.expenditureList);
+      })
   );
 
-  const [expenditureList, setExpenditureList]: any = useState([]);
-  const { isLoading, error, data } = useQuery('userData', () =>
-    fetch(`${config.BACKEND_URL}/api/budget/list`)
-      .then((res) => res.json())
-      .then((data) => setExpenditureList(data.expenditureList))
-  );
-
+  // console.log(expenditureList);
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
@@ -75,20 +110,35 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
 
   return (
     <TopBar pageName="婚禮預算" show="true" navigate="AddBudgetItem">
+      {expenditureList.length === 0 && (
+        <TouchableOpacity
+          onPress={() =>
+            navigation.navigate('CreateStackScreen', {
+              screen: 'AddBudgetItem',
+            })
+          }
+        >
+          <Text fontSize={18} color="danger.600" marginTop={10} marginLeft={15}>
+            尚未有任何支出，按此新增
+          </Text>
+        </TouchableOpacity>
+      )}
+
       {totalExpenditure <= budget && (
         <ProgressChart
           data={chartData}
           width={width * 0.9}
           height={height * 0.2}
           strokeWidth={20}
-          radius={60}
+          radius={65}
           chartConfig={{
-            backgroundColor: '#ec489a',
-            backgroundGradientFrom: '#ec489a',
-            backgroundGradientTo: '#ec489b',
+            backgroundColor: '#f2f2f2',
+            backgroundGradientFrom: '#f2f2f2',
+            backgroundGradientTo: '#f2f2f2',
+            // f2f2f2
             decimalPlaces: 2, // optional, defaults to 2dp
-            color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-            labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+            color: (opacity = 1) => `rgba(233, 30, 98, ${opacity})`,
+            labelColor: (opacity = 1) => `rgba(233, 30, 98, ${opacity})`,
             style: {
               borderRadius: 16,
             },
@@ -98,27 +148,21 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
               stroke: '#ffa726',
             },
           }}
-          hideLegend={false}
+          hideLegend={true}
         />
       )}
 
-      <View mb={5} mt={3}>
+      <View mb={5} mt={3} marginX={2}>
         <View display="flex" flexDirection="row" justifyContent="space-between">
-          <Text fontSize={22} marginLeft={15}>
-            總預算
-          </Text>
+          <Text fontSize={22}>總預算</Text>
           <Text fontSize={22}>{budget}</Text>
         </View>
         <View display="flex" flexDirection="row" justifyContent="space-between">
-          <Text fontSize={22} marginLeft={15}>
-            總支出
-          </Text>
+          <Text fontSize={22}>總支出</Text>
           <Text fontSize={22}>{totalExpenditure}</Text>
         </View>
         <View display="flex" flexDirection="row" justifyContent="space-between">
-          <Text fontSize={22} marginLeft={15}>
-            剩餘預算
-          </Text>
+          <Text fontSize={22}>剩餘預算</Text>
           <Text fontSize={22}>{budget - totalExpenditure}</Text>
         </View>
       </View>
@@ -127,85 +171,132 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
         <View style={budgetStyles.addRow}>
           <Text
             fontSize={24}
-            marginBottom={2}
             fontWeight="bold"
-            marginLeft={15}
+            marginLeft={2}
+            color="secondary.500"
           >
             支出
           </Text>
+
+          <View>
+            <Select
+              // placeholderTextColor="white"
+              defaultValue="all"
+              minWidth="200"
+              _selectedItem={{
+                bg: 'secondary.500',
+                endIcon: <CheckIcon size="5" />,
+              }}
+              fontSize="lg"
+              onValueChange={(value) => {
+                console.log(value);
+                if (value === 'all') {
+                  setSelectedExpenditureList(expenditureList);
+                } else {
+                  const selectedList = expenditureList.filter(
+                    (expenditure: any) => {
+                      return expenditure.budget_cat_id === parseInt(value);
+                    }
+                  );
+                  console.log(selectedList);
+                  setSelectedExpenditureList(() => selectedList);
+                }
+              }}
+            >
+              <Select.Item label="全部" value="all" />
+              {budgetCategoryList.map((budgetCat) => {
+                return (
+                  <Select.Item
+                    key={budgetCat.id}
+                    label={budgetCat.category}
+                    value={String(budgetCat.id)}
+                  />
+                );
+              })}
+            </Select>
+          </View>
+
+          <Button
+            backgroundColor="#f2f2f2"
+            size="lg"
+            marginRight={15}
+            onPress={() => {
+              const sortedExpenditureList = expenditureList.sort(
+                (a: Expenditure, b: Expenditure) => {
+                  if (sorting) {
+                    return a.expenditure - b.expenditure;
+                  } else {
+                    return b.expenditure - a.expenditure;
+                  }
+                }
+              );
+              setSorting(!sorting);
+              setExpenditureList(sortedExpenditureList);
+            }}
+          >
+            <Ionicons name="ios-funnel-outline" color="#e91e63" size={30} />
+          </Button>
         </View>
 
-        {expenditureList.map((expenditure: Expenditure, idx: number) => {
-          return (
-            <TouchableOpacity
-              key={expenditure.id}
-              style={budgetStyles.tableRow}
-              onPress={() =>
-                navigation.navigate('EditStackScreen', {
-                  screen: 'EditBudgetItem',
-                  params: {
-                    id: expenditure.id,
-                    categoryId: expenditure.budget_cat_id,
-                    expenditure: expenditure.expenditure,
-                    description: expenditure.description,
-                  },
-                })
-              }
-            >
-              <Box
-                py="3"
-                alignSelf="center"
-                width={375}
-                maxWidth="100%"
-                borderBottomWidth="1"
-                borderColor="muted.300"
+        {selectedExpenditureList.map(
+          (expenditure: Expenditure, idx: number) => {
+            return (
+              <TouchableOpacity
+                key={expenditure.id}
+                style={budgetStyles.tableRow}
+                onPress={() =>
+                  navigation.navigate('EditStackScreen', {
+                    screen: 'EditBudgetItem',
+                    params: {
+                      id: expenditure.id,
+                      categoryId: expenditure.budget_cat_id,
+                      expenditure: expenditure.expenditure,
+                      description: expenditure.description,
+                    },
+                  })
+                }
               >
-                <HStack>
-                  <VStack>
-                    <View>
-                      <Heading size="md">{expenditure.description}</Heading>
-                    </View>
-                    <View>
-                      <Text fontSize="md">
-                        {budgetCategoryMap.get(expenditure.budget_cat_id)}
-                      </Text>
-                    </View>
-                  </VStack>
-                  <Box
-                    flex="1"
-                    flex-direction="column"
-                    alignItems="flex-end"
-                    justifyContent="flex-end"
-                  >
-                    <Box px="2" py="0.5" rounded="md" bg="primary.600">
-                      <Text fontSize="md" color="white">
-                        {expenditure.expenditure}
-                      </Text>
+                <Box
+                  py="3"
+                  alignSelf="center"
+                  width={375}
+                  maxWidth="100%"
+                  borderBottomWidth="1"
+                  borderColor="muted.300"
+                >
+                  <HStack>
+                    <VStack>
+                      <View>
+                        <Heading size="md">{expenditure.description}</Heading>
+                      </View>
+                      <View>
+                        <Text fontSize="md">
+                          {
+                            budgetCategoryList.find(
+                              (budgetCat) =>
+                                budgetCat.id === expenditure.budget_cat_id
+                            )?.category
+                          }
+                        </Text>
+                      </View>
+                    </VStack>
+                    <Box
+                      flex="1"
+                      flex-direction="column"
+                      alignItems="flex-end"
+                      justifyContent="flex-end"
+                    >
+                      <Box px="2" py="0.5" rounded="md">
+                        <Text fontSize="lg" color="black" fontFamily="arial">
+                          ${expenditure.expenditure}
+                        </Text>
+                      </Box>
                     </Box>
-                  </Box>
-                </HStack>
-              </Box>
-            </TouchableOpacity>
-          );
-        })}
-
-        {expenditureList.length === 0 && (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('CreateStackScreen', {
-                screen: 'AddBudgetItem',
-              })
-            }
-          >
-            <Text
-              fontSize={18}
-              color="danger.600"
-              marginTop={10}
-              marginLeft={15}
-            >
-              尚未有任何支出，按此新增
-            </Text>
-          </TouchableOpacity>
+                  </HStack>
+                </Box>
+              </TouchableOpacity>
+            );
+          }
         )}
       </View>
     </TopBar>
@@ -231,8 +322,8 @@ const budgetStyles = StyleSheet.create({
   addRow: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 8,
+    marginBottom: 12,
   },
 });

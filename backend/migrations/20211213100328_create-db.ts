@@ -23,6 +23,7 @@ const tables = Object.freeze({
   WEDDING_GUEST_LIST: "wedding_guest_list",
   MESSAGE_ROLE: "message_role",
   MESSAGE_LIST: "message_list",
+  WEDDING_PARTI_LIST: "wedding_parti_list",
 });
 
 export async function up(knex: Knex): Promise<void> {
@@ -111,6 +112,16 @@ export async function up(knex: Knex): Promise<void> {
     table.string("name", 30).notNullable();
     table.string("phone", 8).notNullable();
     table.string("relationship").notNullable();
+  });
+
+  await knex.schema.createTable(tables.WEDDING_PARTI_LIST, (table) => {
+    table.increments();
+    table.integer("wedding_event_id").unsigned();
+    table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
+    table.string("name", 30).notNullable();
+    table.string("phone", 8).notNullable();
+    table.integer("role_id").notNullable();
+    table.foreign("role_id").references(`${tables.ROLE}.id`);
   });
 
   await knex.schema.createTable(tables.WEDDING_LOGISTICS, (table) => {

@@ -12,16 +12,17 @@ import {
   Select,
   CheckIcon,
 } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { TouchableOpacity } from 'react-native';
+import { Keyboard, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useMutation } from 'react-query';
 import { useDispatch } from 'react-redux';
 import { fetchRegister } from '../../api/auth';
 import { ISignupUser } from '../../redux/auth/state';
-import { restoreLoginThunk } from '../../redux/auth/thunk';
+import { signUpThunk } from '../../redux/auth/thunk';
 import { useNavigation } from '@react-navigation/native';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 export default function SignupScreen() {
   const navigation = useNavigation();
@@ -44,12 +45,12 @@ export default function SignupScreen() {
     },
   });
 
-  useEffect(() => {
-    let sub = watch((data) => {
-      console.log('update form data:', data);
-    });
-    return () => sub.unsubscribe();
-  }, [watch]);
+  // useEffect(() => {
+  //   let sub = watch((data) => {
+  //     console.log('update form data:', data);
+  //   });
+  //   return () => sub.unsubscribe();
+  // }, [watch]);
 
   const mutation: any = useMutation(fetchRegister);
 
@@ -59,17 +60,18 @@ export default function SignupScreen() {
   }
 
   if (mutation.status === 'success') {
-    dispatch(restoreLoginThunk());
+    dispatch(signUpThunk());
   }
 
   return (
-    <>
+    <View height="100%">
       <Box safeAreaTop backgroundColor="#f2f2f2" />
       <Box safeAreaX={3} safeAreaY={1}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Icon as={Ionicons} name="chevron-back" />
         </TouchableOpacity>
       </Box>
+
       <Center flex={0.9} px="3">
         <Box safeArea w="90%">
           <Heading
@@ -90,112 +92,117 @@ export default function SignupScreen() {
 
           <VStack space={3} mt="5">
             <View>
-              <Controller
-                name="email"
-                control={control}
-                rules={{
-                  required: true,
-                  pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                }}
-                render={({ field: { value, onChange } }) => (
-                  <Input
-                    type="text"
-                    placeholder="請輸入你的電郵地址"
-                    fontSize="md"
-                    value={value}
-                    onChangeText={onChange}
-                  />
-                )}
-              />
-              {errors.email?.type === 'required' && (
-                <Text color="danger.500">請填寫你的電郵地址。</Text>
-              )}
-              {errors.email?.type === 'pattern' && (
-                <Text color="danger.500">請填寫正確的電郵地址。</Text>
-              )}
-
-              <Controller
-                name="password"
-                control={control}
-                render={({ field: { value, onChange } }) => (
-                  <Input
-                    type="password"
-                    placeholder="請輸入密碼（至少包含八個字符）"
-                    fontSize="md"
-                    mt="3"
-                    value={value}
-                    onChangeText={onChange}
-                  />
-                )}
-                rules={{
-                  required: true,
-                  minLength: 8,
-                }}
-              />
-              {errors.password?.type === 'required' && (
-                <Text color="danger.500">請填寫你的密碼。</Text>
-              )}
-              {errors.password?.type === 'minLength' && (
-                <Text color="danger.500">你的密碼需要包含八個字符或以上。</Text>
-              )}
-
-              <Controller
-                name="phone"
-                control={control}
-                rules={{
-                  required: true,
-                  maxLength: 8,
-                  minLength: 8,
-                }}
-                render={({ field: { value, onChange } }) => (
-                  <Input
-                    type="number"
-                    placeholder="請輸入你的電話號碼"
-                    fontSize="md"
-                    mt="3"
-                    value={value}
-                    onChangeText={onChange}
-                    keyboardType="numeric"
-                  />
-                )}
-              />
-              {errors.phone?.type === 'required' && (
-                <Text color="danger.500">請填寫你的電話號碼。</Text>
-              )}
-              {errors.phone?.type === 'maxLength' && (
-                <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-              )}
-              {errors.phone?.type === 'minLength' && (
-                <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
-              )}
-
-              <Controller
-                name="nickname"
-                control={control}
-                rules={{
-                  required: true,
-                  maxLength: 20,
-                }}
-                render={({ field: { value, onChange } }) => (
-                  <>
-                    <Text fontSize="lg" mb="1" mt="10">
-                      請問你的名字是...
-                    </Text>
+              <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                <Controller
+                  name="email"
+                  control={control}
+                  rules={{
+                    required: true,
+                    pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  }}
+                  render={({ field: { value, onChange } }) => (
                     <Input
-                      placeholder={`簡單名字即可，如 "大文" 或 "Ben" 等`}
+                      type="text"
+                      placeholder="請輸入你的電郵地址"
                       fontSize="md"
                       value={value}
                       onChangeText={onChange}
                     />
-                  </>
+                  )}
+                />
+
+                {errors.email?.type === 'required' && (
+                  <Text color="danger.500">請填寫你的電郵地址。</Text>
                 )}
-              />
-              {errors.nickname?.type === 'required' && (
-                <Text color="danger.500">請填寫你的名字。</Text>
-              )}
-              {errors.nickname?.type === 'maxLength' && (
-                <Text color="danger.500">你的名字不可多於二十個字符。</Text>
-              )}
+                {errors.email?.type === 'pattern' && (
+                  <Text color="danger.500">請填寫正確的電郵地址。</Text>
+                )}
+
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field: { value, onChange } }) => (
+                    <Input
+                      type="password"
+                      placeholder="請輸入密碼（至少包含八個字符）"
+                      fontSize="md"
+                      mt="3"
+                      value={value}
+                      onChangeText={onChange}
+                    />
+                  )}
+                  rules={{
+                    required: true,
+                    minLength: 8,
+                  }}
+                />
+                {errors.password?.type === 'required' && (
+                  <Text color="danger.500">請填寫你的密碼。</Text>
+                )}
+                {errors.password?.type === 'minLength' && (
+                  <Text color="danger.500">
+                    你的密碼需要包含八個字符或以上。
+                  </Text>
+                )}
+
+                <Controller
+                  name="phone"
+                  control={control}
+                  rules={{
+                    required: true,
+                    maxLength: 8,
+                    minLength: 8,
+                  }}
+                  render={({ field: { value, onChange } }) => (
+                    <Input
+                      type="number"
+                      placeholder="請輸入你的電話號碼"
+                      fontSize="md"
+                      mt="3"
+                      value={value}
+                      onChangeText={onChange}
+                      keyboardType="numeric"
+                    />
+                  )}
+                />
+                {errors.phone?.type === 'required' && (
+                  <Text color="danger.500">請填寫你的電話號碼。</Text>
+                )}
+                {errors.phone?.type === 'maxLength' && (
+                  <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+                )}
+                {errors.phone?.type === 'minLength' && (
+                  <Text color="danger.500">請填寫8位數字的電話號碼。</Text>
+                )}
+
+                <Controller
+                  name="nickname"
+                  control={control}
+                  rules={{
+                    required: true,
+                    maxLength: 20,
+                  }}
+                  render={({ field: { value, onChange } }) => (
+                    <>
+                      <Text fontSize="lg" mb="1" mt="10">
+                        請問你的名字是...
+                      </Text>
+                      <Input
+                        placeholder={`簡單名字即可，如 "大文" 或 "Ben" 等`}
+                        fontSize="md"
+                        value={value}
+                        onChangeText={onChange}
+                      />
+                    </>
+                  )}
+                />
+                {errors.nickname?.type === 'required' && (
+                  <Text color="danger.500">請填寫你的名字。</Text>
+                )}
+                {errors.nickname?.type === 'maxLength' && (
+                  <Text color="danger.500">你的名字不可多於二十個字符。</Text>
+                )}
+              </TouchableWithoutFeedback>
 
               <Controller
                 name="gender"
@@ -244,7 +251,7 @@ export default function SignupScreen() {
                       accessibilityLabel="請選擇居住區域"
                       placeholder="請選擇居住區域"
                       _selectedItem={{
-                        bg: 'teal.600',
+                        bg: 'secondary.300',
                         endIcon: <CheckIcon size="5" />,
                       }}
                       // mt={1}
@@ -279,7 +286,7 @@ export default function SignupScreen() {
 
               <Button
                 mt="4"
-                // colorScheme="indigo"
+                colorScheme="pink"
                 // onPress={() => navigation.navigate('ChooseScreen')}
                 onPress={handleSubmit(onSubmit)}
               >
@@ -291,6 +298,6 @@ export default function SignupScreen() {
           </VStack>
         </Box>
       </Center>
-    </>
+    </View>
   );
 }

@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
-import { Box, Checkbox, Heading, HStack, Text, VStack } from 'native-base';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  Box,
+  Checkbox,
+  Heading,
+  HStack,
+  Text,
+  VStack,
+  View,
+} from 'native-base';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import TopBar from '../../components/TopBar';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
@@ -21,8 +29,10 @@ interface LogisticsDatabase {
 
 export default function MaterialScreen({ navigation }: { navigation: any }) {
   const mutation: any = useMutation(fetchChangeIsReadyStatus);
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
-
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
+  console.log(eventId);
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
       .then((res) => res.json())
@@ -74,37 +84,41 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
                 borderBottomWidth="1"
                 borderColor="muted.300"
               >
-                <HStack>
-                  <VStack>
+                <HStack display="flex" justifyContent="space-between">
+                  <VStack width="80%">
                     <View>
                       <Heading size="md">{material.logistics_item}</Heading>
                     </View>
                   </VStack>
-                  <Box
-                    flex="1"
-                    flex-direction="column"
-                    alignItems="flex-end"
-                    justifyContent="flex-end"
-                  >
-                    <Checkbox
-                      defaultIsChecked={material.is_ready}
-                      colorScheme="green"
-                      value={String(material.id)}
-                      aria-label="Attend"
-                      onChange={() => {
-                        // const mutation: any = useMutation(
-                        //   fetchChangeIsReadyStatus
-                        // );
 
-                        const isReady = !material.is_ready;
-                        material.is_ready = !material.is_ready;
-                        const itemId = material.id;
-                        const data = { itemId, isReady };
-                        mutation.mutate(data);
-                        // changeIsReadyStatus(material.id, material.is_ready);
-                      }}
-                    />
-                  </Box>
+                  <VStack>
+                    <Box
+                      flex="1"
+                      flex-direction="column"
+                      alignItems="flex-end"
+                      justifyContent="flex-end"
+                    >
+                      <Checkbox
+                        defaultIsChecked={material.is_ready}
+                        colorScheme="pink"
+                        value={String(material.id)}
+                        size="lg"
+                        aria-label="Attend"
+                        onChange={() => {
+                          // const mutation: any = useMutation(
+                          //   fetchChangeIsReadyStatus
+                          // );
+
+                          const isReady = !material.is_ready;
+                          material.is_ready = !material.is_ready;
+                          const itemId = material.id;
+                          const data = { itemId, isReady };
+                          mutation.mutate(data);
+                          // changeIsReadyStatus(material.id, material.is_ready);
+                        }}
+                      />
+                    </Box>
+                  </VStack>
                 </HStack>
               </Box>
             </TouchableOpacity>
@@ -134,7 +148,7 @@ const materialStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 20,
+    marginHorizontal: 15,
     marginTop: 5,
   },
 });

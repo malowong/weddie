@@ -11,10 +11,11 @@ import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { TouchableOpacity, View } from 'react-native';
 
 export default function RundownScreen({ navigation }: { navigation: any }) {
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
+  const eventId = useSelector((state: IRootState) => state.event.event?.wedding_event_id);
 
   const token = useSelector((state: IRootState) => state.auth.token);
 
+  const [itinList, setItinList] = useState([]);
   useRefreshOnFocus(async () => {
     const resp = await fetch(`${config.BACKEND_URL}/api/itin/list/${eventId}`, {
       headers: {
@@ -34,8 +35,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
     setItinList(data);
   });
 
-  const [itinList, setItinList] = useState([]);
-  const { isLoading, error, data } = useQuery('userData', async () => {
+  const { isLoading, error, data } = useQuery('itinData', async () => {
     const resp = await fetch(`${config.BACKEND_URL}/api/itin/list/${eventId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -116,7 +116,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
                           py="0.5"
                           mr="3"
                           rounded="md"
-                          bg="primary.600"
+                          bg="secondary.500"
                           key={idx}
                         >
                           <Text fontSize="md" color="white">

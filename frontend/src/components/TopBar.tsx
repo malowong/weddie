@@ -34,7 +34,7 @@ export default function TopBar(props: ITopBarProps) {
 
   return (
     <>
-      <Box safeAreaTop backgroundColor="#f2f2f2" />
+      <Box safeAreaTop backgroundColor="#f2f1f5" />
       <View
         style={{
           bottom: '0.2%',
@@ -89,7 +89,7 @@ export default function TopBar(props: ITopBarProps) {
           }
         }}
       >
-        <Box safeAreaX={3} safeAreaY={1}>
+        <Box safeAreaX={3} safeAreaY={1} marginBottom="10">
           <Heading size="xl" textAlign="left" mb="3">
             {props.pageName}
           </Heading>

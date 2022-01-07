@@ -16,15 +16,12 @@ export default function ChooseScreen({ navigation }: { navigation: any }) {
               color: 'warmGray.50',
             }}
           >
-            感謝你的加入！
-          </Heading>
-          <Text fontSize="lg" mt="3">
             請選擇項目：
-          </Text>
+          </Heading>
           <VStack space={3} mt="5">
             <View>
               <Button
-                // colorScheme="indigo"
+                colorScheme="pink"
                 onPress={() => navigation.navigate('CreateEventScreen')}
                 // onPress={handleSubmit(onSubmit)}
               >
@@ -34,12 +31,12 @@ export default function ChooseScreen({ navigation }: { navigation: any }) {
               </Button>
               <Button
                 mt="4"
-                // colorScheme="indigo"
+                colorScheme="pink"
                 onPress={() => navigation.navigate('JoinEventScreen')}
                 // onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
-                  加入婚禮
+                  選擇婚禮
                 </Text>
               </Button>
             </View>

@@ -11,16 +11,18 @@ import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { IRootState } from '../../redux/store';
 
 export default function GuestsScreen({ navigation }: { navigation: any }) {
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
-
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
+  console.log('eventId: ', eventId);
+  const [guestList, setGuestList] = useState([]);
   useRefreshOnFocus(() =>
     fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setGuestList(data.guestList))
   );
 
-  const [guestList, setGuestList] = useState([]);
-  const { isLoading, error, data } = useQuery('userData', () =>
+  const { isLoading, error, data } = useQuery('guestData', () =>
     fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setGuestList(data.guestList))
@@ -33,9 +35,6 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   return (
     <TopBar pageName="賓客名單" show="true" navigate="AddGuest">
       <View>
-        {/* {guestList.length === 0 && (
-          <Text fontSize="md">請加入你準備邀請的來賓！</Text>
-        )} */}
         {guestList.map((guest: any) => {
           return (
             <TouchableOpacity
@@ -75,7 +74,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
                     alignItems="flex-end"
                     justifyContent="flex-end"
                   >
-                    <Box px="2" py="0.5" rounded="md" bg="primary.600">
+                    <Box px="2" py="0.5" rounded="md" bg="secondary.500">
                       <Text fontSize="md" color="white">
                         {guest.relationship}
                       </Text>
@@ -104,27 +103,3 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
     </TopBar>
   );
 }
-
-// const guestStyles = StyleSheet.create({
-//   tableRow: {
-//     display: 'flex',
-//     flexDirection: 'row',
-//     justifyContent: 'space-evenly',
-//     alignItems: 'center',
-//     marginTop: 15,
-//   },
-//   tableColumn: {
-//     flex: 1,
-//     textAlign: 'left',
-//     display: 'flex',
-//     justifyContent: 'center',
-//     flexDirection: 'row',
-//     fontSize: 17,
-//   },
-//   tableRelationShip: {
-//     flex: 1.5,
-//   },
-//   tableHeader: {
-//     fontWeight: 'bold',
-//   },
-// });

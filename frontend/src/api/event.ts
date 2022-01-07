@@ -3,11 +3,11 @@ import { ISignupUser } from '../redux/auth/state';
 import { ICreateEvent } from '../redux/event/state';
 
 export const fetchCreateEvent = async (event: ICreateEvent) => {
-  console.log(event)
+  console.log(event);
   const resp = await fetch(`${config.BACKEND_URL}/api/events`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(event),
   });
@@ -15,14 +15,20 @@ export const fetchCreateEvent = async (event: ICreateEvent) => {
   return resp;
 };
 
-export const fetchEvent = async (userId: number) => {
+export const fetchEventByUserId = async (userId: number) => {
   const resp = await fetch(`${config.BACKEND_URL}/api/events/id`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({userId}),
+    body: JSON.stringify({ userId }),
   });
 
   return resp;
 };
+
+export const fetchEventByEventId = async (eventId: number) => {
+  const resp = await fetch(`${config.BACKEND_URL}/api/events/${eventId}`)
+
+  return resp;
+}

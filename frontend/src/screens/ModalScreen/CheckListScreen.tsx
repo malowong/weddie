@@ -1,6 +1,6 @@
 import { Text, View } from 'native-base';
 import React, { useState } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { TodoItem } from '../../components/TodoItem';
 import TopBar from '../../components/TopBar';
@@ -9,6 +9,7 @@ import { config } from '../../../app.json';
 import { useQuery } from 'react-query';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LoadingMsg } from '../../components/LoadingsMsg';
+import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 
 interface TodoItem {
   id: number;
@@ -21,8 +22,18 @@ interface TodoItem {
 
 export default function CheckListScreen({ navigation }: { navigation: any }) {
   const [todoList, setTodoList] = useState([]);
-  const eventId = useSelector((state: IRootState) => state.event.event?.id);
-  const { isLoading, error, data } = useQuery('userData', () =>
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
+
+  console.log('eventId: ', eventId);
+  useRefreshOnFocus(() =>
+    fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => setTodoList(data.todoList))
+  );
+
+  const { isLoading, error, data } = useQuery('todoData', () =>
     fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
       .then((res) => res.json())
       .then((data) => setTodoList(data.todoList))
@@ -47,7 +58,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
     <TopBar pageName="待辦事項" show="true" navigate="AddTodoItem">
       <View marginTop={15}>
         {pendingTodoItems.length > 0 && (
-          <Text marginLeft={15} fontSize={25}>
+          <Text fontSize={25} marginLeft={1} fontWeight="bold" marginBottom={5}>
             未完成
           </Text>
         )}
@@ -55,6 +66,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
         {pendingTodoItems.map((todoItem: TodoItem) => {
           return (
             <TouchableOpacity
+              style={todoItemStyles.itemRow}
               key={todoItem.id}
               onPress={() =>
                 navigation.push('EditStackScreen', {
@@ -80,7 +92,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
 
       {completedTodoItems.length > 0 && (
         <View marginTop={20}>
-          <Text marginLeft={15} fontSize={25}>
+          <Text fontSize={25} marginLeft={1} fontWeight="bold" marginBottom={5}>
             已完成
           </Text>
         </View>
@@ -89,6 +101,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
       {completedTodoItems.map((todoItem: TodoItem) => {
         return (
           <TouchableOpacity
+            style={todoItemStyles.itemRow}
             key={todoItem.id}
             onPress={() =>
               navigation.push('EditStackScreen', {
@@ -127,3 +140,9 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
     </TopBar>
   );
 }
+
+const todoItemStyles = StyleSheet.create({
+  itemRow: {
+    marginBottom: 10,
+  },
+});

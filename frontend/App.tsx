@@ -8,8 +8,8 @@
  * @format
  */
 
-import React, { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react';
+import { DefaultTheme, NavigationContainer } from '@react-navigation/native';
 import {
   CardStyleInterpolators,
   createStackNavigator,
@@ -19,7 +19,7 @@ import { styles } from './style';
 import ModalScreen from './src/screens/TabScreen/ModalScreen';
 import LoadingScreen from './src/screens/AuthStackScreen/LoadingScreen';
 import { Provider } from 'react-redux';
-import { NativeBaseProvider } from 'native-base';
+import { NativeBaseProvider, StatusBar } from 'native-base';
 import { store } from './src/redux/store';
 import { AddMaterialItem } from './src/components/CreateStackScreen/AddMaterialItem';
 import { EditMaterialItem } from './src/components/EditStackScreen/EditMaterialItem';
@@ -98,6 +98,7 @@ function MainStackScreen() {
           presentation: 'transparentModal',
           cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
           cardOverlayEnabled: true,
+          gestureResponseDistance: 1000,
         }}
       />
       <MainStack.Screen
@@ -135,8 +136,17 @@ const App = () => {
     <Provider store={store}>
       <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
-          <NavigationContainer>
+          <NavigationContainer
+            theme={{
+              ...DefaultTheme,
+              colors: {
+                ...DefaultTheme.colors,
+                background: '#f2f1f5',
+              },
+            }}
+          >
             <NativeBaseProvider>
+              <StatusBar barStyle="dark-content" />
               <RootStackScreen />
             </NativeBaseProvider>
           </NavigationContainer>

@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dispatch } from 'redux';
 import { fetchLogin, fetchRegister, fetchUser } from '../../api/auth';
-import { getEventFailed } from '../event/actions';
+import { resetEvent } from '../event/actions';
 import { restoreEventThunk } from '../event/thunk';
 import { loginFailed, loginSuccess, logout } from './actions';
 import { ISignupUser } from './state';
@@ -35,7 +35,7 @@ export function loginThunk(email: string, password: string) {
         }
 
     }
-  };
+};
 
 export function restoreLoginThunk() {
     return async (dispatch: Dispatch<any>) => {
@@ -67,14 +67,46 @@ export function restoreLoginThunk() {
             dispatch(logout())
         }
     }
-  };
+};
+
+export function signUpThunk() {
+    return async (dispatch: Dispatch<any>) => {
+        try {
+            const token = await AsyncStorage.getItem('token')
+            if (token == null) {
+                dispatch(logout())
+                return
+            }
+            const resp = await fetchUser(token)
+            const result = await resp.json()
+
+            console.log(result)
+
+            if (!result.userData) {
+                return dispatch(logout())
+            }
+
+            if (!result.userData.id) {
+                return dispatch(logout())
+            }
+
+            dispatch(loginSuccess(token, result.userData))
+
+            dispatch(restoreEventThunk());
+
+        } catch (e) {
+            console.error(e)
+            dispatch(logout())
+        }
+    }
+};
 
 export function logoutThunk() {
-  return async (dispatch: Dispatch<any>) => {
-    await AsyncStorage.removeItem('token');
-    dispatch(logout());
-    // dispatch(logoutEvent());
-  };
+    return async (dispatch: Dispatch<any>) => {
+        await AsyncStorage.removeItem('token');
+        dispatch(logout());
+        dispatch(resetEvent())
+    };
 }
 
 // export function signupThunk(signupUser: ISignupUser) {

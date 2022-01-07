@@ -1,49 +1,133 @@
-import { Text, Box, Heading, HStack, VStack } from 'native-base';
+import {
+  Text,
+  Box,
+  Heading,
+  HStack,
+  VStack,
+  Select,
+  CheckIcon,
+} from 'native-base';
 import React, { useState } from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
-import { roleList } from '../../components/roleList';
+import { TouchableOpacity, View } from 'react-native';
+import { useQuery } from 'react-query';
+import { useSelector } from 'react-redux';
+import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
+import { ErrorMsg } from '../../components/ErrorMsg';
+import { LoadingMsg } from '../../components/LoadingsMsg';
+import { roleList } from '../../../utils/roleList';
 import TopBar from '../../components/TopBar';
-
-const participants = [
-  {
-    id: 1,
-    name: 'Matthew',
-    phone: 12345678,
-    roleId: 6,
-  },
-  {
-    id: 2,
-    name: 'Dennis',
-    phone: 23456781,
-    roleId: 5,
-  },
-  {
-    id: 3,
-    name: 'Billy',
-    phone: 23475899,
-    roleId: 4,
-  },
-];
+import { IRootState } from '../../redux/store';
+import { config } from '../../../app.json';
 
 export default function ParticipantsScreen({
   navigation,
 }: {
   navigation: any;
 }) {
+  const eventId = useSelector(
+    (state: IRootState) => state.event.event?.wedding_event_id
+  );
+  const role = useSelector((state: IRootState) => state.event.event?.role);
+  console.log('eventId', eventId);
+
+  const [participantList, setParticipantList] = useState([]);
+  const [selectedPartiList, setSelectedPartiList] = useState([]);
+
+  useRefreshOnFocus(() =>
+    fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setParticipantList(data.partiList);
+        setSelectedPartiList(data.partiList);
+      })
+  );
+
+  const { isLoading, error, data } = useQuery('partiData', () =>
+    fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setParticipantList(data.partiList);
+        setSelectedPartiList(data.partiList);
+      })
+  );
+
+  if (isLoading) return <LoadingMsg />;
+
+  if (error) return <ErrorMsg />;
+
   return (
     <TopBar pageName="人員名單" show="true" navigate="AddParti">
       <View>
-        {participants.map((participant: any) => {
+        {participantList.length === 0 && (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('CreateStackScreen', {
+                screen: 'AddParti',
+              })
+            }
+          >
+            <Text fontSize={18} color="danger.600" marginTop={10}>
+              尚未有人員名單，按此新增
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        {participantList.length > 0 && (
+          <View>
+            <Select
+              defaultValue="all"
+              marginBottom={3}
+              marginTop={5}
+              minWidth="200"
+              _selectedItem={{
+                bg: 'secondary.500',
+                endIcon: <CheckIcon size="5" />,
+              }}
+              fontSize="xl"
+              onValueChange={(value) => {
+                console.log(value);
+                if (value === 'all') {
+                  setSelectedPartiList(participantList);
+                } else {
+                  const selectedList = participantList.filter(
+                    (participant: any) => {
+                      return participant.role_id === parseInt(value);
+                    }
+                  );
+                  console.log(selectedList);
+                  setSelectedPartiList(() => selectedList);
+                }
+              }}
+            >
+              <Select.Item label="全部" value="all" />
+              {roleList
+                .filter((roleObject) => roleObject.role !== role)
+                .map((roleObject) => {
+                  return (
+                    <Select.Item
+                      key={roleObject.id}
+                      label={roleObject.role}
+                      value={String(roleObject.id)}
+                    />
+                  );
+                })}
+            </Select>
+          </View>
+        )}
+
+        {selectedPartiList.map((participant: any, idx: number) => {
           return (
             <TouchableOpacity
+              style={{ marginHorizontal: 8 }}
               key={participant.id}
               onPress={() =>
                 navigation.navigate('EditStackScreen', {
                   screen: 'EditParti',
                   params: {
                     id: participant.id,
+                    name: participant.name,
                     phone: participant.phone,
-                    roleId: participant.roleId,
+                    roleId: participant.role_id,
                   },
                 })
               }
@@ -71,11 +155,12 @@ export default function ParticipantsScreen({
                     alignItems="flex-end"
                     justifyContent="flex-end"
                   >
-                    <Box px="2" py="0.5" rounded="md" bg="primary.600">
+                    <Box px="2" py="0.5" rounded="md" bg="secondary.500">
                       <Text fontSize="md" color="white">
                         {
                           roleList.find(
-                            (roleObject) => roleObject.id === participant.roleId
+                            (roleObject) =>
+                              roleObject.id === participant.role_id
                           )!.role
                         }
                       </Text>
@@ -86,39 +171,7 @@ export default function ParticipantsScreen({
             </TouchableOpacity>
           );
         })}
-
-        {participants.length === 0 && (
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('CreateStackScreen', {
-                screen: 'AddParti',
-              })
-            }
-          >
-            <Text fontSize={18} color="danger.600" marginTop={10}>
-              尚未有人員名單，按此新增
-            </Text>
-          </TouchableOpacity>
-        )}
       </View>
     </TopBar>
   );
 }
-
-const partiStyles = StyleSheet.create({
-  tableRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-  },
-  tableColumn: {
-    flex: 1,
-    textAlign: 'center',
-    marginTop: 10,
-    fontSize: 18,
-  },
-  input: {
-    marginTop: 4,
-  },
-});

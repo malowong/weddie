@@ -93,14 +93,36 @@ export class EventService {
     return eventId;
   }
 
-  async getEventById(userId: number) {
+  async getEventByUserId(userId: number) {
     const eventData = await this.knex
       .from(tables.WEDDING_USER)
       .where({ user_id: userId })
       .innerJoin("wedding_event", "wedding_event_id", "wedding_event.id")
       .innerJoin("role", "role_id", "role.id")
+      .orderBy('updated_at', 'desc')
       .first();
 
     return eventData;
+  }
+
+  async getEventByEventId(eventId: number) {
+    const eventData = await this.knex
+      .from(tables.WEDDING_USER)
+      .where({ wedding_event_id: eventId })
+      .innerJoin("wedding_event", "wedding_event_id", "wedding_event.id")
+      .innerJoin("role", "role_id", "role.id")
+      .orderBy('updated_at', 'desc')
+      .first();
+
+    return eventData;
+  }
+
+  async getEventListByUserId(userId: number) {
+    const eventList = await this.knex(tables.WEDDING_USER)
+      .select("wedding_event.wedding_name", "wedding_event.wedding_date", "wedding_event.id")
+      .innerJoin(tables.WEDDING_EVENT, "wedding_event.id", "wedding_user.wedding_event_id")
+      .where("wedding_user.user_id", userId);
+
+    return eventList;
   }
 }

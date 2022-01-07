@@ -22,7 +22,7 @@ export default function NotificationsScreen() {
 
   useRefreshOnFocus(async () => {
     const resp = await fetch(
-      `${config.BACKEND_URL}/api/message/list/${eventId}`,
+      `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -37,7 +37,7 @@ export default function NotificationsScreen() {
 
   const { isLoading, error, data } = useQuery('userData', async () => {
     const resp = await fetch(
-      `${config.BACKEND_URL}/api/message/list/${eventId}`,
+      `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -74,7 +74,6 @@ export default function NotificationsScreen() {
         >
           Click here to push notification
         </Button> */}
-
       {messageList.map((message: Message, idx: number) => {
         return (
           <Box

@@ -21,4 +21,5 @@ export const tables = Object.freeze({
   WEDDING_GUEST_LIST: "wedding_guest_list",
   MESSAGE_ROLE: "message_role",
   MESSAGE_LIST: "message_list",
+  WEDDING_PARTI_LIST: "wedding_parti_list",
 });

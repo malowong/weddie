@@ -12,7 +12,7 @@ import NotificationsScreen from './TabScreen/NotificationsScreen';
 import ParticipantsScreen from './TabScreen/ParticipantsScreen';
 import SettingScreen from './TabScreen/SettingScreen';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { View } from 'react-native';
+import { Image, View } from 'react-native';
 
 const Tab = createBottomTabNavigator();
 
@@ -24,7 +24,6 @@ export default function TabScreen() {
         tabBarActiveTintColor: '#e91e63',
         headerShown: false,
       }}
-      
     >
       <Tab.Screen
         name="主頁"
@@ -63,14 +62,17 @@ export default function TabScreen() {
             <View
               style={{
                 position: 'absolute',
-                bottom: '-40%',
+                bottom: '-20%',
                 shadowColor: '#171717',
                 shadowOffset: { width: 0, height: 4 },
                 shadowOpacity: 0.4,
                 shadowRadius: 6,
               }}
             >
-              <Ionicons name="ios-add-circle" color="#e91e63" size={80} />
+              <Image
+                source={require('../images/App_icon_circle.png')}
+                style={{ width: 70, height: 70 }}
+              />
             </View>
           ),
         }}

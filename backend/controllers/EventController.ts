@@ -2,58 +2,90 @@ import { Request, Response } from "express";
 import { EventService } from "../services/EventService";
 
 export class EventController {
-    constructor(private eventService: EventService) { }
+  constructor(private eventService: EventService) {}
 
-    createEvent = async (req: Request, res: Response) => {
-        console.log(req.body)
+  createEvent = async (req: Request, res: Response) => {
+    console.log(req.body);
 
-        if (!req.body) {
-            res.status(401).json({ msg: "Request are null" });
-            return;
-        }
+    if (!req.body) {
+      res.status(401).json({ msg: "Request are null" });
+      return;
+    }
 
-        const { eventName, role, bigday, budget, pax, user_id } = req.body;
+    const { eventName, role, bigday, budget, pax, user_id } = req.body;
 
-        // where shd i put the budget?
+    // where shd i put the budget?
 
-        const event = {
-            wedding_name: eventName,
-            wedding_date: bigday,
-            budget,
-            pax,
-            user_id: user_id,
-            role_id: parseInt(role),
-        }
-
-        await this.eventService.createEvent(event);
-
-        const eventData = await this.eventService.getEventById(user_id)
-
-        res.json(eventData);
-
+    const event = {
+      wedding_name: eventName,
+      wedding_date: bigday,
+      budget,
+      pax,
+      user_id: user_id,
+      role_id: parseInt(role),
     };
 
-    getEventById = async (req: Request, res: Response) => {
-        console.log(req.body)
+    await this.eventService.createEvent(event);
 
-        const userId = req.body.userId
+    const eventData = await this.eventService.getEventByUserId(user_id);
 
-        if (!req.body) {
-            res.status(401).json({ msg: "Request are null" });
-            return;
-        }
+    res.json(eventData);
+  };
 
-        const eventData = await this.eventService.getEventById(userId)
-        // const eventData = {
-        //     id: event.wedding_event_id,
+  getEventByUserId = async (req: Request, res: Response) => {
+    console.log(req.body);
 
-        // }
+    const userId = req.body.userId;
 
-        if (!eventData) {
-            res.status(401).json({ msg: "Request are null" })
-            return
-        }
+    if (!req.body) {
+      res.status(401).json({ msg: "Request are null" });
+      return;
+    }
 
-        res.json( eventData );
-    };
+    const eventData = await this.eventService.getEventByUserId(userId);
+
+    if (!eventData) {
+      res.status(401).json({ msg: "Request are null" });
+      return;
+    }
+
+    res.json(eventData);
+  };
+
+  getEventListByUserId = async (req: Request, res: Response) => {
+    console.log(req.params.id);
+
+    const userId = parseInt(req.params.id);
+
+    if (!req.params.id) {
+      res.status(401).json({ msg: "Request are null" });
+      return;
+    }
+
+    const eventList = await this.eventService.getEventListByUserId(userId);
+
+    res.json({ eventList });
+  };
+
+  getEventByEventId = async (req: Request, res: Response) => {
+    console.log(req.params.id);
+
+    const eventId = parseInt(req.params.id);
+
+    if (!eventId){
+      res.status(401).json({ msg: "Request are null" })
+      return;
+    }
+
+    const eventData = await this.eventService.getEventByEventId(eventId)
+
+    if (!eventData) {
+      res.status(401).json({ msg: "Request are null" });
+      return;
+    }
+
+    res.json(eventData)
+  }
+
+
 }

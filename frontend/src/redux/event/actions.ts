@@ -28,8 +28,24 @@ export function getEventFailed(message: string) {
     }
 }
 
+export function resetEvent() {
+    return {
+        type: "@@event/LOGOUT_EVENT" as const,
+    }
+}
+
+export function changeEvent() {
+    return {
+        type: "@@event/CHANGE_EVENT" as const,
+    }
+}
+
 export type IEventAction =
     | ReturnType<typeof createEventSuccess>
     | ReturnType<typeof createEventFailed>
     | ReturnType<typeof getEventSuccess>
     | ReturnType<typeof getEventFailed>
+    | ReturnType<typeof resetEvent>
+    | ReturnType<typeof changeEvent>
+
+

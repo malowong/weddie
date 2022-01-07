@@ -79,3 +79,11 @@ export interface MessageList {
   wedding_event_id: number;
   content: string;
 }
+
+export interface Parti {
+  id?: number;
+  wedding_event_id: number;
+  name: string;
+  phone: string;
+  role_id: number;
+}

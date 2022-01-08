@@ -40,6 +40,15 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
 
   console.log(eventId);
 
+  const role = useSelector((state: IRootState) => state.event.event?.role);
+  console.log(role);
+  let isEventViewer: boolean;
+  if (role === '新郎' || role === '新娘') {
+    isEventViewer = false;
+  } else {
+    isEventViewer = true;
+  }
+
   // useRefreshOnFocus(() =>
   //   fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
   //     .then((res) => res.json())
@@ -77,6 +86,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
         materialList.map((material: LogisticsDatabase) => {
           return (
             <TouchableOpacity
+              disabled={isEventViewer}
               key={material.id}
               style={materialStyles.tableRow}
               onPress={() =>
@@ -113,6 +123,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
                       justifyContent="flex-end"
                     >
                       <Checkbox
+                        isDisabled={isEventViewer}
                         defaultIsChecked={material.is_ready}
                         colorScheme="pink"
                         value={String(material.id)}
@@ -139,7 +150,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
           );
         })}
 
-      {materialList.length === 0 && (
+      {materialList.length === 0 && !isEventViewer && (
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('CreateStackScreen', {

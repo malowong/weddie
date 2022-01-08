@@ -28,6 +28,15 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   //     .then((data) => setGuestList(data.guestList))
   // );
 
+  const role = useSelector((state: IRootState) => state.event.event?.role);
+  console.log(role);
+  let isEventViewer: boolean;
+  if (role === '新郎' || role === '新娘') {
+    isEventViewer = false;
+  } else {
+    isEventViewer = true;
+  }
+
   const { isLoading, error, status, data } = useQuery(
     ['guestData', { eventId, counter }],
     () =>
@@ -51,6 +60,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
         {guestList.map((guest: any) => {
           return (
             <TouchableOpacity
+              disabled={isEventViewer}
               key={guest.id}
               onPress={() =>
                 navigation.navigate('EditStackScreen', {
@@ -99,7 +109,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
           );
         })}
 
-        {guestList.length === 0 && (
+        {guestList.length === 0 && !isEventViewer && (
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('CreateStackScreen', {

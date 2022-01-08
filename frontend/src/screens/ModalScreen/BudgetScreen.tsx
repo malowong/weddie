@@ -35,21 +35,6 @@ interface Expenditure {
   expenditure: number;
 }
 
-// const budgetCategoryMap = new Map([
-//   [1, '攝影'],
-//   [2, '婚前中式禮儀'],
-//   [3, '派帖'],
-//   [4, '美容'],
-//   [5, '早上敬茶、出門入門'],
-//   [6, '証婚'],
-//   [7, '晚上婚宴'],
-//   [8, '婚禮服飾'],
-//   [9, '婚禮當日化妝'],
-//   [10, '交通'],
-//   [11, '回門'],
-//   [12, '其他'],
-// ]);
-
 export default function BudgetScreen({ navigation }: { navigation: any }) {
   const { height, width } = useWindowDimensions();
   const [sorting, setSorting] = useState(false);
@@ -73,6 +58,15 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
   const [selectedExpenditureList, setSelectedExpenditureList]: any = useState(
     []
   );
+
+  const role = useSelector((state: IRootState) => state.event.event?.role);
+  console.log(role);
+  let isEventViewer: boolean;
+  if (role === '新郎' || role === '新娘') {
+    isEventViewer = false;
+  } else {
+    isEventViewer = true;
+  }
 
   // const { isLoading, error, data } = useQuery('budgetData', () =>
   //   fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
@@ -128,7 +122,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
 
   return (
     <TopBar pageName="婚禮預算" show="true" navigate="AddBudgetItem">
-      {expenditureList.length === 0 && (
+      {expenditureList.length === 0 && !isEventViewer && (
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('CreateStackScreen', {
@@ -260,6 +254,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
           (expenditure: Expenditure, idx: number) => {
             return (
               <TouchableOpacity
+                disabled={isEventViewer}
                 key={expenditure.id}
                 style={budgetStyles.tableRow}
                 onPress={() =>

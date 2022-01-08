@@ -34,8 +34,6 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
     eventId = 0;
   }
 
-<<<<<<< HEAD
-=======
   // useRefreshOnFocus(() =>
   //   fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
   //     .then((res) => res.json())
@@ -50,7 +48,6 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
     isEventViewer = true;
   }
 
->>>>>>> 26bc8b7f8ddf541f72f3accfd9b39a6636ee9ab4
   const { isLoading, error, status, data } = useQuery(
     ['todoData', { eventId, counter }],
     () => {

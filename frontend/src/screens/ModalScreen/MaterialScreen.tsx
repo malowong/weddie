@@ -40,8 +40,6 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
 
   console.log(eventId);
 
-<<<<<<< HEAD
-=======
   const role = useSelector((state: IRootState) => state.event.event?.role);
   console.log(role);
   let isEventViewer: boolean;
@@ -57,7 +55,6 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
   //     .then((data) => setMaterialList(data.logisticsList))
   // );
 
->>>>>>> 26bc8b7f8ddf541f72f3accfd9b39a6636ee9ab4
   const [materialList, setMaterialList] = useState([]);
   const { isLoading, error, status, data } = useQuery(
     ['logisticsData', { eventId, counter }],

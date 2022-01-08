@@ -38,7 +38,7 @@ export default function LoadingScreen({ navigation }: { navigation: any }) {
         flex: 1,
       }}
     >
-      <Text style={{ fontSize: 30 }}>Loading...</Text>
+      <Text style={{ fontSize: 30 }}>載入中...</Text>
     </View>
   );
 }

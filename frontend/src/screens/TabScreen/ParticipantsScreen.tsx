@@ -39,27 +39,21 @@ export default function ParticipantsScreen({
   const [participantList, setParticipantList] = useState([]);
   const [selectedPartiList, setSelectedPartiList] = useState([]);
 
-  // useRefreshOnFocus(() =>
-  //   fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setParticipantList(data.partiList);
-  //       setSelectedPartiList(data.partiList);
-  //     })
-  // );
-
   const { isLoading, error, status, data } = useQuery(
     ['partiData', { eventId, counter }],
-    () =>
-      fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setParticipantList(data.partiList);
-          setSelectedPartiList(data.partiList);
-        })
+    () => {
+      if (eventId && eventId !== 0) {
+        fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setParticipantList(data.partiList);
+            setSelectedPartiList(data.partiList);
+          });
+      }
+    }
   );
 
-  useRefreshOnFocus(async () => {
+  useRefreshOnFocus(() => {
     console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });

@@ -10,6 +10,7 @@ import { useQuery } from 'react-query';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
+import { useFocusEffect } from '@react-navigation/native';
 
 interface TodoItem {
   id: number;
@@ -33,21 +34,18 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
     eventId = 0;
   }
 
-  // useRefreshOnFocus(() =>
-  //   fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setTodoList(data.todoList))
-  // );
-
   const { isLoading, error, status, data } = useQuery(
     ['todoData', { eventId, counter }],
-    () =>
-      fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
-        .then((res) => res.json())
-        .then((data) => setTodoList(data.todoList))
+    () => {
+      if (eventId && eventId !== 0) {
+        fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
+          .then((res) => res.json())
+          .then((data) => setTodoList(data.todoList));
+      }
+    }
   );
 
-  useRefreshOnFocus(async () => {
+  useRefreshOnFocus(() => {
     console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });

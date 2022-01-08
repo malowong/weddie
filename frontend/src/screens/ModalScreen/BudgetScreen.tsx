@@ -86,25 +86,18 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
   const { isLoading, error, status, data } = useQuery(
     ['budgetData', { eventId, counter }],
     () => {
-      fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setExpenditureList(data.expenditureList);
-          setSelectedExpenditureList(data.expenditureList);
-        });
+      if (eventId && eventId !== 0){
+        fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setExpenditureList(data.expenditureList);
+            setSelectedExpenditureList(data.expenditureList);
+          });
+      }
     }
   );
 
-  // useRefreshOnFocus(() =>
-  //   fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setExpenditureList(data.expenditureList);
-  //       setSelectedExpenditureList(data.expenditureList);
-  //     })
-  // );
-
-  useRefreshOnFocus(async () => {
+  useRefreshOnFocus(() => {
     console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });
@@ -128,7 +121,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
 
   return (
     <TopBar pageName="婚禮預算" show="true" navigate="AddBudgetItem">
-      {expenditureList.length === 0 && (
+      {/* {expenditureList.length === 0 && (
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('CreateStackScreen', {
@@ -140,7 +133,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
             尚未有任何支出，按此新增
           </Text>
         </TouchableOpacity>
-      )}
+      )} */}
 
       {totalExpenditure <= budget && (
         <ProgressChart

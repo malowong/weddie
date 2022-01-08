@@ -40,12 +40,6 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
 
   console.log(eventId);
 
-  // useRefreshOnFocus(() =>
-  //   fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setMaterialList(data.logisticsList))
-  // );
-
   const [materialList, setMaterialList] = useState([]);
   const { isLoading, error, status, data } = useQuery(
     ['logisticsData', { eventId, counter }],
@@ -55,7 +49,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
         .then((data) => setMaterialList(data.logisticsList))
   );
 
-  useRefreshOnFocus(async () => {
+  useRefreshOnFocus(() => {
     console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });

@@ -3,6 +3,8 @@ import { Box, Heading, Icon, NativeBaseProvider, Text } from 'native-base';
 import React, { useState } from 'react';
 import { Animated, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
+import { IRootState } from '../redux/store';
 
 interface ITopBarProps {
   children: any;
@@ -14,6 +16,10 @@ interface ITopBarProps {
 export default function TopBar(props: ITopBarProps) {
   const navigation: any = useNavigation();
 
+  let role: any = useSelector((state: IRootState) => state.event.event?.role);
+
+  console.log("role", role)
+
   const [fadeAnim] = useState(new Animated.Value(0));
 
   const fadeIn = () => {
@@ -24,13 +30,15 @@ export default function TopBar(props: ITopBarProps) {
     }).start();
   };
 
-  const fadeOut = () => {
+const fadeOut = () => {
     Animated.timing(fadeAnim, {
       toValue: 0,
       duration: 50,
       useNativeDriver: true,
     }).start();
   };
+
+
 
   return (
     <>
@@ -45,7 +53,7 @@ export default function TopBar(props: ITopBarProps) {
           justifyContent: 'flex-end',
         }}
       >
-        {props.show === 'true' && (
+        {props.show === 'true' && (role === '新郎' || role === '新娘') && (
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('CreateStackScreen', {

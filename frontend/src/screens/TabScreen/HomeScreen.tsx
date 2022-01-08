@@ -92,7 +92,7 @@ export default function HomeScreen() {
     }
   );
 
-  useRefreshOnFocus(async () => {
+  useRefreshOnFocus(() => {
     console.log("useRefreshOnFocus")
     setCounter((counter) => counter + 1)
   })

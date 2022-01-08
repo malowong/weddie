@@ -22,11 +22,6 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   const [counter, setCounter] = useState(0);
 
   const [guestList, setGuestList] = useState([]);
-  // useRefreshOnFocus(() =>
-  //   fetch(`${config.BACKEND_URL}/api/guest/list/${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setGuestList(data.guestList))
-  // );
 
   const { isLoading, error, status, data } = useQuery(
     ['guestData', { eventId, counter }],
@@ -36,7 +31,7 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
         .then((data) => setGuestList(data.guestList))
   );
 
-  useRefreshOnFocus(async () => {
+  useRefreshOnFocus(() => {
     console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });

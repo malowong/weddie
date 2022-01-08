@@ -29,40 +29,30 @@ export default function NotificationsScreen() {
     eventId = 0;
   }
   console.log(eventId);
-  // useRefreshOnFocus(async () => {
-  //   const resp = await fetch(
-  //     `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //   );
-  //   const data = await resp.json();
-  //   console.log('messageList: ', data.messageList);
-
-  //   setMessageList(data.messageList);
-  // });
 
   const { isLoading, error, status, data } = useQuery(
     ['notiData', { eventId, counter }],
     async () => {
-      const resp = await fetch(
-        `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const data = await resp.json();
-      console.log('messageList: ', data.messageList);
+      if (eventId && eventId !== 0) {
+        const resp = await fetch(
+          `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await resp.json();
+        console.log('messageList: ', data.messageList);
+  
+        setMessageList(data.messageList);
 
-      setMessageList(data.messageList);
+      }
+
     }
   );
 
-  useRefreshOnFocus(async () => {
+  useRefreshOnFocus(() => {
     console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });

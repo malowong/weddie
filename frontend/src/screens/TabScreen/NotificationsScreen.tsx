@@ -8,12 +8,15 @@ import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { useQuery } from 'react-query';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { ErrorMsg } from '../../components/ErrorMsg';
+import { roleList } from '../../../utils/roleList';
 
 interface Message {
   id: number;
   wedding_event_id: number;
   content: string;
   created_at: string;
+  message_id: number;
+  role_id: number;
 }
 
 export default function NotificationsScreen() {
@@ -22,32 +25,53 @@ export default function NotificationsScreen() {
   );
   const role = useSelector((state: IRootState) => state.event.event?.role);
   const token = useSelector((state: IRootState) => state.auth.token);
-  const [messageList, setMessageList] = useState([]);
+  const [messageList, setMessageList]: any[] = useState([]);
   const [counter, setCounter] = useState(0);
 
   if (!eventId) {
     eventId = 0;
   }
-  console.log(eventId);
+
+  console.log(role);
+  const roleId = roleList.find((roleObj) => roleObj.role === role)?.id;
+  console.log(roleId);
+
+  let isMessageSender: boolean;
+  if (role === '新郎' || role === '新娘') {
+    isMessageSender = true;
+  } else {
+    isMessageSender = false;
+  }
 
   const { isLoading, error, status, data } = useQuery(
     ['notiData', { eventId, counter }],
     async () => {
-      if (eventId && eventId !== 0) {
-        const resp = await fetch(
-          `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        const data = await resp.json();
-        console.log('messageList: ', data.messageList);
-  
-        setMessageList(data.messageList);
+      if (eventId && eventId !== 0){
+        let resp;
 
+        if (isMessageSender) {
+          resp = await fetch(
+            `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        } else {
+          resp = await fetch(
+            `${config.BACKEND_URL}/api/message/list/${eventId}/${roleId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        }
+        const data = await resp.json();
+        console.log(data.messageList);
       }
+
 
     }
   );
@@ -57,16 +81,26 @@ export default function NotificationsScreen() {
     setCounter((counter) => counter + 1);
   });
 
-  let isMessageSender;
-  if (role === '新郎' || role === '新娘') {
-    isMessageSender = true;
-  } else {
-    isMessageSender = false;
-  }
-
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
+
+  const messageRoleIdMap = new Map();
+  if (messageList) {
+    for (const messageObj of messageList) {
+      const messageId = messageObj.message_id;
+      const roleId = messageObj.role_id;
+
+      if (messageRoleIdMap.has(messageId)) {
+        messageRoleIdMap.get(messageId).push(roleId);
+      } else {
+        messageRoleIdMap.set(messageId, [roleId]);
+      }
+    }
+
+    console.log(messageRoleIdMap);
+  }
+  let messageIdArr: number[] = [];
 
   return (
     <TopBar
@@ -74,45 +108,81 @@ export default function NotificationsScreen() {
       show={isMessageSender ? 'true' : 'false'}
       navigate="AddMessage"
     >
-      {/* <Button
-          onPress={() => {
-            PushNotificationIOS.addNotificationRequest({
-              id: '1',
-              title: 'hello',
-              body: 'this is weddie',
-            });
-          }}
-        >
-          Click here to push notification
-        </Button> */}
-      {messageList.map((message: Message, idx: number) => {
-        return (
-          <Box
-            key={message.id}
-            py="3"
-            alignSelf="center"
-            width={375}
-            maxWidth="100%"
-            borderBottomWidth="1"
-            borderColor="muted.300"
-          >
-            <HStack>
-              <VStack>
-                <View>
-                  <Heading size="md" fontSize={25}>
-                    {message.content}
-                  </Heading>
-                </View>
-                <View marginTop={3}>
-                  <Text>
-                    {new Date(message.created_at).toLocaleString('zh-hk')}
-                  </Text>
-                </View>
-              </VStack>
-            </HStack>
-          </Box>
-        );
-      })}
+      {messageList &&
+        messageList.map((message: Message, idx: number) => {
+          const messageId = message.message_id;
+
+          if (messageIdArr.find((id) => id === messageId)) {
+            return;
+          } else {
+            messageIdArr.push(message.message_id);
+          }
+
+          return (
+            <Box
+              key={message.id}
+              py="3"
+              alignSelf="center"
+              width={375}
+              maxWidth="100%"
+              borderBottomWidth="1"
+              borderColor="muted.300"
+            >
+              <HStack>
+                <VStack>
+                  <View>
+                    <Heading size="md" fontSize={25}>
+                      {message.content}
+                    </Heading>
+                  </View>
+                  <View
+                    marginTop={3}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                  >
+                    <View>
+                      <Text>
+                        {new Date(message.created_at).toLocaleString('zh-hk')}
+                      </Text>
+                    </View>
+                    {(role === '新郎' || role === '新娘') && (
+                      <View marginLeft={2} display="flex" flexDirection="row">
+                        {roleList.map((roleObj) => {
+                          const roleIdArr = messageRoleIdMap.get(
+                            message.message_id
+                          );
+
+                          console.log(roleObj);
+                          console.log(roleIdArr);
+
+                          if (
+                            roleIdArr.find((ele: number) => ele == roleObj.id)
+                          ) {
+                            return (
+                              <Box
+                                marginLeft={1}
+                                key={roleObj.id}
+                                px="2"
+                                py="0.5"
+                                rounded="md"
+                                bg="secondary.500"
+                              >
+                                <Text fontSize="md" color="white">
+                                  {roleObj.role}
+                                </Text>
+                              </Box>
+                            );
+                          }
+                        })}
+                      </View>
+                    )}
+                  </View>
+                </VStack>
+              </HStack>
+            </Box>
+          );
+        })}
     </TopBar>
   );
 }

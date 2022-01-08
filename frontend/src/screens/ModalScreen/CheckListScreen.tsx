@@ -34,6 +34,23 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
     eventId = 0;
   }
 
+<<<<<<< HEAD
+=======
+  // useRefreshOnFocus(() =>
+  //   fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
+  //     .then((res) => res.json())
+  //     .then((data) => setTodoList(data.todoList))
+  // );
+  const role = useSelector((state: IRootState) => state.event.event?.role);
+  console.log(role);
+  let isEventViewer: boolean;
+  if (role === '新郎' || role === '新娘') {
+    isEventViewer = false;
+  } else {
+    isEventViewer = true;
+  }
+
+>>>>>>> 26bc8b7f8ddf541f72f3accfd9b39a6636ee9ab4
   const { isLoading, error, status, data } = useQuery(
     ['todoData', { eventId, counter }],
     () => {
@@ -77,6 +94,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
         {pendingTodoItems.map((todoItem: TodoItem) => {
           return (
             <TouchableOpacity
+              disabled={isEventViewer}
               style={todoItemStyles.itemRow}
               key={todoItem.id}
               onPress={() =>
@@ -112,6 +130,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
       {completedTodoItems.map((todoItem: TodoItem) => {
         return (
           <TouchableOpacity
+            disabled={isEventViewer}
             style={todoItemStyles.itemRow}
             key={todoItem.id}
             onPress={() =>
@@ -135,7 +154,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
         );
       })}
 
-      {todoList.length === 0 && (
+      {todoList.length === 0 && !isEventViewer && (
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('CreateStackScreen', {

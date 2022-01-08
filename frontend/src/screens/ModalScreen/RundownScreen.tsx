@@ -44,6 +44,15 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
   //   setItinList(data);
   // });
 
+  const role = useSelector((state: IRootState) => state.event.event?.role);
+  console.log(role);
+  let isEventViewer: boolean;
+  if (role === '新郎' || role === '新娘') {
+    isEventViewer = false;
+  } else {
+    isEventViewer = true;
+  }
+
   const { isLoading, error, status, data } = useQuery(
     ['initData', { eventId, counter }],
     async () => {
@@ -102,6 +111,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
       {itinList.map((item: any) => {
         return (
           <TouchableOpacity
+            disabled={isEventViewer}
             key={item.id}
             onPress={() =>
               navigation.navigate('EditStackScreen', {

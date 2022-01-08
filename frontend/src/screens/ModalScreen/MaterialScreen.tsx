@@ -40,6 +40,24 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
 
   console.log(eventId);
 
+<<<<<<< HEAD
+=======
+  const role = useSelector((state: IRootState) => state.event.event?.role);
+  console.log(role);
+  let isEventViewer: boolean;
+  if (role === '新郎' || role === '新娘') {
+    isEventViewer = false;
+  } else {
+    isEventViewer = true;
+  }
+
+  // useRefreshOnFocus(() =>
+  //   fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
+  //     .then((res) => res.json())
+  //     .then((data) => setMaterialList(data.logisticsList))
+  // );
+
+>>>>>>> 26bc8b7f8ddf541f72f3accfd9b39a6636ee9ab4
   const [materialList, setMaterialList] = useState([]);
   const { isLoading, error, status, data } = useQuery(
     ['logisticsData', { eventId, counter }],
@@ -71,6 +89,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
         materialList.map((material: LogisticsDatabase) => {
           return (
             <TouchableOpacity
+              disabled={isEventViewer}
               key={material.id}
               style={materialStyles.tableRow}
               onPress={() =>
@@ -107,6 +126,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
                       justifyContent="flex-end"
                     >
                       <Checkbox
+                        isDisabled={isEventViewer}
                         defaultIsChecked={material.is_ready}
                         colorScheme="pink"
                         value={String(material.id)}
@@ -133,7 +153,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
           );
         })}
 
-      {materialList.length === 0 && (
+      {materialList.length === 0 && !isEventViewer && (
         <TouchableOpacity
           onPress={() =>
             navigation.navigate('CreateStackScreen', {

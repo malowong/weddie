@@ -19,4 +19,13 @@ export class MessageController {
 
     res.json({ message: "add success" });
   };
+
+  getMessageWithRole = async (req: Request, res: Response) => {
+    const eventId = parseInt(req.params.eventId);
+    const roleId = parseInt(req.params.roleId);
+
+    const messageList = await this.messageService.getMessageWithRole(eventId, roleId);
+
+    res.json({ messageList });
+  };
 }

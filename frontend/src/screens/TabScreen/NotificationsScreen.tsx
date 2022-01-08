@@ -8,6 +8,7 @@ import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { useQuery } from 'react-query';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { ErrorMsg } from '../../components/ErrorMsg';
+import { roleList } from '../../../utils/roleList';
 
 interface Message {
   id: number;
@@ -28,33 +29,42 @@ export default function NotificationsScreen() {
   if (!eventId) {
     eventId = 0;
   }
-  console.log(eventId);
-  // useRefreshOnFocus(async () => {
-  //   const resp = await fetch(
-  //     `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
-  //     {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     }
-  //   );
-  //   const data = await resp.json();
-  //   console.log('messageList: ', data.messageList);
 
-  //   setMessageList(data.messageList);
-  // });
+  console.log(role);
+  const roleId = roleList.find((roleObj) => roleObj.role === role)?.id;
+  console.log(roleId);
+
+  let isMessageSender: boolean;
+  if (role === '新郎' || role === '新娘') {
+    isMessageSender = true;
+  } else {
+    isMessageSender = false;
+  }
 
   const { isLoading, error, status, data } = useQuery(
     ['notiData', { eventId, counter }],
     async () => {
-      const resp = await fetch(
-        `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      let resp;
+      if (isMessageSender) {
+        resp = await fetch(
+          `${config.BACKEND_URL}/api/message/list/all/${eventId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      } else {
+        resp = await fetch(
+          `${config.BACKEND_URL}/api/message/list/${eventId}/${roleId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
       const data = await resp.json();
       console.log('messageList: ', data.messageList);
 
@@ -67,13 +77,6 @@ export default function NotificationsScreen() {
     setCounter((counter) => counter + 1);
   });
 
-  let isMessageSender;
-  if (role === '新郎' || role === '新娘') {
-    isMessageSender = true;
-  } else {
-    isMessageSender = false;
-  }
-
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
@@ -84,45 +87,35 @@ export default function NotificationsScreen() {
       show={isMessageSender ? 'true' : 'false'}
       navigate="AddMessage"
     >
-      {/* <Button
-          onPress={() => {
-            PushNotificationIOS.addNotificationRequest({
-              id: '1',
-              title: 'hello',
-              body: 'this is weddie',
-            });
-          }}
-        >
-          Click here to push notification
-        </Button> */}
-      {messageList.map((message: Message, idx: number) => {
-        return (
-          <Box
-            key={message.id}
-            py="3"
-            alignSelf="center"
-            width={375}
-            maxWidth="100%"
-            borderBottomWidth="1"
-            borderColor="muted.300"
-          >
-            <HStack>
-              <VStack>
-                <View>
-                  <Heading size="md" fontSize={25}>
-                    {message.content}
-                  </Heading>
-                </View>
-                <View marginTop={3}>
-                  <Text>
-                    {new Date(message.created_at).toLocaleString('zh-hk')}
-                  </Text>
-                </View>
-              </VStack>
-            </HStack>
-          </Box>
-        );
-      })}
+      {messageList &&
+        messageList.map((message: Message, idx: number) => {
+          return (
+            <Box
+              key={message.id}
+              py="3"
+              alignSelf="center"
+              width={375}
+              maxWidth="100%"
+              borderBottomWidth="1"
+              borderColor="muted.300"
+            >
+              <HStack>
+                <VStack>
+                  <View>
+                    <Heading size="md" fontSize={25}>
+                      {message.content}
+                    </Heading>
+                  </View>
+                  <View marginTop={3}>
+                    <Text>
+                      {new Date(message.created_at).toLocaleString('zh-hk')}
+                    </Text>
+                  </View>
+                </VStack>
+              </HStack>
+            </Box>
+          );
+        })}
     </TopBar>
   );
 }

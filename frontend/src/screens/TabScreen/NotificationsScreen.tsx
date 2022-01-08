@@ -15,6 +15,8 @@ interface Message {
   wedding_event_id: number;
   content: string;
   created_at: string;
+  message_id: number;
+  role_id: number;
 }
 
 export default function NotificationsScreen() {
@@ -23,7 +25,7 @@ export default function NotificationsScreen() {
   );
   const role = useSelector((state: IRootState) => state.event.event?.role);
   const token = useSelector((state: IRootState) => state.auth.token);
-  const [messageList, setMessageList] = useState([]);
+  const [messageList, setMessageList]: any[] = useState([]);
   const [counter, setCounter] = useState(0);
 
   if (!eventId) {
@@ -66,7 +68,7 @@ export default function NotificationsScreen() {
       }
 
       const data = await resp.json();
-      console.log('messageList: ', data.messageList);
+      console.log(data.messageList);
 
       setMessageList(data.messageList);
     }
@@ -81,6 +83,23 @@ export default function NotificationsScreen() {
 
   if (error) return <ErrorMsg />;
 
+  const messageRoleIdMap = new Map();
+  if (messageList) {
+    for (const messageObj of messageList) {
+      const messageId = messageObj.message_id;
+      const roleId = messageObj.role_id;
+
+      if (messageRoleIdMap.has(messageId)) {
+        messageRoleIdMap.get(messageId).push(roleId);
+      } else {
+        messageRoleIdMap.set(messageId, [roleId]);
+      }
+    }
+
+    console.log(messageRoleIdMap);
+  }
+  let messageIdArr: number[] = [];
+
   return (
     <TopBar
       pageName="訊息通知"
@@ -89,6 +108,14 @@ export default function NotificationsScreen() {
     >
       {messageList &&
         messageList.map((message: Message, idx: number) => {
+          const messageId = message.message_id;
+
+          if (messageIdArr.find((id) => id === messageId)) {
+            return;
+          } else {
+            messageIdArr.push(message.message_id);
+          }
+
           return (
             <Box
               key={message.id}
@@ -106,10 +133,48 @@ export default function NotificationsScreen() {
                       {message.content}
                     </Heading>
                   </View>
-                  <View marginTop={3}>
-                    <Text>
-                      {new Date(message.created_at).toLocaleString('zh-hk')}
-                    </Text>
+                  <View
+                    marginTop={3}
+                    display="flex"
+                    flexDirection="row"
+                    alignItems="center"
+                  >
+                    <View>
+                      <Text>
+                        {new Date(message.created_at).toLocaleString('zh-hk')}
+                      </Text>
+                    </View>
+                    {(role === '新郎' || role === '新娘') && (
+                      <View marginLeft={2} display="flex" flexDirection="row">
+                        {roleList.map((roleObj) => {
+                          const roleIdArr = messageRoleIdMap.get(
+                            message.message_id
+                          );
+
+                          console.log(roleObj);
+                          console.log(roleIdArr);
+
+                          if (
+                            roleIdArr.find((ele: number) => ele == roleObj.id)
+                          ) {
+                            return (
+                              <Box
+                                marginLeft={1}
+                                key={roleObj.id}
+                                px="2"
+                                py="0.5"
+                                rounded="md"
+                                bg="secondary.500"
+                              >
+                                <Text fontSize="md" color="white">
+                                  {roleObj.role}
+                                </Text>
+                              </Box>
+                            );
+                          }
+                        })}
+                      </View>
+                    )}
                   </View>
                 </VStack>
               </HStack>

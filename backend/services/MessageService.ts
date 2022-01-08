@@ -9,6 +9,7 @@ export class MessageService {
     const messageList = await this.knex
       .select("*")
       .from(tables.MESSAGE_LIST)
+      .innerJoin(tables.MESSAGE_ROLE, "message_role.message_id", "message_list.id")
       .where("wedding_event_id", eventId)
       .orderBy("created_at", "DESC")
       .limit(20);

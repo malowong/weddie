@@ -157,32 +157,52 @@ export function EditRundown({ route, navigation }: any) {
             </Text>
             <Box flexDirection="row" flexWrap="wrap">
               {roleList.map(
-                (role, idx) => (
-                  <Checkbox
-                    key={idx}
-                    value={role.id.toString()}
-                    accessibilityLabel="This is a checkbox"
-                    width="100"
-                    mb="2"
-                    onChange={(event) => {
-                      if (event) {
-                        const newRoleArray = roleArray.slice();
-                        newRoleArray.push(role.id);
-                        setRoleArray(newRoleArray);
-                      } else {
-                        const newRoleArray = roleArray.slice();
-                        const index = newRoleArray.indexOf(role.id);
-                        if (index > -1) {
-                          newRoleArray.splice(index, 1);
+                (role, idx) => {
+                  console.log(
+                    route.params.role_id_arr.find(
+                      (roleId: any) => roleId === role.id
+                    )
+                  );
+
+                  let isChecked;
+                  if (
+                    route.params.role_id_arr.find(
+                      (roleId: any) => roleId === role.id
+                    )
+                  ) {
+                    isChecked = true;
+                  } else {
+                    isChecked = false;
+                  }
+
+                  return (
+                    <Checkbox
+                      defaultIsChecked={isChecked}
+                      key={idx}
+                      value={role.id.toString()}
+                      accessibilityLabel="This is a checkbox"
+                      width="100"
+                      mb="2"
+                      onChange={(event) => {
+                        if (event) {
+                          const newRoleArray = roleArray.slice();
+                          newRoleArray.push(role.id);
+                          setRoleArray(newRoleArray);
+                        } else {
+                          const newRoleArray = roleArray.slice();
+                          const index = newRoleArray.indexOf(role.id);
+                          if (index > -1) {
+                            newRoleArray.splice(index, 1);
+                          }
+                          setRoleArray(newRoleArray);
                         }
-                        setRoleArray(newRoleArray);
-                      }
-                      console.log(roleArray);
-                    }}
-                  >
-                    {role.role}
-                  </Checkbox>
-                )
+                        console.log(roleArray);
+                      }}
+                    >
+                      {role.role}
+                    </Checkbox>
+                  );
+                }
                 // double mappping, but not work as i don't know how to show the others
                 //     route.params.role_id_arr.map((role_id: any) =>
                 //       role.id === role_id ? (

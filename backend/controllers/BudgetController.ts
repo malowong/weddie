@@ -50,16 +50,18 @@ export class BudgetController {
   // categoryId if might not be useful
   updateExpenditureList = async (req: Request, res: Response) => {
     await this.budgetService.updateExpenditureList(
-      req.body.budgetListId,
+      req.body.id,
       req.body.description,
       req.body.expenditure,
-      req.body.amendDate
+      req.body.updateTime
     );
     res.status(200).json({ msg: "successfully updated" });
   };
 
   deleteExpenditureList = async (req: Request, res: Response) => {
-    await this.budgetService.deleteExpenditureList(req.body.budgetListId, req.body.amendDate);
+    console.log(req.body);
+    console.log(req.params);
+    await this.budgetService.deleteExpenditureList(parseInt(req.params.id), req.body.deleteTime);
     res.status(200).json({ msg: "successfully deleted" });
   };
 
@@ -67,11 +69,11 @@ export class BudgetController {
     const budgetItemData = {
       wedding_event_id: req.body.wedding_event_id,
       description: req.body.description,
-      expenditure: req.body.expenditure,
-      budget_cat_id: req.body.budget_cat_id,
+      expenditure: req.body.amount,
+      budget_cat_id: req.body.categoryId,
     };
     // console.log(req.body);
-    await this.budgetService.addExpenditureList(budgetItemData, req.body.amendDate);
+    await this.budgetService.addExpenditureList(budgetItemData, req.body.updateTime);
     res.status(200).json({ msg: "successfully added" });
   };
 }

@@ -131,7 +131,6 @@ export default function HomeScreen() {
           },
           trigger
         );
-        console.log("hi")
       }
 
     });

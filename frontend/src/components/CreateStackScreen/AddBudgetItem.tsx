@@ -36,6 +36,7 @@ export function AddBudgetItem({ navigation }: { navigation: any }) {
     data.amount = parseInt(data.amount);
     data.categoryId = parseInt(data.categoryId);
     data.wedding_event_id = eventId;
+    data.updateTime = Date.parse(new Date().toString());
     console.log('submit form data:', data);
     mutation.mutate(data);
   };

@@ -37,7 +37,7 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     };
   }
 
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const user = useSelector((state: IRootState) => state.auth.user)!;
   const [showModal, setShowModal] = useState(false);
   const { height, width } = useWindowDimensions();
@@ -57,10 +57,13 @@ const dispatch = useDispatch();
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
+    if (!dateString) {
+      return '';
+    }
+
     return `${year} 年 ${month} 月 ${day} 日`;
   }
 
-  // getDate(eventData.wedding_date);
   return (
     <TopBar pageName="用戶設定" show="false" navigate="">
       <View>
@@ -86,7 +89,7 @@ const dispatch = useDispatch();
                 {user ? user.nickname : null}
               </Heading>
               <Text fontSize={20} color="white">
-                {role ? role : null}
+                {role ? role : ''}
               </Text>
             </VStack>
           </Box>
@@ -98,7 +101,7 @@ const dispatch = useDispatch();
               </View>
 
               <Text fontSize={20} fontWeight="bold">
-                {user ? user.email : null}
+                {user ? user.email : ''}
               </Text>
             </HStack>
 
@@ -108,7 +111,7 @@ const dispatch = useDispatch();
               </View>
 
               <Text fontSize={20} fontWeight="bold">
-                {user ? user.phone : null}
+                {user ? user.phone : ''}
               </Text>
             </HStack>
 
@@ -118,7 +121,7 @@ const dispatch = useDispatch();
               </View>
 
               <Text fontSize={20} fontWeight="bold">
-                {eventData ? eventData.wedding_name : null}
+                {eventData ? eventData.wedding_name : ''}
               </Text>
             </HStack>
 
@@ -128,7 +131,7 @@ const dispatch = useDispatch();
               </View>
 
               <Text fontSize={20} fontWeight="bold">
-                {eventData ? getDate(eventData.wedding_date) : null}
+                {eventData ? getDate(eventData.wedding_date) : ''}
               </Text>
             </HStack>
           </Box>

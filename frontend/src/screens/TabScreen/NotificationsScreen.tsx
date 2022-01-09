@@ -46,7 +46,7 @@ export default function NotificationsScreen() {
   const { isLoading, error, status, data } = useQuery(
     ['notiData', { eventId, counter }],
     async () => {
-      if (eventId && eventId !== 0){
+      if (eventId && eventId !== 0) {
         let resp;
 
         if (isMessageSender) {
@@ -71,8 +71,6 @@ export default function NotificationsScreen() {
         const data = await resp.json();
         console.log(data.messageList);
       }
-
-
     }
   );
 

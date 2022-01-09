@@ -82,7 +82,6 @@ export function chooseEventThunk(eventId: string){
       }
 
       dispatch(getEventSuccess(result));
-      console.log("sdfhiosdufh", result)
 
     } catch (e) {
       console.error(e);

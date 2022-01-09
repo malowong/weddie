@@ -2,6 +2,6 @@
   "name": "Weddie",
   "displayName": "Weddie",
   "config": {
-    "BACKEND_URL": "http://34.96.251.69"
+    "BACKEND_URL": "http://localhost:8080"
   }
 }

@@ -55,6 +55,14 @@ export default function JoinEventScreen({ navigation }: { navigation: any }) {
 
   if (error) return <ErrorMsg />;
 
+  function getDate(dateString: string) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${year} 年 ${month} 月 ${day} 日`;
+  }
+
   return (
     <>
       <Box safeAreaTop backgroundColor="#f2f2f2" />
@@ -81,7 +89,8 @@ export default function JoinEventScreen({ navigation }: { navigation: any }) {
               return (
                 <Button mt="4" key={idx} onPress={() => dispatch(chooseEventThunk(event.id))} justifyContent="flex-start" colorScheme="pink">
                 <Text fontSize="2xl" fontWeight="bold" color="white">{event.wedding_name}</Text>
-                <Text fontSize="lg" color="white">{event.wedding_date.slice(0, 10)}</Text>
+                <Text fontSize="lg" color="white">{getDate(event.wedding_date)}</Text>
+
                 </Button>
               )
             })}

@@ -121,7 +121,7 @@ export default function NotificationsScreen() {
               key={message.id}
               py="3"
               alignSelf="center"
-              width={375}
+              width="100%"
               maxWidth="100%"
               borderBottomWidth="1"
               borderColor="muted.300"

@@ -10,9 +10,9 @@ const budgetController = new BudgetController(budgetService);
 export const budgetRoutes = express.Router();
 
 budgetRoutes.get("/list/:id", asyncWrapper(budgetController.getExpenditureList));
-budgetRoutes.post("/item", asyncWrapper(budgetController.addBudgetItem));
-budgetRoutes.put("/item", asyncWrapper(budgetController.updateBudgetItem));
-budgetRoutes.delete("/item/:id", asyncWrapper(budgetController.deleteTodoItem));
+budgetRoutes.post("/item", asyncWrapper(budgetController.addExpenditureList));
+budgetRoutes.put("/item", asyncWrapper(budgetController.updateExpenditureList));
+budgetRoutes.delete("/item/:id", asyncWrapper(budgetController.deleteExpenditureList));
 budgetRoutes.post("/testupdate", asyncWrapper(budgetController.updateExpenditureList));
 budgetRoutes.delete("/testdelete", asyncWrapper(budgetController.deleteExpenditureList));
 budgetRoutes.post("/testadd", asyncWrapper(budgetController.addExpenditureList));

@@ -24,9 +24,18 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     (state: IRootState) => state.event.event?.wedding_event_id
   );
 
-  const eventData: any = useSelector((state: IRootState) => state.event.event)
+  let eventData: any = useSelector((state: IRootState) => state.event.event);
   console.log('role', role);
   console.log('eventId', eventId);
+
+  if (!eventData) {
+    eventData = {
+      wedding_event_id: '',
+      wedding_name: '',
+      wedding_date: '',
+      role: '',
+    };
+  }
 
   const dispatch = useDispatch();
   const user = useSelector((state: IRootState) => state.auth.user)!;
@@ -43,15 +52,19 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
     },
   });
 
-  function getDate(dateString: string){
+  function getDate(dateString: string) {
     const date = new Date(dateString);
     const day = date.getDate();
     const month = date.getMonth() + 1;
     const year = date.getFullYear();
-    return `${year} 年 ${month} 月 ${day} 日`
+    if (!dateString) {
+      return '';
+    }
+
+    return `${year} 年 ${month} 月 ${day} 日`;
   }
 
-  getDate(eventData.wedding_date)
+  getDate(eventData.wedding_date);
   return (
     <TopBar pageName="用戶設定" show="false" navigate="">
       <View>
@@ -73,18 +86,24 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
             maxWidth="100%"
           >
             <VStack>
-              <Heading size="2xl" color="white">{user ? user.nickname : null}</Heading>
-              <Text fontSize={20} color="white">{role ? role : null}</Text>
+              <Heading size="2xl" color="white">
+                {user ? user.nickname : null}
+              </Heading>
+              <Text fontSize={20} color="white">
+                {role ? role : ''}
+              </Text>
             </VStack>
           </Box>
-          
+
           <Box flex="1">
             <HStack mt="3" py="3" borderBottomWidth="1" borderColor="muted.300">
               <View width="30%">
                 <Text fontSize={20}>電郵</Text>
               </View>
 
-              <Text fontSize={20} fontWeight="bold">{user ? user.email : null}</Text>
+              <Text fontSize={20} fontWeight="bold">
+                {user ? user.email : ''}
+              </Text>
             </HStack>
 
             <HStack mt="3" py="3" borderBottomWidth="1" borderColor="muted.300">
@@ -92,7 +111,9 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
                 <Text fontSize={20}>電話</Text>
               </View>
 
-              <Text fontSize={20} fontWeight="bold">{user ? user.phone : null}</Text>
+              <Text fontSize={20} fontWeight="bold">
+                {user ? user.phone : ''}
+              </Text>
             </HStack>
 
             <HStack mt="3" py="3" borderBottomWidth="1" borderColor="muted.300">
@@ -100,7 +121,9 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
                 <Text fontSize={20}>參與婚禮</Text>
               </View>
 
-              <Text fontSize={20} fontWeight="bold">{eventData ? eventData.wedding_name : null}</Text>
+              <Text fontSize={20} fontWeight="bold">
+                {eventData ? eventData.wedding_name : ''}
+              </Text>
             </HStack>
 
             <HStack mt="3" py="3" borderBottomWidth="1" borderColor="muted.300">
@@ -108,7 +131,9 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
                 <Text fontSize={20}>婚禮日期</Text>
               </View>
 
-              <Text fontSize={20} fontWeight="bold">{eventData ? getDate(eventData.wedding_date) : null}</Text>
+              <Text fontSize={20} fontWeight="bold">
+                {eventData ? getDate(eventData.wedding_date) : ''}
+              </Text>
             </HStack>
           </Box>
         </View>

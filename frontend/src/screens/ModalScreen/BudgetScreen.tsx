@@ -80,7 +80,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
   const { isLoading, error, status, data } = useQuery(
     ['budgetData', { eventId, counter }],
     () => {
-      if (eventId && eventId !== 0){
+      if (eventId && eventId !== 0) {
         fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
           .then((res) => res.json())
           .then((data) => {

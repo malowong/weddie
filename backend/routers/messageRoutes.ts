@@ -11,3 +11,4 @@ export const messageRoutes = express.Router();
 
 messageRoutes.get("/list/all/:id", asyncWrapper(messageController.getAllMessageList));
 messageRoutes.post("/", asyncWrapper(messageController.addMessage));
+messageRoutes.get("/list/:eventId/:roleId", asyncWrapper(messageController.getMessageWithRole));

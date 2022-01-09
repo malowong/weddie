@@ -1,6 +1,15 @@
 import * as React from 'react';
-import { Box, HStack, VStack, Text, Image, Heading, View } from 'native-base';
-import { Animated } from 'react-native';
+import {
+  Box,
+  HStack,
+  VStack,
+  Text,
+  Image,
+  Heading,
+  View,
+  Button,
+} from 'native-base';
+import { Alert, Animated, DeviceEventEmitter } from 'react-native';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import Carousel from 'react-native-snap-carousel';
@@ -10,6 +19,7 @@ import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { Dimensions } from 'react-native';
+import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
 
 function getNumberOfDays(
   start: string | number | Date,
@@ -17,6 +27,11 @@ function getNumberOfDays(
 ) {
   const date1 = new Date(start);
   const date2 = new Date(end);
+
+  date1.setHours(0, 0, 0, 0)
+  
+  console.log("1", date1)
+  console.log("2",date2)
   const oneDay = 1000 * 60 * 60 * 24;
   const diffInTime = date2.getTime() - date1.getTime();
   const diffInDays = Math.round(diffInTime / oneDay);
@@ -57,40 +72,69 @@ export default function HomeScreen() {
 
   const [itinList, setItinList] = useState([]);
   const eventId = eventData.wedding_event_id;
+  console.log('yoyoyo', eventData.role);
 
-  console.log(counter)
-  const { status, data } = useQuery(["itinData", { eventId, counter }], 
-  async () => {
-    console.log("refresh")
-    const resp = await fetch(
-      `${config.BACKEND_URL}/api/itin/me/${eventId}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  console.log(counter);
+
+  const { status, data } = useQuery(
+    ['itinData', { eventId, counter }],
+    async () => {
+      if (eventId) {
+        console.log('refresh');
+        const resp = await fetch(
+          `${config.BACKEND_URL}/api/itin/me/${eventId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const data = await resp.json();
+        console.log('data: ', data);
+
+        data.sort((a: any, b: any) => {
+          const keyA = getTime(a.itinerary_time);
+          const keyB = getTime(b.itinerary_time);
+          if (keyA < keyB) return -1;
+          if (keyA > keyB) return 1;
+          return 0;
+        });
+
+        console.log('data sorted: ', data);
+
+        setItinList(data);
       }
-    );
-    const data = await resp.json();
-    console.log('data: ', data);
-
-    data.sort((a: any, b: any) => {
-      const keyA = getTime(a.itinerary_time);
-      const keyB = getTime(b.itinerary_time);
-      if (keyA < keyB) return -1;
-    if (keyA > keyB) return 1;
-      return 0;
-    });
-
-    console.log('data sorted: ', data);
-
-    setItinList(data);
     }
   );
 
-  useRefreshOnFocus(async () => {
-    console.log("useRefreshOnFocus")
-    setCounter((counter) => counter + 1)
-  })
+  useRefreshOnFocus(() => {
+    console.log('useRefreshOnFocus');
+    setCounter((counter) => counter + 1);
+  });
+
+  const [isPressed, setIsPressed] = useState(false);
+
+  async function onCreateTriggerNotification() {
+    setIsPressed(true)
+    itinList.map(async (item: any, idx) => {
+      if (getTime(item.itinerary_time).getTime() > Date.now()) {
+        // Create a time-based trigger
+        const trigger: TimestampTrigger = {
+          type: TriggerType.TIMESTAMP,
+          timestamp: getTime(item.itinerary_time).getTime(),
+        };
+  
+        await notifee.createTriggerNotification(
+          {
+            title: `${item.itinerary}`,
+            body: `${item.job_duty}`,
+          },
+          trigger
+        );
+      }
+
+    });
+  }
 
   const carouselData_couple = [
     {
@@ -159,8 +203,7 @@ export default function HomeScreen() {
     {
       title: eventData.wedding_name,
       text: `就是今天！`,
-      image:
-        'https://media.vanityfair.com/photos/5ba12e6d42b9d16f4545aa19/3:2/w_1998,h_1332,c_limit/t-Avatar-The-Last-Airbender-Live-Action.jpg',
+      image: require('../../images/template_1.jpeg'),
     },
   ];
 
@@ -275,6 +318,17 @@ export default function HomeScreen() {
             itemWidth={windowWidth - 24}
             layout={'default'}
           />
+          {getNumberOfDays(Date.now(), eventData.wedding_date) === 0 && !isPressed && (
+            <Button
+              colorScheme="green"
+              marginBottom="3"
+              onPress={() => onCreateTriggerNotification()}
+            >
+              <Text fontSize="md" color="white">
+                發送提示通知
+              </Text>
+            </Button>
+          )}
 
           <Heading size="lg" textAlign="left" mb="3">
             你的時間表

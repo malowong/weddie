@@ -24,32 +24,54 @@ export default function ParticipantsScreen({
 }: {
   navigation: any;
 }) {
-  const eventId = useSelector(
+  let eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
   );
-  const role = useSelector((state: IRootState) => state.event.event?.role);
-  console.log('eventId', eventId);
 
+  if (!eventId) {
+    eventId = 0;
+  }
+
+  const [counter, setCounter] = useState(0);
   const [participantList, setParticipantList] = useState([]);
   const [selectedPartiList, setSelectedPartiList] = useState([]);
 
-  useRefreshOnFocus(() =>
-    fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setParticipantList(data.partiList);
-        setSelectedPartiList(data.partiList);
-      })
+  // useRefreshOnFocus(() =>
+  //   fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setParticipantList(data.partiList);
+  //       setSelectedPartiList(data.partiList);
+  //     })
+  // );
+
+  const role = useSelector((state: IRootState) => state.event.event?.role);
+  console.log(role);
+  let isEventViewer: boolean;
+  if (role === '新郎' || role === '新娘') {
+    isEventViewer = false;
+  } else {
+    isEventViewer = true;
+  }
+
+  const { isLoading, error, status, data } = useQuery(
+    ['partiData', { eventId, counter }],
+    () => {
+      if (eventId && eventId !== 0) {
+        fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
+          .then((res) => res.json())
+          .then((data) => {
+            setParticipantList(data.partiList);
+            setSelectedPartiList(data.partiList);
+          });
+      }
+    }
   );
 
-  const { isLoading, error, data } = useQuery('partiData', () =>
-    fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setParticipantList(data.partiList);
-        setSelectedPartiList(data.partiList);
-      })
-  );
+  useRefreshOnFocus(() => {
+    console.log('useRefreshOnFocus');
+    setCounter((counter) => counter + 1);
+  });
 
   if (isLoading) return <LoadingMsg />;
 
@@ -58,7 +80,7 @@ export default function ParticipantsScreen({
   return (
     <TopBar pageName="人員名單" show="true" navigate="AddParti">
       <View>
-        {participantList.length === 0 && (
+        {participantList.length === 0 && !isEventViewer && (
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('CreateStackScreen', {
@@ -118,6 +140,7 @@ export default function ParticipantsScreen({
         {selectedPartiList.map((participant: any, idx: number) => {
           return (
             <TouchableOpacity
+              disabled={isEventViewer}
               style={{ marginHorizontal: 8 }}
               key={participant.id}
               onPress={() =>

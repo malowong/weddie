@@ -6,7 +6,13 @@ export class MessageService {
   constructor(private knex: Knex) {}
 
   getAllMessageList = async (eventId: number) => {
-    const messageList = await this.knex.select("*").from(tables.MESSAGE_LIST).orderBy("created_at", "DESC").limit(20);
+    const messageList = await this.knex
+      .select("*")
+      .from(tables.MESSAGE_LIST)
+      .innerJoin(tables.MESSAGE_ROLE, "message_role.message_id", "message_list.id")
+      .where("wedding_event_id", eventId)
+      .orderBy("created_at", "DESC")
+      .limit(20);
     return messageList;
   };
 
@@ -19,5 +25,16 @@ export class MessageService {
         role_id: roleId,
       });
     }
+  };
+
+  getMessageWithRole = async (eventId: number, roleId: number) => {
+    const messageList = await this.knex(tables.MESSAGE_LIST)
+      .innerJoin(tables.MESSAGE_ROLE, "message_role.message_id", "message_list.id")
+      .where({
+        "message_list.wedding_event_id": eventId,
+        "message_role.role_id": roleId,
+      });
+
+    return messageList;
   };
 }

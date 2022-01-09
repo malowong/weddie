@@ -36,6 +36,12 @@ const {height , width} = useWindowDimensions();
 
   const userId = useSelector((state: IRootState) => state.auth.user?.id);
 
+  const today = new Date()
+
+  today.setHours(0, 0, 0, 0)
+
+  console.log(today)
+
   const {
     control,
     handleSubmit,
@@ -176,7 +182,7 @@ const {height , width} = useWindowDimensions();
                       }}
                     />
                   </View>
-                  {date < new Date() && (
+                  {date < today && (
                     <Text color="danger.500">請選擇正確的日子。</Text>
                   )}
                   <Controller

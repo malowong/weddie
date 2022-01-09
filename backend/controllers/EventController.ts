@@ -67,22 +67,24 @@ export class EventController {
     res.json({ eventList });
   };
 
-  getEventByEventId = async (req: Request, res: Response) => {
-    console.log(req.params.id);
+  getEventByUserIdAndEventId = async (req: Request, res: Response) => {
 
-    const eventId = parseInt(req.params.id);
+    const eventId = parseInt(req.params.eventId);
+    const userId = parseInt(req.params.userId);
 
     if (!eventId){
       res.status(401).json({ msg: "Request are null" })
       return;
     }
 
-    const eventData = await this.eventService.getEventByEventId(eventId)
+    const eventData = await this.eventService.getEventByUserIdAndEventId(eventId, userId)
 
     if (!eventData) {
       res.status(401).json({ msg: "Request are null" });
       return;
     }
+
+    console.log(eventData);
 
     res.json(eventData)
   }

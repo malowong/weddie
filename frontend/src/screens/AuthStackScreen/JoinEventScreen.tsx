@@ -49,10 +49,19 @@ export default function JoinEventScreen({ navigation }: { navigation: any }) {
       .then((data) => setEventList(data.eventList))
   );
 
-  console.log(eventList);
+  console.log("eventlist", eventList);
+  console.log('yes', eventList.length);
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
+
+  function getDate(dateString: string) {
+    const date = new Date(dateString);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${year} 年 ${month} 月 ${day} 日`;
+  }
 
   return (
     <>
@@ -76,11 +85,12 @@ export default function JoinEventScreen({ navigation }: { navigation: any }) {
           </Heading>
 
           <VStack space={3} mt="5">
-            {eventList.map((event: Event, idx: number) => {
+            {eventList.length === 0 ? (<><Text fontSize="lg">你暫時未有婚禮可供選擇，</Text><Text fontSize="lg">請建立你的婚禮！</Text></>) : eventList.map((event: Event, idx: number) => {
               return (
                 <Button mt="4" key={idx} onPress={() => dispatch(chooseEventThunk(event.id))} justifyContent="flex-start" colorScheme="pink">
                 <Text fontSize="2xl" fontWeight="bold" color="white">{event.wedding_name}</Text>
-                <Text fontSize="lg" color="white">{event.wedding_date.slice(0, 10)}</Text>
+                <Text fontSize="lg" color="white">{getDate(event.wedding_date)}</Text>
+
                 </Button>
               )
             })}

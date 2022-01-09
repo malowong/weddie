@@ -23,9 +23,27 @@ export class UserService {
   }
 
   async insertNewUser(newUser: SignupUser) {
+    
     console.log(newUser)
-    const newUserID = await this.knex(tables.USER_INFO).insert(newUser).returning("id");
-    return newUserID;
+    const [newUserID] = await this.knex(tables.USER_INFO).insert(newUser).returning("id");
+
+    const matchedPhone = await this.knex(tables.WEDDING_PARTI_LIST).where({ phone: newUser.phone })
+
+    console.log(matchedPhone)
+    console.log(newUserID)
+
+    if (matchedPhone){
+      for (let matches of matchedPhone) {
+        await this.knex(tables.WEDDING_USER).insert({
+          wedding_event_id: matches.wedding_event_id,
+          user_id: newUserID,
+          role_id: matches.role_id,
+        })
+      }
+    }
+
+    return [newUserID];
+
   };
 
 }

@@ -32,7 +32,7 @@ export async function seed(knex: Knex): Promise<void> {
         phone: "12345678",
         district_id: "12",
         gender: "M",
-      }
+      },
     ]);
     await knex(tables.ITIN_TEMPLATE).insert(itin_template);
     await knex(tables.TO_DO_LIST_TEMPLATE).insert(to_do_list_template);

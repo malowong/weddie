@@ -109,10 +109,6 @@ export const budget_template = [
     budget_cat_id_temp: "6",
   },
   {
-    budget_description_temp: "場地佈置",
-    budget_cat_id_temp: "6",
-  },
-  {
     budget_description_temp: "結婚戒指",
     budget_cat_id_temp: "6",
   },
@@ -237,7 +233,7 @@ export const budget_template = [
     budget_cat_id_temp: "9",
   },
   {
-    budget_description_temp: "姊姊化妝",
+    budget_description_temp: "姊妹化妝",
     budget_cat_id_temp: "9",
   },
   {
@@ -258,10 +254,6 @@ export const budget_template = [
   },
   {
     budget_description_temp: "旅遊車",
-    budget_cat_id_temp: "10",
-  },
-  {
-    budget_description_temp: "停車費",
     budget_cat_id_temp: "10",
   },
   {

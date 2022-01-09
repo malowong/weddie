@@ -20,5 +20,3 @@ export async function connectToMongo() {
     console.error(err);
   }
 }
-
-//process.env.COLLECTION_NAME_1 as string

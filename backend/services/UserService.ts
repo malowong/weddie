@@ -24,13 +24,9 @@ export class UserService {
 
   async insertNewUser(newUser: SignupUser) {
     
-    console.log(newUser)
     const [newUserID] = await this.knex(tables.USER_INFO).insert(newUser).returning("id");
 
     const matchedPhone = await this.knex(tables.WEDDING_PARTI_LIST).where({ phone: newUser.phone })
-
-    console.log(matchedPhone)
-    console.log(newUserID)
 
     if (matchedPhone){
       for (let matches of matchedPhone) {

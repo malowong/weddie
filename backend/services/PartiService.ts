@@ -21,8 +21,6 @@ export class PartiService {
     const [matchedPhone] = await this.knex(tables.USER_INFO).where("phone", partiData.phone)
 
     if (matchedPhone){
-      console.log("matched")
-      console.log(matchedPhone)
       await this.knex(tables.WEDDING_USER).insert({
         wedding_event_id: partiData.wedding_event_id,
         user_id: matchedPhone.id,
@@ -34,15 +32,7 @@ export class PartiService {
 
   updateParti = async (partiData: Parti, partiId: number) => {
 
-
-
-
-
     await this.knex<Parti>(tables.WEDDING_PARTI_LIST).update(partiData).where("id", partiId);
-
-
-
-
 
     return;
   };
@@ -53,8 +43,6 @@ export class PartiService {
     const [matchedPhone] = await this.knex(tables.USER_INFO).where("phone", partiData.phone)
 
     if (matchedPhone){
-      console.log("matched")
-      console.log(matchedPhone)
       await this.knex(tables.WEDDING_USER).where({
         wedding_event_id: partiData.wedding_event_id,
         user_id: matchedPhone.id,

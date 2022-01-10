@@ -80,11 +80,9 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
   );
 
   useRefreshOnFocus(() => {
-    console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });
 
-  console.log(expenditureList);
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
@@ -159,7 +157,6 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
 
           <View>
             <Select
-              // placeholderTextColor="white"
               defaultValue="all"
               minWidth="200"
               _selectedItem={{
@@ -168,7 +165,6 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
               }}
               fontSize="lg"
               onValueChange={(value) => {
-                console.log(value);
                 if (value === 'all') {
                   setSelectedExpenditureList(expenditureList);
                 } else {
@@ -177,7 +173,6 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
                       return expenditure.budget_cat_id === parseInt(value);
                     }
                   );
-                  console.log(selectedList);
                   setSelectedExpenditureList(() => selectedList);
                 }
               }}

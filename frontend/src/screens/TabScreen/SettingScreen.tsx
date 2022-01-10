@@ -25,8 +25,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
   );
 
   let eventData: any = useSelector((state: IRootState) => state.event.event);
-  console.log('role', role);
-  console.log('eventId', eventId);
 
   if (!eventData) {
     eventData = {

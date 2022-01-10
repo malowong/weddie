@@ -19,7 +19,9 @@ import { useQuery } from 'react-query';
 import { config } from '../../../app.json';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
 import { Dimensions } from 'react-native';
-import notifee, { TimestampTrigger, TriggerType } from '@notifee/react-native';
+import notifee, { TimestampTrigger, TriggerType, IOSAuthorizationStatus } from '@notifee/react-native';
+
+
 
 function getNumberOfDays(
   start: string | number | Date,
@@ -29,9 +31,6 @@ function getNumberOfDays(
   const date2 = new Date(end);
 
   date1.setHours(0, 0, 0, 0)
-  
-  console.log("1", date1)
-  console.log("2",date2)
   const oneDay = 1000 * 60 * 60 * 24;
   const diffInTime = date2.getTime() - date1.getTime();
   const diffInDays = Math.round(diffInTime / oneDay);
@@ -72,15 +71,11 @@ export default function HomeScreen() {
 
   const [itinList, setItinList] = useState([]);
   const eventId = eventData.wedding_event_id;
-  console.log('yoyoyo', eventData.role);
-
-  console.log(counter);
 
   const { status, data } = useQuery(
     ['itinData', { eventId, counter }],
     async () => {
       if (eventId) {
-        console.log('refresh');
         const resp = await fetch(
           `${config.BACKEND_URL}/api/itin/me/${eventId}`,
           {
@@ -90,7 +85,6 @@ export default function HomeScreen() {
           }
         );
         const data = await resp.json();
-        console.log('data: ', data);
 
         data.sort((a: any, b: any) => {
           const keyA = getTime(a.itinerary_time);
@@ -100,25 +94,25 @@ export default function HomeScreen() {
           return 0;
         });
 
-        console.log('data sorted: ', data);
-
         setItinList(data);
       }
     }
   );
 
-  useRefreshOnFocus(() => {
-    console.log('useRefreshOnFocus');
-    setCounter((counter) => counter + 1);
-  });
-
   const [isPressed, setIsPressed] = useState(false);
 
   async function onCreateTriggerNotification() {
     setIsPressed(true)
+    const settings = await notifee.requestPermission();
+  
+    if (settings.authorizationStatus >= IOSAuthorizationStatus.AUTHORIZED) {
+      console.log('Permission settings:', settings);
+    } else {
+      console.log('User declined permissions');
+    }
     itinList.map(async (item: any, idx) => {
       if (getTime(item.itinerary_time).getTime() > Date.now()) {
-        // Create a time-based trigger
+
         const trigger: TimestampTrigger = {
           type: TriggerType.TIMESTAMP,
           timestamp: getTime(item.itinerary_time).getTime(),

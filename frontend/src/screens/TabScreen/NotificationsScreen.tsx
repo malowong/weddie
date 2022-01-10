@@ -40,7 +40,6 @@ export default function NotificationsScreen() {
   } else {
     isMessageSender = false;
   }
-  console.log('message list: ', messageList);
   const { isLoading, error, status, data } = useQuery(
     ['notiData', { eventId, counter }],
     async () => {
@@ -74,7 +73,6 @@ export default function NotificationsScreen() {
   );
 
   useRefreshOnFocus(() => {
-    console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });
 

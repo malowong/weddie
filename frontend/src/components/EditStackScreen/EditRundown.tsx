@@ -44,6 +44,7 @@ export function EditRundown({ route, navigation }: any) {
 
   const [time, setTime] = useState(getTime(route.params.itinerary_time));
   const [roleArray, setRoleArray] = useState<number[]>([]);
+  const [isChosenRole, setIsChosenRole] = useState(false);
 
   function getTime(itinerary_time: string) {
     const time = new Date();
@@ -84,7 +85,6 @@ export function EditRundown({ route, navigation }: any) {
       .padStart(2, '0')}:${time.getMinutes().toString()}:00`;
     data['role_id_arr'] = roleArray;
     data['wedding_event_id'] = eventId;
-    console.log(data);
     updateRundownMutation.mutate(data);
   };
 
@@ -138,31 +138,12 @@ export function EditRundown({ route, navigation }: any) {
               name="job_duty"
             />
 
-            {/* <Controller
-          control={control}
-          rules={{
-            maxLength: 100,
-            required: true,
-          }}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <>
-            </>
-          )}
-          name="role_id_arr"
-        />
-        {errors.role_id_arr && <Text color="danger.500">請選擇負責人士。</Text>} */}
-
             <Text marginTop={5} fontSize={18} mb="2">
               負責人士
             </Text>
             <Box flexDirection="row" flexWrap="wrap">
               {roleList.map(
                 (role, idx) => {
-                  console.log(
-                    route.params.role_id_arr.find(
-                      (roleId: any) => roleId === role.id
-                    )
-                  );
 
                   let isChecked;
                   if (
@@ -184,6 +165,7 @@ export function EditRundown({ route, navigation }: any) {
                       width="100"
                       mb="2"
                       onChange={(event) => {
+                        setIsChosenRole(true)
                         if (event) {
                           const newRoleArray = roleArray.slice();
                           newRoleArray.push(role.id);
@@ -196,34 +178,15 @@ export function EditRundown({ route, navigation }: any) {
                           }
                           setRoleArray(newRoleArray);
                         }
-                        console.log(roleArray);
                       }}
                     >
                       {role.role}
                     </Checkbox>
                   );
                 }
-                // double mappping, but not work as i don't know how to show the others
-                //     route.params.role_id_arr.map((role_id: any) =>
-                //       role.id === role_id ? (
-                //         <Checkbox
-                //           key={idx}
-                //           value={role.id.toString()}
-                //           accessibilityLabel="This is a checkbox"
-                //           width="100"
-                //           mb="2"
-                //           isChecked
-                //           onChange={() => {
-                //             console.log(route.params.role_id_arr);
-                //           }}
-                //         >
-                //           {role.role}
-                //         </Checkbox>
-                //       ) : (null)
-                //   )
               )}
             </Box>
-            {roleArray.length == 0 && (
+            {roleArray.length === 0 && isChosenRole && (
               <Text color="danger.500">請選擇負責人士。</Text>
             )}
 
@@ -241,7 +204,6 @@ export function EditRundown({ route, navigation }: any) {
                 onChange={(event: any, selectedDate?: Date) => {
                   const currentDate = selectedDate || time;
                   setTime(currentDate);
-                  console.log(currentDate);
                 }}
               />
             </View>

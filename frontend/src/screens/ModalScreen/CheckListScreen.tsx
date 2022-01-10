@@ -22,6 +22,7 @@ interface TodoItem {
 }
 
 export default function CheckListScreen({ navigation }: { navigation: any }) {
+
   const [todoList, setTodoList] = useState([]);
   let eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
@@ -34,11 +35,6 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
     eventId = 0;
   }
 
-  // useRefreshOnFocus(() =>
-  //   fetch(`${config.BACKEND_URL}/api/todo/list/${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setTodoList(data.todoList))
-  // );
   const role = useSelector((state: IRootState) => state.event.event?.role);
   console.log(role);
   let isEventViewer: boolean;

@@ -38,22 +38,13 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
     eventId = 0;
   }
 
-  console.log(eventId);
-
   const role = useSelector((state: IRootState) => state.event.event?.role);
-  console.log(role);
   let isEventViewer: boolean;
   if (role === '新郎' || role === '新娘') {
     isEventViewer = false;
   } else {
     isEventViewer = true;
   }
-
-  // useRefreshOnFocus(() =>
-  //   fetch(`${config.BACKEND_URL}/api/logistics/list/${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => setMaterialList(data.logisticsList))
-  // );
 
   const [materialList, setMaterialList] = useState([]);
   const { isLoading, error, status, data } = useQuery(
@@ -65,20 +56,12 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
   );
 
   useRefreshOnFocus(() => {
-    console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });
 
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
-
-  // const changeIsReadyStatus = (itemId: number, isReady: boolean) => {
-  //   console.log(isReady);
-  //   isReady = !isReady;
-  //   const data = { itemId, isReady };
-  //   mutation.mutate(data);
-  // };
 
   return (
     <TopBar pageName="物資管理" show="true" navigate="AddMaterialItem">
@@ -130,16 +113,11 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
                         size="lg"
                         aria-label="Attend"
                         onChange={() => {
-                          // const mutation: any = useMutation(
-                          //   fetchChangeIsReadyStatus
-                          // );
-
                           const isReady = !material.is_ready;
                           material.is_ready = !material.is_ready;
                           const itemId = material.id;
                           const data = { itemId, isReady };
                           mutation.mutate(data);
-                          // changeIsReadyStatus(material.id, material.is_ready);
                         }}
                       />
                     </Box>

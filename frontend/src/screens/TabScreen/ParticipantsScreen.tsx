@@ -36,17 +36,7 @@ export default function ParticipantsScreen({
   const [participantList, setParticipantList] = useState([]);
   const [selectedPartiList, setSelectedPartiList] = useState([]);
 
-  // useRefreshOnFocus(() =>
-  //   fetch(`${config.BACKEND_URL}/api/parti/list/${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setParticipantList(data.partiList);
-  //       setSelectedPartiList(data.partiList);
-  //     })
-  // );
-
   const role = useSelector((state: IRootState) => state.event.event?.role);
-  console.log(role);
   let isEventViewer: boolean;
   if (role === '新郎' || role === '新娘') {
     isEventViewer = false;
@@ -69,7 +59,6 @@ export default function ParticipantsScreen({
   );
 
   useRefreshOnFocus(() => {
-    console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });
 
@@ -107,7 +96,6 @@ export default function ParticipantsScreen({
               }}
               fontSize="xl"
               onValueChange={(value) => {
-                console.log(value);
                 if (value === 'all') {
                   setSelectedPartiList(participantList);
                 } else {
@@ -116,7 +104,6 @@ export default function ParticipantsScreen({
                       return participant.role_id === parseInt(value);
                     }
                   );
-                  console.log(selectedList);
                   setSelectedPartiList(() => selectedList);
                 }
               }}

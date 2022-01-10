@@ -18,13 +18,12 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   if (!eventId) {
     eventId = 0;
   }
-  console.log('eventId: ', eventId);
+
   const [counter, setCounter] = useState(0);
 
   const [guestList, setGuestList] = useState([]);
 
   const role = useSelector((state: IRootState) => state.event.event?.role);
-  console.log(role);
   let isEventViewer: boolean;
   if (role === '新郎' || role === '新娘') {
     isEventViewer = false;
@@ -41,7 +40,6 @@ export default function GuestsScreen({ navigation }: { navigation: any }) {
   );
 
   useRefreshOnFocus(() => {
-    console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });
 

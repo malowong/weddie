@@ -44,6 +44,7 @@ export class EventService {
           wedding_event_id: eventId,
           budget_cat_id: item.budget_cat_id_temp,
           description: item.budget_description_temp,
+          budget_description_id: item.budget_description_id,
           expenditure: 0,
         });
       }

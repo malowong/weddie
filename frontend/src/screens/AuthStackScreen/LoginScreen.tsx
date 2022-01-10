@@ -17,8 +17,9 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk } from '../../redux/auth/thunk';
+import { IRootState } from '../../redux/store';
 
 type LoginFormState = {
   email: string;
@@ -40,6 +41,8 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 
   const dispatch = useDispatch();
 
+  const userMsg = useSelector((state: IRootState) => state.auth.message)
+
   useEffect(() => {
     let sub = watch((data) => {
       console.log('update form data:', data);
@@ -49,7 +52,9 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
 
   function onSubmit(data: LoginFormState) {
     console.log('submit form data:', data);
-    dispatch(loginThunk(data.email, data.password));
+    const resp = dispatch(loginThunk(data.email, data.password));
+    console.log("erwp", resp)
+    console.log("mes", userMsg)
   }
 
   return (
@@ -74,6 +79,9 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
               >
                 登入
               </Heading>
+              {userMsg ? (
+              <Text color="danger.500">錯誤：{userMsg}</Text>
+            ) : null}
 
               <VStack space={3} mt="5">
                 <View>

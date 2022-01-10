@@ -16,7 +16,7 @@ export function loginThunk(email: string, password: string) {
             console.log("result", result)
 
             if (resp.status !== 200) {
-                return dispatch(loginFailed(result.error))
+                return dispatch(loginFailed(result.msg))
             }
 
             if (!result.token) {

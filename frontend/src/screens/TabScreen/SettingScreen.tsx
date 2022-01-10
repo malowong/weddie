@@ -9,10 +9,10 @@ import {
   Heading,
   VStack,
 } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, useWindowDimensions } from 'react-native';
 import TopBar from '../../components/TopBar';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutThunk } from '../../redux/auth/thunk';
 import { IRootState } from '../../redux/store';
@@ -136,7 +136,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
         </View>
 
         <View>
-
           <Button
             flex="1"
             colorScheme="red"

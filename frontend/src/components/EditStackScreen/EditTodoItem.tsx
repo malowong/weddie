@@ -146,7 +146,7 @@ export function EditTodoItem({ route, navigation }: any) {
               accessibilityLabel="狀態"
               placeholderTextColor="gray.700"
               _selectedItem={{
-                bg: 'teal.600',
+                bg: 'secondary.500',
               }}
               mt={1}
               onValueChange={(itemValue) => {

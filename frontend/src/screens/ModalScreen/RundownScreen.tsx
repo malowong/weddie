@@ -8,7 +8,7 @@ import { LoadingMsg } from '../../components/LoadingsMsg';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 
 export default function RundownScreen({ navigation }: { navigation: any }) {
   let eventId = useSelector(
@@ -35,7 +35,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
   const { isLoading, error, status, data } = useQuery(
     ['initData', { eventId, counter }],
     async () => {
-      if (eventId && eventId !== 0){
+      if (eventId && eventId !== 0) {
         const resp = await fetch(
           `${config.BACKEND_URL}/api/itin/list/${eventId}`,
           {
@@ -56,9 +56,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
         });
     
         setItinList(data);
-
       }
-
     }
   );
 

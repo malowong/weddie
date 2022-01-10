@@ -134,13 +134,20 @@ export default function NotificationsScreen() {
                     flexDirection="row"
                     alignItems="center"
                   >
-                    <View>
+                    <View width="35%">
                       <Text>
-                        {new Date(message.created_at).toLocaleString('zh-hk')}
+                        {new Date(message.created_at)
+                          .toLocaleString('zh-hk')
+                          .slice(0, 16)}
                       </Text>
                     </View>
                     {(role === '新郎' || role === '新娘') && (
-                      <View marginLeft={2} display="flex" flexDirection="row">
+                      <View
+                        width="65%"
+                        display="flex"
+                        flexDirection="row"
+                        flexWrap="wrap"
+                      >
                         {roleList.map((roleObj) => {
                           const roleIdArr = messageRoleIdMap.get(
                             message.message_id
@@ -152,6 +159,7 @@ export default function NotificationsScreen() {
                             return (
                               <Box
                                 marginLeft={1}
+                                marginTop={2}
                                 key={roleObj.id}
                                 px="2"
                                 py="0.5"

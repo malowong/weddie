@@ -44,7 +44,7 @@ export function TodoItem(props: ITodoItemProp) {
         </View>
         <VStack width="40%">
           <Heading size="xs" textAlign="center">
-            {dueDate.toString().slice(4, 15)}
+            {!props.isFinished && dueDate.toString().slice(4, 15)}
           </Heading>
         </VStack>
       </HStack>

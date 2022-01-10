@@ -3,7 +3,6 @@ import { Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 import { restoreLoginThunk } from '../../redux/auth/thunk';
-import { restoreEventThunk } from '../../redux/event/thunk';
 
 export default function LoadingScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
@@ -18,15 +17,15 @@ export default function LoadingScreen({ navigation }: { navigation: any }) {
 
   useEffect(() => {
     if (isAuthenticated && isCreated) {
-      console.log('1')
-      navigation.navigate('MainStackScreen', {screen: 'HomeScreen' });
+      console.log('1');
+      navigation.navigate('MainStackScreen', { screen: 'HomeScreen' });
     } else if (isAuthenticated && isCreated == false) {
-      console.log('2')
-      navigation.navigate('CreateEventStackScreen', {screen: 'ChooseScreen' });
+      console.log('2');
+      navigation.navigate('CreateEventStackScreen', { screen: 'ChooseScreen' });
     } else if (isAuthenticated == false) {
       navigation.navigate('AuthStackScreen');
     } else {
-      return
+      return;
     }
   }, [isAuthenticated, isCreated]);
 

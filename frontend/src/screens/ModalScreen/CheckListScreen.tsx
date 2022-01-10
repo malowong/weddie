@@ -10,7 +10,6 @@ import { useQuery } from 'react-query';
 import { ErrorMsg } from '../../components/ErrorMsg';
 import { LoadingMsg } from '../../components/LoadingsMsg';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
-import { useFocusEffect } from '@react-navigation/native';
 
 interface TodoItem {
   id: number;

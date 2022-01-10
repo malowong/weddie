@@ -60,6 +60,9 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
     }
   );
 
+  console.log(itinList)
+
+
   useRefreshOnFocus( () => {
     setCounter((counter) => counter + 1);
   });

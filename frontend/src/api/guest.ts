@@ -13,7 +13,6 @@ export async function fetchGetGuestList() {
 
 export const fetchAddGuest = async (guestData: any) => {
   try {
-    console.log('guest data: ', guestData);
 
     const resp = await fetch(`${config.BACKEND_URL}/api/guest`, {
       method: 'POST',
@@ -26,7 +25,6 @@ export const fetchAddGuest = async (guestData: any) => {
     const result = await resp.json();
 
     if (resp.status !== 200) {
-      console.log('failed');
       throw new Error(result.message);
     }
   } catch (e) {
@@ -36,7 +34,6 @@ export const fetchAddGuest = async (guestData: any) => {
 
 export const fetchUpdateGuest = async (guestData: any) => {
   try {
-    console.log('guest data: ', guestData);
 
     const resp = await fetch(`${config.BACKEND_URL}/api/guest`, {
       method: 'PUT',
@@ -49,7 +46,6 @@ export const fetchUpdateGuest = async (guestData: any) => {
     const result = await resp.json();
 
     if (resp.status !== 200) {
-      console.log('failed');
       throw new Error(result.message);
     }
   } catch (e) {
@@ -59,7 +55,6 @@ export const fetchUpdateGuest = async (guestData: any) => {
 
 export const fetchRemoveGuest = async (guestId: number) => {
   try {
-    console.log('guestId: ', guestId);
 
     const resp = await fetch(`${config.BACKEND_URL}/api/guest/${guestId}`, {
       method: 'DELETE',
@@ -68,7 +63,6 @@ export const fetchRemoveGuest = async (guestId: number) => {
     const result = await resp.json();
 
     if (resp.status !== 200) {
-      console.log('failed');
       throw new Error(result.message);
     }
   } catch (e) {

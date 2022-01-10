@@ -99,6 +99,10 @@ export default function HomeScreen() {
     }
   );
 
+  useRefreshOnFocus(() => {
+    setCounter((counter) => counter + 1);
+  });
+
   const [isPressed, setIsPressed] = useState(false);
 
   async function onCreateTriggerNotification() {
@@ -311,8 +315,7 @@ export default function HomeScreen() {
             itemWidth={windowWidth - 24}
             layout={'default'}
           />
-          {getNumberOfDays(Date.now(), eventData.wedding_date) === 0 &&
-            !isPressed && (
+          {getNumberOfDays(Date.now(), eventData.wedding_date) === 0 && !isPressed && (
               <Button
                 colorScheme="green"
                 marginBottom="3"

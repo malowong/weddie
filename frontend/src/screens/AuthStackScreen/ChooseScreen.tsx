@@ -23,7 +23,6 @@ export default function ChooseScreen({ navigation }: { navigation: any }) {
               <Button
                 colorScheme="pink"
                 onPress={() => navigation.navigate('CreateEventScreen')}
-                // onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
                   建立我的婚禮
@@ -33,7 +32,6 @@ export default function ChooseScreen({ navigation }: { navigation: any }) {
                 mt="4"
                 colorScheme="pink"
                 onPress={() => navigation.navigate('JoinEventScreen')}
-                // onPress={handleSubmit(onSubmit)}
               >
                 <Text fontSize="lg" fontWeight="bold" color="white">
                   選擇婚禮

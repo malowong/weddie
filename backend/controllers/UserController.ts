@@ -20,7 +20,6 @@ export class UserController {
   };
 
   login = async (req: Request, res: Response) => {
-    console.log(req.body);
     if (!req.body.email || !req.body.password) {
       res.status(401).json({ msg: "電郵或密碼不能為空" });
       return;
@@ -37,8 +36,6 @@ export class UserController {
     const payload = { id: user.id };
     const token = jwtSimple.encode(payload, jwt.jwtSecret);
 
-    console.log(token);
-
     const userData = {
       id: user.id,
       nickname: user.nickname,
@@ -50,8 +47,6 @@ export class UserController {
   };
 
   signup = async (req: Request, res: Response) => {
-    console.log(req.body);
-    console.log("hi");
 
     if (!req.body) {
       res.status(401).json({ msg: "Request are null" });

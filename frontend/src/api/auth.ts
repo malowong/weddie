@@ -3,7 +3,6 @@ import { config, displayName } from '../../app.json';
 import { ISignupUser } from '../redux/auth/state';
 
 export const fetchLogin = async (email: string, password: string) => {
-  console.log(email)
   const resp = await fetch(`${config.BACKEND_URL}/api/users/login`, {
     method: 'POST',
     headers: {
@@ -26,7 +25,6 @@ export const fetchUser = async (token: string) => {
 
 export const fetchRegister = async (signupUser: ISignupUser) => {
   try {
-    console.log(signupUser);
 
     const resp = await fetch(`${config.BACKEND_URL}/api/users/signup`, {
       method: 'POST',
@@ -39,7 +37,6 @@ export const fetchRegister = async (signupUser: ISignupUser) => {
     const result = await resp.json();
 
     if (resp.status !== 200) {
-      console.log("failed")
       throw new Error(result.message)
     }
 

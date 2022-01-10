@@ -22,9 +22,11 @@ import { fetchDeleteTodoItem, fetchUpdateTodoItem } from '../../api/todo';
 
 export function EditTodoItem({ route, navigation }: any) {
   const { height, width } = useWindowDimensions();
-  console.log('params date: ', route.params.dueDate);
   const [date, setDate] = useState<Date>(new Date(route.params.dueDate));
-  console.log('edit form:', date);
+
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
 
   const [showModal, setShowModal] = useState(false);
   const [isCompleted, setIsCompleted] = useState(route.params.isCompleted);
@@ -107,14 +109,13 @@ export function EditTodoItem({ route, navigation }: any) {
                 display="default"
                 onChange={(event: any, selectedDate?: Date) => {
                   const currentDate = selectedDate || date;
-                  console.log('cur: ', currentDate);
-                  console.log('date: ', date);
                   setDate(currentDate);
+                  console.log("cur", currentDate)
                 }}
               />
             </View>
 
-            {date.toISOString() < new Date().toISOString() && (
+            {date < today && (
               <Text color="danger.500" marginTop={2} marginLeft={1}>
                 請選擇正確的日子。
               </Text>

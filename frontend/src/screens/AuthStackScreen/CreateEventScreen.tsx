@@ -39,8 +39,6 @@ export default function CreateEventScreen() {
 
   today.setHours(0, 0, 0, 0);
 
-  console.log(today);
-
   const {
     control,
     handleSubmit,
@@ -177,7 +175,6 @@ export default function CreateEventScreen() {
                       onChange={(event: any, selectedDate?: Date) => {
                         const currentDate = selectedDate || date;
                         setDate(currentDate);
-                        console.log(currentDate);
                       }}
                     />
                   </View>

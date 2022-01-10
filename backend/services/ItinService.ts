@@ -11,6 +11,8 @@ export class ItinService {
       .where("wedding_event_id", eventID)
       .innerJoin(tables.ITINERARY_ROLE, `${tables.ITINERARY_LIST}.id`, `${tables.ITINERARY_ROLE}.itinerary_id`)
 
+    // console.log(itinList)
+
     const itinMap = new Map()
     for (const item of itinList) {
       const { role_id, id, ...others } = item;
@@ -65,7 +67,11 @@ export class ItinService {
   async updateItin(itinData: ItinList, role_id_arr: number[], itinId: number) {
     await this.knex(tables.ITINERARY_LIST).update(itinData).where("id", itinId)
     await this.knex(tables.ITINERARY_ROLE).where("itinerary_id", itinId).del()
+    console.log(role_id_arr)
     for (const role of role_id_arr) {
+      console.log("hi")
+      console.log(itinId)
+      console.log(role)
       await this.knex(tables.ITINERARY_ROLE).insert({
         itinerary_id: itinId,
         role_id: role,

@@ -20,7 +20,6 @@ interface Event {
 export default function JoinEventScreen({ navigation }: { navigation: any }) {
   const dispatch = useDispatch();
   const userId = useSelector((state: IRootState) => state.auth.user?.id);
-  console.log(userId);
 
   const [eventList, setEventList] = useState([]);
   const { isLoading, error, data } = useQuery('userData', () =>
@@ -29,8 +28,6 @@ export default function JoinEventScreen({ navigation }: { navigation: any }) {
       .then((data) => setEventList(data.eventList))
   );
 
-  console.log('eventlist', eventList);
-  console.log('yes', eventList.length);
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;

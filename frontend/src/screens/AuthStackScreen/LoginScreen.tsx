@@ -53,8 +53,6 @@ export default function LoginScreen({ navigation }: { navigation: any }) {
   function onSubmit(data: LoginFormState) {
     console.log('submit form data:', data);
     const resp = dispatch(loginThunk(data.email, data.password));
-    console.log("erwp", resp)
-    console.log("mes", userMsg)
   }
 
   return (

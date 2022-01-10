@@ -46,7 +46,6 @@ export class BudgetController {
     res.json({ message: "successful delete budget item" });
   };
 
-  // categoryId if might not be useful
   updateExpenditureList = async (req: Request, res: Response) => {
     await this.budgetService.updateExpenditureList(
       req.body.id,
@@ -69,7 +68,6 @@ export class BudgetController {
       expenditure: req.body.amount,
       budget_cat_id: req.body.categoryId,
     };
-    // console.log(req.body);
     await this.budgetService.addExpenditureList(budgetItemData, req.body.updateTime);
     res.status(200).json({ msg: "successfully added" });
   };

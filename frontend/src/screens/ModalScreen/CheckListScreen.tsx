@@ -28,14 +28,11 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
   );
   const [counter, setCounter] = useState(0);
 
-  console.log('eventId: ', eventId);
-
   if (!eventId) {
     eventId = 0;
   }
 
   const role = useSelector((state: IRootState) => state.event.event?.role);
-  console.log(role);
   let isEventViewer: boolean;
   if (role === '新郎' || role === '新娘') {
     isEventViewer = false;
@@ -55,13 +52,8 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
   );
 
   useRefreshOnFocus(() => {
-    console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });
-
-  todoList.map((todoItem: TodoItem) =>
-    console.log(todoItem.to_do_item, ': ', todoItem.to_do_remarks)
-  );
 
   if (isLoading) return <LoadingMsg />;
 

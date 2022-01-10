@@ -111,7 +111,6 @@ export class BudgetService {
     deleteAction.amendDate = amendDate;
     deleteAction.weddingCreatedAtDate = weddingCreatedAtDate;
     deleteAction.weddingDate = weddingDate;
-    console.log(deleteAction);
 
     await this.knex(tables.WEDDING_BUDGET_LIST).where(`${tables.WEDDING_BUDGET_LIST}.id`, budgetListId).del();
 
@@ -153,7 +152,6 @@ export class BudgetService {
     addAction.amendDate = amendDate;
     addAction.weddingCreatedAtDate = weddingCreatedAtDate;
     addAction.weddingDate = weddingDate;
-    console.log(addAction);
 
     try {
       await collections.event_store?.insertOne(addAction);

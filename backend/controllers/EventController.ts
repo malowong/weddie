@@ -5,7 +5,6 @@ export class EventController {
   constructor(private eventService: EventService) {}
 
   createEvent = async (req: Request, res: Response) => {
-    console.log(req.body);
 
     if (!req.body) {
       res.status(401).json({ msg: "Request are null" });
@@ -13,8 +12,6 @@ export class EventController {
     }
 
     const { eventName, role, bigday, budget, pax, user_id } = req.body;
-
-    // where shd i put the budget?
 
     const event = {
       wedding_name: eventName,
@@ -33,7 +30,6 @@ export class EventController {
   };
 
   getEventByUserId = async (req: Request, res: Response) => {
-    console.log(req.body);
 
     const userId = req.body.userId;
 
@@ -53,7 +49,6 @@ export class EventController {
   };
 
   getEventListByUserId = async (req: Request, res: Response) => {
-    console.log(req.params.id);
 
     const userId = parseInt(req.params.id);
 
@@ -83,8 +78,6 @@ export class EventController {
       res.status(401).json({ msg: "Request are null" });
       return;
     }
-
-    console.log(eventData);
 
     res.json(eventData)
   }

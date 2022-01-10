@@ -9,11 +9,8 @@ import { ISignupUser } from './state';
 export function loginThunk(email: string, password: string) {
     return async (dispatch: Dispatch<any>) => {
         try {
-            console.log("hi")
             const resp = await fetchLogin(email, password);
             const result = await resp.json();
-
-            console.log("result", result)
 
             if (resp.status !== 200) {
                 return dispatch(loginFailed(result.msg))

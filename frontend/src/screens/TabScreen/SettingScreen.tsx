@@ -140,16 +140,22 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
             flex="1"
             colorScheme="red"
             marginTop="5"
+            py="3"
+            mx="20"
             onPress={() => {
               dispatch(changeEvent());
             }}
           >
-            切換婚禮
+            <Text fontSize={16} color="white">
+              切換婚禮
+            </Text>
           </Button>
 
           <Button
             color="#ffff1a"
             marginTop="5"
+            py="3"
+            mx="20"
             onPress={() => {
               dispatch(logoutThunk());
               navigation.navigate('AuthStackScreen', {
@@ -157,7 +163,9 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
               });
             }}
           >
-            登出
+            <Text fontSize={16} color="white">
+              登出
+            </Text>
           </Button>
         </View>
       </View>

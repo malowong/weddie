@@ -9,15 +9,11 @@ export class ItinController {
 
     const eventId = parseInt(req.params.id);
 
-    console.log("userId: ", userId);
-
     if (!userId) {
       res.status(400).json({ message: "User not found" });
     }
 
     const itinMap = await this.itinService.getItinList(eventId);
-
-    console.log(itinMap);
 
     res.json(Array.from(itinMap.values()));
   };
@@ -27,15 +23,11 @@ export class ItinController {
 
     const eventId = parseInt(req.params.id);
 
-    console.log(user);
-
     if (!user) {
       res.status(400).json({ message: "User not found" });
     }
 
     const itinList = await this.itinService.getMyItinList(eventId, user!!.id);
-
-    console.log(itinList);
 
     res.json(itinList);
   };

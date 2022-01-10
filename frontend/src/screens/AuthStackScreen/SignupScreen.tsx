@@ -45,13 +45,6 @@ export default function SignupScreen() {
     },
   });
 
-  // useEffect(() => {
-  //   let sub = watch((data) => {
-  //     console.log('update form data:', data);
-  //   });
-  //   return () => sub.unsubscribe();
-  // }, [watch]);
-
   const mutation: any = useMutation(fetchRegister);
 
   function onSubmit(data: ISignupUser) {

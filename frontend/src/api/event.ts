@@ -3,7 +3,6 @@ import { ISignupUser } from '../redux/auth/state';
 import { ICreateEvent } from '../redux/event/state';
 
 export const fetchCreateEvent = async (event: ICreateEvent) => {
-  console.log(event);
   const resp = await fetch(`${config.BACKEND_URL}/api/events`, {
     method: 'POST',
     headers: {

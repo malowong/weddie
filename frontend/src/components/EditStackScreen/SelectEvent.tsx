@@ -16,7 +16,6 @@ interface Event {
 
 export function SelectEvent({ navigation }: { navigation: any }) {
   const userId = useSelector((state: IRootState) => state.auth.user?.id);
-  console.log(userId);
 
   const [eventList, setEventList] = useState([]);
   const { isLoading, error, data } = useQuery('userData', () =>
@@ -25,7 +24,6 @@ export function SelectEvent({ navigation }: { navigation: any }) {
       .then((data) => setEventList(data.eventList))
   );
 
-  console.log(eventList);
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;

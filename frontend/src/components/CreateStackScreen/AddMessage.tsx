@@ -105,30 +105,11 @@ export function AddMessage({ navigation }: { navigation: any }) {
                         }
                         setRoleArray(newRoleArray);
                       }
-                      console.log(roleArray);
                     }}
                   >
                     {role.role}
                   </Checkbox>
                 )
-                // double mappping, but not work as i don't know how to show the others
-                //     route.params.role_id_arr.map((role_id: any) =>
-                //       role.id === role_id ? (
-                //         <Checkbox
-                //           key={idx}
-                //           value={role.id.toString()}
-                //           accessibilityLabel="This is a checkbox"
-                //           width="100"
-                //           mb="2"
-                //           isChecked
-                //           onChange={() => {
-                //             console.log(route.params.role_id_arr);
-                //           }}
-                //         >
-                //           {role.role}
-                //         </Checkbox>
-                //       ) : (null)
-                //   )
               )}
             </Box>
             {roleArray.length === 0 && (

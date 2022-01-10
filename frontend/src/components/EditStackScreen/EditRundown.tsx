@@ -43,7 +43,8 @@ export function EditRundown({ route, navigation }: any) {
   const [showModal, setShowModal] = useState(false);
 
   const [time, setTime] = useState(getTime(route.params.itinerary_time));
-  const [roleArray, setRoleArray] = useState<number[]>([]);
+  const [roleArray, setRoleArray] = useState<number[]>(route.params.role_id_arr);
+  console.log(roleArray)
   const [isChosenRole, setIsChosenRole] = useState(false);
 
   function getTime(itinerary_time: string) {
@@ -73,16 +74,11 @@ export function EditRundown({ route, navigation }: any) {
   const removeRundownMutation: any = useMutation(fetchRemoveRundown);
 
   const onSubmit = (data: any) => {
-    // navigation.setParams({
-    //   name: data.name,
-    //   phone: data.phone,
-    //   relationship: data.relationship,
-    //   id: data.id,
-    // });
     data['itinerary_time'] = `${time
       .getHours()
       .toString()
       .padStart(2, '0')}:${time.getMinutes().toString()}:00`;
+
     data['role_id_arr'] = roleArray;
     data['wedding_event_id'] = eventId;
     updateRundownMutation.mutate(data);

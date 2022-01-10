@@ -21,7 +21,10 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
     (state: IRootState) => state.event.event?.wedding_event_id
   );
   const [date, setDate] = useState<Date>(new Date());
-  console.log('add form:', date);
+
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
 
   const {
     control,
@@ -94,7 +97,7 @@ export function AddTodoItem({ navigation }: { navigation: any }) {
               />
             </View>
 
-            {date.toISOString() < new Date().toISOString() && (
+            {date < today && (
               <Text color="danger.500" marginTop={2} marginLeft={1}>
                 請選擇正確的日子。
               </Text>

@@ -13,7 +13,6 @@ export async function fetchGetLogisticsList() {
 
 export const fetchAddLogisticsItem = async (logisticsItem: any) => {
   try {
-    console.log('logistics item: ', logisticsItem);
 
     const resp = await fetch(`${config.BACKEND_URL}/api/logistics/item`, {
       method: 'POST',
@@ -26,7 +25,6 @@ export const fetchAddLogisticsItem = async (logisticsItem: any) => {
     const result = await resp.json();
 
     if (resp.status !== 200) {
-      console.log('failed');
       throw new Error(result.message);
     }
   } catch (e) {
@@ -36,7 +34,6 @@ export const fetchAddLogisticsItem = async (logisticsItem: any) => {
 
 export const fetchUpdateLogisticsItem = async (logisticsItem: any) => {
   try {
-    console.log('logistics item: ', logisticsItem);
 
     const resp = await fetch(`${config.BACKEND_URL}/api/logistics/item`, {
       method: 'PUT',
@@ -49,7 +46,6 @@ export const fetchUpdateLogisticsItem = async (logisticsItem: any) => {
     const result = await resp.json();
 
     if (resp.status !== 200) {
-      console.log('failed');
       throw new Error(result.message);
     }
   } catch (e) {
@@ -59,7 +55,6 @@ export const fetchUpdateLogisticsItem = async (logisticsItem: any) => {
 
 export const fetchDeleteLogisticsItem = async (itemId: number) => {
   try {
-    console.log('item id: ', itemId);
 
     const resp = await fetch(
       `${config.BACKEND_URL}/api/logistics/item/${itemId}`,
@@ -71,7 +66,6 @@ export const fetchDeleteLogisticsItem = async (itemId: number) => {
     const result = await resp.json();
 
     if (resp.status !== 200) {
-      console.log('failed');
       throw new Error(result.message);
     }
   } catch (e) {
@@ -101,7 +95,6 @@ export const fetchChangeIsReadyStatus = async (data: {
     const result = await resp.json();
 
     if (resp.status !== 200) {
-      console.log('failed');
       throw new Error(result.message);
     }
   } catch (e) {

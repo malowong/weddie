@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const fetchAddMessage = async (messageData: any) => {
   try {
-    console.log('messageData: ', messageData);
     const eventId = messageData.wedding_event_id;
 
     const resp = await fetch(`${config.BACKEND_URL}/api/message`, {
@@ -18,7 +17,6 @@ export const fetchAddMessage = async (messageData: any) => {
     const result = await resp.json();
 
     if (resp.status !== 200) {
-      console.log('failed');
       throw new Error(result.message);
     }
   } catch (e) {

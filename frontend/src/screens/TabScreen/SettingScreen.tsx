@@ -138,7 +138,6 @@ export default function SettingScreen({ navigation }: { navigation: any }) {
         </View>
 
         <View>
-
           <Button
             flex="1"
             colorScheme="red"

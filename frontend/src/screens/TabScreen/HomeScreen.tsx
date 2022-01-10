@@ -9,9 +9,9 @@ import {
   View,
   Button,
 } from 'native-base';
-import { Alert, Animated, DeviceEventEmitter } from 'react-native';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { Animated } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import { useState } from 'react';
 import Carousel from 'react-native-snap-carousel';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
@@ -28,10 +28,10 @@ function getNumberOfDays(
   const date1 = new Date(start);
   const date2 = new Date(end);
 
-  date1.setHours(0, 0, 0, 0)
-  
-  console.log("1", date1)
-  console.log("2",date2)
+  date1.setHours(0, 0, 0, 0);
+
+  console.log('1', date1);
+  console.log('2', date2);
   const oneDay = 1000 * 60 * 60 * 24;
   const diffInTime = date2.getTime() - date1.getTime();
   const diffInDays = Math.round(diffInTime / oneDay);
@@ -115,7 +115,7 @@ export default function HomeScreen() {
   const [isPressed, setIsPressed] = useState(false);
 
   async function onCreateTriggerNotification() {
-    setIsPressed(true)
+    setIsPressed(true);
     itinList.map(async (item: any, idx) => {
       if (getTime(item.itinerary_time).getTime() > Date.now()) {
         // Create a time-based trigger
@@ -123,7 +123,7 @@ export default function HomeScreen() {
           type: TriggerType.TIMESTAMP,
           timestamp: getTime(item.itinerary_time).getTime(),
         };
-  
+
         await notifee.createTriggerNotification(
           {
             title: `${item.itinerary}`,
@@ -132,7 +132,6 @@ export default function HomeScreen() {
           trigger
         );
       }
-
     });
   }
 
@@ -318,17 +317,18 @@ export default function HomeScreen() {
             itemWidth={windowWidth - 24}
             layout={'default'}
           />
-          {getNumberOfDays(Date.now(), eventData.wedding_date) === 0 && !isPressed && (
-            <Button
-              colorScheme="green"
-              marginBottom="3"
-              onPress={() => onCreateTriggerNotification()}
-            >
-              <Text fontSize="md" color="white">
-                發送提示通知
-              </Text>
-            </Button>
-          )}
+          {getNumberOfDays(Date.now(), eventData.wedding_date) === 0 &&
+            !isPressed && (
+              <Button
+                colorScheme="green"
+                marginBottom="3"
+                onPress={() => onCreateTriggerNotification()}
+              >
+                <Text fontSize="md" color="white">
+                  發送提示通知
+                </Text>
+              </Button>
+            )}
 
           <Heading size="lg" textAlign="left" mb="3">
             你的時間表

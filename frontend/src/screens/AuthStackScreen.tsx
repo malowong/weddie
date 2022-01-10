@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { createStackNavigator } from "@react-navigation/stack";
-import ChooseScreen from "./AuthStackScreen/ChooseScreen";
-import CreateEventScreen from "./AuthStackScreen/CreateEventScreen";
-import JoinEventScreen from "./AuthStackScreen/JoinEventScreen";
-import LoginScreen from "./AuthStackScreen/LoginScreen";
-import SignupScreen from "./AuthStackScreen/SignupScreen";
-import WelcomingScreen from "./AuthStackScreen/WelcomingScreen";
+import { createStackNavigator } from '@react-navigation/stack';
+import ChooseScreen from './AuthStackScreen/ChooseScreen';
+import CreateEventScreen from './AuthStackScreen/CreateEventScreen';
+import JoinEventScreen from './AuthStackScreen/JoinEventScreen';
+import LoginScreen from './AuthStackScreen/LoginScreen';
+import SignupScreen from './AuthStackScreen/SignupScreen';
+import WelcomingScreen from './AuthStackScreen/WelcomingScreen';
 
 const AuthStack = createStackNavigator();
 

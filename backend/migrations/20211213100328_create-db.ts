@@ -208,6 +208,7 @@ export async function up(knex: Knex): Promise<void> {
     table.increments();
     table.string("budget_cat_id_temp");
     table.string("budget_description_temp");
+    table.integer("budget_description_id");
   });
 }
 

@@ -44,7 +44,6 @@ export function EditRundown({ route, navigation }: any) {
 
   const [time, setTime] = useState(getTime(route.params.itinerary_time));
   const [roleArray, setRoleArray] = useState<number[]>(route.params.role_id_arr);
-  console.log(roleArray)
   const [isChosenRole, setIsChosenRole] = useState(false);
 
   function getTime(itinerary_time: string) {

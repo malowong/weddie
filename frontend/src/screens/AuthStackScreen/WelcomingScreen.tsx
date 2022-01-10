@@ -1,6 +1,6 @@
 import { VStack, Center, Box, Button, Heading, Text } from 'native-base';
 import React from 'react';
-import { Image, ImageBackground, View } from 'react-native';
+import { ImageBackground, View } from 'react-native';
 
 export default function WelcomingScreen({ navigation }: { navigation: any }) {
   return (

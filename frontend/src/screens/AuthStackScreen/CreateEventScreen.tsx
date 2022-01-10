@@ -25,22 +25,21 @@ import { createEventThunk } from '../../redux/event/thunk';
 import { useDispatch, useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 import { useNavigation } from '@react-navigation/native';
-import { position } from 'native-base/lib/typescript/theme/styled-system';
 
 export default function CreateEventScreen() {
   const navigation = useNavigation();
-const {height , width} = useWindowDimensions();
+  const { height, width } = useWindowDimensions();
   const [date, setDate] = useState<Date>(new Date());
 
   const dispatch = useDispatch();
 
   const userId = useSelector((state: IRootState) => state.auth.user?.id);
 
-  const today = new Date()
+  const today = new Date();
 
-  today.setHours(0, 0, 0, 0)
+  today.setHours(0, 0, 0, 0);
 
-  console.log(today)
+  console.log(today);
 
   const {
     control,

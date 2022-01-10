@@ -12,7 +12,7 @@ import {
   Select,
   CheckIcon,
 } from 'native-base';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Keyboard, TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';

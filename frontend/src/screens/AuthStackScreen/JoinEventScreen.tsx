@@ -1,25 +1,7 @@
-import { useNavigation } from '@react-navigation/native';
-import {
-  Button,
-  Text,
-  NativeBaseProvider,
-  Center,
-  Box,
-  FormControl,
-  Heading,
-  HStack,
-  Input,
-  Link,
-  VStack,
-  TextArea,
-  WarningOutlineIcon,
-  Stack,
-  Icon,
-  View,
-} from 'native-base';
-import React, { useEffect, useState } from 'react';
-import { Controller, useForm } from 'react-hook-form';
-import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { Button, Text, Center, Box, Heading, VStack, Icon } from 'native-base';
+import React, { useState } from 'react';
+
+import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
@@ -36,8 +18,6 @@ interface Event {
 }
 
 export default function JoinEventScreen({ navigation }: { navigation: any }) {
-  
-
   const dispatch = useDispatch();
   const userId = useSelector((state: IRootState) => state.auth.user?.id);
   console.log(userId);
@@ -49,7 +29,7 @@ export default function JoinEventScreen({ navigation }: { navigation: any }) {
       .then((data) => setEventList(data.eventList))
   );
 
-  console.log("eventlist", eventList);
+  console.log('eventlist', eventList);
   console.log('yes', eventList.length);
   if (isLoading) return <LoadingMsg />;
 
@@ -85,15 +65,31 @@ export default function JoinEventScreen({ navigation }: { navigation: any }) {
           </Heading>
 
           <VStack space={3} mt="5">
-            {eventList.length === 0 ? (<><Text fontSize="lg">你暫時未有婚禮可供選擇，</Text><Text fontSize="lg">請建立你的婚禮！</Text></>) : eventList.map((event: Event, idx: number) => {
-              return (
-                <Button mt="4" key={idx} onPress={() => dispatch(chooseEventThunk(event.id))} justifyContent="flex-start" colorScheme="pink">
-                <Text fontSize="2xl" fontWeight="bold" color="white">{event.wedding_name}</Text>
-                <Text fontSize="lg" color="white">{getDate(event.wedding_date)}</Text>
-
-                </Button>
-              )
-            })}
+            {eventList.length === 0 ? (
+              <>
+                <Text fontSize="lg">你暫時未有婚禮可供選擇，</Text>
+                <Text fontSize="lg">請建立你的婚禮！</Text>
+              </>
+            ) : (
+              eventList.map((event: Event, idx: number) => {
+                return (
+                  <Button
+                    mt="4"
+                    key={idx}
+                    onPress={() => dispatch(chooseEventThunk(event.id))}
+                    justifyContent="flex-start"
+                    colorScheme="pink"
+                  >
+                    <Text fontSize="2xl" fontWeight="bold" color="white">
+                      {event.wedding_name}
+                    </Text>
+                    <Text fontSize="lg" color="white">
+                      {getDate(event.wedding_date)}
+                    </Text>
+                  </Button>
+                );
+              })
+            )}
           </VStack>
         </Box>
       </Center>

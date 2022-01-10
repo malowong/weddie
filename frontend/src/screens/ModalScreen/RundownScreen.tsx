@@ -8,8 +8,7 @@ import { LoadingMsg } from '../../components/LoadingsMsg';
 import { useSelector } from 'react-redux';
 import { IRootState } from '../../redux/store';
 import { useRefreshOnFocus } from '../../../hooks/useRefreshOnFoncus';
-import { TouchableOpacity, View } from 'react-native';
-import { useFocusEffect } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native';
 
 export default function RundownScreen({ navigation }: { navigation: any }) {
   let eventId = useSelector(
@@ -23,7 +22,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
   const token = useSelector((state: IRootState) => state.auth.token);
 
   const [counter, setCounter] = useState(0);
-  console.log(counter)
+  console.log(counter);
   const [itinList, setItinList] = useState([]);
   // useRefreshOnFocus(async () => {
   //   const resp = await fetch(`${config.BACKEND_URL}/api/itin/list/${eventId}`, {
@@ -56,7 +55,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
   const { isLoading, error, status, data } = useQuery(
     ['initData', { eventId, counter }],
     async () => {
-      if (eventId && eventId !== 0){
+      if (eventId && eventId !== 0) {
         const resp = await fetch(
           `${config.BACKEND_URL}/api/itin/list/${eventId}`,
           {
@@ -68,7 +67,7 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
 
         const data = await resp.json();
         console.log('data: ', data);
-  
+
         data.sort((a: any, b: any) => {
           const keyA = getTime(a.itinerary_time);
           const keyB = getTime(b.itinerary_time);
@@ -76,17 +75,15 @@ export default function RundownScreen({ navigation }: { navigation: any }) {
           if (keyA > keyB) return 1;
           return 0;
         });
-  
+
         console.log('data sorted: ', data);
-  
+
         setItinList(data);
-
       }
-
     }
   );
 
-  useRefreshOnFocus( () => {
+  useRefreshOnFocus(() => {
     console.log('useRefreshOnFocus');
     setCounter((counter) => counter + 1);
   });

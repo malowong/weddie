@@ -5,6 +5,7 @@ import React from 'react';
 interface ITodoItemProp {
   itemName: string;
   dueDate: string;
+  isFinished: boolean;
 }
 
 export function TodoItem(props: ITodoItemProp) {
@@ -12,9 +13,13 @@ export function TodoItem(props: ITodoItemProp) {
   const todayDate = new Date();
   let backgroundColor = '';
 
-  if (dueDate < todayDate) {
-    backgroundColor = 'pink.200';
-  } else if (dueDate > todayDate) {
+  if (!props.isFinished) {
+    if (dueDate < todayDate) {
+      backgroundColor = 'pink.200';
+    } else if (dueDate > todayDate) {
+      backgroundColor = 'white';
+    }
+  } else {
     backgroundColor = 'white';
   }
 

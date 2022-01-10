@@ -108,6 +108,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
               }
             >
               <TodoItem
+                isFinished={todoItem.is_finished}
                 itemName={todoItem.to_do_item}
                 dueDate={todoItem.to_do_date}
               />
@@ -144,6 +145,7 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
             }
           >
             <TodoItem
+              isFinished={todoItem.is_finished}
               itemName={todoItem.to_do_item}
               dueDate={todoItem.to_do_date}
             />

@@ -32,9 +32,7 @@ export default function NotificationsScreen() {
     eventId = 0;
   }
 
-  console.log(role);
   const roleId = roleList.find((roleObj) => roleObj.role === role)?.id;
-  console.log(roleId);
 
   let isMessageSender: boolean;
   if (role === '新郎' || role === '新娘') {
@@ -42,7 +40,7 @@ export default function NotificationsScreen() {
   } else {
     isMessageSender = false;
   }
-
+  console.log('message list: ', messageList);
   const { isLoading, error, status, data } = useQuery(
     ['notiData', { eventId, counter }],
     async () => {
@@ -69,7 +67,8 @@ export default function NotificationsScreen() {
           );
         }
         const data = await resp.json();
-        console.log(data.messageList);
+
+        setMessageList(data.messageList);
       }
     }
   );
@@ -95,8 +94,6 @@ export default function NotificationsScreen() {
         messageRoleIdMap.set(messageId, [roleId]);
       }
     }
-
-    console.log(messageRoleIdMap);
   }
   let messageIdArr: number[] = [];
 
@@ -150,9 +147,6 @@ export default function NotificationsScreen() {
                           const roleIdArr = messageRoleIdMap.get(
                             message.message_id
                           );
-
-                          console.log(roleObj);
-                          console.log(roleIdArr);
 
                           if (
                             roleIdArr.find((ele: number) => ele == roleObj.id)

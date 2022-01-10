@@ -45,7 +45,7 @@ export const itin_template = [
   {
     itin_time_temp: "5:00",
     itin_temp: "新娘梳洗、更衣",
-    job_duty_temp: "聯絡MUA",
+    job_duty_temp: "聯絡化妝",
     wedding_user_id_temp: "2",
   },
   {

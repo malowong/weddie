@@ -6,7 +6,6 @@ export class BudgetController {
 
   getExpenditureList = async (req: Request, res: Response) => {
     const eventId = parseInt(req.params.id);
-    console.log("eventId: ", eventId);
     const expenditureList = await this.budgetService.getExpenditureList(eventId);
 
     res.json({ expenditureList });
@@ -59,8 +58,6 @@ export class BudgetController {
   };
 
   deleteExpenditureList = async (req: Request, res: Response) => {
-    console.log(req.body);
-    console.log(req.params);
     await this.budgetService.deleteExpenditureList(parseInt(req.params.id), req.body.deleteTime);
     res.status(200).json({ msg: "successfully deleted" });
   };

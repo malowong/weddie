@@ -1,8 +1,5 @@
 export const logistics_list_template = [
   {
-    logistics_item: "物品",
-  },
-  {
     logistics_item: "身份證",
   },
   {
@@ -66,9 +63,6 @@ export const logistics_list_template = [
     logistics_item: "Label",
   },
   {
-    logistics_item: "A4紙",
-  },
-  {
     logistics_item: "雙面膠紙",
   },
   {
@@ -87,7 +81,7 @@ export const logistics_list_template = [
     logistics_item: "Blu-Tack",
   },
   {
-    logistics_item: "結婚證書套 (Tiffany Blue)",
+    logistics_item: "結婚證書套",
   },
   {
     logistics_item: "証婚簽名筆",

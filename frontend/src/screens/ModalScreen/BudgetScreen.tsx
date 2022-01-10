@@ -51,31 +51,19 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
   const budget = parseInt(eventData.budget);
   const eventId = eventData.wedding_event_id;
   const [counter, setCounter] = useState(0);
-
-  console.log('eventId: ', eventId);
-
   const [expenditureList, setExpenditureList]: any = useState([]);
   const [selectedExpenditureList, setSelectedExpenditureList]: any = useState(
     []
   );
 
   const role = useSelector((state: IRootState) => state.event.event?.role);
-  console.log(role);
+
   let isEventViewer: boolean;
   if (role === '新郎' || role === '新娘') {
     isEventViewer = false;
   } else {
     isEventViewer = true;
   }
-
-  // const { isLoading, error, data } = useQuery('budgetData', () =>
-  //   fetch(`${config.BACKEND_URL}/api/budget/list/${eventId}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setExpenditureList(data.expenditureList);
-  //       setSelectedExpenditureList(data.expenditureList);
-  //     })
-  // );
 
   const { isLoading, error, status, data } = useQuery(
     ['budgetData', { eventId, counter }],
@@ -96,7 +84,7 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
     setCounter((counter) => counter + 1);
   });
 
-  // console.log(expenditureList);
+  console.log(expenditureList);
   if (isLoading) return <LoadingMsg />;
 
   if (error) return <ErrorMsg />;
@@ -115,20 +103,6 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
 
   return (
     <TopBar pageName="婚禮預算" show="true" navigate="AddBudgetItem">
-      {/* {expenditureList.length === 0 && !isEventViewer && (
-        <TouchableOpacity
-          onPress={() =>
-            navigation.navigate('CreateStackScreen', {
-              screen: 'AddBudgetItem',
-            })
-          }
-        >
-          <Text fontSize={18} color="danger.600" marginTop={10} marginLeft={15}>
-            尚未有任何支出，按此新增
-          </Text>
-        </TouchableOpacity>
-      )} */}
-
       {totalExpenditure <= budget && (
         <ProgressChart
           data={chartData}

@@ -66,18 +66,6 @@ export class BudgetService {
       .orderBy("updated_at", "desc")
       .first();
 
-    // console.log(old_budget_data);
-
-    // if (
-    //   description.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "") !==
-    //   old_budget_data.description.trim().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, "")
-    // ) {
-    //   //id轉107打後
-    //   newBudgetDescriptionId = budget_template.length + 1 + mongoRecordNum!!;
-    // } else {
-    //   newBudgetDescriptionId = old_budget_data.budget_description_id;
-    // }
-
     let event_store_old = {} as EventStore;
     event_store_old.eventType = EventType.Delete;
     event_store_old.data = old_budget_data;

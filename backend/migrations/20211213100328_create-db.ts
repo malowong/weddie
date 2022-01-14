@@ -56,20 +56,21 @@ export async function up(knex: Knex): Promise<void> {
     table.increments();
     table.string("vendor_name").notNullable().unique();
     table.string("vendor_location").notNullable();
-    table.integer("banquet_cat_id").unsigned();
+    table.integer("banquet_cat_id").unsigned().notNullable();
     table.foreign("banquet_cat_id").references(`${tables.BANQUET_VENDOR_CAT}.id`);
   });
 
   await knex.schema.createTable(tables.WEDDING_EVENT, (table) => {
     table.increments();
-    table.string("wedding_name");
-    table.date("wedding_date");
+    table.string("wedding_name").notNullable();
+    table.date("wedding_date").notNullable();
     table.integer("pax").unsigned();
-    table.integer("budget").unsigned();
-    table.integer("banquet_vendor_id").unsigned();
+    table.integer("budget").unsigned().notNullable().defaultTo(0);
+    table.integer("banquet_vendor_id").unsigned().nullable();
     table.foreign("banquet_vendor_id").references(`${tables.BANQUET_VENDOR_LIST}.id`);
-    table.integer("church_id").unsigned();
+    table.integer("church_id").unsigned().nullable();
     table.foreign("church_id").references(`${tables.CHURCH_LIST}.id`);
+
     table.timestamp("created_at", { useTz: false }).defaultTo(knex.fn.now());
     table.timestamp("updated_at", { useTz: false }).defaultTo(knex.fn.now());
   });
@@ -82,32 +83,35 @@ export async function up(knex: Knex): Promise<void> {
     table.string("phone", 8).notNullable().unique();
     table.integer("district_id").unsigned().notNullable();
     table.foreign("district_id").references(`${tables.HK_DISTRICT}.id`);
-    table.string("gender", 1).notNullable();
+    table.string("gender", 1).notNullable().comment("accept M and F");
+    // table.enum("gender", ["M", "F"])
   });
 
   await knex.schema.createTable(tables.WEDDING_USER, (table) => {
     table.increments();
-    table.integer("wedding_event_id").unsigned();
+    table.integer("wedding_event_id").unsigned().notNullable();
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
-    table.integer("user_id").unsigned();
+    table.integer("user_id").unsigned().notNullable();
     table.foreign("user_id").references(`${tables.USER_INFO}.id`);
-    table.integer("role_id").unsigned();
+    table.integer("role_id").unsigned().notNullable();
     table.foreign("role_id").references(`${tables.ROLE}.id`);
+
+    table.unique(["wedding_event_id", "user_id"]);
   });
 
   await knex.schema.createTable(tables.WEDDING_TO_DO_LIST, (table) => {
     table.increments();
-    table.integer("wedding_event_id").unsigned();
+    table.integer("wedding_event_id").unsigned().notNullable();
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.timestamp("to_do_date", { useTz: true }).notNullable();
     table.string("to_do_item").notNullable();
-    table.string("to_do_remarks");
-    table.boolean("is_finished").defaultTo(false);
+    table.text("to_do_remarks");
+    table.boolean("is_finished").defaultTo(false); // active, completed
   });
 
   await knex.schema.createTable(tables.WEDDING_GUEST_LIST, (table) => {
     table.increments();
-    table.integer("wedding_event_id").unsigned();
+    table.integer("wedding_event_id").unsigned().notNullable();
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.string("name", 30).notNullable();
     table.string("phone", 8).notNullable();
@@ -116,30 +120,33 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable(tables.WEDDING_PARTI_LIST, (table) => {
     table.increments();
-    table.integer("wedding_event_id").unsigned();
+    table.integer("wedding_event_id").unsigned().notNullable();
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.string("name", 30).notNullable();
     table.string("phone", 8).notNullable();
-    table.integer("role_id").notNullable();
+    table.integer("role_id").notNullable().unsigned();
     table.foreign("role_id").references(`${tables.ROLE}.id`);
+
+    table.unique(["wedding_event_id", "phone"]);
   });
 
   await knex.schema.createTable(tables.WEDDING_LOGISTICS, (table) => {
     table.increments();
-    table.integer("wedding_event_id").unsigned();
+    table.integer("wedding_event_id").unsigned().notNullable();
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.string("logistics_item").notNullable();
-    table.string("logistics_remarks");
+    table.text("logistics_remarks");
     table.boolean("is_ready").defaultTo(false);
   });
 
   await knex.schema.createTable(tables.WEDDING_BUDGET_LIST, (table) => {
     table.increments();
-    table.integer("wedding_event_id").unsigned();
+    table.integer("wedding_event_id").unsigned().notNullable();
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
-    table.integer("budget_cat_id").unsigned();
+    table.integer("budget_cat_id").unsigned().notNullable();
     table.foreign("budget_cat_id").references(`${tables.BUDGET_CAT}.id`);
-    table.integer("budget_description_id").unsigned();
+    table.integer("budget_description_id").unsigned().nullable();
+    // table.foreign("budget_description_id").references(...)
     table.string("description").notNullable();
     table.integer("expenditure").unsigned();
     table.timestamp("updated_at", { useTz: false }).defaultTo(knex.fn.now());
@@ -147,7 +154,7 @@ export async function up(knex: Knex): Promise<void> {
 
   await knex.schema.createTable(tables.ITINERARY_LIST, (table) => {
     table.increments();
-    table.integer("wedding_event_id").unsigned();
+    table.integer("wedding_event_id").unsigned().notNullable();
     table.foreign("wedding_event_id").references(`${tables.WEDDING_EVENT}.id`);
     table.string("itinerary").notNullable();
     table.string("job_duty").notNullable();
@@ -158,8 +165,10 @@ export async function up(knex: Knex): Promise<void> {
     table.increments();
     table.integer("itinerary_id").notNullable().unsigned();
     table.foreign("itinerary_id").references(`${tables.ITINERARY_LIST}.id`);
-    table.integer("role_id").unsigned();
+    table.integer("role_id").unsigned().notNullable();
     table.foreign("role_id").references(`${tables.ROLE}.id`);
+
+    // table.unique();
   });
 
   await knex.schema.createTable(tables.WEDDING_USER_ITINERARY, (table) => {

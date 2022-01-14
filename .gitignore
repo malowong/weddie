@@ -1,4 +1,9 @@
 .DS_Store
 .env
-data-warehouse/
 weddie.session.sql
+node_modules
+jupyter
+mongodb.session.
+pgdata
+yarn-error.log
+mongodb

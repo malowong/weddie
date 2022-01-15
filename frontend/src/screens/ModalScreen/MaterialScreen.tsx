@@ -39,12 +39,14 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
   }
 
   const role = useSelector((state: IRootState) => state.event.event?.role);
-  let isEventViewer: boolean;
-  if (role === '新郎' || role === '新娘') {
-    isEventViewer = false;
-  } else {
-    isEventViewer = true;
-  }
+  // let isEventViewer: boolean;
+  // if (role === '新郎' || role === '新娘') {
+  //   isEventViewer = false;
+  // } else {
+  //   isEventViewer = true;
+  // }
+
+  const isEventViewer = !(role === '新郎' || role === '新娘');
 
   const [materialList, setMaterialList] = useState([]);
   const { isLoading, error, status, data } = useQuery(
@@ -114,7 +116,7 @@ export default function MaterialScreen({ navigation }: { navigation: any }) {
                         aria-label="Attend"
                         onChange={() => {
                           const isReady = !material.is_ready;
-                          material.is_ready = !material.is_ready;
+                          // material.is_ready = !material.is_ready;
                           const itemId = material.id;
                           const data = { itemId, isReady };
                           mutation.mutate(data);

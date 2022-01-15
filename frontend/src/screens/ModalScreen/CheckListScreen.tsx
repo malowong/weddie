@@ -1,5 +1,5 @@
 import { Text, View } from 'native-base';
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
 import { TodoItem } from '../../components/TodoItem';
@@ -21,7 +21,6 @@ interface TodoItem {
 }
 
 export default function CheckListScreen({ navigation }: { navigation: any }) {
-
   const [todoList, setTodoList] = useState([]);
   let eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
@@ -51,6 +50,16 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
     }
   );
 
+  const completedTodoItems = useMemo(() => {
+    console.log('filtered');
+    return todoList.filter((todoItem: TodoItem) => todoItem.is_finished);
+  }, [todoList]);
+
+  const pendingTodoItems = useMemo(() => {
+    console.log('filtered');
+    return todoList.filter((todoItem: TodoItem) => !todoItem.is_finished);
+  }, [todoList]);
+
   useRefreshOnFocus(() => {
     setCounter((counter) => counter + 1);
   });
@@ -59,12 +68,13 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
 
   if (error) return <ErrorMsg />;
 
-  const completedTodoItems = todoList.filter(
-    (todoItem: TodoItem) => todoItem.is_finished
-  );
-  const pendingTodoItems = todoList.filter(
-    (todoItem: TodoItem) => !todoItem.is_finished
-  );
+  // const completedTodoItems = todoList.filter(
+  //   (todoItem: TodoItem) => todoItem.is_finished
+  // );
+
+  // const pendingTodoItems = todoList.filter(
+  //   (todoItem: TodoItem) => !todoItem.is_finished
+  // );
 
   return (
     <TopBar pageName="待辦事項" show="true" navigate="AddTodoItem">

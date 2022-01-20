@@ -17,16 +17,13 @@ export class TodoService {
 
   addTodoItem = async (todoItemData: TodoItem) => {
     await this.knex(tables.WEDDING_TO_DO_LIST).insert(todoItemData);
-    return;
   };
 
   updateTodoItem = async (todoItemData: TodoItem, itemId: number) => {
     await this.knex(tables.WEDDING_TO_DO_LIST).update(todoItemData).where("id", itemId);
-    return;
   };
 
   deleteTodoItem = async (itemId: number) => {
     await this.knex(tables.WEDDING_TO_DO_LIST).where("id", itemId).del();
-    return;
   };
 }

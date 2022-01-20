@@ -5,7 +5,6 @@ export class EventController {
   constructor(private eventService: EventService) {}
 
   createEvent = async (req: Request, res: Response) => {
-
     if (!req.body) {
       res.status(401).json({ msg: "Request are null" });
       return;
@@ -30,7 +29,6 @@ export class EventController {
   };
 
   getEventByUserId = async (req: Request, res: Response) => {
-
     const userId = req.body.userId;
 
     if (!req.body) {
@@ -49,7 +47,6 @@ export class EventController {
   };
 
   getEventListByUserId = async (req: Request, res: Response) => {
-
     const userId = parseInt(req.params.id);
 
     if (!req.params.id) {
@@ -63,24 +60,21 @@ export class EventController {
   };
 
   getEventByUserIdAndEventId = async (req: Request, res: Response) => {
-
     const eventId = parseInt(req.params.eventId);
     const userId = parseInt(req.params.userId);
 
-    if (!eventId){
-      res.status(401).json({ msg: "Request are null" })
+    if (!eventId) {
+      res.status(401).json({ msg: "Request are null" });
       return;
     }
 
-    const eventData = await this.eventService.getEventByUserIdAndEventId(eventId, userId)
+    const eventData = await this.eventService.getEventByUserIdAndEventId(eventId, userId);
 
     if (!eventData) {
       res.status(401).json({ msg: "Request are null" });
       return;
     }
 
-    res.json(eventData)
-  }
-
-
+    res.json(eventData);
+  };
 }

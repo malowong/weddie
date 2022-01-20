@@ -6,6 +6,7 @@ export class TodoController {
 
   getTodoList = async (req: Request, res: Response) => {
     const eventId = parseInt(req.params.id);
+    // Validation ??
 
     const todoList = await this.todoService.getTodoList(eventId);
 
@@ -13,6 +14,8 @@ export class TodoController {
   };
 
   addTodoItem = async (req: Request, res: Response) => {
+    // Validation ??
+
     const todoItemData = {
       wedding_event_id: req.body.wedding_event_id,
       to_do_date: req.body.dueDate,
@@ -21,7 +24,6 @@ export class TodoController {
     };
 
     await this.todoService.addTodoItem(todoItemData);
-
     res.json({ message: "successful add todo item" });
   };
 

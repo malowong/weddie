@@ -6,6 +6,14 @@ import { useSelector } from 'react-redux';
 import { styles } from '../../../style';
 import { IRootState } from '../../redux/store';
 
+const data = [
+  {
+    screen: 'BudgetScreen',
+    name: 'pie-chart-outline',
+    text: '婚禮預算',
+  },
+];
+
 export default function ModalScreen({ navigation }: { navigation: any }) {
   let role: any = useSelector((state: IRootState) => state.event.event?.role);
   const { height, width } = useWindowDimensions();
@@ -46,11 +54,20 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
         </View>
 
         <View style={styles.mainModalRow}>
-          {role === '新郎' ||
-          role === '新娘' ||
-          role === '兄弟' ||
-          role === '姊妹' ? (
+          {['新郎', '新娘', '兄弟', '姊妹'].includes(role) ? (
             <>
+              {/* {data.map((item, idx) => (
+                <TouchableOpacity
+                  key={idx}
+                  style={styles.mainModalButton}
+                  onPress={() =>
+                    navigation.navigate('TabScreen', { screen: item.screen })
+                  }
+                >
+                  <Ionicons name={item.name} size={50} color="#e91e63" />
+                  <Text style={styles.modalText}>{item.text}</Text>
+                </TouchableOpacity>
+              ))} */}
               <TouchableOpacity
                 style={styles.mainModalButton}
                 onPress={() =>
@@ -64,6 +81,7 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
                 />
                 <Text style={styles.modalText}>婚禮預算</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={styles.mainModalButton}
                 onPress={() =>
@@ -79,6 +97,7 @@ export default function ModalScreen({ navigation }: { navigation: any }) {
                 />
                 <Text style={styles.modalText}>待辦事項</Text>
               </TouchableOpacity>
+
               <TouchableOpacity
                 style={styles.mainModalButton}
                 onPress={() =>

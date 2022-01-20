@@ -1,7 +1,9 @@
 import express from "express";
 import { knex } from "../app";
+
 import { UserController } from "../controllers/UserController";
 import { UserService } from "../services/UserService";
+
 import { asyncWrapper } from "../utils/asyncWrapper";
 import { isLoggedIn } from "../utils/guards";
 

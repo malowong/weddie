@@ -3,6 +3,7 @@ import jwtSimple from "jwt-simple";
 import express from "express";
 import jwt from "./jwt";
 import { userService } from "../routers/userRoutes";
+// import { Roles } from "./roles";
 
 const permit = new Bearer({
   query: "access_token",
@@ -28,3 +29,13 @@ export async function isLoggedIn(req: express.Request, res: express.Response, ne
     return res.status(401).json({ msg: "Permission Denied" });
   }
 }
+
+// export const checkRoleValid =
+//   (roles: Roles[]) => (req: express.Request, res: express.Response, next: express.NextFunction) => {
+//     const roleId = req.user.role_id;
+//     if (!roles.includes(roleId)) {
+//       res.status(401);
+//       return;
+//     }
+//     next();
+//   };

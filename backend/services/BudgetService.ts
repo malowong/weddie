@@ -85,7 +85,7 @@ export class BudgetService {
       await collections.event_store?.insertMany(insertArr);
     } catch (e) {
       console.log(e);
-      process.exit();
+      // process.exit();
     }
 
     return;
@@ -118,7 +118,7 @@ export class BudgetService {
       await collections.event_store?.insertOne(deleteAction);
     } catch (e) {
       console.log(e);
-      process.exit();
+      // process.exit();
     }
 
     return;
@@ -157,7 +157,7 @@ export class BudgetService {
       await collections.event_store?.insertOne(addAction);
     } catch (e) {
       console.log(e);
-      process.exit();
+      // process.exit();
     }
   };
 }

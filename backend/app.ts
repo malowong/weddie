@@ -6,18 +6,18 @@ dotenv.config();
 
 import knexConfig from "./knexfile";
 export const knex = Knex(knexConfig[process.env.NODE_ENV || "development"]);
-import { connectToMongo } from "./mongoConnection";
+// import { connectToMongo } from "./mongoConnection";
 import express from "express";
 import { logger } from "./utils/logger";
 
-async function connectMongo() {
-  try {
-    await connectToMongo();
-  } catch (err) {
-    console.log("Database connection failed", err);
-    process.exit();
-  }
-}
+// async function connectMongo() {
+//   try {
+//     await connectToMongo();
+//   } catch (err) {
+//     console.log("Database connection failed", err);
+//     process.exit();
+//   }
+// }
 
 const app = express();
 app.use(cors());
@@ -31,12 +31,16 @@ app.use((req, res, next) => {
   next();
 });
 
-connectMongo();
+// app.get("/test", (req, res) => {
+//   process.exit();
+// });
+
+// connectMongo();
 import { routes } from "./routes";
 const API_VERSION = "/api";
 app.use(API_VERSION, routes);
 
 const PORT = process.env.PORT ?? 8080;
 app.listen(PORT, () => {
-  logger.info(`[info] listening to port ${PORT}`);
+  logger.info(`listening to port ${PORT}`);
 });

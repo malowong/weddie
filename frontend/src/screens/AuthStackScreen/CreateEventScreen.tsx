@@ -10,13 +10,12 @@ import {
   View,
   Radio,
 } from 'native-base';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import {
   Keyboard,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  useWindowDimensions,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -28,21 +27,16 @@ import { useNavigation } from '@react-navigation/native';
 
 export default function CreateEventScreen() {
   const navigation = useNavigation();
-  const { height, width } = useWindowDimensions();
   const [date, setDate] = useState<Date>(new Date());
-
   const dispatch = useDispatch();
-
   const userId = useSelector((state: IRootState) => state.auth.user?.id);
 
   const today = new Date();
-
   today.setHours(0, 0, 0, 0);
 
   const {
     control,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<ICreateEvent>({
     defaultValues: {
@@ -54,12 +48,12 @@ export default function CreateEventScreen() {
     },
   });
 
-  useEffect(() => {
-    let sub = watch((data) => {
-      console.log('update form data:', data);
-    });
-    return () => sub.unsubscribe();
-  }, [watch, date]);
+  // useEffect(() => {
+  //   let sub = watch((data) => {
+  //     console.log('update form data:', data);
+  //   });
+  //   return () => sub.unsubscribe();
+  // }, [watch, date]);
 
   function onSubmit(data: ICreateEvent) {
     data.bigday = date;
@@ -94,10 +88,7 @@ export default function CreateEventScreen() {
                   <Controller
                     name="eventName"
                     control={control}
-                    rules={{
-                      required: true,
-                      maxLength: 20,
-                    }}
+                    rules={{ required: true, maxLength: 20 }}
                     render={({ field: { value, onChange } }) => (
                       <>
                         <Text fontSize="lg" mb="1">

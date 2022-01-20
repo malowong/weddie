@@ -3,6 +3,7 @@ import { budget_template } from "../seeds/dataset/template/budget_template";
 import { itin_template } from "../seeds/dataset/template/itin_template";
 import { logistics_list_template } from "../seeds/dataset/template/logistics_list_template";
 import { to_do_list_template } from "../seeds/dataset/template/to_do_list_template";
+import { logger } from "../utils/logger";
 import { tables } from "../utils/tables";
 import { IEvent } from "./models";
 
@@ -26,27 +27,37 @@ export class EventService {
 
     await this.knex(tables.WEDDING_USER).insert({ user_id, role_id, wedding_event_id: eventId });
 
-    const [userInfo] = await this.knex(tables.USER_INFO).where({id: user_id})
+    const [userInfo] = await this.knex(tables.USER_INFO).where({ id: user_id });
 
     await this.knex(tables.WEDDING_PARTI_LIST).insert({
       wedding_event_id: eventId,
       name: userInfo.nickname,
       phone: userInfo.phone,
       role_id,
-    })
+    });
 
     const trx = await this.knex.transaction();
 
     try {
-      for (let item of budget_template) {
-        await trx(tables.WEDDING_BUDGET_LIST).insert({
+      await trx(tables.WEDDING_BUDGET_LIST).insert(
+        budget_template.map((item) => ({
           wedding_event_id: eventId,
           budget_cat_id: item.budget_cat_id_temp,
           description: item.budget_description_temp,
           budget_description_id: item.budget_description_id,
           expenditure: 0,
-        });
-      }
+        }))
+      );
+
+      // for (let item of budget_template) {
+      //   await trx(tables.WEDDING_BUDGET_LIST).insert({
+      //     wedding_event_id: eventId,
+      //     budget_cat_id: item.budget_cat_id_temp,
+      //     description: item.budget_description_temp,
+      //     budget_description_id: item.budget_description_id,
+      //     expenditure: 0,
+      //   });
+      // }
 
       for (let item of logistics_list_template) {
         await trx(tables.WEDDING_LOGISTICS).insert({
@@ -96,7 +107,7 @@ export class EventService {
 
       await trx.commit();
     } catch (e) {
-      console.error(e);
+      logger.error(e);
       await trx.rollback();
     }
 
@@ -109,7 +120,7 @@ export class EventService {
       .where({ user_id: userId })
       .innerJoin("wedding_event", "wedding_event_id", "wedding_event.id")
       .innerJoin("role", "role_id", "role.id")
-      .orderBy('updated_at', 'desc')
+      .orderBy("updated_at", "desc")
       .first();
 
     return eventData;
@@ -118,13 +129,10 @@ export class EventService {
   async getEventByUserIdAndEventId(eventId: number, userId: number) {
     const eventData = await this.knex
       .from(tables.WEDDING_USER)
-      .where({
-        wedding_event_id: eventId,
-        user_id: userId,
-      })
+      .where({ wedding_event_id: eventId, user_id: userId })
       .innerJoin("wedding_event", "wedding_event_id", "wedding_event.id")
       .innerJoin("role", "role_id", "role.id")
-      .orderBy('updated_at', 'desc')
+      .orderBy("updated_at", "desc")
       .first();
 
     return eventData;

@@ -3,19 +3,14 @@ import { Request, Response } from "express";
 import jwtSimple from "jwt-simple";
 import jwt from "../utils/jwt";
 import { checkPassword, hashPassword } from "../utils/hash";
+
 export class UserController {
   constructor(private userService: UserService) {}
 
   getUserByToken = async (req: Request, res: Response) => {
-    let userData;
-    if (req.user) {
-      userData = {
-        id: req.user.id,
-        nickname: req.user.nickname,
-        email: req.user.email,
-        phone: req.user.phone,
-      };
-    }
+    const { id, nickname, email, phone } = req.user!;
+    const userData = { id, nickname, email, phone };
+
     res.json({ userData, message: "restore login success" });
   };
 
@@ -47,7 +42,6 @@ export class UserController {
   };
 
   signup = async (req: Request, res: Response) => {
-
     if (!req.body) {
       res.status(401).json({ msg: "Request are null" });
       return;

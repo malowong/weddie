@@ -16,41 +16,49 @@ export class PartiService {
   };
 
   addParti = async (partiData: Parti) => {
-    await this.knex<Parti>(tables.WEDDING_PARTI_LIST).insert(partiData);
+    const trx = await this.knex.transaction();
+    try {
+      await trx<Parti>(tables.WEDDING_PARTI_LIST).insert(partiData);
 
-    const [matchedPhone] = await this.knex(tables.USER_INFO).where("phone", partiData.phone)
+      const [matchedPhone] = await trx(tables.USER_INFO).where("phone", partiData.phone);
+      if (matchedPhone) {
+        await trx(tables.WEDDING_USER).insert({
+          wedding_event_id: partiData.wedding_event_id,
+          user_id: matchedPhone.id,
+          role_id: partiData.role_id,
+        });
+      }
 
-    if (matchedPhone){
-      await this.knex(tables.WEDDING_USER).insert({
-        wedding_event_id: partiData.wedding_event_id,
-        user_id: matchedPhone.id,
-        role_id: partiData.role_id,
-      })
+      await trx.commit();
+    } catch (err) {
+      await trx.rollback();
+      throw err;
     }
-
   };
 
   updateParti = async (partiData: Parti, partiId: number) => {
-
     await this.knex<Parti>(tables.WEDDING_PARTI_LIST).update(partiData).where("id", partiId);
-
     return;
   };
 
   deleteParti = async (partiId: number) => {
-    const [partiData] = await this.knex(tables.WEDDING_PARTI_LIST).where("id", partiId).returning(['phone', 'wedding_event_id', 'role_id'])
+    const [partiData] = await this.knex(tables.WEDDING_PARTI_LIST)
+      .where("id", partiId)
+      .returning(["phone", "wedding_event_id", "role_id"]);
 
-    const [matchedPhone] = await this.knex(tables.USER_INFO).where("phone", partiData.phone)
+    const [matchedPhone] = await this.knex(tables.USER_INFO).where("phone", partiData.phone);
 
-    if (matchedPhone){
-      await this.knex(tables.WEDDING_USER).where({
-        wedding_event_id: partiData.wedding_event_id,
-        user_id: matchedPhone.id,
-        role_id: partiData.role_id,
-      }).del()
+    if (matchedPhone) {
+      await this.knex(tables.WEDDING_USER)
+        .where({
+          wedding_event_id: partiData.wedding_event_id,
+          user_id: matchedPhone.id,
+          role_id: partiData.role_id,
+        })
+        .del();
     }
 
-    await this.knex(tables.WEDDING_PARTI_LIST).where("id", partiId).del()
+    await this.knex(tables.WEDDING_PARTI_LIST).where("id", partiId).del();
 
     return;
   };

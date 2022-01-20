@@ -21,7 +21,6 @@ interface TodoItem {
 }
 
 export default function CheckListScreen({ navigation }: { navigation: any }) {
-
   const [todoList, setTodoList] = useState([]);
   let eventId = useSelector(
     (state: IRootState) => state.event.event?.wedding_event_id
@@ -56,7 +55,6 @@ export default function CheckListScreen({ navigation }: { navigation: any }) {
   });
 
   if (isLoading) return <LoadingMsg />;
-
   if (error) return <ErrorMsg />;
 
   const completedTodoItems = todoList.filter(

@@ -58,12 +58,12 @@ export default function BudgetScreen({ navigation }: { navigation: any }) {
 
   const role = useSelector((state: IRootState) => state.event.event?.role);
 
-  let isEventViewer: boolean;
-  if (role === '新郎' || role === '新娘') {
-    isEventViewer = false;
-  } else {
-    isEventViewer = true;
-  }
+  let isEventViewer = !(role === '新郎' || role === '新娘');
+  // if (role === '新郎' || role === '新娘') {
+  //   isEventViewer = false;
+  // } else {
+  //   isEventViewer = true;
+  // }
 
   const { isLoading, error, status, data } = useQuery(
     ['budgetData', { eventId, counter }],
